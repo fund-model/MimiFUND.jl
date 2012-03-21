@@ -26,6 +26,9 @@ namespace Fund.Components.ClimateForcing
         /// <summary>Pre-industrial atmospheric CH4 concentration</summary>
         double ch4pre { get; }
 
+        /// <summary>Indirect radiative forcing increase for CH4</summary>
+        double ch4ind { get; }
+
         /// <summary>Atmospheric N2O concentration</summary>
         IParameter1Dimensional<Timestep, double> acn2o { get; }
 
@@ -95,7 +98,7 @@ namespace Fund.Components.ClimateForcing
 
                 s.rfCO2[t] = 5.35 * Math.Log(s.acco2[t] / s.co2pre);
 
-                s.rfCH4[t] = 0.036 * (Math.Sqrt(s.acch4[t]) - Math.Sqrt(s.ch4pre)) - Interact(s.acch4[t], s.n2opre) + ch4n2o;
+                s.rfCH4[t] = 0.036 * (1.0 + s.ch4ind) * (Math.Sqrt(s.acch4[t]) - Math.Sqrt(s.ch4pre)) - Interact(s.acch4[t], s.n2opre) + ch4n2o;
 
                 s.rfN2O[t] = 0.12 * (Math.Sqrt(s.acn2o[t]) - Math.Sqrt(s.n2opre)) - Interact(s.ch4pre, s.acn2o[t]) + ch4n2o;
 
