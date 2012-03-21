@@ -1,0 +1,13 @@
+[Bb]in/
+[Oo]bj/
+[Tt]estResults/
+[Pp]ackages/
+
+# User-specific files
+*.suo
+*.user
+*.sln.docstates
+
+# Visual Studio profiler
+*.psess
+*.vsp
