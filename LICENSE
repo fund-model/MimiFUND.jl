@@ -25,9 +25,8 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 This software contains some code that is not provided under this
 license, but rather under specific licenses from the original authors.
 
-CommandLineArguments.cs, MersenneTwister.cs, DescriptiveStatistics.cs,
-Sorting.cs and Statistics.cs contain their own copyright and
-license notice.
+CommandLineArguments.cs and MersenneTwister.cs contain their own 
+copyright and license notice.
 
 DocumentFormat.OpenXml.dll: Copyright Microsoft Corporation. To see the
 license, download the OpenXML SDK 2.0, during setup the license is shown.
