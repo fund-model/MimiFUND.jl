@@ -95,7 +95,6 @@
     <Compile Include="CommandLineArguments.cs" />
     <Compile Include="ComponentStructure\ComponentStateStructure.cs" />
     <Compile Include="ComponentStructure\StateFieldStructure.cs" />
-    <Compile Include="MathNet.Numerics\DescriptiveStatistics.cs" />
     <Compile Include="Field\DefaultParameterValueAttribute.cs" />
     <Compile Include="Field\FieldParameter1Dimensional.cs" />
     <Compile Include="Field\FieldParameter1DimensionalTime.cs" />
@@ -108,8 +107,6 @@
     <Compile Include="Field\FieldVariable2DimensionalTime.cs" />
     <Compile Include="Field\FieldVariable2DimensionalTimeEfficient.cs" />
     <Compile Include="Field\IDimension.cs" />
-    <Compile Include="MathNet.Numerics\Sorting.cs" />
-    <Compile Include="MathNet.Numerics\Statistics.cs" />
     <Compile Include="Model\Component.cs" />
     <Compile Include="Model\BindingAttribute.cs" />
     <Compile Include="Model\ModelStateAttribute.cs" />
