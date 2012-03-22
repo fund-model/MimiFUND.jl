@@ -1,5 +1,5 @@
 *				text=auto
-*.cs			eol=crlf
+*.cs			eol=crlf diff=csharp
 *.config		eol=crlf
 *.csproj		eol=crlf
 *.dll			-text
