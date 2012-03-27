@@ -73,6 +73,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Common\CommonAssemblyInfo.cs">
+      <Link>Properties\CommonAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="BioDiversityComponent.cs" />
     <Compile Include="ClimateCO2Cycle.cs" />
     <Compile Include="ClimateCH4CycleComponent.cs" />
