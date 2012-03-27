@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Esmf", "Esmf\Esmf.csproj", "{29289CB5-296D-4F73-8778-CD92F60357BF}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fund", "Fund\Fund.csproj", "{83626337-E99E-4C70-B99E-E3C810B32A2F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Esmf", "Esmf\Esmf.csproj", "{29289CB5-296D-4F73-8778-CD92F60357BF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FundComponents", "FundComponents\FundComponents.csproj", "{F09172DA-30CC-48A4-BC8F-8AB1FD1B7597}"
 EndProject
