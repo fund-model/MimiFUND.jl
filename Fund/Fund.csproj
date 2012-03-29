@@ -85,6 +85,7 @@
     <Compile Include="ConsoleApp.cs" />
     <Compile Include="FundWorkflow.cs" />
     <Compile Include="MarginalDamage.cs" />
+    <Compile Include="MarginalDamage3.cs" />
     <Compile Include="ModelOutput.cs" />
     <Compile Include="PerformanceTest.cs" />
     <Compile Include="Playground.cs" />
