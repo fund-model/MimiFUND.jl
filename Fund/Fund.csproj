@@ -84,6 +84,7 @@
     </Compile>
     <Compile Include="ConsoleApp.cs" />
     <Compile Include="FundWorkflow.cs" />
+    <Compile Include="LongtermDiagnosticOutput.cs" />
     <Compile Include="MarginalDamage.cs" />
     <Compile Include="MarginalDamage3.cs" />
     <Compile Include="ModelOutput.cs" />

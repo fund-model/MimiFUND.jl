@@ -71,7 +71,11 @@ namespace Fund
                 Console.WriteLine("DIAGNOSTIC MODE");
                 Console.WriteLine();
 
-                throw new NotImplementedException();
+                using (var f = File.CreateText("Data\\Output - LongtermDiagnostic.csv"))
+                {
+                    var ldo = new LongtermDiagnosticOutput.FileDiagnosticOutput(f, DateTime.UtcNow, true);
+                    LongtermDiagnosticOutput.Run(ldo);
+                }
             }
             else if (lParsedCmdArgs.ConfigurationFilename != null)
             {
