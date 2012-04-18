@@ -13,8 +13,7 @@ namespace Fund.Components.SocioEconomic
 {
     public interface ISocioEconomicState
     {
-        IVariable2Dimensional<Timestep, Region, double> population { get; }
-        IVariable2Dimensional<Timestep, Region, double> populationin1 { get; }
+
         IVariable2Dimensional<Timestep, Region, double> income { get; }
         IVariable2Dimensional<Timestep, Region, double> consumption { get; }
         IVariable2Dimensional<Timestep, Region, double> ypc { get; }
@@ -24,35 +23,32 @@ namespace Fund.Components.SocioEconomic
         IVariable2Dimensional<Timestep, Region, double> urbpop { get; }
         IVariable2Dimensional<Timestep, Region, double> popdens { get; }
 
-        IVariable1Dimensional<Timestep, double> globalpopulation { get; }
         IVariable1Dimensional<Timestep, double> globalconsumption { get; }
         IVariable1Dimensional<Timestep, double> globalypc { get; }
         IVariable1Dimensional<Timestep, double> globalincome { get; }
 
         IVariable1Dimensional<Region, double> ypc90 { get; }
 
+
         IParameter2Dimensional<Timestep, Region, double> pgrowth { get; }
-        IParameter2Dimensional<Timestep, Region, double> enter { get; }
-        IParameter2Dimensional<Timestep, Region, double> leave { get; }
-        IParameter2Dimensional<Timestep, Region, double> dead { get; }
         IParameter2Dimensional<Timestep, Region, double> ypcgrowth { get; }
         IParameter2Dimensional<Timestep, Region, double> eloss { get; }
         IParameter2Dimensional<Timestep, Region, double> sloss { get; }
         IParameter2Dimensional<Timestep, Region, double> mitigationcost { get; }
         IParameter2Dimensional<Timestep, Region, double> area { get; }
+        IParameter1Dimensional<Timestep, double> globalpopulation { get; }
+        IParameter2Dimensional<Timestep, Region, double> population { get; }
+        IParameter2Dimensional<Timestep, Region, double> populationin1 { get; }
 
         IParameter1Dimensional<Region, double> plus90 { get; }
         IParameter1Dimensional<Region, double> gdp90 { get; }
         IParameter1Dimensional<Region, double> pop90 { get; }
         IParameter1Dimensional<Region, double> urbcorr { get; }
         IParameter1Dimensional<Region, double> gdp0 { get; }
-        IParameter1Dimensional<Region, double> pop0 { get; }
+
 
         [DefaultParameterValue(false)]
         bool runwithoutdamage { get; }
-
-        [DefaultParameterValue(false)]
-        bool runwithoutpopulationperturbation { get; }
 
         double consleak { get; }
         double plusel { get; }
@@ -73,13 +69,10 @@ namespace Fund.Components.SocioEconomic
                 foreach (var r in dimensions.GetValues<Region>())
                 {
                     s.income[t, r] = s.gdp0[r];
-                    s.population[t, r] = s.pop0[r];
-                    s.populationin1[t, r] = s.population[t, r] * 1000000.0;
                     s.ypc[t, r] = s.income[t, r] / s.population[t, r] * 1000.0;
                     s.consumption[t, r] = s.income[t, r] * 1000000000.0 * (1.0 - savingsrate);
                 }
 
-                s.globalpopulation[t] = dimensions.GetValues<Region>().Select(r => s.populationin1[t, r]).Sum();
                 s.globalconsumption[t] = dimensions.GetValues<Region>().Select(r => s.consumption[t, r]).Sum();
 
                 foreach (var r in dimensions.GetValues<Region>())
@@ -89,24 +82,6 @@ namespace Fund.Components.SocioEconomic
             }
             else
             {
-                var totalPopulation = 0.0;
-                // Calculate population
-                foreach (var r in dimensions.GetValues<Region>())
-                {
-                    s.population[t, r] = (1 + 0.01 * s.pgrowth[t - 1, r]) * (s.population[t - 1, r] +
-                        (
-                        (t >= Timestep.FromSimulationYear(40)) && !s.runwithoutpopulationperturbation ? (s.enter[t - 1, r] / 1000000.0) - (s.leave[t - 1, r] / 1000000.0) - (s.dead[t - 1, r] >= 0 ? s.dead[t - 1, r] / 1000000.0 : 0) : 0
-                          )
-                    );
-
-                    if (s.population[t, r] < 0)
-                        s.population[t, r] = 0.000001;
-                    //raise new Exception;
-
-                    s.populationin1[t, r] = s.population[t, r] * 1000000.0;
-                    totalPopulation = totalPopulation + s.populationin1[t, r];
-                }
-                s.globalpopulation[t] = totalPopulation;
 
                 // Calculate income growth rate  
                 foreach (var r in dimensions.GetValues<Region>())

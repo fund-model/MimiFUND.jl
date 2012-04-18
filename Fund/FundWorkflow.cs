@@ -24,16 +24,23 @@ namespace Fund
         [Binding("landloss", "impactsealevelrise")]
         public Fund.Components.Geography.IGeographyState Geography;
 
-        [ModelState(typeof(Fund.Components.SocioEconomic.SocioEconomicComponent))]
-        [Binding("ypcgrowth", "scenariouncertainty")]
+        [ModelState(typeof(Fund.Components.Population.PopulationComponent))]
         [Binding("pgrowth", "scenariouncertainty")]
         [Binding("leave", "impactsealevelrise")]
         [Binding("enter", "impactsealevelrise")]
+        [Binding("dead", "impactdeathmorbidity")]
+        public Fund.Components.Population.IPopulationState Population;
+
+        [ModelState(typeof(Fund.Components.SocioEconomic.SocioEconomicComponent))]
+        [Binding("ypcgrowth", "scenariouncertainty")]
+        [Binding("pgrowth", "scenariouncertainty")]
         [Binding("eloss", "impactaggregation")]
         [Binding("sloss", "impactaggregation")]
-        [Binding("dead", "impactdeathmorbidity")]
         [Binding("mitigationcost", "emissions")]
         [Binding("area", "geography")]
+        [Binding("globalpopulation", "population")]
+        [Binding("population", "population")]
+        [Binding("populationin1", "population")]
         public Fund.Components.SocioEconomic.ISocioEconomicState SocioEconomic;
 
         [ModelState(typeof(Fund.Components.Emissions.EmissionsComponent))]
