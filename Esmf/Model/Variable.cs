@@ -21,6 +21,7 @@ namespace Esmf.Model
             this._name = name;
             this._dimensionTypes = dimensionTypes;
             this._dataType = dataType;
+            this.StoreOutput = true;
         }
 
         public string Name { get { return _name; } }
