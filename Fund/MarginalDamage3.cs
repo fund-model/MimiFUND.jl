@@ -46,7 +46,7 @@ namespace Fund
             f1["ImpactSeaLevelRise"].Variables["wetcost"].StoreOutput = true;
             f1["ImpactSeaLevelRise"].Variables["leavecost"].StoreOutput = true;
             f1["socioeconomic"].Variables["income"].StoreOutput = true;
-            f1["socioeconomic"].Variables["population"].StoreOutput = true;
+            f1["Population"].Variables["population"].StoreOutput = true;
 
 
             if (AdditionalInitMethod != null)
@@ -74,7 +74,7 @@ namespace Fund
             f2["ImpactSeaLevelRise"].Variables["wetcost"].StoreOutput = true;
             f2["ImpactSeaLevelRise"].Variables["leavecost"].StoreOutput = true;
             f2["socioeconomic"].Variables["income"].StoreOutput = true;
-            f2["socioeconomic"].Variables["population"].StoreOutput = true;
+            f2["Population"].Variables["population"].StoreOutput = true;
 
             if (AdditionalInitMethod != null)
                 AdditionalInitMethod(f2);
