@@ -414,6 +414,31 @@ namespace Esmf
 
         }
 
+        public void Add1Dimensional(string name, IEnumerable<double> data)
+        {
+            string parameterName = name.ToLower();
+            int parameterId = -1;
+
+            if (!_parameterIdsByName.TryGetValue(parameterName, out parameterId))
+            {
+                parameterId = _nextFreeId;
+                _parameterIdsByName.Add(parameterName, parameterId);
+                _nextFreeId++;
+            }
+
+            var data2 = new List<ParameterElement<double>>();
+
+            foreach (double v in data)
+            {
+                data2.Add(new ParameterElementConstant<double>(new ParameterElementKey(parameterId, parameterName), v));
+            }
+
+            var parameter = new ParameterOneDimensional<double>(parameterName, parameterId, data2.ToArray());
+
+            Add(parameter);
+
+        }
+
         public IEnumerator<Parameter> GetEnumerator()
         {
             return _parameters.GetEnumerator();
