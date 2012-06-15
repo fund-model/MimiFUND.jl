@@ -78,6 +78,8 @@ namespace Esmf.Model
 
             ConnectLeftoversToParameters(mf, parameters);
 
+            ReCreateStateVariables(mf);
+
             RunComponents(mf);
 
             mf.SwitchOffChecks();
