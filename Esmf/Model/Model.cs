@@ -17,6 +17,12 @@ namespace Esmf.Model
     {
         private Dictionary<string, Component> _components = new Dictionary<string, Component>();
         private List<string> _componentsOrder = new List<string>();
+        private int _years;
+
+        public Model(int years=1049)
+        {
+            _years = years;
+        }
 
         protected void AddLocalComponentsToModel(Type composedComponent)
         {
@@ -134,7 +140,7 @@ namespace Esmf.Model
                 }
             }
 
-            mf.Clock = new Clock(Timestep.FromSimulationYear(0), Timestep.FromSimulationYear(1049));
+            mf.Clock = new Clock(Timestep.FromSimulationYear(0), Timestep.FromSimulationYear(_years));
         }
 
         protected void RunComponents(ModelOutput mf)
