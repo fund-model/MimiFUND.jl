@@ -84,7 +84,7 @@ namespace Fund
 
         }
 
-        public static void Run(DiagnosticOutput diagOut)
+        public static void Run(DiagnosticOutput diagOut, int level)
         {
             diagOut.WriteDataPoint("SCC-2010-0prtp", GetSCC(0.0, false));
             diagOut.WriteDataPoint("SCC-2010-1prtp", GetSCC(0.01, false));

@@ -23,7 +23,7 @@ namespace Fund
         public bool Quiet;
 
         [Argument(ArgumentType.AtMostOnce)]
-        public bool Diagnostic;
+        public string Diagnostic;
 
         [Argument(ArgumentType.AtMostOnce)]
         public bool MPI;
@@ -65,8 +65,15 @@ namespace Fund
 
         private static void Main2(FundArguments lParsedCmdArgs)
         {
-            if (lParsedCmdArgs.Diagnostic)
+            if (lParsedCmdArgs.Diagnostic != null)
             {
+                int level;
+                if (!Int32.TryParse(lParsedCmdArgs.Diagnostic, out level))
+                {
+                    Console.WriteLine("Diagnostic mode needs a level specification");
+                    Environment.Exit(1);
+                }
+
                 Console.WriteLine();
                 Console.WriteLine("DIAGNOSTIC MODE");
                 Console.WriteLine();
@@ -74,7 +81,7 @@ namespace Fund
                 using (var f = File.CreateText("Data\\Output - LongtermDiagnostic.csv"))
                 {
                     var ldo = new LongtermDiagnosticOutput.FileDiagnosticOutput(f, DateTime.UtcNow, true);
-                    LongtermDiagnosticOutput.Run(ldo);
+                    LongtermDiagnosticOutput.Run(ldo, level);
                 }
             }
             else if (lParsedCmdArgs.ConfigurationFilename != null)
