@@ -13,7 +13,8 @@ namespace Esmf.Model
     public class ModelTyped<T> : Model
     where T : ComposedComponent
     {
-        public ModelTyped()
+        public ModelTyped(int years = 1049, bool storeFullVariablesByDefault = true)
+            : base(years, storeFullVariablesByDefault)
         {
             AddLocalComponentsToModel(typeof(T));
         }

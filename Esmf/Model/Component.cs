@@ -18,12 +18,14 @@ namespace Esmf.Model
         private string _name;
         private Variables _variables = new Variables();
         private Parameters _parameters = new Parameters();
+        private bool _storeFullVariablesByDefault;
 
-        public Component(string name, Type componentType, Type stateinterfaceType)
+        public Component(string name, Type componentType, Type stateinterfaceType, bool storeFullVariablesByDefault)
         {
             _name = name;
             _componentType = componentType;
             _stateinterfaceType = stateinterfaceType;
+            _storeFullVariablesByDefault = storeFullVariablesByDefault;
 
             var fields = from x in stateinterfaceType.GetProperties()
                          let isMultDim = x.PropertyType.IsGenericType ? (x.PropertyType.GetGenericTypeDefinition() == typeof(IVariable1Dimensional<,>) || x.PropertyType.GetGenericTypeDefinition() == typeof(IVariable2Dimensional<,,>) || x.PropertyType.GetGenericTypeDefinition() == typeof(IParameter1Dimensional<,>) || x.PropertyType.GetGenericTypeDefinition() == typeof(IParameter2Dimensional<,,>)) : false
@@ -43,6 +45,7 @@ namespace Esmf.Model
                 if (f.IsVariable)
                 {
                     var v = new Variable(f.Name, f.DimensionTypes, f.DataType);
+                    v.StoreOutput = _storeFullVariablesByDefault;
                     _variables.Add(f.Name, v);
                 }
                 else

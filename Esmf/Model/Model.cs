@@ -18,10 +18,12 @@ namespace Esmf.Model
         private Dictionary<string, Component> _components = new Dictionary<string, Component>();
         private List<string> _componentsOrder = new List<string>();
         private int _years;
+        private bool _storeFullVariablesByDefault;
 
-        public Model(int years=1049)
+        public Model(int years = 1049, bool storeFullVariablesByDefault=true)
         {
             _years = years;
+            _storeFullVariablesByDefault = storeFullVariablesByDefault;
         }
 
         protected void AddLocalComponentsToModel(Type composedComponent)
@@ -51,14 +53,14 @@ namespace Esmf.Model
 
         public void AddComponent(string name, Type componentType, Type stateinterfaceType)
         {
-            var c = new Component(name, componentType, stateinterfaceType);
+            var c = new Component(name, componentType, stateinterfaceType, _storeFullVariablesByDefault);
             _components.Add(name, c);
             _componentsOrder.Add(name);
         }
 
         public void AddComponent(string name, Type componentType, Type stateinterfaceType, string runAfter)
         {
-            var c = new Component(name, componentType, stateinterfaceType);
+            var c = new Component(name, componentType, stateinterfaceType, _storeFullVariablesByDefault);
             _components.Add(name, c);
 
             int position = _componentsOrder.IndexOf(runAfter);
