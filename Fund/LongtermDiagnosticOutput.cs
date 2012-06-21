@@ -86,22 +86,31 @@ namespace Fund
 
         public static void Run(DiagnosticOutput diagOut, int level)
         {
-            diagOut.WriteDataPoint("SCC-2010-0prtp", GetSCGas(MarginalGas.C, 0.0, false));
-            diagOut.WriteDataPoint("SCC-2010-1prtp", GetSCGas(MarginalGas.C, 0.01, false));
-            diagOut.WriteDataPoint("SCC-2010-3prtp", GetSCGas(MarginalGas.C, 0.03, false));
+            switch (level)
+            {
+                case 1:
+                    diagOut.WriteDataPoint("SCC-2010-0prtp", GetSCGas(MarginalGas.C, 0.0, false));
+                    diagOut.WriteDataPoint("SCC-2010-1prtp", GetSCGas(MarginalGas.C, 0.01, false));
+                    diagOut.WriteDataPoint("SCC-2010-3prtp", GetSCGas(MarginalGas.C, 0.03, false));
 
-            diagOut.WriteDataPoint("SCC-2010-0prtp-AvgEw", GetSCGas(MarginalGas.C, 0.0, true));
-            diagOut.WriteDataPoint("SCC-2010-1prtp-AvgEw", GetSCGas(MarginalGas.C, 0.01, true));
-            diagOut.WriteDataPoint("SCC-2010-3prtp-AvgEw", GetSCGas(MarginalGas.C, 0.03, true));
+                    diagOut.WriteDataPoint("SCC-2010-0prtp-AvgEw", GetSCGas(MarginalGas.C, 0.0, true));
+                    diagOut.WriteDataPoint("SCC-2010-1prtp-AvgEw", GetSCGas(MarginalGas.C, 0.01, true));
+                    diagOut.WriteDataPoint("SCC-2010-3prtp-AvgEw", GetSCGas(MarginalGas.C, 0.03, true));
 
-            diagOut.WriteDataPoint("SCCH4-2010-1prtp", GetSCGas(MarginalGas.CH4, 0.01, false));
-            diagOut.WriteDataPoint("SCCH4-2010-1prtp-AvgEw", GetSCGas(MarginalGas.CH4, 0.01, true));
+                    diagOut.WriteDataPoint("SCCH4-2010-1prtp", GetSCGas(MarginalGas.CH4, 0.01, false));
+                    diagOut.WriteDataPoint("SCCH4-2010-1prtp-AvgEw", GetSCGas(MarginalGas.CH4, 0.01, true));
 
-            diagOut.WriteDataPoint("SCN2O-2010-1prtp", GetSCGas(MarginalGas.N2O, 0.01, false));
-            diagOut.WriteDataPoint("SCN2O-2010-1prtp-AvgEw", GetSCGas(MarginalGas.N2O, 0.01, true));
+                    diagOut.WriteDataPoint("SCN2O-2010-1prtp", GetSCGas(MarginalGas.N2O, 0.01, false));
+                    diagOut.WriteDataPoint("SCN2O-2010-1prtp-AvgEw", GetSCGas(MarginalGas.N2O, 0.01, true));
 
-            diagOut.WriteDataPoint("SCSF6-2010-1prtp", GetSCGas(MarginalGas.SF6, 0.01, false));
-            diagOut.WriteDataPoint("SCSF6-2010-1prtp-AvgEw", GetSCGas(MarginalGas.SF6, 0.01, true));
+                    diagOut.WriteDataPoint("SCSF6-2010-1prtp", GetSCGas(MarginalGas.SF6, 0.01, false));
+                    diagOut.WriteDataPoint("SCSF6-2010-1prtp-AvgEw", GetSCGas(MarginalGas.SF6, 0.01, true));
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+            }
         }
 
         private static double GetSCGas(MarginalGas gas, double prtp, bool equityWeights)
