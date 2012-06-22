@@ -9,6 +9,8 @@ using System.Text;
 using System.IO;
 using Esmf;
 using System.Data.Common;
+using System.Threading.Tasks;
+using MathNet.Numerics.Statistics;
 
 namespace Fund
 {
@@ -48,8 +50,14 @@ namespace Fund
 
                         break;
                     case 2:
+                        toCompute.Add("ESCC-1000-2010-1prtp");
+                        toCompute.Add("ESCC-1000-2010-1prtp-SE");
+
                         break;
                     case 3:
+                        toCompute.Add("ESCC-10000-2010-1prtp");
+                        toCompute.Add("ESCC-10000-2010-1prtp-SE");
+
                         break;
                 }
             }
@@ -101,6 +109,30 @@ namespace Fund
                         case "SCSF6-2010-1prtp-AvgEw":
                             computedOutput.Add(v, GetSCGas(MarginalGas.SF6, 0.01, true));
                             break;
+                        case "ESCC-100-2010-1prtp":
+                        case "ESCC-100-2010-1prtp-SE":
+                            {
+                                var stats = GetSCGasMonteCarlo(MarginalGas.C, 0.01, false, 100);
+                                computedOutput.Add("ESCC-100-2010-1prtp", stats.Item1);
+                                computedOutput.Add("ESCC-100-2010-1prtp-SE", stats.Item2);
+                            }
+                            break;
+                        case "ESCC-1000-2010-1prtp":
+                        case "ESCC-1000-2010-1prtp-SE":
+                            {
+                                var stats = GetSCGasMonteCarlo(MarginalGas.C, 0.01, false, 1000);
+                                computedOutput.Add("ESCC-1000-2010-1prtp", stats.Item1);
+                                computedOutput.Add("ESCC-1000-2010-1prtp-SE", stats.Item2);
+                            }
+                            break;
+                        case "ESCC-10000-2010-1prtp":
+                        case "ESCC-10000-2010-1prtp-SE":
+                            {
+                                var stats = GetSCGasMonteCarlo(MarginalGas.C, 0.01, false, 10000);
+                                computedOutput.Add("ESCC-10000-2010-1prtp", stats.Item1);
+                                computedOutput.Add("ESCC-10000-2010-1prtp-SE", stats.Item2);
+                            }
+                            break;
                     }
                 }
             }
@@ -116,7 +148,6 @@ namespace Fund
                     f.WriteLine("\"{0}\";\"{1}\";{2:f15}", d, kv.Key, kv.Value);
 
                     Console.WriteLine("{0,-30} {1,10:f2}", kv.Key, kv.Value);
-
                 }
             }
         }
@@ -140,5 +171,41 @@ namespace Fund
 
             return scc;
         }
+
+        private static Tuple<double, double> GetSCGasMonteCarlo(MarginalGas gas, double prtp, bool equityWeights, int monteCarloRuns)
+        {
+            var parameters = new Parameters();
+            parameters.ReadExcelFile(@"Data\Parameter - base.xlsm");
+
+            var fm = new Esmf.Model.ModelTyped<FundWorkflow>();
+            fm.Run(parameters.GetBestGuess());
+
+            var rand = new jp.takel.PseudoRandom.MersenneTwister();
+
+            var sccs = new System.Collections.Concurrent.ConcurrentBag<double>();
+
+            Parallel.ForEach(parameters.GetRandom(rand, monteCarloRuns), pv =>
+            {
+                var m = new MarginalDamage3()
+                {
+                    EmissionYear = Timestep.FromYear(2010),
+                    Eta = 1.0,
+                    Gas = gas,
+                    Parameters = pv,
+                    Prtp = prtp,
+                    UseEquityWeights = equityWeights,
+                    YearsToAggregate = 290
+                };
+
+                double scc = m.Start();
+
+                sccs.Add(scc);
+            });
+
+            var stats = new DescriptiveStatistics(sccs);
+
+            return Tuple.Create(stats.Mean, Math.Sqrt(stats.Variance) / Math.Sqrt(stats.Count));
+        }
+
     }
 }
