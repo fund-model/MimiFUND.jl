@@ -14,102 +14,110 @@ namespace Fund
 {
     public class LongtermDiagnosticOutput
     {
-        public abstract class DiagnosticOutput
+        public static void Run(string argument)
         {
-            protected DateTime _date;
+            // This set contains the names of the variables
+            // that are to be computed in this run
+            var toCompute = new HashSet<string>();
 
-            protected DiagnosticOutput(DateTime date)
+            // If a level is specified add the variables of
+            // that level, otherwise use the name of the variable
+            // that was passed on the command line
+            int level;
+            if (Int32.TryParse(argument, out level))
             {
-                _date = date;
+                switch (level)
+                {
+                    case 1:
+                        toCompute.Add("SCC-2010-0prtp");
+                        toCompute.Add("SCC-2010-1prtp");
+                        toCompute.Add("SCC-2010-3prtp");
+
+                        toCompute.Add("SCC-2010-0prtp-AvgEw");
+                        toCompute.Add("SCC-2010-1prtp-AvgEw");
+                        toCompute.Add("SCC-2010-3prtp-AvgEw");
+
+                        toCompute.Add("SCCH4-2010-1prtp");
+                        toCompute.Add("SCCH4-2010-1prtp-AvgEw");
+
+                        toCompute.Add("SCN2O-2010-1prtp");
+                        toCompute.Add("SCN2O-2010-1prtp-AvgEw");
+
+                        toCompute.Add("SCSF6-2010-1prtp");
+                        toCompute.Add("SCSF6-2010-1prtp-AvgEw");
+
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        break;
+                }
+            }
+            else
+                toCompute.Add(argument);
+
+            // This hashtable contains the computed output
+            var computedOutput = new Dictionary<string, double>();
+
+            foreach (var v in toCompute)
+            {
+                if (!computedOutput.ContainsKey(v))
+                {
+                    switch (v)
+                    {
+                        case "SCC-2010-0prtp":
+                            computedOutput.Add(v, GetSCGas(MarginalGas.C, 0.0, false));
+                            break;
+                        case "SCC-2010-1prtp":
+                            computedOutput.Add(v, GetSCGas(MarginalGas.C, 0.01, false));
+                            break;
+                        case "SCC-2010-3prtp":
+                            computedOutput.Add(v, GetSCGas(MarginalGas.C, 0.03, false));
+                            break;
+                        case "SCC-2010-0prtp-AvgEw":
+                            computedOutput.Add(v, GetSCGas(MarginalGas.C, 0.0, true));
+                            break;
+                        case "SCC-2010-1prtp-AvgEw":
+                            computedOutput.Add(v, GetSCGas(MarginalGas.C, 0.01, true));
+                            break;
+                        case "SCC-2010-3prtp-AvgEw":
+                            computedOutput.Add(v, GetSCGas(MarginalGas.C, 0.03, true));
+                            break;
+                        case "SCCH4-2010-1prtp":
+                            computedOutput.Add(v, GetSCGas(MarginalGas.CH4, 0.01, false));
+                            break;
+                        case "SCCH4-2010-1prtp-AvgEw":
+                            computedOutput.Add(v, GetSCGas(MarginalGas.CH4, 0.01, true));
+                            break;
+                        case "SCN2O-2010-1prtp":
+                            computedOutput.Add(v, GetSCGas(MarginalGas.N2O, 0.01, false));
+                            break;
+                        case "SCN2O-2010-1prtp-AvgEw":
+                            computedOutput.Add(v, GetSCGas(MarginalGas.N2O, 0.01, true));
+                            break;
+                        case "SCSF6-2010-1prtp":
+                            computedOutput.Add(v, GetSCGas(MarginalGas.SF6, 0.01, false));
+                            break;
+                        case "SCSF6-2010-1prtp-AvgEw":
+                            computedOutput.Add(v, GetSCGas(MarginalGas.SF6, 0.01, true));
+                            break;
+                    }
+                }
             }
 
-            public abstract void WriteDataPoint(string variableName, double data);
-        }
-
-        public class FileDiagnosticOutput : DiagnosticOutput
-        {
-            private StreamWriter _file;
-            private bool _consoleOutput;
-
-            public FileDiagnosticOutput(StreamWriter file, DateTime date, bool consoleOutput)
-                : base(date)
+            // Write everything to file
+            using (var f = File.CreateText("Data\\Output - LongtermDiagnostic.csv"))
             {
-                _file = file;
-                _consoleOutput = consoleOutput;
+                var d = DateTime.UtcNow;
+                f.WriteLine("\"{0}\";\"{1}\";{2:f15}", "Date", "Variable", "Value");
 
-                _file.WriteLine("\"{0}\";\"{1}\";{2:f15}", "Date", "Variable", "Value");
-            }
+                foreach (var kv in computedOutput)
+                {
+                    f.WriteLine("\"{0}\";\"{1}\";{2:f15}", d, kv.Key, kv.Value);
 
-            public override void WriteDataPoint(string variableName, double data)
-            {
-                _file.WriteLine("\"{0}\";\"{1}\";{2:f15}", _date, variableName, data);
+                    Console.WriteLine("{0,-30} {1,10:f2}", kv.Key, kv.Value);
 
-                if (_consoleOutput)
-                    Console.WriteLine("{0,-20} {1,10:f2}", variableName, data);
-            }
-        }
-
-        public class DatabaseDiagnosticOutput : DiagnosticOutput
-        {
-            private DbConnection _connection;
-
-            public DatabaseDiagnosticOutput(DbConnection connection, DateTime date)
-                : base(date)
-            {
-                _connection = connection;
-            }
-
-            public override void WriteDataPoint(string variableName, double data)
-            {
-                var cmd = _connection.CreateCommand();
-                cmd.CommandText = "INSERT INTO FundLongtermDiagnosticOutput VALUES (@date, @variableName, @data)";
-
-                var p1 = cmd.CreateParameter();
-                p1.ParameterName = "date";
-                p1.Value = _date;
-                cmd.Parameters.Add(p1);
-
-                var p3 = cmd.CreateParameter();
-                p3.ParameterName = "variableName";
-                p3.Value = variableName;
-                cmd.Parameters.Add(p3);
-
-                var p4 = cmd.CreateParameter();
-                p4.ParameterName = "data";
-                p4.Value = data;
-                cmd.Parameters.Add(p4);
-
-                cmd.ExecuteNonQuery();
-            }
-
-        }
-
-        public static void Run(DiagnosticOutput diagOut, int level)
-        {
-            switch (level)
-            {
-                case 1:
-                    diagOut.WriteDataPoint("SCC-2010-0prtp", GetSCGas(MarginalGas.C, 0.0, false));
-                    diagOut.WriteDataPoint("SCC-2010-1prtp", GetSCGas(MarginalGas.C, 0.01, false));
-                    diagOut.WriteDataPoint("SCC-2010-3prtp", GetSCGas(MarginalGas.C, 0.03, false));
-
-                    diagOut.WriteDataPoint("SCC-2010-0prtp-AvgEw", GetSCGas(MarginalGas.C, 0.0, true));
-                    diagOut.WriteDataPoint("SCC-2010-1prtp-AvgEw", GetSCGas(MarginalGas.C, 0.01, true));
-                    diagOut.WriteDataPoint("SCC-2010-3prtp-AvgEw", GetSCGas(MarginalGas.C, 0.03, true));
-
-                    diagOut.WriteDataPoint("SCCH4-2010-1prtp", GetSCGas(MarginalGas.CH4, 0.01, false));
-                    diagOut.WriteDataPoint("SCCH4-2010-1prtp-AvgEw", GetSCGas(MarginalGas.CH4, 0.01, true));
-
-                    diagOut.WriteDataPoint("SCN2O-2010-1prtp", GetSCGas(MarginalGas.N2O, 0.01, false));
-                    diagOut.WriteDataPoint("SCN2O-2010-1prtp-AvgEw", GetSCGas(MarginalGas.N2O, 0.01, true));
-
-                    diagOut.WriteDataPoint("SCSF6-2010-1prtp", GetSCGas(MarginalGas.SF6, 0.01, false));
-                    diagOut.WriteDataPoint("SCSF6-2010-1prtp-AvgEw", GetSCGas(MarginalGas.SF6, 0.01, true));
-                    break;
-                case 2:
-                    break;
-                case 3:
-                    break;
+                }
             }
         }
 

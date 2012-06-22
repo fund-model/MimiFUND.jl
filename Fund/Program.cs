@@ -67,22 +67,11 @@ namespace Fund
         {
             if (lParsedCmdArgs.Diagnostic != null)
             {
-                int level;
-                if (!Int32.TryParse(lParsedCmdArgs.Diagnostic, out level))
-                {
-                    Console.WriteLine("Diagnostic mode needs a level specification");
-                    Environment.Exit(1);
-                }
-
                 Console.WriteLine();
                 Console.WriteLine("DIAGNOSTIC MODE");
                 Console.WriteLine();
 
-                using (var f = File.CreateText("Data\\Output - LongtermDiagnostic.csv"))
-                {
-                    var ldo = new LongtermDiagnosticOutput.FileDiagnosticOutput(f, DateTime.UtcNow, true);
-                    LongtermDiagnosticOutput.Run(ldo, level);
-                }
+                LongtermDiagnosticOutput.Run(lParsedCmdArgs.Diagnostic);
             }
             else if (lParsedCmdArgs.ConfigurationFilename != null)
             {
