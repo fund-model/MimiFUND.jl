@@ -29,7 +29,7 @@ namespace Fund
 
         public double Start()
         {
-            var f1 = new Esmf.Model.ModelTyped<FundWorkflow>(storeFullVariablesByDefault: false);
+            var f1 = FundModel.GetModel(storeFullVariablesByDefault: false);
             f1["impactwaterresources"].Variables["water"].StoreOutput = true;
             f1["ImpactForests"].Variables["forests"].StoreOutput = true;
             f1["ImpactHeating"].Variables["heating"].StoreOutput = true;
@@ -57,7 +57,7 @@ namespace Fund
             var i_output1 = new ModelOutput();
             i_output1.Load(result1);
 
-            var f2 = new Esmf.Model.ModelTyped<FundWorkflow>(storeFullVariablesByDefault: false);
+            var f2 = FundModel.GetModel(storeFullVariablesByDefault: false);
             f2["impactwaterresources"].Variables["water"].StoreOutput = true;
             f2["ImpactForests"].Variables["forests"].StoreOutput = true;
             f2["ImpactHeating"].Variables["heating"].StoreOutput = true;

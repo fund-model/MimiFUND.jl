@@ -74,7 +74,7 @@ namespace Fund.Tests
             parameterDefinition.ReadExcelFile("Parameter - Base.xlsm");
             var p = parameterDefinition.GetBestGuess();
 
-            var m = new Esmf.Model.ModelTyped<FundWorkflow>();
+            var m = FundModel.GetModel();
             var res = m.Run(p);
 
             var c = new Clock(Timestep.FromYear(1951), Timestep.FromYear(2999));
@@ -83,9 +83,9 @@ namespace Fund.Tests
             {
                 var regions = res.Dimensions.GetValues<Region>();
 
-                double totalLeave = (from r in regions select res.RootComponent.ImpactSeaLevelRise.leave[c.Current, r]).Sum();
+                double totalLeave = (from r in regions select (double)res["ImpactSeaLevelRise", "leave"][c.Current, r]).Sum();
 
-                double totalEnter = (from r in regions select res.RootComponent.ImpactSeaLevelRise.enter[c.Current, r]).Sum();
+                double totalEnter = (from r in regions select (double)res["ImpactSeaLevelRise", "enter"][c.Current, r]).Sum();
 
                 Assert.IsTrue(Math.Abs(totalLeave - totalEnter) < 1.0, "Migration doesn't even out");
                 c.Advance();
@@ -100,7 +100,7 @@ namespace Fund.Tests
             parameterDefinition.ReadExcelFile("Parameter - Base.xlsm");
             var p = parameterDefinition.GetBestGuess();
 
-            var m = new Esmf.Model.ModelTyped<FundWorkflow>();
+            var m = FundModel.GetModel();
             var res = m.Run(p);
 
             var c = new Clock(Timestep.FromYear(1951), Timestep.FromYear(2999));
@@ -109,9 +109,9 @@ namespace Fund.Tests
             {
                 var regions = res.Dimensions.GetValues<Region>();
 
-                double totalLeave = (from r in regions select res.RootComponent.ImpactSeaLevelRise.leave[c.Current, r]).Sum();
+                double totalLeave = (from r in regions select (double)res["ImpactSeaLevelRise", "leave"][c.Current, r]).Sum();
 
-                double totalEnter = (from r in regions select res.RootComponent.ImpactSeaLevelRise.enter[c.Current, r]).Sum();
+                double totalEnter = (from r in regions select (double)res["ImpactSeaLevelRise", "enter"][c.Current, r]).Sum();
 
                 Assert.IsTrue(Math.Abs(totalLeave - totalEnter) < 1.0, "Migration doesn't even out");
                 c.Advance();

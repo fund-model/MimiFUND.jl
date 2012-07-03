@@ -143,7 +143,7 @@ namespace Fund
             // the model
             i_output1 = new ModelOutput();
 
-            var fundWorkflow = new Esmf.Model.ModelTyped<FundWorkflow>();
+            var fundWorkflow = FundModel.GetModel();
 
             var result1 = fundWorkflow.Run(parameters);
 

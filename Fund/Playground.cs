@@ -24,7 +24,7 @@ namespace Fund
             var parameterValues = parameters.GetBestGuess();
 
             // Create a new model that inits itself from the parameters just loaded
-            var model = new Esmf.Model.ModelTyped<FundWorkflow>();
+            var model = FundModel.GetModel();
 
             // Run the model
             var rs = model.Run(parameterValues);

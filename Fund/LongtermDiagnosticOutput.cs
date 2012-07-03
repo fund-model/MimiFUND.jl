@@ -177,7 +177,7 @@ namespace Fund
             var parameters = new Parameters();
             parameters.ReadExcelFile(@"Data\Parameter - base.xlsm");
 
-            var fm = new Esmf.Model.ModelTyped<FundWorkflow>();
+            var fm = FundModel.GetModel();
             fm.Run(parameters.GetBestGuess());
 
             var rand = new jp.takel.PseudoRandom.MersenneTwister();

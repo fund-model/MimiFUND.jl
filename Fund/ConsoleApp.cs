@@ -184,7 +184,7 @@ namespace Fund
                 parameterDefinition.ReadExcelFile(@"Data\Parameter - base.xlsm");
 
                 // Create a new model that inits itself from the parameters just loaded
-                var model = new Esmf.Model.ModelTyped<FundWorkflow>();
+                var model = FundModel.GetModel();
                 model.Run(parameterDefinition.GetBestGuess());
             }
 

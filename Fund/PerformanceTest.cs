@@ -26,7 +26,7 @@ namespace Fund
 
             // Do one best guess run
             {
-                var model = new Esmf.Model.ModelTyped<FundWorkflow>();
+                var model = FundModel.GetModel();
                 //var model = new FundWorkflow(parameters.GetBestGuess());
                 model.Run(parameters.GetBestGuess());
             }
@@ -41,7 +41,7 @@ namespace Fund
                 monteCarloRuns,
                 p =>
                 {
-                    var m = new Esmf.Model.ModelTyped<FundWorkflow>();
+                    var m = FundModel.GetModel();
                     m.Run(p);
 
                     int tempCurrentCount = Interlocked.Increment(ref currentRun);

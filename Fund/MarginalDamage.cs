@@ -147,7 +147,7 @@ namespace Fund
             // the model
             i_output1 = new ModelOutput();
 
-            var f1 = new Esmf.Model.ModelTyped<FundWorkflow>();
+            var f1 = FundModel.GetModel();
             f1["ImpactWaterResources"].Variables["water"].StoreOutput = true;
             f1["ImpactForests"].Variables["forests"].StoreOutput = true;
             f1["ImpactHeating"].Variables["heating"].StoreOutput = true;
@@ -178,7 +178,7 @@ namespace Fund
             // emitted and then run the model
             i_output2 = new ModelOutput();
 
-            var f2 = new Esmf.Model.ModelTyped<FundWorkflow>();
+            var f2 = FundModel.GetModel();
             f2["ImpactWaterResources"].Variables["water"].StoreOutput = true;
             f2["ImpactForests"].Variables["forests"].StoreOutput = true;
             f2["ImpactHeating"].Variables["heating"].StoreOutput = true;

@@ -15,7 +15,7 @@ namespace Fund
         private Incomes m_incomes = new Fund.Incomes();
         private Populations m_populations = new Fund.Populations();
 
-        public void Load(Esmf.ModelOutputTyped<FundWorkflow> mf)
+        public void Load(Esmf.ModelOutput mf)
         {
             var clock = new Esmf.Clock(Esmf.Timestep.FromSimulationYear(0), Esmf.Timestep.FromSimulationYear(1049));
             do
@@ -24,32 +24,32 @@ namespace Fund
 
                 foreach (var r in mf.Dimensions.GetValues<Fund.CommonDimensions.Region>())
                 {
-                    Damages[t.Value, r.Index, Sector.sWater] = -mf.RootComponent.ImpactWaterResources.water[clock.Current, r] * 1000000000;
-                    Damages[t.Value, r.Index, Sector.sForests] = -mf.RootComponent.ImpactForests.forests[clock.Current, r] * 1000000000;
-                    Damages[t.Value, r.Index, Sector.sHeating] = -mf.RootComponent.ImpactHeating.heating[clock.Current, r] * 1000000000;
-                    Damages[t.Value, r.Index, Sector.sCooling] = -mf.RootComponent.ImpactCooling.cooling[clock.Current, r] * 1000000000;
-                    Damages[t.Value, r.Index, Sector.sAgriculture] = -mf.RootComponent.ImpactAgriculture.agcost[clock.Current, r] * 1000000000;
-                    Damages[t.Value, r.Index, Sector.sDryland] = mf.RootComponent.ImpactSeaLevelRise.drycost[clock.Current, r] * 1000000000;
-                    Damages[t.Value, r.Index, Sector.sSeaProtection] = mf.RootComponent.ImpactSeaLevelRise.protcost[clock.Current, r] * 1000000000;
-                    Damages[t.Value, r.Index, Sector.sImigration] = mf.RootComponent.ImpactSeaLevelRise.entercost[clock.Current, r] * 1000000000;
-                    Damages[t.Value, r.Index, Sector.sHurrican] = mf.RootComponent.ImpactTropicalStorms.hurrdam[clock.Current, r] * 1000000000;
-                    Damages[t.Value, r.Index, Sector.sExtratropicalStorms] = mf.RootComponent.ImpactExtratropicalStorms.extratropicalstormsdam[clock.Current, r] * 1000000000;
+                    Damages[t.Value, r.Index, Sector.sWater] = -mf["ImpactWaterResources", "water"][clock.Current, r] * 1000000000;
+                    Damages[t.Value, r.Index, Sector.sForests] = -mf["ImpactForests", "forests"][clock.Current, r] * 1000000000;
+                    Damages[t.Value, r.Index, Sector.sHeating] = -mf["ImpactHeating", "heating"][clock.Current, r] * 1000000000;
+                    Damages[t.Value, r.Index, Sector.sCooling] = -mf["ImpactCooling", "cooling"][clock.Current, r] * 1000000000;
+                    Damages[t.Value, r.Index, Sector.sAgriculture] = -mf["ImpactAgriculture", "agcost"][clock.Current, r] * 1000000000;
+                    Damages[t.Value, r.Index, Sector.sDryland] = mf["ImpactSeaLevelRise", "drycost"][clock.Current, r] * 1000000000;
+                    Damages[t.Value, r.Index, Sector.sSeaProtection] = mf["ImpactSeaLevelRise", "protcost"][clock.Current, r] * 1000000000;
+                    Damages[t.Value, r.Index, Sector.sImigration] = mf["ImpactSeaLevelRise", "entercost"][clock.Current, r] * 1000000000;
+                    Damages[t.Value, r.Index, Sector.sHurrican] = mf["ImpactTropicalStorms", "hurrdam"][clock.Current, r] * 1000000000;
+                    Damages[t.Value, r.Index, Sector.sExtratropicalStorms] = mf["ImpactExtratropicalStorms", "extratropicalstormsdam"][clock.Current, r] * 1000000000;
 
-                    Damages[t.Value, r.Index, Sector.sSpecies] = mf.RootComponent.ImpactBioDiversity.species[clock.Current, r] * 1000000000;
-                    Damages[t.Value, r.Index, Sector.sDeath] = mf.RootComponent.ImpactDeathMorbidity.deadcost[clock.Current, r] * 1000000000;
-                    Damages[t.Value, r.Index, Sector.sMorbidity] = mf.RootComponent.ImpactDeathMorbidity.morbcost[clock.Current, r] * 1000000000;
-                    Damages[t.Value, r.Index, Sector.sWetland] = mf.RootComponent.ImpactSeaLevelRise.wetcost[clock.Current, r] * 1000000000;
-                    Damages[t.Value, r.Index, Sector.sEmigration] = mf.RootComponent.ImpactSeaLevelRise.leavecost[clock.Current, r] * 1000000000;
+                    Damages[t.Value, r.Index, Sector.sSpecies] = mf["ImpactBioDiversity", "species"][clock.Current, r] * 1000000000;
+                    Damages[t.Value, r.Index, Sector.sDeath] = mf["ImpactDeathMorbidity", "deadcost"][clock.Current, r] * 1000000000;
+                    Damages[t.Value, r.Index, Sector.sMorbidity] = mf["ImpactDeathMorbidity", "morbcost"][clock.Current, r] * 1000000000;
+                    Damages[t.Value, r.Index, Sector.sWetland] = mf["ImpactSeaLevelRise", "wetcost"][clock.Current, r] * 1000000000;
+                    Damages[t.Value, r.Index, Sector.sEmigration] = mf["ImpactSeaLevelRise", "leavecost"][clock.Current, r] * 1000000000;
 
                     // Add GDP for that year and region to the Output object
                     // income is multiplied by 1 billion, since that is the unit
                     // of income
-                    Incomes.Add(clock.Current.Value, r.Index, mf.RootComponent.SocioEconomic.income[clock.Current, r] * 1000000000);
+                    Incomes.Add(clock.Current.Value, r.Index, mf["SocioEconomic", "income"][clock.Current, r] * 1000000000);
 
                     // Add population for that year and region to the Output object
                     // population is multiplied by 1 million, since that is the unit of
                     // population
-                    Populations.Add(clock.Current.Value, r.Index, mf.RootComponent.SocioEconomic.population[clock.Current, r] * 1000000);
+                    Populations.Add(clock.Current.Value, r.Index, mf["SocioEconomic", "population"][clock.Current, r] * 1000000);
                 }
 
                 clock.Advance();
