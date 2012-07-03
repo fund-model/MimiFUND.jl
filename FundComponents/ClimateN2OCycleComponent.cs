@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using Esmf;
 
-namespace Fund.Components.ClimateN2OCycle
+namespace Fund.Components
 {
     public interface IClimateN2OCycleState
     {

@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using Esmf;
 
-namespace Fund.Components.ClimateCO2Cycle
+namespace Fund.Components
 {
 
     /// <summary>State for the climate component</summary>

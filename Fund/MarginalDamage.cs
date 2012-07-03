@@ -200,7 +200,7 @@ namespace Fund
             if (AdditionalInitCode != null)
                 AdditionalInitCode(f2);
 
-            f2.AddComponent("marginalemission", typeof(Fund.Components.MarginalEmission.MarginalEmissionComponent), "emissions");
+            f2.AddComponent("marginalemission", typeof(Fund.Components.MarginalEmissionComponent), "emissions");
             f2["marginalemission"].Parameters["emissionperiod"].SetValue(_emissionyear);
             switch (_gas)
             {

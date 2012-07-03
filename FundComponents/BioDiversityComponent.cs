@@ -9,7 +9,7 @@ using System.Text;
 using Esmf;
 using Fund.CommonDimensions;
 
-namespace Fund.Components.BioDiversity
+namespace Fund.Components
 {
 
     /// <summary>State for the biodiversity component</summary>

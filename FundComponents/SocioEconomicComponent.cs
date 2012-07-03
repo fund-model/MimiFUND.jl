@@ -9,7 +9,7 @@ using System.Text;
 using Esmf;
 using Fund.CommonDimensions;
 
-namespace Fund.Components.SocioEconomic
+namespace Fund.Components
 {
     public interface ISocioEconomicState
     {

@@ -11,27 +11,28 @@ using System.Linq.Expressions;
 using System.Collections.Generic;
 using System.Collections;
 using Esmf.Model;
+using Fund.Components;
 
 namespace Fund
 {
 
     public class FundWorkflow : ComposedComponent
     {
-        [ModelState(typeof(Fund.Components.ScenarioUncertainty.ScenarioUncertaintyComponent))]
-        public Fund.Components.ScenarioUncertainty.IScenarioUncertaintyState ScenarioUncertainty;
+        [ModelState(typeof(ScenarioUncertaintyComponent))]
+        public IScenarioUncertaintyState ScenarioUncertainty;
 
-        [ModelState(typeof(Fund.Components.Geography.GeographyComponent))]
+        [ModelState(typeof(GeographyComponent))]
         [Binding("landloss", "impactsealevelrise")]
-        public Fund.Components.Geography.IGeographyState Geography;
+        public IGeographyState Geography;
 
-        [ModelState(typeof(Fund.Components.Population.PopulationComponent))]
+        [ModelState(typeof(PopulationComponent))]
         [Binding("pgrowth", "scenariouncertainty")]
         [Binding("leave", "impactsealevelrise")]
         [Binding("enter", "impactsealevelrise")]
         [Binding("dead", "impactdeathmorbidity")]
-        public Fund.Components.Population.IPopulationState Population;
+        public IPopulationState Population;
 
-        [ModelState(typeof(Fund.Components.SocioEconomic.SocioEconomicComponent))]
+        [ModelState(typeof(SocioEconomicComponent))]
         [Binding("ypcgrowth", "scenariouncertainty")]
         [Binding("pgrowth", "scenariouncertainty")]
         [Binding("eloss", "impactaggregation")]
@@ -41,9 +42,9 @@ namespace Fund
         [Binding("globalpopulation", "population")]
         [Binding("population", "population")]
         [Binding("populationin1", "population")]
-        public Fund.Components.SocioEconomic.ISocioEconomicState SocioEconomic;
+        public ISocioEconomicState SocioEconomic;
 
-        [ModelState(typeof(Fund.Components.Emissions.EmissionsComponent))]
+        [ModelState(typeof(EmissionsComponent))]
         [Binding("aeei", "scenariouncertainty")]
         [Binding("acei", "scenariouncertainty")]
         [Binding("forestemm", "scenariouncertainty")]
@@ -51,133 +52,133 @@ namespace Fund
         [Binding("ypcgrowth", "scenariouncertainty")]
         [Binding("income", "socioeconomic")]
         [Binding("population", "socioeconomic")]
-        public Fund.Components.Emissions.IEmissionsState Emissions;
+        public IEmissionsState Emissions;
 
-        [ModelState(typeof(Fund.Components.ClimateCO2Cycle.ClimateCO2CycleComponent))]
+        [ModelState(typeof(ClimateCO2CycleComponent))]
         [Binding("mco2", "emissions")]
         [Binding("temp", "climatedynamics")]
-        public Fund.Components.ClimateCO2Cycle.IClimateCO2CycleState ClimateCO2Cycle;
+        public IClimateCO2CycleState ClimateCO2Cycle;
 
-        [ModelState(typeof(Fund.Components.ClimateCH4Cycle.ClimateCH4CycleComponent))]
+        [ModelState(typeof(ClimateCH4CycleComponent))]
         [Binding("globch4", "emissions")]
-        public Fund.Components.ClimateCH4Cycle.IClimateCH4CycleState ClimateCH4Cycle;
+        public IClimateCH4CycleState ClimateCH4Cycle;
 
-        [ModelState(typeof(Fund.Components.ClimateN2OCycle.ClimateN2OCycleComponent))]
+        [ModelState(typeof(ClimateN2OCycleComponent))]
         [Binding("globn2o", "emissions")]
-        public Fund.Components.ClimateN2OCycle.IClimateN2OCycleState ClimateN2OCycle;
+        public IClimateN2OCycleState ClimateN2OCycle;
 
-        [ModelState(typeof(Fund.Components.ClimateSF6Cycle.ClimateSF6CycleComponent))]
+        [ModelState(typeof(ClimateSF6CycleComponent))]
         [Binding("globsf6", "emissions")]
-        public Fund.Components.ClimateSF6Cycle.IClimateSF6CycleState ClimateSF6Cycle;
+        public IClimateSF6CycleState ClimateSF6Cycle;
 
-        [ModelState(typeof(Fund.Components.ClimateSO2Cycle.ClimateSO2CycleComponent))]
+        [ModelState(typeof(ClimateSO2CycleComponent))]
         [Binding("globso2", "emissions")]
-        public Fund.Components.ClimateSO2Cycle.IClimateSO2CycleState ClimateSO2Cycle;
+        public IClimateSO2CycleState ClimateSO2Cycle;
 
-        [ModelState(typeof(Fund.Components.ClimateForcing.ClimateForcingComponent))]
+        [ModelState(typeof(ClimateForcingComponent))]
         [Binding("acco2", "climateco2cycle")]
         [Binding("acch4", "climatech4cycle")]
         [Binding("acn2o", "climaten2ocycle")]
         [Binding("acsf6", "climatesf6cycle")]
         [Binding("acso2", "climateso2cycle")]
-        public Fund.Components.ClimateForcing.IClimateForcingState ClimateForcing;
+        public IClimateForcingState ClimateForcing;
 
-        [ModelState(typeof(Fund.Components.ClimateDynamics.ClimateDynamicsComponent))]
+        [ModelState(typeof(ClimateDynamicsComponent))]
         [Binding("radforc", "climateforcing")]
-        public Fund.Components.ClimateDynamics.IClimateDynamicsState ClimateDynamics;
+        public IClimateDynamicsState ClimateDynamics;
 
-        [ModelState(typeof(Fund.Components.ClimateRegional.ClimateRegionalComponent))]
+        [ModelState(typeof(ClimateRegionalComponent))]
         [Binding("inputtemp", "climatedynamics", "temp")]
-        public Fund.Components.ClimateRegional.IClimateRegionalState ClimateRegional;
+        public IClimateRegionalState ClimateRegional;
 
-        [ModelState(typeof(Fund.Components.Ocean.OceanComponent))]
+        [ModelState(typeof(OceanComponent))]
         [Binding("temp", "climatedynamics")]
-        public Fund.Components.Ocean.IOceanState Ocean;
+        public IOceanState Ocean;
 
-        [ModelState(typeof(Fund.Components.BioDiversity.BioDiversityComponent))]
+        [ModelState(typeof(BioDiversityComponent))]
         [Binding("temp", "climatedynamics")]
-        public Fund.Components.BioDiversity.IBioDiversityState BioDiversity;
+        public IBioDiversityState BioDiversity;
 
-        [ModelState(typeof(Fund.Components.ImpactBioDiversity.ImpactBioDiversityComponent))]
+        [ModelState(typeof(ImpactBioDiversityComponent))]
         [Binding("temp", "climateregional")]
         [Binding("nospecies", "biodiversity")]
         [Binding("income", "socioeconomic")]
         [Binding("population", "socioeconomic")]
-        public Fund.Components.ImpactBioDiversity.IImpactBioDiversityState ImpactBioDiversity;
+        public IImpactBioDiversityState ImpactBioDiversity;
 
-        [ModelState(typeof(Fund.Components.ImpactHeating.ImpactHeatingComponent))]
+        [ModelState(typeof(ImpactHeatingComponent))]
         [Binding("population", "socioeconomic")]
         [Binding("income", "socioeconomic")]
         [Binding("temp", "climateregional")]
         [Binding("cumaeei", "emissions")]
-        public Fund.Components.ImpactHeating.IImpactHeatingState ImpactHeating;
+        public IImpactHeatingState ImpactHeating;
 
-        [ModelState(typeof(Fund.Components.ImpactCooling.ImpactCoolingComponent))]
+        [ModelState(typeof(ImpactCoolingComponent))]
         [Binding("population", "socioeconomic")]
         [Binding("income", "socioeconomic")]
         [Binding("temp", "climateregional")]
         [Binding("cumaeei", "emissions")]
-        public Fund.Components.ImpactCooling.IImpactCoolingState ImpactCooling;
+        public IImpactCoolingState ImpactCooling;
 
-        [ModelState(typeof(Fund.Components.ImpactAgriculture.ImpactAgricultureComponent))]
+        [ModelState(typeof(ImpactAgricultureComponent))]
         [Binding("population", "socioeconomic")]
         [Binding("income", "socioeconomic")]
         [Binding("temp", "climateregional")]
         [Binding("acco2", "climateco2cycle")]
-        public Fund.Components.ImpactAgriculture.IImpactAgricultureState ImpactAgriculture;
+        public IImpactAgricultureState ImpactAgriculture;
 
-        [ModelState(typeof(Fund.Components.ImpactWaterResources.ImpactWaterResourcesComponent))]
+        [ModelState(typeof(ImpactWaterResourcesComponent))]
         [Binding("population", "socioeconomic")]
         [Binding("income", "socioeconomic")]
         [Binding("temp", "climateregional")]
-        public Fund.Components.ImpactWaterResources.IImpactWaterResourcesState ImpactWaterResources;
+        public IImpactWaterResourcesState ImpactWaterResources;
 
-        [ModelState(typeof(Fund.Components.ImpactDiarrhoea.ImpactDiarrhoeaComponent))]
+        [ModelState(typeof(ImpactDiarrhoeaComponent))]
         [Binding("population", "socioeconomic")]
         [Binding("income", "socioeconomic")]
         [Binding("regtmp", "climateregional")]
-        public Fund.Components.ImpactDiarrhoea.IImpactDiarrhoeaState ImpactDiarrhoea;
+        public IImpactDiarrhoeaState ImpactDiarrhoea;
 
-        [ModelState(typeof(Fund.Components.ImpactTropicalStorms.ImpactTropicalStormsComponent))]
+        [ModelState(typeof(ImpactTropicalStormsComponent))]
         [Binding("population", "socioeconomic")]
         [Binding("income", "socioeconomic")]
         [Binding("regstmp", "climateregional")]
-        public Fund.Components.ImpactTropicalStorms.IImpactTropicalStormsState ImpactTropicalStorms;
+        public IImpactTropicalStormsState ImpactTropicalStorms;
 
-        [ModelState(typeof(Fund.Components.ImpactExtratropicalStorms.ImpactExtratropicalStormsComponent))]
+        [ModelState(typeof(ImpactExtratropicalStormsComponent))]
         [Binding("population", "socioeconomic")]
         [Binding("income", "socioeconomic")]
         [Binding("acco2", "climateco2cycle")]
-        public Fund.Components.ImpactExtratropicalStorms.IImpactExtratropicalStormsState ImpactExtratropicalStorms;
+        public IImpactExtratropicalStormsState ImpactExtratropicalStorms;
 
-        [ModelState(typeof(Fund.Components.ImpactSeaLevelRise.ImpactSeaLevelRiseComponent))]
+        [ModelState(typeof(ImpactSeaLevelRiseComponent))]
         [Binding("population", "socioeconomic")]
         [Binding("income", "socioeconomic")]
         [Binding("sea", "ocean")]
         [Binding("area", "geography")]
-        public Fund.Components.ImpactSeaLevelRise.IImpactSeaLevelRiseState ImpactSeaLevelRise;
+        public IImpactSeaLevelRiseState ImpactSeaLevelRise;
 
-        [ModelState(typeof(Fund.Components.ImpactForests.ImpactForests))]
+        [ModelState(typeof(ImpactForests))]
         [Binding("population", "socioeconomic")]
         [Binding("income", "socioeconomic")]
         [Binding("temp", "climateregional")]
         [Binding("acco2", "climateco2cycle")]
-        public Fund.Components.ImpactForests.IImpactForestsState ImpactForests;
+        public IImpactForestsState ImpactForests;
 
-        [ModelState(typeof(Fund.Components.ImpactVectorBorneDiseases.ImpactVectorBorneDiseasesComponent))]
+        [ModelState(typeof(ImpactVectorBorneDiseasesComponent))]
         [Binding("population", "socioeconomic")]
         [Binding("income", "socioeconomic")]
         [Binding("temp", "climateregional")]
-        public Fund.Components.ImpactVectorBorneDiseases.IImpactVectorBorneDiseasesState ImpactVectorBorneDiseases;
+        public IImpactVectorBorneDiseasesState ImpactVectorBorneDiseases;
 
-        [ModelState(typeof(Fund.Components.ImpactCardiovascularRespiratory.ImpactCardiovascularRespiratoryComponent))]
+        [ModelState(typeof(ImpactCardiovascularRespiratoryComponent))]
         [Binding("population", "socioeconomic")]
         [Binding("temp", "climateregional")]
         [Binding("plus", "socioeconomic")]
         [Binding("urbpop", "socioeconomic")]
-        public Fund.Components.ImpactCardiovascularRespiratory.IImpactCardiovascularRespiratoryState ImpactCardiovascularRespiratory;
+        public IImpactCardiovascularRespiratoryState ImpactCardiovascularRespiratory;
 
-        [ModelState(typeof(Fund.Components.ImpactDeathMorbidity.ImpactDeathMorbidityComponent))]
+        [ModelState(typeof(ImpactDeathMorbidityComponent))]
         [Binding("population", "socioeconomic")]
         [Binding("income", "socioeconomic")]
         [Binding("dengue", "impactvectorbornediseases")]
@@ -190,9 +191,9 @@ namespace Fund
         [Binding("hurrdead", "impacttropicalstorms")]
         [Binding("extratropicalstormsdead", "impactextratropicalstorms")]
         [Binding("diasick", "impactdiarrhoea")]
-        public Fund.Components.ImpactDeathMorbidity.IImpactDeathMorbidityState ImpactDeathMorbidity;
+        public IImpactDeathMorbidityState ImpactDeathMorbidity;
 
-        [ModelState(typeof(Fund.Components.ImpactAggregation.ImpactAggregationComponent))]
+        [ModelState(typeof(ImpactAggregationComponent))]
         [Binding("income", "socioeconomic")]
         [Binding("heating", "impactheating")]
         [Binding("cooling", "impactcooling")]
@@ -209,6 +210,6 @@ namespace Fund
         [Binding("morbcost", "impactdeathmorbidity")]
         [Binding("wetcost", "impactsealevelrise")]
         [Binding("leavecost", "impactsealevelrise")]
-        public Fund.Components.ImpactAggregation.IImpactAggregationState ImpactAggregation;
+        public IImpactAggregationState ImpactAggregation;
     }
 }

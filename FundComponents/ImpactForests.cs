@@ -9,7 +9,7 @@ using System.Text;
 using Fund.CommonDimensions;
 using Esmf;
 
-namespace Fund.Components.ImpactForests
+namespace Fund.Components
 {
     public interface IImpactForestsState
     {

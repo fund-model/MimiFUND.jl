@@ -9,7 +9,7 @@ using System.Text;
 using Esmf;
 using Fund.CommonDimensions;
 
-namespace Fund.Components.Geography
+namespace Fund.Components
 {
 
     public interface IGeographyState

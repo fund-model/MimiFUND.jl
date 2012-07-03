@@ -10,7 +10,7 @@ using Esmf;
 using Fund.CommonDimensions;
 
 
-namespace Fund.Components.Welfare
+namespace Fund.Components
 {
 
     public interface IGlobalWelfareState

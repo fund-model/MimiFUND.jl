@@ -9,7 +9,7 @@ using System.Text;
 using Esmf;
 using Fund.CommonDimensions;
 
-namespace Fund.Components.ImpactExtratropicalStorms
+namespace Fund.Components
 {
 
     public interface IImpactExtratropicalStormsState

@@ -9,7 +9,7 @@ using System.Text;
 using Esmf;
 using Fund.CommonDimensions;
 
-namespace Fund.Components.ImpactAggregation
+namespace Fund.Components
 {
 
     public interface IImpactAggregationState

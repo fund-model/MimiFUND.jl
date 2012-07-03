@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using Esmf;
 
-namespace Fund.Components.MarginalEmission
+namespace Fund.Components
 {
     public interface IMarginalEmissionState
     {

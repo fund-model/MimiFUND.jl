@@ -9,7 +9,7 @@ using System.Text;
 using Esmf;
 using Fund.CommonDimensions;
 
-namespace Fund.Components.ImpactDeathMorbidity
+namespace Fund.Components
 {
     public interface IImpactDeathMorbidityState
     {
