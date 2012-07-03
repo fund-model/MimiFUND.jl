@@ -30,6 +30,11 @@ namespace Esmf.Model
             _value = b;
         }
 
+        public void Bind(string componentName)
+        {
+            Bind(componentName, _name);
+        }
+
         public void SetValue<T>(T value)
         {
             var b = new ParameterValueManualConstant(value);
