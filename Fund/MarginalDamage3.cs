@@ -79,7 +79,7 @@ namespace Fund
             if (AdditionalInitMethod != null)
                 AdditionalInitMethod(f2);
 
-            f2.AddComponent("marginalemission", typeof(Fund.Components.MarginalEmission.MarginalEmissionComponent), typeof(Fund.Components.MarginalEmission.IMarginalEmissionState), "emissions");
+            f2.AddComponent("marginalemission", typeof(Fund.Components.MarginalEmission.MarginalEmissionComponent), "emissions");
             f2["marginalemission"].Parameters["emissionperiod"].SetValue(EmissionYear);
             switch (Gas)
             {

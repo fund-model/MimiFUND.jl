@@ -20,14 +20,19 @@ namespace Esmf.Model
         private Parameters _parameters = new Parameters();
         private bool _storeFullVariablesByDefault;
 
-        public Component(string name, Type componentType, Type stateinterfaceType, bool storeFullVariablesByDefault)
+        public Component(string name, Type componentType, bool storeFullVariablesByDefault)
         {
             _name = name;
             _componentType = componentType;
-            _stateinterfaceType = stateinterfaceType;
+
+            // Find the type of the state interface by looking at the type of the
+            // second argument of the run method
+            var parametersOfTheRunMethod = componentType.GetMethod("Run").GetParameters();
+            _stateinterfaceType = parametersOfTheRunMethod[1].ParameterType;
+
             _storeFullVariablesByDefault = storeFullVariablesByDefault;
 
-            var fields = from x in stateinterfaceType.GetProperties()
+            var fields = from x in _stateinterfaceType.GetProperties()
                          let isMultDim = x.PropertyType.IsGenericType ? (x.PropertyType.GetGenericTypeDefinition() == typeof(IVariable1Dimensional<,>) || x.PropertyType.GetGenericTypeDefinition() == typeof(IVariable2Dimensional<,,>) || x.PropertyType.GetGenericTypeDefinition() == typeof(IParameter1Dimensional<,>) || x.PropertyType.GetGenericTypeDefinition() == typeof(IParameter2Dimensional<,,>)) : false
                          let dimensionTypes = x.PropertyType.IsGenericType ? x.PropertyType.GetGenericArguments() : null
                          let defaultValuesCount = x.GetCustomAttributes(typeof(DefaultParameterValueAttribute), false).Length

@@ -41,7 +41,7 @@ namespace Esmf.Model
 
             foreach (var c in components)
             {
-                AddComponent(c.Name, c.ComponentType, c.StateInterfaceType);
+                AddComponent(c.Name, c.ComponentType);
 
                 foreach (var b in c.Bindings)
                 {
@@ -51,16 +51,16 @@ namespace Esmf.Model
 
         }
 
-        public void AddComponent(string name, Type componentType, Type stateinterfaceType)
+        public void AddComponent(string name, Type componentType)
         {
-            var c = new Component(name, componentType, stateinterfaceType, _storeFullVariablesByDefault);
+            var c = new Component(name, componentType, _storeFullVariablesByDefault);
             _components.Add(name, c);
             _componentsOrder.Add(name);
         }
 
-        public void AddComponent(string name, Type componentType, Type stateinterfaceType, string runAfter)
+        public void AddComponent(string name, Type componentType, string runAfter)
         {
-            var c = new Component(name, componentType, stateinterfaceType, _storeFullVariablesByDefault);
+            var c = new Component(name, componentType, _storeFullVariablesByDefault);
             _components.Add(name, c);
 
             int position = _componentsOrder.IndexOf(runAfter);
