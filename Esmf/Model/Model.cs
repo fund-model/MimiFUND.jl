@@ -58,6 +58,11 @@ namespace Esmf.Model
             _componentsOrder.Add(name.ToLowerInvariant());
         }
 
+        public void AddComponent<T>(string name)
+        {
+            AddComponent(name, typeof(T));
+        }
+
         public void AddComponent(string name, Type componentType, string runAfter)
         {
             var c = new Component(name, componentType, _storeFullVariablesByDefault);
@@ -67,6 +72,10 @@ namespace Esmf.Model
             _componentsOrder.Insert(position + 1, name.ToLowerInvariant());
         }
 
+        public void AddComponent<T>(string name, string runAfter)
+        {
+            AddComponent(name, typeof(T), runAfter);
+        }
 
         public ModelOutput Run(ParameterValues parameters)
         {
