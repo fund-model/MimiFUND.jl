@@ -111,12 +111,8 @@
     <Compile Include="Field\FieldVariable2DimensionalTimeEfficient.cs" />
     <Compile Include="Field\IDimension.cs" />
     <Compile Include="Model\Component.cs" />
-    <Compile Include="Model\BindingAttribute.cs" />
-    <Compile Include="Model\ModelStateAttribute.cs" />
     <Compile Include="Model\Model.cs" />
     <Compile Include="Model\ComposedComponent.cs" />
-    <Compile Include="Model\ModelOutputTyped.cs" />
-    <Compile Include="Model\ModelTyped.cs" />
     <Compile Include="Model\Parameter.cs" />
     <Compile Include="Model\ParameterValue.cs" />
     <Compile Include="Model\Parameters.cs" />

@@ -26,31 +26,6 @@ namespace Esmf.Model
             _storeFullVariablesByDefault = storeFullVariablesByDefault;
         }
 
-        protected void AddLocalComponentsToModel(Type composedComponent)
-        {
-            var components = from f in composedComponent.GetFields()
-                             let a = (ModelStateAttribute)f.GetCustomAttributes(false).FirstOrDefault(x => x is ModelStateAttribute)
-                             where a != null
-                             select new
-                             {
-                                 Name = f.Name.ToLowerInvariant(),
-                                 ComponentType = a.ComponentClass,
-                                 StateInterfaceType = f.FieldType,
-                                 Bindings = f.GetCustomAttributes(false).Where(x => x is BindingAttribute).Cast<BindingAttribute>().ToArray()
-                             };
-
-            foreach (var c in components)
-            {
-                AddComponent(c.Name, c.ComponentType);
-
-                foreach (var b in c.Bindings)
-                {
-                    this[c.Name].Parameters[b.FieldName].Bind(b.SourceComponentName, b.SourceFieldName);
-                }
-            }
-
-        }
-
         public void AddComponent(string name, Type componentType)
         {
             var c = new Component(name, componentType, _storeFullVariablesByDefault);
