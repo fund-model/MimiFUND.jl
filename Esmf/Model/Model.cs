@@ -54,17 +54,17 @@ namespace Esmf.Model
         public void AddComponent(string name, Type componentType)
         {
             var c = new Component(name, componentType, _storeFullVariablesByDefault);
-            _components.Add(name, c);
-            _componentsOrder.Add(name);
+            _components.Add(name.ToLowerInvariant(), c);
+            _componentsOrder.Add(name.ToLowerInvariant());
         }
 
         public void AddComponent(string name, Type componentType, string runAfter)
         {
             var c = new Component(name, componentType, _storeFullVariablesByDefault);
-            _components.Add(name, c);
+            _components.Add(name.ToLowerInvariant(), c);
 
             int position = _componentsOrder.IndexOf(runAfter);
-            _componentsOrder.Insert(position + 1, name);
+            _componentsOrder.Insert(position + 1, name.ToLowerInvariant());
         }
 
 
