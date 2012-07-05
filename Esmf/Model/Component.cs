@@ -19,11 +19,14 @@ namespace Esmf.Model
         private Variables _variables = new Variables();
         private Parameters _parameters = new Parameters();
         private bool _storeFullVariablesByDefault;
+        private bool _hasTransitionFunction;
 
         public Component(string name, Type componentType, bool storeFullVariablesByDefault)
         {
             _name = name;
             _componentType = componentType;
+
+            _hasTransitionFunction = _componentType.GetMethod("RunTransitionFunction") != null;
 
             // Find the type of the state interface by looking at the type of the
             // second argument of the run method
@@ -76,6 +79,17 @@ namespace Esmf.Model
             method.Invoke(c, new object[] { clock, state, mf.Dimensions });
 
             //c.Run(clock, state, mf.Dimensions);
+        }
+
+        public void RunTransitionFunction(Clock clock, object state, ModelOutput mf)
+        {
+            if (_hasTransitionFunction)
+            {
+                object c = Activator.CreateInstance(_componentType);
+
+                var method = _componentType.GetMethod("RunTransitionFunction");
+                method.Invoke(c, new object[] { clock, state, mf.Dimensions });
+            }
         }
 
         public Parameters Parameters

@@ -149,6 +149,13 @@ namespace Esmf.Model
 
                 }
 
+                for (int i = 0; i < _componentsOrder.Count; i++)
+                {
+                    var c = _components[_componentsOrder[i]];
+                    var state = mf._stateinterfaceOjbect[c.Name];
+                    c.RunTransitionFunction(clock, state, mf);
+                }
+
                 clock.Advance();
             }
         }
