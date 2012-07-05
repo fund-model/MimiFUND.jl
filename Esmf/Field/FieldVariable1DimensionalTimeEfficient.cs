@@ -136,5 +136,10 @@ namespace Esmf
         {
             throw new NotImplementedException();
         }
+
+        public IEnumerable<T> EnumerateValues()
+        {
+            throw new NotImplementedException("Cannot enumerate efficient fields.");
+        }
     }
 }

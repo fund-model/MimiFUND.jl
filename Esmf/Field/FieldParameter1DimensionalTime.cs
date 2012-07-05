@@ -44,5 +44,14 @@ namespace Esmf
                 yield return new Parameter1DimensionalMember<T>(Timestep.FromSimulationYear(i), _values[i], _parent.AttachedDimensions);
             }
         }
+
+        public IEnumerable<T> EnumerateValues()
+        {
+            for (int i = 0; i < _values.Length; i++)
+            {
+                yield return _values[i];
+            }
+        }
+
     }
 }
