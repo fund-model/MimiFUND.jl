@@ -41,16 +41,6 @@ namespace Esmf
             public object Values { get; set; }
         }
 
-        class FieldValue<T>
-        {
-            private T _value;
-            public T Value
-            {
-                get { return _value; }
-                set { _value = value; }
-            }
-        }
-
         private class DelegateToParameter1Dimensional<D1, T> : IParameter1DimensionalTypeless<T>, IParameter1Dimensional<D1, T>
         {
             Func<D1, T> _delegate;
@@ -100,30 +90,16 @@ namespace Esmf
 
         public ModelOutput()
         {
-            ControlledConstructor();
         }
-
-        [Conditional("FUNDCHECKED")]
-        private void ControlledConstructor()
-        {
-            _nonDimensionalVariablesForWhichValueHasBeenSet = new HashSet<Tuple<string, string>>();
-        }
-
-
-        List<Tuple<string, string>> _variablesKeysAlreadyUsed = new List<Tuple<string, string>>();
 
         public bool DoesFieldExist(string componentName, string fieldName)
         {
             var key = new Tuple<string, string>(componentName.ToLowerInvariant(), fieldName.ToLowerInvariant());
 
-            return _variablesKeysAlreadyUsed.Contains(key);
+            return _variables.ContainsKey(key);
         }
 
         #region NonDimensionalVariables
-        Dictionary<Type, object> _nonDimensionalVariables = new Dictionary<Type, object>();
-        HashSet<Tuple<string, string>> _nonDimensionalVariablesForWhichValueHasBeenSet;
-        Dictionary<Tuple<string, string>, object> _nonDimensionalVariablesGetterDelegates = new Dictionary<Tuple<string, string>, object>();
-        Dictionary<Tuple<string, string>, object> _nonDimensionalVariablesSetterDelegates = new Dictionary<Tuple<string, string>, object>();
 
         [Conditional("FUNDCHECKED")]
         private void CheckForValidValue(object v)
@@ -139,47 +115,29 @@ namespace Esmf
             }
         }
 
-        [Conditional("FUNDCHECKED")]
-        private void CheckForValidIndex(string componentName, string fieldName)
-        {
-            if (!_nonDimensionalVariablesForWhichValueHasBeenSet.Contains(Tuple.Create(componentName.ToLowerInvariant(), fieldName.ToLowerInvariant())))
-                throw new ArgumentOutOfRangeException("Value for this field has not been set");
-        }
-
-        [Conditional("FUNDCHECKED")]
-        private void ValueSetForIndex(string componentName, string fieldName)
-        {
-            _nonDimensionalVariablesForWhichValueHasBeenSet.Add(Tuple.Create(componentName.ToLowerInvariant(), fieldName.ToLowerInvariant()));
-        }
-
         public void AddNonDimensionalVariable<T>(string componentName, string fieldName) where T : struct
         {
+            AddNonDimensionalVariable<T>(componentName, fieldName, null);
+        }
+
+        public void AddNonDimensionalVariable<T>(string componentName, string fieldName, T? initialValue) where T : struct
+        {
             var key = new Tuple<string, string>(componentName.ToLowerInvariant(), fieldName.ToLowerInvariant());
-            Dictionary<Tuple<string, string>, FieldValue<T?>> d;
 
-            if (_nonDimensionalVariables.ContainsKey(typeof(T)))
-            {
-                d = (Dictionary<Tuple<string, string>, FieldValue<T?>>)_nonDimensionalVariables[typeof(T)];
-            }
-            else
-            {
-                d = new Dictionary<Tuple<string, string>, FieldValue<T?>>();
-                _nonDimensionalVariables.Add(typeof(T), d);
-            }
-
-            if (_variablesKeysAlreadyUsed.Contains(key))
+            if (_variables.ContainsKey(key))
             {
                 throw new ArgumentException();
             }
 
-            d.Add(key, new FieldValue<T?>());
+            var v = new FieldVariable0Dimensional<T>(this);
 
-            _variablesKeysAlreadyUsed.Add(key);
+            if (initialValue.HasValue)
+            {
+                v.Value = initialValue.Value;
+            }
 
-            FieldValue<T?> v = d[key];
-
-            _nonDimensionalVariablesGetterDelegates.Add(key, (NonDimensionalFieldGetter<T>)delegate { CheckForValidIndex(componentName.ToLowerInvariant(), fieldName.ToLowerInvariant()); return (T)v.Value; });
-            _nonDimensionalVariablesSetterDelegates.Add(key, (NonDimensionalFieldSetter<T>)delegate(T value) { CheckForValidValue(value); ValueSetForIndex(componentName.ToLowerInvariant(), fieldName.ToLowerInvariant()); v.Value = value; });
+            _variables.Add(key, v);
+            _variables.ContainsKey(key);
         }
 
         public void AddNonDimensionalVariable(string componentName, string fieldName, Type type)
@@ -189,17 +147,6 @@ namespace Esmf
             var typedMethod = methodinfo.MakeGenericMethod(new Type[] { type });
 
             typedMethod.Invoke(this, new object[] { componentName.ToLowerInvariant(), fieldName.ToLowerInvariant() });
-        }
-
-        public void AddNonDimensionalVariable<T>(string componentName, string fieldName, T value) where T : struct
-        {
-            AddNonDimensionalVariable<T>(componentName.ToLowerInvariant(), fieldName.ToLowerInvariant());
-
-            Dictionary<Tuple<string, string>, FieldValue<T?>> d = (Dictionary<Tuple<string, string>, FieldValue<T?>>)_nonDimensionalVariables[typeof(T)];
-
-            d[new Tuple<string, string>(componentName.ToLowerInvariant(), fieldName.ToLowerInvariant())].Value = value;
-
-            ValueSetForIndex(componentName.ToLowerInvariant(), fieldName.ToLowerInvariant());
         }
 
         public void AddNonDimensionalVariable(string componentName, string fieldName, object value)
@@ -279,7 +226,9 @@ namespace Esmf
 
         public object GetNonDimensionalVariableGetter(string componentName, string fieldName)
         {
-            return _nonDimensionalVariablesGetterDelegates[new Tuple<string, string>(componentName.ToLowerInvariant(), fieldName.ToLowerInvariant())];
+            var key = Tuple.Create(componentName.ToLowerInvariant(), fieldName.ToLowerInvariant());
+            var f = (FieldVariable0DimensionalTypeless) _variables[key];
+            return f.GetFieldGetter();
         }
 
         public NonDimensionalFieldGetter<T> GetNonDimensionalVariableGetter<T>(string componentName, string fieldname)
@@ -289,7 +238,9 @@ namespace Esmf
 
         public object GetNonDimensionalVariableSetter(string componentName, string fieldName)
         {
-            return _nonDimensionalVariablesSetterDelegates[new Tuple<string, string>(componentName.ToLowerInvariant(), fieldName.ToLowerInvariant())];
+            var key = Tuple.Create(componentName.ToLowerInvariant(), fieldName.ToLowerInvariant());
+            var f = (FieldVariable0DimensionalTypeless)_variables[key];
+            return f.GetFieldSetter();
         }
 
         public NonDimensionalFieldSetter<T> GetNonDimensionalVariableSetter<T>(string componentName, string fieldName)
@@ -307,14 +258,14 @@ namespace Esmf
 
         #region DimensionalVariables
 
-        Dictionary<Tuple<string, string>, object> _dimensionalVariables = new Dictionary<Tuple<string, string>, object>();
+        Dictionary<Tuple<string, string>, object> _variables = new Dictionary<Tuple<string, string>, object>();
 
         public void Add1DimensionalVariable<D1, T>(string componentName, string fieldName, bool useEfficientField)
             where D1 : IDimension
         {
             var key = new Tuple<string, string>(componentName.ToLowerInvariant(), fieldName.ToLowerInvariant());
 
-            if (_variablesKeysAlreadyUsed.Contains(key))
+            if (_variables.ContainsKey(key))
             {
                 throw new ArgumentException();
             }
@@ -332,8 +283,7 @@ namespace Esmf
                 v = new FieldVariable1Dimensional<D1, T>(this);
             }
 
-            _dimensionalVariables.Add(key, v);
-            _variablesKeysAlreadyUsed.Add(key);
+            _variables.Add(key, v);
         }
 
 
@@ -343,7 +293,7 @@ namespace Esmf
         {
             var key = new Tuple<string, string>(componentName.ToLowerInvariant(), fieldName.ToLowerInvariant());
 
-            if (_variablesKeysAlreadyUsed.Contains(key))
+            if (_variables.ContainsKey(key))
             {
                 throw new ArgumentException();
             }
@@ -361,21 +311,19 @@ namespace Esmf
                 v = new FieldVariable2Dimensional<D1, D2, T>(this);
             }
 
-            _dimensionalVariables.Add(key, v);
-            _variablesKeysAlreadyUsed.Add(key);
+            _variables.Add(key, v);
         }
 
         public void Add1DimensionalParameter<D1, T>(string componentName, string fieldName, IParameter1Dimensional<D1, T> parameter)
         {
             var key = new Tuple<string, string>(componentName.ToLowerInvariant(), fieldName.ToLowerInvariant());
 
-            if (_variablesKeysAlreadyUsed.Contains(key))
+            if (_variables.ContainsKey(key))
             {
                 throw new ArgumentException();
             }
 
-            _dimensionalVariables.Add(key, parameter);
-            _variablesKeysAlreadyUsed.Add(key);
+            _variables.Add(key, parameter);
         }
 
         public void Add1DimensionalParameter<D1, T>(string componentName, string fieldName, Func<D1, T> parameter)
@@ -393,13 +341,12 @@ namespace Esmf
         {
             var key = new Tuple<string, string>(componentName.ToLowerInvariant(), fieldName.ToLowerInvariant());
 
-            if (_variablesKeysAlreadyUsed.Contains(key))
+            if (_variables.ContainsKey(key))
             {
                 throw new ArgumentException();
             }
 
-            _dimensionalVariables.Add(key, parameter);
-            _variablesKeysAlreadyUsed.Add(key);
+            _variables.Add(key, parameter);
         }
 
         public void Add2DimensionalParameter<D1, D2, T>(string componentName, string fieldName, Func<D1, D2, T> parameter)
@@ -417,72 +364,34 @@ namespace Esmf
             var key = new Tuple<string, string>(parameterComponentName.ToLowerInvariant(), parameterFieldName.ToLowerInvariant());
             var sourceKey = new Tuple<string, string>(variableComponentName.ToLowerInvariant(), variableFieldName.ToLowerInvariant());
 
-            if (_variablesKeysAlreadyUsed.Contains(key))
+            if (_variables.ContainsKey(key))
             {
                 throw new ArgumentException();
             }
 
-            if (_dimensionalVariables.ContainsKey(sourceKey))
-            {
-                _dimensionalVariables.Add(key, _dimensionalVariables[sourceKey]);
-            }
-            else
-            {
-                var asdfasdf = _nonDimensionalVariables.Keys.SelectMany(
-                    k => from Tuple<string, string> key2 in ((IDictionary)_nonDimensionalVariables[k]).Keys select new { Key = key2, Type = k }
-                    ).ToDictionary(g => g.Key, g => g.Type);
-
-                var type = asdfasdf[sourceKey];
-
-                var methodinfo = this.GetType().GetMethod("ConnectParameterToVariableNonDimensional", new Type[] { typeof(string), typeof(string), typeof(string), typeof(string) });
-
-                var typedMethod = methodinfo.MakeGenericMethod(new Type[] { type });
-
-                typedMethod.Invoke(this, new object[] { parameterComponentName.ToLowerInvariant(), parameterFieldName.ToLowerInvariant(), variableComponentName.ToLowerInvariant(), variableFieldName.ToLowerInvariant() });
-            }
-            _variablesKeysAlreadyUsed.Add(key);
+            _variables.Add(key, _variables[sourceKey]);
         }
-
-        public void ConnectParameterToVariableNonDimensional<T>(string parameterComponentName, string parameterFieldName, string variableComponentName, string variableFieldName) where T : struct
-        {
-            var key = new Tuple<string, string>(parameterComponentName.ToLowerInvariant(), parameterFieldName.ToLowerInvariant());
-            var sourceKey = new Tuple<string, string>(variableComponentName.ToLowerInvariant(), variableFieldName.ToLowerInvariant());
-
-            if (_variablesKeysAlreadyUsed.Contains(key))
-            {
-                throw new ArgumentException();
-            }
-
-            Dictionary<Tuple<string, string>, FieldValue<T?>> d = (Dictionary<Tuple<string, string>, FieldValue<T?>>)_nonDimensionalVariables[typeof(T)];
-
-            _variablesKeysAlreadyUsed.Add(key);
-
-            FieldValue<T?> v = d[sourceKey];
-
-            _nonDimensionalVariablesGetterDelegates.Add(key, (NonDimensionalFieldGetter<T>)delegate { return (T)v.Value; });
-        }
-
 
         public object GetDimensionalField(string componentName, string fieldName)
         {
             var key = new Tuple<string, string>(componentName.ToLowerInvariant(), fieldName.ToLowerInvariant());
-            if (!_dimensionalVariables.ContainsKey(key))
+            if (!_variables.ContainsKey(key))
             {
                 throw new ArgumentOutOfRangeException(String.Format("{0}.{1} is not in the list of dimensional fields", componentName.ToLowerInvariant(), fieldName.ToLowerInvariant()));
             }
 
-            return _dimensionalVariables[key];
+            return _variables[key];
         }
 
         public void Set1DimensionalParameter<D1, T>(string componentName, string fieldName, Func<D1, T> parameter)
         {
             var fieldKey = new Tuple<string, string>(componentName.ToLowerInvariant(), fieldName.ToLowerInvariant());
-            if (!_dimensionalVariables.ContainsKey(fieldKey))
+            if (!_variables.ContainsKey(fieldKey))
             {
                 throw new InvalidOperationException();
             }
 
-            _dimensionalVariables[fieldKey] = new DelegateToParameter1Dimensional<D1, T>(parameter);
+            _variables[fieldKey] = new DelegateToParameter1Dimensional<D1, T>(parameter);
         }
 
         public void Set1DimensionalParameter<D1, T>(string componentName, string fieldName, ParameterValues parameters, string parameterName)
@@ -490,7 +399,7 @@ namespace Esmf
             where D1 : IDimension
         {
             var fieldKey = new Tuple<string, string>(componentName.ToLowerInvariant(), fieldName.ToLowerInvariant());
-            if (!_dimensionalVariables.ContainsKey(fieldKey))
+            if (!_variables.ContainsKey(fieldKey))
             {
                 throw new InvalidOperationException();
             }
@@ -501,13 +410,13 @@ namespace Esmf
             {
                 var value = new FieldParameter1DimensionalTime<T>(this, p);
 
-                _dimensionalVariables[fieldKey] = value;
+                _variables[fieldKey] = value;
             }
             else if (typeof(D1).BaseType == typeof(Enum))
             {
                 var value = new FieldParameter1Dimensional<D1, T>(this, p);
 
-                _dimensionalVariables[fieldKey] = value;
+                _variables[fieldKey] = value;
             }
             else
                 throw new ArgumentException("Unknown dimension type");
@@ -524,23 +433,23 @@ namespace Esmf
         public void Set2DimensionalParameterLambda<D1, D2, T>(string componentName, string fieldName, Func<D1, D2, T> parameter)
         {
             var fieldKey = new Tuple<string, string>(componentName.ToLowerInvariant(), fieldName.ToLowerInvariant());
-            if (!_dimensionalVariables.ContainsKey(fieldKey))
+            if (!_variables.ContainsKey(fieldKey))
             {
                 throw new InvalidOperationException();
             }
 
-            _dimensionalVariables[fieldKey] = new DelegateToParameter2Dimensional<D1, D2, T>(parameter, this);
+            _variables[fieldKey] = new DelegateToParameter2Dimensional<D1, D2, T>(parameter, this);
         }
 
         public void Set2DimensionalParameter<D1, D2, T>(string componentName, string fieldName, IParameter2Dimensional<D1, D2, T> parameter)
         {
             var fieldKey = new Tuple<string, string>(componentName.ToLowerInvariant(), fieldName.ToLowerInvariant());
-            if (!_dimensionalVariables.ContainsKey(fieldKey))
+            if (!_variables.ContainsKey(fieldKey))
             {
                 throw new InvalidOperationException();
             }
 
-            _dimensionalVariables[fieldKey] = parameter;
+            _variables[fieldKey] = parameter;
         }
 
         public void Set2DimensionalParameter<D1, D2, T>(string componentName, string fieldName, ParameterValues parameters, string parameterName)
@@ -550,7 +459,7 @@ namespace Esmf
         {
             var fieldKey = new Tuple<string, string>(componentName.ToLowerInvariant(), fieldName.ToLowerInvariant());
 
-            if (!_dimensionalVariables.ContainsKey(fieldKey))
+            if (!_variables.ContainsKey(fieldKey))
             {
                 throw new InvalidOperationException();
             }
@@ -561,13 +470,13 @@ namespace Esmf
             {
                 var value = new FieldParameter2DimensionalTime<D2, T>(this, p);
 
-                _dimensionalVariables[fieldKey] = value;
+                _variables[fieldKey] = value;
             }
             else if (typeof(D1).BaseType == typeof(Enum) && typeof(D2).BaseType == typeof(Enum))
             {
                 var value = new FieldParameter2Dimensional<D1, D2, T>(this, p);
 
-                _dimensionalVariables[fieldKey] = value;
+                _variables[fieldKey] = value;
             }
             else
                 throw new ArgumentException("Unknown dimension type");
@@ -600,9 +509,9 @@ namespace Esmf
 
         public IEnumerable<Field> GetDimensionalFieldsOperator()
         {
-            foreach (var f in _dimensionalVariables.Keys)
+            foreach (var f in _variables.Keys)
             {
-                yield return new Field() { ComponentName = f.Item1, FieldName = f.Item2, Values = _dimensionalVariables[f] };
+                yield return new Field() { ComponentName = f.Item1, FieldName = f.Item2, Values = _variables[f] };
             }
         }
 
@@ -634,13 +543,12 @@ namespace Esmf
 
                     var key = new Tuple<string, string>(componentName.ToLowerInvariant(), fieldName.ToLowerInvariant());
 
-                    if (_variablesKeysAlreadyUsed.Contains(key))
+                    if (_variables.ContainsKey(key))
                     {
                         throw new ArgumentException();
                     }
 
-                    _dimensionalVariables.Add(key, value);
-                    _variablesKeysAlreadyUsed.Add(key);
+                    _variables.Add(key, value);
                 }
                 else if (typeof(IDimension).IsAssignableFrom(dimensionTypes[0]))
                 {
@@ -656,13 +564,12 @@ namespace Esmf
 
                     var key = new Tuple<string, string>(componentName.ToLowerInvariant(), fieldName.ToLowerInvariant());
 
-                    if (_variablesKeysAlreadyUsed.Contains(key))
+                    if (_variables.ContainsKey(key))
                     {
                         throw new ArgumentException();
                     }
 
-                    _dimensionalVariables.Add(key, value);
-                    _variablesKeysAlreadyUsed.Add(key);
+                    _variables.Add(key, value);
                 }
                 else
                     throw new ArgumentException("Unknown dimension type");
@@ -684,13 +591,12 @@ namespace Esmf
 
                     var key = new Tuple<string, string>(componentName.ToLowerInvariant(), fieldName.ToLowerInvariant());
 
-                    if (_variablesKeysAlreadyUsed.Contains(key))
+                    if (_variables.ContainsKey(key))
                     {
                         throw new ArgumentException();
                     }
 
-                    _dimensionalVariables.Add(key, value);
-                    _variablesKeysAlreadyUsed.Add(key);
+                    _variables.Add(key, value);
                 }
                 else if (typeof(IDimension).IsAssignableFrom(dimensionTypes[0]) && typeof(IDimension).IsAssignableFrom(dimensionTypes[1]))
                 {
@@ -704,13 +610,12 @@ namespace Esmf
 
                     var key = new Tuple<string, string>(componentName.ToLowerInvariant(), fieldName.ToLowerInvariant());
 
-                    if (_variablesKeysAlreadyUsed.Contains(key))
+                    if (_variables.ContainsKey(key))
                     {
                         throw new ArgumentException();
                     }
 
-                    _dimensionalVariables.Add(key, value);
-                    _variablesKeysAlreadyUsed.Add(key);
+                    _variables.Add(key, value);
                 }
                 else
                     throw new ArgumentException("Unknown dimension type");
@@ -733,9 +638,9 @@ namespace Esmf
                 if (!DoesFieldExist(componentName.ToLowerInvariant(), fieldname.ToLowerInvariant()))
                     throw new ArgumentOutOfRangeException();
 
-                if (_dimensionalVariables.ContainsKey(Tuple.Create(componentName.ToLowerInvariant(), fieldname.ToLowerInvariant())))
+                if (_variables.ContainsKey(Tuple.Create(componentName.ToLowerInvariant(), fieldname.ToLowerInvariant())))
                 {
-                    return _dimensionalVariables[Tuple.Create(componentName.ToLowerInvariant(), fieldname.ToLowerInvariant())];
+                    return _variables[Tuple.Create(componentName.ToLowerInvariant(), fieldname.ToLowerInvariant())];
                 }
                 else
                 {
@@ -747,7 +652,7 @@ namespace Esmf
 
         public void SwitchOffChecks()
         {
-            foreach (var f in _dimensionalVariables.Values)
+            foreach (var f in _variables.Values)
             {
                 if (f is IFieldInternal)
                 {

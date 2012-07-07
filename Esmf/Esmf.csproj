@@ -103,6 +103,7 @@
     <Compile Include="Field\FieldParameter1DimensionalTime.cs" />
     <Compile Include="Field\FieldParameter2Dimensional.cs" />
     <Compile Include="Field\FieldParameter2DimensionalTime.cs" />
+    <Compile Include="Field\FieldVariable0Dimensional.cs" />
     <Compile Include="Field\FieldVariable1Dimensional.cs" />
     <Compile Include="Field\FieldVariable1DimensionalTime.cs" />
     <Compile Include="Field\FieldVariable1DimensionalTimeEfficient.cs" />
