@@ -19,6 +19,7 @@ namespace Esmf
             Key = key;
         }
 
+        public abstract object GetUntypedValue();
     }
 
     public abstract class ParameterValueElement<T> : ParameterValueElementNonTyped
@@ -29,6 +30,11 @@ namespace Esmf
         }
 
         public T Value { get; protected set; }
+
+        public override object GetUntypedValue()
+        {
+            return Value;
+        }
     }
 
 }

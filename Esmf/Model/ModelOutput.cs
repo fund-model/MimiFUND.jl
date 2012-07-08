@@ -137,13 +137,6 @@ namespace Esmf
             _variables.ContainsKey(key);
         }
 
-        public void LoadNonDimensionalVariableFromParameters<T>(string componentName, string fieldName, ParameterValues parameters) where T : struct
-        {
-            T value = ((ParameterValueNonDimensional<T>)parameters[fieldName.ToLowerInvariant()]).Value;
-
-            Add0DimensionalVariable(componentName.ToLowerInvariant(), fieldName.ToLowerInvariant(), typeof(T), value);
-        }
-
         public void LoadOneDimensionalVariableFromParameters<D1, T>(string componentName, string fieldName, ParameterValues parameters)
             where T : struct
             where D1 : IDimension
@@ -378,10 +371,9 @@ namespace Esmf
         {
             if (dimensionTypes.Length == 0)
             {
-                var methodInfo = this.GetType().GetMethod("LoadNonDimensionalVariableFromParameters");
-                var typedMethod = methodInfo.MakeGenericMethod(new Type[] { dataType });
+                object value = ((IParameterValueNonDimensionalTypeless)parameters[fieldName.ToLowerInvariant()]).GetElement().GetUntypedValue();
 
-                typedMethod.Invoke(this, new object[] { componentName.ToLowerInvariant(), fieldName.ToLowerInvariant(), parameters });
+                Add0DimensionalVariable(componentName.ToLowerInvariant(), fieldName.ToLowerInvariant(), dataType, value);
             }
             else if (dimensionTypes.Length == 1)
             {
