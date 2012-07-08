@@ -137,59 +137,6 @@ namespace Esmf
             _variables.ContainsKey(key);
         }
 
-        public void LoadOneDimensionalVariableFromParameters<D1, T>(string componentName, string fieldName, ParameterValues parameters)
-            where T : struct
-            where D1 : IDimension
-        {
-            var p = (ParameterValue1Dimensional<T>)parameters[fieldName.ToLowerInvariant()];
-
-            if (typeof(D1) == typeof(Timestep))
-            {
-                var value = new FieldParameter1DimensionalTime<T>(this, p);
-
-                Add1DimensionalParameter<Timestep, T>(componentName.ToLowerInvariant(), fieldName.ToLowerInvariant(), value);
-            }
-            else if (typeof(IDimension).IsAssignableFrom(typeof(D1)))
-            {
-                var value = new FieldParameter1Dimensional<D1, T>(this, p);
-
-                Add1DimensionalParameter<D1, T>(componentName.ToLowerInvariant(), fieldName.ToLowerInvariant(), value);
-            }
-            else
-                throw new ArgumentException("Unknown dimension type");
-        }
-
-        public void LoadTwoDimensionalVariableFromParameters<D1, D2, T>(string componentName, string fieldName, ParameterValues parameters, string parameterName)
-            where T : struct
-            where D1 : IDimension
-            where D2 : IDimension
-        {
-            var p = (ParameterValue2Dimensional<T>)parameters[parameterName.ToLowerInvariant()];
-
-            if (typeof(D1) == typeof(Timestep) && typeof(IDimension).IsAssignableFrom(typeof(D2)))
-            {
-                var value = new FieldParameter2DimensionalTime<D2, T>(this, p);
-
-                Add2DimensionalParameter<Timestep, D2, T>(componentName.ToLowerInvariant(), fieldName.ToLowerInvariant(), value);
-            }
-            else if (typeof(IDimension).IsAssignableFrom(typeof(D1)) && typeof(IDimension).IsAssignableFrom(typeof(D2)))
-            {
-                var value = new FieldParameter2Dimensional<D1, D2, T>(this, p);
-
-                Add2DimensionalParameter<D1, D2, T>(componentName.ToLowerInvariant(), fieldName.ToLowerInvariant(), value);
-            }
-            else
-                throw new ArgumentException("Unknown dimension type");
-        }
-
-        public void LoadTwoDimensionalVariableFromParameters<D1, D2, T>(string componentName, string fieldName, ParameterValues parameter)
-            where T : struct
-            where D1 : IDimension
-            where D2 : IDimension
-        {
-            LoadTwoDimensionalVariableFromParameters<D1, D2, T>(componentName.ToLowerInvariant(), fieldName.ToLowerInvariant(), parameter, fieldName.ToLowerInvariant());
-        }
-
         public object GetNonDimensionalVariableGetter(string componentName, string fieldName)
         {
             var key = Tuple.Create(componentName.ToLowerInvariant(), fieldName.ToLowerInvariant());
@@ -197,21 +144,11 @@ namespace Esmf
             return f.GetFieldGetter();
         }
 
-        public NonDimensionalFieldGetter<T> GetNonDimensionalVariableGetter<T>(string componentName, string fieldname)
-        {
-            return (NonDimensionalFieldGetter<T>)GetNonDimensionalVariableGetter(componentName.ToLowerInvariant(), fieldname.ToLowerInvariant());
-        }
-
         public object GetNonDimensionalVariableSetter(string componentName, string fieldName)
         {
             var key = Tuple.Create(componentName.ToLowerInvariant(), fieldName.ToLowerInvariant());
             var f = (FieldVariable0DimensionalTypeless)_variables[key];
             return f.GetFieldSetter();
-        }
-
-        public NonDimensionalFieldSetter<T> GetNonDimensionalVariableSetter<T>(string componentName, string fieldName)
-        {
-            return (NonDimensionalFieldSetter<T>)GetNonDimensionalVariableSetter(componentName.ToLowerInvariant(), fieldName.ToLowerInvariant());
         }
 
         #endregion
@@ -473,13 +410,6 @@ namespace Esmf
             }
             else
                 throw new ArgumentOutOfRangeException();
-        }
-
-        public T GetNonDimensionalValue<T>(string componentName, string fieldName)
-        {
-            var getter = GetNonDimensionalVariableGetter<T>(componentName.ToLowerInvariant(), fieldName.ToLowerInvariant());
-            var r = getter();
-            return r;
         }
 
         public dynamic this[string componentName, string fieldname]
