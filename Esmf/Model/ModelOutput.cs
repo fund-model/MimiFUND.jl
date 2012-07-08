@@ -14,8 +14,6 @@ namespace Esmf
 {
     public class ModelOutput
     {
-        public Dictionary<string, object> _stateinterfaceOjbect = new Dictionary<string, object>();
-
         private Dimensions _dimensions = new Dimensions();
 
         public Dimensions Dimensions { get { return _dimensions; } }

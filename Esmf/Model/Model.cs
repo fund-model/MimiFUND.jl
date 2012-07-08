@@ -64,28 +64,11 @@ namespace Esmf.Model
 
             ConnectLeftoversToParameters(mf, parameters);
 
-            ReCreateStateVariables(mf);
-
             RunComponents(mf);
 
             mf.SwitchOffChecks();
 
             return mf;
-        }
-
-        protected void ReCreateStateVariables(ModelOutput mf)
-        {
-            mf._stateinterfaceOjbect.Clear();
-
-            foreach (var c in Components)
-            {
-                Esmf.ComponentStructure.StateStructure s = Esmf.ComponentStructure.StateStructure.LoadFromInterface(c.StateInterfaceType);
-                MethodInfo mi = s.GetType().GetMethod("ConnectToState");
-                MethodInfo mi2 = mi.MakeGenericMethod(new Type[] { c.StateInterfaceType });
-                object o = mi2.Invoke(s, new object[] { mf, c.Name });
-                mf._stateinterfaceOjbect.Add(c.Name, o);
-
-            }
         }
 
         // TODO Make flexible
@@ -133,6 +116,17 @@ namespace Esmf.Model
 
         protected void RunComponents(ModelOutput mf)
         {
+            var stateInterfaces = new Dictionary<string, object>(_components.Count);
+
+            foreach (var c in Components)
+            {
+                Esmf.ComponentStructure.StateStructure s = Esmf.ComponentStructure.StateStructure.LoadFromInterface(c.StateInterfaceType);
+                MethodInfo mi = s.GetType().GetMethod("ConnectToState");
+                MethodInfo mi2 = mi.MakeGenericMethod(new Type[] { c.StateInterfaceType });
+                object o = mi2.Invoke(s, new object[] { mf, c.Name });
+                stateInterfaces.Add(c.Name, o);
+            }
+
             mf.Clock.Reset();
 
             var clock = mf.Clock;
@@ -144,7 +138,7 @@ namespace Esmf.Model
 
                     var c = _components[_componentsOrder[i]];
                     //Console.WriteLine(c.Name);
-                    var state = mf._stateinterfaceOjbect[c.Name];
+                    var state = stateInterfaces[c.Name];
                     c.RunComponent(clock, state, mf);
 
                 }
@@ -152,7 +146,7 @@ namespace Esmf.Model
                 for (int i = 0; i < _componentsOrder.Count; i++)
                 {
                     var c = _components[_componentsOrder[i]];
-                    var state = mf._stateinterfaceOjbect[c.Name];
+                    var state = stateInterfaces[c.Name];
                     c.RunTransitionFunction(clock, state, mf);
                 }
 
