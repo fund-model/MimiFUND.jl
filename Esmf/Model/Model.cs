@@ -20,7 +20,7 @@ namespace Esmf.Model
         private int _years;
         private bool _storeFullVariablesByDefault;
 
-        public Model(int years = 1049, bool storeFullVariablesByDefault=true)
+        public Model(int years = 1049, bool storeFullVariablesByDefault = true)
         {
             _years = years;
             _storeFullVariablesByDefault = storeFullVariablesByDefault;

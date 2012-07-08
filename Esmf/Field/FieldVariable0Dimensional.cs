@@ -30,8 +30,8 @@ namespace Esmf
 
             _getter = delegate
             {
-                CheckForValidIndex(); 
-                return _value; 
+                CheckForValidIndex();
+                return _value;
             };
 
             _setter = delegate(T value)
@@ -44,7 +44,7 @@ namespace Esmf
         [Conditional("FUNDCHECKED")]
         private void CheckForValidIndex()
         {
-            if(!_hasValue)
+            if (!_hasValue)
                 throw new ArgumentOutOfRangeException("Value for this field has not been set");
         }
 
@@ -59,7 +59,7 @@ namespace Esmf
         {
             get
             {
-                CheckForValidIndex(); 
+                CheckForValidIndex();
                 return _value;
             }
             set

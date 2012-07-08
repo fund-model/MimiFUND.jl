@@ -227,7 +227,7 @@ namespace Esmf
         public object GetNonDimensionalVariableGetter(string componentName, string fieldName)
         {
             var key = Tuple.Create(componentName.ToLowerInvariant(), fieldName.ToLowerInvariant());
-            var f = (FieldVariable0DimensionalTypeless) _variables[key];
+            var f = (FieldVariable0DimensionalTypeless)_variables[key];
             return f.GetFieldGetter();
         }
 
