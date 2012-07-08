@@ -156,10 +156,10 @@ namespace Esmf.ComponentStructure
             }
         }
 
-        public T ConnectToState<T>(ModelOutput mf, string componentName)
+        public object ConnectToState(ModelOutput mf, string componentName)
         {
             Type t = GetProxyTypeForStateInterface();
-            T connector = (T)Activator.CreateInstance(t);
+            object connector = Activator.CreateInstance(t);
 
             IStateObjectConnections soc = (IStateObjectConnections)connector;
 

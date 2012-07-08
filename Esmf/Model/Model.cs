@@ -121,9 +121,7 @@ namespace Esmf.Model
             foreach (var c in Components)
             {
                 Esmf.ComponentStructure.StateStructure s = Esmf.ComponentStructure.StateStructure.LoadFromInterface(c.StateInterfaceType);
-                MethodInfo mi = s.GetType().GetMethod("ConnectToState");
-                MethodInfo mi2 = mi.MakeGenericMethod(new Type[] { c.StateInterfaceType });
-                object o = mi2.Invoke(s, new object[] { mf, c.Name });
+                var o = s.ConnectToState(mf, c.Name);
                 stateInterfaces.Add(c.Name, o);
             }
 
