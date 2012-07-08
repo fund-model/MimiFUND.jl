@@ -37,9 +37,24 @@ namespace Esmf
 
             _setter = delegate(T value)
             {
+                CheckForValidValue(value);
                 ValueSetForIndex();
                 _value = value;
             };
+        }
+
+        [Conditional("FUNDCHECKED")]
+        private void CheckForValidValue(object v)
+        {
+            if (v.GetType() == typeof(double))
+            {
+                double d = ((double)((object)v));
+
+                if (double.IsNaN(d))
+                    throw new ArgumentOutOfRangeException("NaN is not allowed as a value");
+                else if (double.IsInfinity(d))
+                    throw new ArgumentOutOfRangeException("Infinity is not allowed as a value");
+            }
         }
 
         [Conditional("FUNDCHECKED")]
@@ -65,6 +80,7 @@ namespace Esmf
             }
             set
             {
+                CheckForValidValue(value);
                 ValueSetForIndex();
                 _value = value;
 

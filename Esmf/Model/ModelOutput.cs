@@ -101,20 +101,6 @@ namespace Esmf
 
         #region NonDimensionalVariables
 
-        [Conditional("FUNDCHECKED")]
-        private void CheckForValidValue(object v)
-        {
-            if (v.GetType() == typeof(double))
-            {
-                double d = ((double)((object)v));
-
-                if (double.IsNaN(d))
-                    throw new ArgumentOutOfRangeException("NaN is not allowed as a value");
-                else if (double.IsInfinity(d))
-                    throw new ArgumentOutOfRangeException("Infinity is not allowed as a value");
-            }
-        }
-
         public void Add0DimensionalVariable(string componentName, string fieldName, Type type, object initialValue)
         {
             var key = new Tuple<string, string>(componentName.ToLowerInvariant(), fieldName.ToLowerInvariant());
