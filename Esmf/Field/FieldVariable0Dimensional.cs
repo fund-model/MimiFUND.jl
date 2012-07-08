@@ -17,6 +17,7 @@ namespace Esmf
     }
 
     public class FieldVariable0Dimensional<T> : FieldVariable0DimensionalTypeless
+        where T : struct
     {
         private T _value;
         private bool _hasValue;

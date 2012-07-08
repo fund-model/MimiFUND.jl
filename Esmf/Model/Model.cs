@@ -171,9 +171,7 @@ namespace Esmf.Model
 
                     if (dtpes.Length == 0)
                     {
-                        MethodInfo mi = typeof(ModelOutput).GetMethod("AddNonDimensionalVariable", new Type[] { typeof(string), typeof(string) });
-                        MethodInfo mi2 = mi.MakeGenericMethod(new Type[] { v.DataType });
-                        mi2.Invoke(mf, new string[] { c.Name, v.Name });
+                        mf.Add0DimensionalVariable(c.Name, v.Name, v.DataType, null);
 
                     }
                     else if (dtpes.Length == 1)
@@ -275,7 +273,7 @@ namespace Esmf.Model
 
             foreach (var p in parametersWithManualValues)
             {
-                mf.AddNonDimensionalVariable(p.ComponentName, p.ParameterName, p.Value);
+                mf.Add0DimensionalVariable(p.ComponentName, p.ParameterName, p.Value.GetType(), p.Value);
             }
 
             foreach (var p in parametersWithLambdas)
@@ -299,7 +297,7 @@ namespace Esmf.Model
                 }
                 else if (p.DefaultValue != null)
                 {
-                    mf.AddNonDimensionalVariable(p.ComponentName, p.ParameterName, p.DefaultValue);
+                    mf.Add0DimensionalVariable(p.ComponentName, p.ParameterName, p.DataType, p.DefaultValue);
                 }
                 else
                     throw new InvalidOperationException();

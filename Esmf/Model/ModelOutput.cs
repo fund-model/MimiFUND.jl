@@ -115,12 +115,7 @@ namespace Esmf
             }
         }
 
-        public void AddNonDimensionalVariable<T>(string componentName, string fieldName) where T : struct
-        {
-            AddNonDimensionalVariable<T>(componentName, fieldName, null);
-        }
-
-        public void AddNonDimensionalVariable<T>(string componentName, string fieldName, T? initialValue) where T : struct
+        public void Add0DimensionalVariable(string componentName, string fieldName, Type type, object initialValue)
         {
             var key = new Tuple<string, string>(componentName.ToLowerInvariant(), fieldName.ToLowerInvariant());
 
@@ -129,46 +124,24 @@ namespace Esmf
                 throw new ArgumentException();
             }
 
-            var v = new FieldVariable0Dimensional<T>(this);
+            Type genericType = typeof(FieldVariable0Dimensional<>).MakeGenericType(type);
+            object v = Activator.CreateInstance(genericType, this);
 
-            if (initialValue.HasValue)
+            if (initialValue != null)
             {
-                v.Value = initialValue.Value;
+                var property = genericType.GetProperty("Value");
+                property.SetValue(v, initialValue, null);
             }
 
             _variables.Add(key, v);
             _variables.ContainsKey(key);
         }
 
-        public void AddNonDimensionalVariable(string componentName, string fieldName, Type type)
-        {
-            var methodinfo = this.GetType().GetMethod("AddNonDimensionalVariable", new Type[] { typeof(string), typeof(string) });
-
-            var typedMethod = methodinfo.MakeGenericMethod(new Type[] { type });
-
-            typedMethod.Invoke(this, new object[] { componentName.ToLowerInvariant(), fieldName.ToLowerInvariant() });
-        }
-
-        public void AddNonDimensionalVariable(string componentName, string fieldName, object value)
-        {
-            AddNonDimensionalVariable(componentName.ToLowerInvariant(), fieldName.ToLowerInvariant(), value.GetType());
-
-            var methodinfo = this.GetType().GetMethod("SetNonDimensionalFieldValue");
-            var typedMethod = methodinfo.MakeGenericMethod(new Type[] { value.GetType() });
-            typedMethod.Invoke(this, new object[] { componentName.ToLowerInvariant(), fieldName.ToLowerInvariant(), value });
-            //throw new NotImplementedException();
-            //Dictionary<Tuple<string, string>, FieldValue<T?>> d = (Dictionary<Tuple<string, string>, FieldValue<T?>>)_nonDimensionalVariables[typeof(T)];
-
-            //d[new Tuple<string, string>(componentName, fieldName)].Value = value;
-
-            //ValueSetForIndex(componentName, fieldName);
-        }
-
         public void LoadNonDimensionalVariableFromParameters<T>(string componentName, string fieldName, ParameterValues parameters) where T : struct
         {
             T value = ((ParameterValueNonDimensional<T>)parameters[fieldName.ToLowerInvariant()]).Value;
 
-            AddNonDimensionalVariable<T>(componentName.ToLowerInvariant(), fieldName.ToLowerInvariant(), value);
+            Add0DimensionalVariable(componentName.ToLowerInvariant(), fieldName.ToLowerInvariant(), typeof(T), value);
         }
 
         public void LoadOneDimensionalVariableFromParameters<D1, T>(string componentName, string fieldName, ParameterValues parameters)
@@ -246,12 +219,6 @@ namespace Esmf
         public NonDimensionalFieldSetter<T> GetNonDimensionalVariableSetter<T>(string componentName, string fieldName)
         {
             return (NonDimensionalFieldSetter<T>)GetNonDimensionalVariableSetter(componentName.ToLowerInvariant(), fieldName.ToLowerInvariant());
-        }
-
-        public void SetNonDimensionalFieldValue<T>(string componentName, string fieldName, T value)
-        {
-            NonDimensionalFieldSetter<T> setter = GetNonDimensionalVariableSetter<T>(componentName.ToLowerInvariant(), fieldName.ToLowerInvariant());
-            setter(value);
         }
 
         #endregion
@@ -382,114 +349,6 @@ namespace Esmf
 
             return _variables[key];
         }
-
-        public void Set1DimensionalParameter<D1, T>(string componentName, string fieldName, Func<D1, T> parameter)
-        {
-            var fieldKey = new Tuple<string, string>(componentName.ToLowerInvariant(), fieldName.ToLowerInvariant());
-            if (!_variables.ContainsKey(fieldKey))
-            {
-                throw new InvalidOperationException();
-            }
-
-            _variables[fieldKey] = new DelegateToParameter1Dimensional<D1, T>(parameter);
-        }
-
-        public void Set1DimensionalParameter<D1, T>(string componentName, string fieldName, ParameterValues parameters, string parameterName)
-            where T : struct
-            where D1 : IDimension
-        {
-            var fieldKey = new Tuple<string, string>(componentName.ToLowerInvariant(), fieldName.ToLowerInvariant());
-            if (!_variables.ContainsKey(fieldKey))
-            {
-                throw new InvalidOperationException();
-            }
-
-            var p = (ParameterValue1Dimensional<T>)parameters[parameterName.ToLowerInvariant()];
-
-            if (typeof(D1) == typeof(Timestep))
-            {
-                var value = new FieldParameter1DimensionalTime<T>(this, p);
-
-                _variables[fieldKey] = value;
-            }
-            else if (typeof(D1).BaseType == typeof(Enum))
-            {
-                var value = new FieldParameter1Dimensional<D1, T>(this, p);
-
-                _variables[fieldKey] = value;
-            }
-            else
-                throw new ArgumentException("Unknown dimension type");
-        }
-
-        public void Set1DimensionalParameter<D1, T>(string componentName, string fieldName, ParameterValues parameters)
-            where T : struct
-            where D1 : IDimension
-        {
-            Set1DimensionalParameter<D1, T>(componentName.ToLowerInvariant(), fieldName.ToLowerInvariant(), parameters, fieldName.ToLowerInvariant());
-        }
-
-
-        public void Set2DimensionalParameterLambda<D1, D2, T>(string componentName, string fieldName, Func<D1, D2, T> parameter)
-        {
-            var fieldKey = new Tuple<string, string>(componentName.ToLowerInvariant(), fieldName.ToLowerInvariant());
-            if (!_variables.ContainsKey(fieldKey))
-            {
-                throw new InvalidOperationException();
-            }
-
-            _variables[fieldKey] = new DelegateToParameter2Dimensional<D1, D2, T>(parameter, this);
-        }
-
-        public void Set2DimensionalParameter<D1, D2, T>(string componentName, string fieldName, IParameter2Dimensional<D1, D2, T> parameter)
-        {
-            var fieldKey = new Tuple<string, string>(componentName.ToLowerInvariant(), fieldName.ToLowerInvariant());
-            if (!_variables.ContainsKey(fieldKey))
-            {
-                throw new InvalidOperationException();
-            }
-
-            _variables[fieldKey] = parameter;
-        }
-
-        public void Set2DimensionalParameter<D1, D2, T>(string componentName, string fieldName, ParameterValues parameters, string parameterName)
-            where T : struct
-            where D1 : IDimension
-            where D2 : IDimension
-        {
-            var fieldKey = new Tuple<string, string>(componentName.ToLowerInvariant(), fieldName.ToLowerInvariant());
-
-            if (!_variables.ContainsKey(fieldKey))
-            {
-                throw new InvalidOperationException();
-            }
-
-            var p = (ParameterValue2Dimensional<T>)parameters[parameterName.ToLowerInvariant()];
-
-            if (typeof(D1) == typeof(Timestep) && typeof(D2).BaseType == typeof(System.Enum))
-            {
-                var value = new FieldParameter2DimensionalTime<D2, T>(this, p);
-
-                _variables[fieldKey] = value;
-            }
-            else if (typeof(D1).BaseType == typeof(Enum) && typeof(D2).BaseType == typeof(Enum))
-            {
-                var value = new FieldParameter2Dimensional<D1, D2, T>(this, p);
-
-                _variables[fieldKey] = value;
-            }
-            else
-                throw new ArgumentException("Unknown dimension type");
-        }
-
-        public void Set2DimensionalParameter<D1, D2, T>(string componentName, string fieldName, ParameterValues parameter)
-            where T : struct
-            where D1 : IDimension
-            where D2 : IDimension
-        {
-            Set2DimensionalParameter<D1, D2, T>(componentName.ToLowerInvariant(), fieldName.ToLowerInvariant(), parameter, fieldName.ToLowerInvariant());
-        }
-
 
         #endregion
 
