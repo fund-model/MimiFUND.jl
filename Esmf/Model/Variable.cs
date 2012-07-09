@@ -14,6 +14,7 @@ namespace Esmf.Model
         private string _name;
         private Type[] _dimensionTypes;
         private Type _dataType;
+        private Esmf.Model.ParameterValue _forced;
 
         public Variable(string name, Type[] dimensionTypes, Type dataType)
         {
@@ -31,6 +32,30 @@ namespace Esmf.Model
         public Type DataType { get { return _dataType; } }
 
         public bool StoreOutput { get; set; }
+
+        public void Force()
+        {
+            _forced = new ParameterValueFile();
+        }
+
+        public void Force(string componentName, string variableName)
+        {
+            var b = new ParameterValueBound(componentName, variableName);
+            _forced = b;
+        }
+
+        public void Force(string componentName)
+        {
+            Force(componentName, _name);
+        }
+
+        public ParameterValue Forced
+        {
+            get
+            {
+                return _forced;
+            }
+        }
 
         public override string ToString()
         {

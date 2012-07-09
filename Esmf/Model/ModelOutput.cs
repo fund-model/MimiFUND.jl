@@ -167,6 +167,23 @@ namespace Esmf
             _variables.Add(key, v);
         }
 
+        public void Add1DimensionalForcedVariable(string componentName, string fieldName, Type d1, Type dataType)
+        {
+            var key = new Tuple<string, string>(componentName.ToLowerInvariant(), fieldName.ToLowerInvariant());
+
+            if (_variables.ContainsKey(key))
+            {
+                throw new ArgumentException();
+            }
+
+            Type genericType = typeof(FieldVariable1DimensionalForce<,>).MakeGenericType(d1, dataType);
+            object v = Activator.CreateInstance(genericType, this);
+
+            _variables.Add(key, v);
+            _variables.ContainsKey(key);
+
+        }
+
 
         public void Add2DimensionalVariable<D1, D2, T>(string componentName, string fieldName, bool useEfficientField)
             where D1 : IDimension

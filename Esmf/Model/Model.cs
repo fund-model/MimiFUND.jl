@@ -168,10 +168,16 @@ namespace Esmf.Model
                     }
                     else if (dtpes.Length == 1)
                     {
-                        MethodInfo mi = typeof(ModelOutput).GetMethod("Add1DimensionalVariable");
-                        MethodInfo mi2 = mi.MakeGenericMethod(new Type[] { dtpes[0], v.DataType });
-                        mi2.Invoke(mf, new object[] { c.Name, v.Name, !v.StoreOutput });
-
+                        if (v.Forced == null)
+                        {
+                            MethodInfo mi = typeof(ModelOutput).GetMethod("Add1DimensionalVariable");
+                            MethodInfo mi2 = mi.MakeGenericMethod(new Type[] { dtpes[0], v.DataType });
+                            mi2.Invoke(mf, new object[] { c.Name, v.Name, !v.StoreOutput });
+                        }
+                        else
+                        {
+                            mf.Add1DimensionalForcedVariable(c.Name, v.Name, dtpes[0], v.DataType);
+                        }
                     }
                     else if (dtpes.Length == 2)
                     {
@@ -221,6 +227,18 @@ namespace Esmf.Model
                                                DefaultValue = parameter.Binding.DefaultValue,
                                                paer = parameter
                                            };
+
+            var forcedVariablesToFindValueFor = from component in Components
+                                                from variable in component.Variables
+                                                where variable.Forced != null && variable.Forced is ParameterValueFile
+                                                select new
+                                                {
+                                                    ComponentName = component.Name,
+                                                    VariableName = variable.Name,
+                                                    DimensionTypes = variable.DimensionTypes,
+                                                    DataType = variable.DataType,
+                                                    vaer = variable
+                                                };
 
             var parametersWithManualValues = from component in Components
                                              from parameter in component.Parameters
@@ -293,6 +311,20 @@ namespace Esmf.Model
                 }
                 else
                     throw new InvalidOperationException();
+            }
+
+            foreach (var v in forcedVariablesToFindValueFor)
+            {
+                if (parameters.Contains(v.VariableName))
+                {
+                    mf.LoadVariableFromParameter("asdfasddf", v.VariableName, parameters, v.DataType, v.DimensionTypes.ToArray());
+
+                    ((FieldVariable1DimensionalForceTypeless)mf[v.ComponentName, v.VariableName]).SetSource(mf["asdfasddf", v.VariableName]);
+                }
+                else
+                {
+                    throw new InvalidOperationException();
+                }
             }
         }
 
