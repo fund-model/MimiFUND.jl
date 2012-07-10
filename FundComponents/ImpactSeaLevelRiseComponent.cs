@@ -229,7 +229,7 @@ namespace Fund.Components
                     s.landloss[t, r] = (1.0 - s.protlev[t, r]) * potLandloss;
 
                     s.cumlandloss[t, r] = s.cumlandloss[t - 1, r] + s.landloss[t, r];
-                    s.drycost[t, r] = s.dryval[t, r] * s.landloss[t, r];
+                    s.drycost[t, r] = s.dryval[t, r] * s.landloss[t, r] * (1 - s.protlev[t, r]);
 
                     s.protcost[t, r] = s.protlev[t, r] * s.pc[r] * ds;
 
