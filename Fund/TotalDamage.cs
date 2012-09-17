@@ -60,31 +60,31 @@ namespace Fund
 
         }
 
-        //public void WriteDamage(int RunId, Damage i_Damage, int WeightingschemeId, double Weight, WeightingCombination[] WeightingCombinations)
-        //{
-        //    if (m_YearRegionSectorWeightingSchemeCsv != null)
-        //    {
-        //        m_YearRegionSectorWeightingSchemeCsv.WriteLine(
-        //            (_run.OutputVerbal ? _run.Scenario.Name : _run.Scenario.Id.ToString()) +
-        //            ";" +
-        //            (_run.OutputVerbal ? (RunId == 0 ? "Best guess" : RunId == -1 ? "Mean" : RunId.ToString()) : RunId.ToString()) +
-        //            ";" +
-        //            "" +
-        //            ";" +
-        //            "" +
-        //            ";" +
-        //            (i_Damage.Year + 1950).ToString() +
-        //            ";" +
-        //            (_run.OutputVerbal ? LegacyRegionNames.GetName(i_Damage.Region) : i_Damage.Region.ToString()) +
-        //            ";" +
-        //            (_run.OutputVerbal ? Enum.GetName(typeof(Sector), i_Damage.Sector) : ((int)i_Damage.Sector).ToString()) +
-        //            ";" +
-        //            (_run.OutputVerbal ? WeightingCombinations[WeightingschemeId].Name : WeightingschemeId.ToString()) +
-        //            ";" +
-        //            (i_Damage.DamageValue * Weight).ToString("f15")
-        //            );
-        //    }
-        //}
+        public void WriteDamage(int RunId, Damage i_Damage, int WeightingschemeId, double Weight, WeightingCombination[] WeightingCombinations)
+        {
+            if (m_YearRegionSectorWeightingSchemeCsv != null)
+            {
+                m_YearRegionSectorWeightingSchemeCsv.WriteLine(
+                    (_run.OutputVerbal ? _run.Scenario.Name : _run.Scenario.Id.ToString()) +
+                    ";" +
+                    (_run.OutputVerbal ? (RunId == 0 ? "Best guess" : RunId == -1 ? "Mean" : RunId.ToString()) : RunId.ToString()) +
+                    ";" +
+                    "" +
+                    ";" +
+                    "" +
+                    ";" +
+                    (i_Damage.Year + 1950).ToString() +
+                    ";" +
+                    (_run.OutputVerbal ? i_Damage.Region.ToString() : i_Damage.Region.ToString()) +
+                    ";" +
+                    (_run.OutputVerbal ? Enum.GetName(typeof(Sector), i_Damage.Sector) : ((int)i_Damage.Sector).ToString()) +
+                    ";" +
+                    (_run.OutputVerbal ? WeightingCombinations[WeightingschemeId].Name : WeightingschemeId.ToString()) +
+                    ";" +
+                    (i_Damage.DamageValue * Weight).ToString("f15")
+                    );
+            }
+        }
 
         public TotalDamage(Run runData, string outputPath, Parameters parameters, Timestep emissionYear, Random rand = null)
         {
@@ -158,15 +158,18 @@ namespace Fund
 
             }
 
-            //for (int l = 0; l < i_output1.Damages.Count; l++)
-            //{
-            //    i_Damage = i_output1.Damages[l];
-            //    if ((i_Damage.Year >= _emissionYear.Value) && (i_Damage.Year < _emissionYear.Value + _run.YearsToAggregate))
-            //    {
-            //        for (int k = 0; k < i_weightingCombinations.Length; k++)
-            //            WriteDamage(RunId, i_Damage, k, i_weightingCombinations[k][i_Damage.Year, i_Damage.Region], i_weightingCombinations);
-            //    }
-            //}
+            if (m_YearRegionSectorWeightingSchemeCsv != null)
+            {
+
+                foreach (var i_Damage in i_output1.Damages)
+                {
+                    if ((i_Damage.Year >= _emissionYear.Value) && (i_Damage.Year < _emissionYear.Value + _run.YearsToAggregate))
+                    {
+                        for (int k = 0; k < i_weightingCombinations.Length; k++)
+                            WriteDamage(RunId, i_Damage, k, i_weightingCombinations[k][i_Damage.Year, i_Damage.Region], i_weightingCombinations);
+                    }
+                }
+            }
         }
 
     }
