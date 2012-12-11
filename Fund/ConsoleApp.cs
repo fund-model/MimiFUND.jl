@@ -277,7 +277,7 @@ namespace Fund
                     {
                         // DA: Use MargMain for marginal cost, use Main for total cost and optimisation
                         // modes
-                        var lTotalDamageRun = new TotalDamage(lRun, ConsoleApp.OutputPath, lParam, lRun.EmissionYear);
+                        var lTotalDamageRun = new TotalDamage(lRun, ConsoleApp.OutputPath, lParam, lRun.EmissionYear, lRandom);
 
                         lTotalDamageRun.AggregateDamageCsv = lAggregateMarginalDamage;
 
