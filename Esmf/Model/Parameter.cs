@@ -47,6 +47,12 @@ namespace Esmf.Model
             _value = b;
         }
 
+        public void SetValue<D1, T>(Func<D1, T> parameter)
+        {
+            var b = new ParameterValueManuelLambda(parameter);
+            _value = b;
+        }
+
         public string Name { get { return _name; } }
 
         public ParameterValue Binding { get { return _value; } }
