@@ -105,6 +105,24 @@ namespace Fund
             return i_marginalDamages;
         }
 
+        public static Damages CalculateMarginalDamage(Damages Damages1, Damages Damages2, double normalization)
+        {
+            Damages i_marginalDamages = new Damages();
+
+            for (int year = 0; year < LegacyConstants.NYear + 1; year++)
+            {
+                for (int region = 0; region < LegacyConstants.NoReg; region++)
+                {
+                    for (int sector = 0; sector < LegacyConstants.NoSector; sector++)
+                    {
+                        i_marginalDamages._damages[year, region, sector] = (Damages2._damages[year, region, sector] - Damages1._damages[year, region, sector]) / normalization;
+                    }
+                }
+            }
+
+            return i_marginalDamages;
+        }
+
         public Damages()
         {
 
