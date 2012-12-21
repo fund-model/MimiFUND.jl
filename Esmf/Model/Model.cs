@@ -141,11 +141,14 @@ namespace Esmf.Model
 
                 }
 
-                for (int i = 0; i < _componentsOrder.Count; i++)
+                if (!clock.IsLastTimestep)
                 {
-                    var c = _components[_componentsOrder[i]];
-                    var state = stateInterfaces[c.Name];
-                    c.RunTransitionFunction(clock, state, mf);
+                    for (int i = 0; i < _componentsOrder.Count; i++)
+                    {
+                        var c = _components[_componentsOrder[i]];
+                        var state = stateInterfaces[c.Name];
+                        c.RunTransitionFunction(clock, state, mf);
+                    }
                 }
 
                 clock.Advance();
