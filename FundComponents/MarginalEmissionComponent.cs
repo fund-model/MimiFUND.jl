@@ -13,6 +13,10 @@ namespace Fund.Components
     public interface IMarginalEmissionState
     {
         Timestep emissionperiod { get; }
+
+        [DefaultParameterValue(10)]
+        int impulselength { get; }
+
         IParameter1Dimensional<Timestep, Double> emission { get; }
 
         IVariable1Dimensional<Timestep, Double> modemission { get; }
@@ -25,19 +29,12 @@ namespace Fund.Components
             var t = clock.Current;
             var s = state;
 
-            if (clock.IsFirstTimestep)
+            if ((t.Value >= s.emissionperiod.Value) && (t.Value < (s.emissionperiod.Value + s.impulselength)))
             {
-
+                s.modemission[t] = s.emission[t] + 1;
             }
             else
-            {
-                if ((t.Value >= s.emissionperiod.Value) && (t.Value < (s.emissionperiod.Value + 10)))
-                {
-                    s.modemission[t] = s.emission[t] + 1;
-                }
-                else
-                    s.modemission[t] = s.emission[t];
-            }
+                s.modemission[t] = s.emission[t];
         }
 
     }
