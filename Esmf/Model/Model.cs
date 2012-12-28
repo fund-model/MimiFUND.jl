@@ -19,11 +19,13 @@ namespace Esmf.Model
         private List<string> _componentsOrder = new List<string>();
         private int _years;
         private bool _storeFullVariablesByDefault;
+        private int _logLevel;
 
-        public Model(int years = 1049, bool storeFullVariablesByDefault = true)
+        public Model(int years = 1049, bool storeFullVariablesByDefault = true, int logLevel = 1)
         {
             _years = years;
             _storeFullVariablesByDefault = storeFullVariablesByDefault;
+            _logLevel = logLevel;
         }
 
         public void AddComponent(string name, Type componentType)
@@ -274,12 +276,15 @@ namespace Esmf.Model
                                                   where !parametersToFindValueFor.Any(i => pName == i.ParameterName.ToLowerInvariant()) && pName != "region"
                                                   select p.Name;
 
-            if (parametersInFileThatAreNotBound.Count() > 0)
+            if (_logLevel > 0)
             {
-                Console.WriteLine();
-                foreach (var p in parametersInFileThatAreNotBound)
+                if (parametersInFileThatAreNotBound.Count() > 0)
                 {
-                    Console.WriteLine("WARNING: Parameter '{0}' is not used by model", p);
+                    Console.WriteLine();
+                    foreach (var p in parametersInFileThatAreNotBound)
+                    {
+                        Console.WriteLine("WARNING: Parameter '{0}' is not used by model", p);
+                    }
                 }
             }
 
