@@ -345,5 +345,11 @@ namespace Esmf.Model
         {
             get { return _components[name.ToLowerInvariant()]; }
         }
+
+        public int LogLevel
+        {
+            get { return _logLevel; }
+            set { _logLevel = value; }
+        }
     }
 }
