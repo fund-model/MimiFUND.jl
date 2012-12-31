@@ -33,7 +33,12 @@ namespace Esmf.Model
 
     public class ParameterValueFile : ParameterValue
     {
+        public ParameterValueFile(string parametername = null)
+        {
+            Parametername = parametername;
+        }
 
+        public string Parametername { get; private set; }
     }
 
     public abstract class ParameterValueManual : ParameterValue

@@ -323,11 +323,19 @@ namespace Esmf.Model
 
             foreach (var v in forcedVariablesToFindValueFor)
             {
-                if (parameters.Contains(v.VariableName))
+                var forced = (ParameterValueFile) v.vaer.Forced;
+
+                if (forced.Parametername==null && parameters.Contains(v.VariableName))
                 {
                     mf.LoadVariableFromParameter("asdfasddf", v.VariableName, parameters, v.DataType, v.DimensionTypes.ToArray());
 
                     ((FieldVariable1DimensionalForceTypeless)mf[v.ComponentName, v.VariableName]).SetSource(mf["asdfasddf", v.VariableName]);
+                }
+                if (forced.Parametername != null && parameters.Contains(forced.Parametername))
+                {
+                    mf.LoadVariableFromParameter("asdfasddf", forced.Parametername, parameters, v.DataType, v.DimensionTypes.ToArray());
+
+                    ((FieldVariable1DimensionalForceTypeless)mf[v.ComponentName, v.VariableName]).SetSource(mf["asdfasddf", forced.Parametername]);
                 }
                 else
                 {

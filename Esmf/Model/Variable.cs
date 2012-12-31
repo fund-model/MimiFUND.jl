@@ -33,9 +33,9 @@ namespace Esmf.Model
 
         public bool StoreOutput { get; set; }
 
-        public void Force()
+        public void ForceFromFile(string parametername=null)
         {
-            _forced = new ParameterValueFile();
+            _forced = new ParameterValueFile(parametername);
         }
 
         public void Force(string componentName, string variableName)
