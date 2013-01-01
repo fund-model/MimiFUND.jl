@@ -62,6 +62,14 @@ namespace Esmf
 
                     Add(parameterValue);
                 }
+                else if (p is Esmf.ParameterNonDimensional<bool>)
+                {
+                    var typedP = (Esmf.ParameterNonDimensional<bool>)p;
+
+                    var parameterValue = new ParameterValueNonDimensional<bool>(p.Name, p.Id, typedP.GetBestGuessValue());
+
+                    Add(parameterValue);
+                }
                 else
                     throw new InvalidOperationException();
             }
@@ -114,6 +122,14 @@ namespace Esmf
                     var typedP = (Esmf.ParameterNonDimensional<Timestep>)p;
 
                     var parameterValue = new ParameterValueNonDimensional<Timestep>(p.Name, p.Id, typedP.GetRandomValue(rand));
+
+                    Add(parameterValue);
+                }
+                else if (p is Esmf.ParameterNonDimensional<bool>)
+                {
+                    var typedP = (Esmf.ParameterNonDimensional<bool>)p;
+
+                    var parameterValue = new ParameterValueNonDimensional<bool>(p.Name, p.Id, typedP.GetRandomValue(rand));
 
                     Add(parameterValue);
                 }
