@@ -137,7 +137,7 @@ namespace Fund.Components.ImpactSeaLevelRise
                         Math.Pow(popdens / s.slrwvpopdens0, s.wvpdl) *
                         Math.Pow((s.wetland90[r] - s.cumwetlandloss[t - 1, r]) / s.wetland90[r], s.wvsl);
 
-                    double potCumLandloss = Math.Min(s.maxlandloss[r], s.cumlandloss[t - 1, r] + s.dlbm[r] * Math.Pow(s.sea[t], s.drylandlossparam[r]));
+                    double potCumLandloss = Math.Min(s.maxlandloss[r], s.dlbm[r] * Math.Pow(s.sea[t], s.drylandlossparam[r]));
 
                     double potLandloss = potCumLandloss - s.cumlandloss[t - 1, r];
 
