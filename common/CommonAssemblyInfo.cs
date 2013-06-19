@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Fund")]
-[assembly: AssemblyCopyright("Copyright ©  2012 Richard S.J. Tol & David Anthoff")]
+[assembly: AssemblyCopyright("Copyright ©  2013 Richard S.J. Tol & David Anthoff")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: AssemblyConfiguration("")]
@@ -22,5 +22,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("3.8.1.*")]
-[assembly: AssemblyFileVersion("3.8.1.*")]
+[assembly: AssemblyVersion("3.8.2.*")]
+[assembly: AssemblyFileVersion("3.8.2.*")]
