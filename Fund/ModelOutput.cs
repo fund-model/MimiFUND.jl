@@ -17,7 +17,7 @@ namespace Fund
 
         public void Load(Esmf.ModelOutput mf)
         {
-            var clock = new Esmf.Clock(Esmf.Timestep.FromSimulationYear(0), Esmf.Timestep.FromSimulationYear(1049));
+            var clock = new Esmf.Clock(Esmf.Timestep.FromSimulationYear(0), mf.Clock.StopTime);
             do
             {
                 var t = clock.Current;
