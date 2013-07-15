@@ -13,9 +13,9 @@ namespace Fund
 {
     public static class FundModel
     {
-        public static Model GetModel(bool storeFullVariablesByDefault = true)
+        public static Model GetModel(int years=1049, bool storeFullVariablesByDefault = true)
         {
-            var m = new Model(storeFullVariablesByDefault: storeFullVariablesByDefault);
+            var m = new Model(years: years, storeFullVariablesByDefault: storeFullVariablesByDefault);
 
             m.AddComponent<ScenarioUncertaintyComponent>("ScenarioUncertainty");
 
