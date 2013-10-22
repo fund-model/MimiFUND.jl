@@ -24,6 +24,14 @@ namespace Esmf
             _currentPos = -1;
         }
 
+        public ParameterElementEmpiricalDistribution(ParameterElementKey key, double bestGuess, double[] values)
+            : base(key)
+        {
+            _bestGuess = bestGuess;
+            _values = (double[]) values.Clone();
+            _currentPos = -1;
+        }
+
         public override string ToString()
         {
             return string.Format("~Empirical({0})", _bestGuess);
