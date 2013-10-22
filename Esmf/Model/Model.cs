@@ -45,7 +45,7 @@ namespace Esmf.Model
             var c = new Component(name, componentType, _storeFullVariablesByDefault);
             _components.Add(name.ToLowerInvariant(), c);
 
-            int position = _componentsOrder.IndexOf(runAfter);
+            int position = _componentsOrder.IndexOf(runAfter.ToLowerInvariant());
             _componentsOrder.Insert(position + 1, name.ToLowerInvariant());
         }
 
