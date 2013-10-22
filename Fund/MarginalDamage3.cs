@@ -11,11 +11,13 @@ namespace Fund
 {
     public class MarginalDamage3
     {
+        public delegate void AdditionalInitMethodHandler(Esmf.Model.Model model);
+
         public ParameterValues Parameters { get; set; }
         public MarginalGas Gas { get; set; }
         public Timestep EmissionYear { get; set; }
         public bool UseEquityWeights { get; set; }
-        public Action<Esmf.Model.Model> AdditionalInitMethod { get; set; }
+        public AdditionalInitMethodHandler AdditionalInitMethod { get; set; }
         public double Prtp { get; set; }
         public double Eta { get; set; }
         public int YearsToAggregate { get; set; }
