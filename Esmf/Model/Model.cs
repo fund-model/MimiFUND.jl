@@ -54,6 +54,12 @@ namespace Esmf.Model
             AddComponent(name, typeof(T), runAfter);
         }
 
+        public void RemoveComponent(string name)
+        {
+            _components.Remove(name.ToLowerInvariant());
+            _componentsOrder.Remove(name.ToLowerInvariant());
+        }
+
         public ModelOutput Run(ParameterValues parameters)
         {
             ModelOutput mf = new ModelOutput();
