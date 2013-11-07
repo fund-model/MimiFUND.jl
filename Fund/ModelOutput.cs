@@ -15,9 +15,9 @@ namespace Fund
         private Incomes m_incomes = new Fund.Incomes();
         private Populations m_populations = new Fund.Populations();
 
-        public void Load(Esmf.ModelOutput mf)
+        public void Load(Esmf.ModelOutput mf, int years = 1049)
         {
-            var clock = new Esmf.Clock(Esmf.Timestep.FromSimulationYear(0), Esmf.Timestep.FromSimulationYear(1049));
+            var clock = new Esmf.Clock(Esmf.Timestep.FromSimulationYear(0), Esmf.Timestep.FromSimulationYear(years));
             do
             {
                 var t = clock.Current;
