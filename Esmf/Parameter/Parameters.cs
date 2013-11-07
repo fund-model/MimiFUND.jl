@@ -99,6 +99,12 @@ namespace Esmf
 
                         typedP.SkipRandomValues(rand);
                     }
+                    else if (p is Esmf.ParameterOneDimensional<string>)
+                    {
+                        var typedP = (Esmf.ParameterOneDimensional<string>)p;
+
+                        typedP.SkipRandomValues(rand);
+                    }
                     else
                         throw new InvalidOperationException();
                 }
