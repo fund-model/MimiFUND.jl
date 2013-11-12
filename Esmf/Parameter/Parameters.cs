@@ -445,6 +445,11 @@ namespace Esmf
 
         }
 
+        public void Add1Dimensional(string name, double[] data)
+        {
+            Add1Dimensional(name, data as IEnumerable<double>);
+        }
+
         public IEnumerator<Parameter> GetEnumerator()
         {
             return _parameters.GetEnumerator();
