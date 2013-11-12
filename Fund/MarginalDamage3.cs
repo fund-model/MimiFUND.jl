@@ -31,7 +31,7 @@ namespace Fund
 
         public double Start()
         {
-            int yearsToRun = EmissionYear.Value + YearsToAggregate;
+            int yearsToRun = Math.Min(1049, EmissionYear.Value + YearsToAggregate);
 
             var f1 = FundModel.GetModel(storeFullVariablesByDefault: false, years: yearsToRun);
             f1["impactwaterresources"].Variables["water"].StoreOutput = true;
