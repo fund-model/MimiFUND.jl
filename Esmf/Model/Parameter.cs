@@ -30,6 +30,11 @@ namespace Esmf.Model
             _value = b;
         }
 
+        public void Unbind()
+        {
+            _value = new ParameterValueFile();
+        }
+
         public void Bind(string componentName)
         {
             Bind(componentName, _name);
