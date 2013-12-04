@@ -61,15 +61,11 @@ namespace Fund
             m.AddComponent<ClimateSF6CycleComponent>("ClimateSF6Cycle");
             m["ClimateSF6Cycle"].Parameters["globsf6"].Bind("emissions");
 
-            m.AddComponent<ClimateSO2CycleComponent>("ClimateSO2Cycle");
-            m["ClimateSO2Cycle"].Parameters["globso2"].Bind("emissions");
-
             m.AddComponent<ClimateForcingComponent>("ClimateForcing");
             m["ClimateForcing"].Parameters["acco2"].Bind("climateco2cycle");
             m["ClimateForcing"].Parameters["acch4"].Bind("climatech4cycle");
             m["ClimateForcing"].Parameters["acn2o"].Bind("climaten2ocycle");
             m["ClimateForcing"].Parameters["acsf6"].Bind("climatesf6cycle");
-            m["ClimateForcing"].Parameters["acso2"].Bind("climateso2cycle");
 
             m.AddComponent<ClimateDynamicsComponent>("ClimateDynamics");
             m["ClimateDynamics"].Parameters["radforc"].Bind("climateforcing");

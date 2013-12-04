@@ -23,8 +23,6 @@ namespace Fund.Components
         IVariable2Dimensional<Timestep, Region, double> emissint { get; }
         IVariable2Dimensional<Timestep, Region, double> emission { get; }
         IVariable2Dimensional<Timestep, Region, double> emissionwithforestry { get; }
-        IVariable2Dimensional<Timestep, Region, double> so2WithSeeiAndScei { get; }
-        IVariable2Dimensional<Timestep, Region, double> so2 { get; }
         IVariable2Dimensional<Timestep, Region, double> sf6 { get; }
         IVariable2Dimensional<Timestep, Region, double> reei { get; }
         IVariable2Dimensional<Timestep, Region, double> rcei { get; }
@@ -48,13 +46,11 @@ namespace Fund.Components
         IVariable1Dimensional<Timestep, double> globch4 { get; }
         IVariable1Dimensional<Timestep, double> globn2o { get; }
         IVariable1Dimensional<Timestep, double> globsf6 { get; }
-        IVariable1Dimensional<Timestep, double> globso2 { get; }
 
         IVariable1Dimensional<Timestep, double> cumglobco2 { get; }
         IVariable1Dimensional<Timestep, double> cumglobch4 { get; }
         IVariable1Dimensional<Timestep, double> cumglobn2o { get; }
         IVariable1Dimensional<Timestep, double> cumglobsf6 { get; }
-        IVariable1Dimensional<Timestep, double> cumglobso2 { get; }
 
         IParameter1Dimensional<Region, double> taxmp { get; }
         IParameter1Dimensional<Region, double> sf60 { get; }
@@ -66,7 +62,6 @@ namespace Fund.Components
         IParameter1Dimensional<Region, double> n2opar2 { get; }
         IParameter1Dimensional<Region, double> gdp0 { get; }
         IParameter1Dimensional<Region, double> emissint0 { get; }
-        IParameter1Dimensional<Region, double> so20 { get; }
 
         IParameter2Dimensional<Timestep, Region, double> forestemm { get; }
         IParameter2Dimensional<Timestep, Region, double> aeei { get; }
@@ -81,9 +76,6 @@ namespace Fund.Components
         IParameter2Dimensional<Timestep, Region, double> income { get; }
         IParameter2Dimensional<Timestep, Region, double> population { get; }
 
-        double so2pop { get; }
-        double so2inc { get; }
-        double so2carb { get; }
         double sf6gdp { get; }
         double sf6ypc { get; }
         double knowpar { get; }
@@ -119,7 +111,6 @@ namespace Fund.Components
                     s.energint[t0, r] = 1;
                     s.energuse[t0, r] = s.gdp0[r];
                     s.emissint[t0, r] = s.emissint0[r];
-                    s.so2[t0, r] = s.so20[r];
                     s.emission[t0, r] = s.emissint[t0, r] / s.energuse[t0, r];
                     s.ch4cost[t0, r] = 0;
                     s.n2ocost[t0, r] = 0;
@@ -140,7 +131,6 @@ namespace Fund.Components
                 s.cumglobch4[t0] = 0.0;
                 s.cumglobn2o[t0] = 0.0;
                 s.cumglobsf6[t0] = 0.0;
-                s.cumglobso2[t0] = 0.0;
 
                 //SocioEconomicState.minint[t0]=Double.PositiveInfinity;
                 var minint = double.PositiveInfinity;
@@ -161,17 +151,6 @@ namespace Fund.Components
                 {
                     s.energint[t, r] = (1.0 - 0.01 * s.aeei[t, r] - s.reei[t - 1, r]) * s.energint[t - 1, r];
                     s.emissint[t, r] = (1.0 - 0.01 * s.acei[t, r] - s.rcei[t - 1, r]) * s.emissint[t - 1, r];
-                }
-
-                // Calculate so2 emissions
-                foreach (var r in dimensions.GetValues<Region>())
-                {
-                    s.so2[t, r] = s.so2[t - 1, r] *
-                                Math.Pow(1 + 0.01 * s.pgrowth[t - 1, r], s.so2pop) *
-                                Math.Pow(1 + 0.01 * s.ypcgrowth[t - 1, r], s.so2inc) *
-                                Math.Pow(1 - 0.01 * s.aeei[t, r] - s.reei[t - 1, r] - 0.01 * s.acei[t, r] - s.rcei[t - 1, r], s.so2carb);
-
-                    s.so2WithSeeiAndScei[t, r] = s.so2[t, r] * (1 - s.seei[t - 1, r] - s.scei[t - 1, r]);
                 }
 
                 // Calculate sf6 emissions
@@ -344,7 +323,6 @@ namespace Fund.Components
                 double globch4 = 0;
                 double globn2o = 0;
                 double globsf6 = 0;
-                double globso2 = 34.4;
 
                 foreach (var r in dimensions.GetValues<Region>())
                 {
@@ -352,20 +330,17 @@ namespace Fund.Components
                     globch4 = globch4 + s.ch4[t, r];
                     globn2o = globn2o + s.n2o[t, r];
                     globsf6 = globsf6 + s.sf6[t, r];
-                    globso2 = globso2 + s.so2WithSeeiAndScei[t, r];
                 }
 
                 s.mco2[t] = globco2;
                 s.globch4[t] = Math.Max(0.0, globch4 + (t.Value > 50 ? s.ch4add * (t.Value - 50) : 0.0));
                 s.globn2o[t] = Math.Max(0.0, globn2o + (t.Value > 50 ? s.n2oadd * (t.Value - 50) : 0));
                 s.globsf6[t] = Math.Max(0.0, globsf6 + (t.Value > 50 ? s.sf6add * (t.Value - 50) : 0.0));
-                s.globso2[t] = globso2;
 
                 s.cumglobco2[t] = s.cumglobco2[t - 1] + s.mco2[t];
                 s.cumglobch4[t] = s.cumglobch4[t - 1] + s.globch4[t];
                 s.cumglobn2o[t] = s.cumglobn2o[t - 1] + s.globn2o[t];
                 s.cumglobsf6[t] = s.cumglobsf6[t - 1] + s.globsf6[t];
-                s.cumglobso2[t] = s.cumglobso2[t - 1] + s.globso2[t];
             }
         }
     }

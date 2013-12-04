@@ -41,15 +41,6 @@ namespace Fund.Components
         /// <summary>Pre-industrial atmospheric SF6 concentration</summary>
         double sf6pre { get; }
 
-        /// <summary>Atmospheric SO2 concentration</summary>
-        IParameter1Dimensional<Timestep, double> acso2 { get; }
-
-        /// <summary>Direct radiative forcing by sulphate aerosols</summary>
-        Double so2dir { get; }
-
-        /// <summary>Indirect radiative forcing by sulphate aerosols</summary>
-        double so2ind { get; }
-
         /// <summary>Radiative forcing from CO2</summary>
         IVariable1Dimensional<Timestep, double> rfCO2 { get; }
 
@@ -63,7 +54,7 @@ namespace Fund.Components
         IVariable1Dimensional<Timestep, double> rfSF6 { get; }
 
         /// <summary>Radiative forcing from SO2</summary>
-        IVariable1Dimensional<Timestep, double> rfSO2 { get; }
+        IParameter1Dimensional<Timestep, double> rfSO2 { get; }
 
         /// <summary>Radiative forcing</summary>
         IVariable1Dimensional<Timestep, double> radforc { get; }
@@ -104,9 +95,7 @@ namespace Fund.Components
 
                 s.rfSF6[t] = 0.00052 * (s.acsf6[t] - s.sf6pre);
 
-                s.rfSO2[t] = s.so2dir * s.acso2[t] / 14.6 + s.so2ind * Math.Log(1.0 + s.acso2[t] / 34.4) / Math.Log(1 + 14.6 / 34.4) - 0.9;
-
-                s.radforc[t] = s.rfCO2[t] + s.rfCH4[t] + s.rfN2O[t] + s.rfSF6[t] - s.rfSO2[t];
+                s.radforc[t] = s.rfCO2[t] + s.rfCH4[t] + s.rfN2O[t] + s.rfSF6[t] + s.rfSO2[t];
 
                 s.rfEMF22[t] = s.rfCO2[t] + s.rfCH4[t] + s.rfN2O[t];
             }

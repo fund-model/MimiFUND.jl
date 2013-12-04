@@ -84,7 +84,6 @@
     <Compile Include="ClimateN2OCycleComponent.cs" />
     <Compile Include="ClimateRegionalComponent.cs" />
     <Compile Include="ClimateSF6CycleComponent.cs" />
-    <Compile Include="ClimateSO2CycleComponent.cs" />
     <Compile Include="EmissionsComponent.cs" />
     <Compile Include="GeographyComponent.cs" />
     <Compile Include="HotellingTaxationComponent.cs" />
