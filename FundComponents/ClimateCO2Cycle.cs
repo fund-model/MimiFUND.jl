@@ -38,6 +38,21 @@ namespace Fund.Components
         /// <summary>Carbon box 5</summary>
         IVariable1Dimensional<Timestep, double> cbox5 { get; }
 
+        /// <summary>Initial carbon box 1</summary>
+        double cbox10 { get; }
+
+        /// <summary>Initial carbon box 2</summary>
+        double cbox20 { get; }
+
+        /// <summary>Initial carbon box 3</summary>
+        double cbox30 { get; }
+
+        /// <summary>Initial carbon box 4</summary>
+        double cbox40 { get; }
+
+        /// <summary>Initial carbon box 5</summary>
+        double cbox50 { get; }
+
         /// <summary>Carbon decay in box 1</summary>
         double co2decay1 { get; set; }
 
@@ -118,11 +133,11 @@ namespace Fund.Components
 
                 s.TerrCO2Stock[t] = s.TerrCO2Stock0;
 
-                s.cbox1[t] = 283.53;
-                s.cbox2[t] = 5.62;
-                s.cbox3[t] = 6.29;
-                s.cbox4[t] = 2.19;
-                s.cbox5[t] = 0.15;
+                s.cbox1[t] = s.cbox10;
+                s.cbox2[t] = s.cbox20;
+                s.cbox3[t] = s.cbox30;
+                s.cbox4[t] = s.cbox40;
+                s.cbox5[t] = s.cbox50;
                 s.acco2[t] = s.cbox1[t] + s.cbox2[t] + s.cbox3[t] + s.cbox4[t] + s.cbox5[t];
             }
             else
