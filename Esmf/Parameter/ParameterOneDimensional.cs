@@ -4,6 +4,7 @@
 // Licensed under the MIT license
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -88,6 +89,22 @@ namespace Esmf
                 for (int i = 0; i < _value.Length; i++)
                 {
                     _value[i].GetRandomValue(rand);
+                }
+            }
+        }
+
+        public override void Save(string filename)
+        {
+            string[] regions = { "USA", "CAN", "WEU", "JPK", "ANZ", "EEU", "FSU", "MDE", "CAM", "LAM", "SAS", "SEA", "CHI", "MAF", "SSA", "SIS" };
+            string[] years = (from i in Enumerable.Range(1950, 3000 - 1950 + 1) select i.ToString()).ToArray();
+
+            using (var f = File.CreateText(filename))
+            {
+                string[] index = _value.Length == 16 ? regions : years;
+
+                for (int i = 0; i < index.Length; i++)
+                {
+                    f.WriteLine("{0},{1}", index[i], _value[i].ToString());
                 }
             }
         }

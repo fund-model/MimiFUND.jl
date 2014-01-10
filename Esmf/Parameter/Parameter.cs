@@ -22,5 +22,7 @@ namespace Esmf
         public int Id { get; private set; }
 
         public abstract IEnumerable<NonTypedParameterElement> GetAllElements();
+
+        public abstract void Save(string filename);
     }
 }

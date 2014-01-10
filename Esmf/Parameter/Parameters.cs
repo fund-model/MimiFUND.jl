@@ -245,6 +245,102 @@ namespace Esmf
                 throw new ApplicationException(string.Format("Syntax error: '[0}' is not a valid value for {1}.", trimmedValue/*, ParameterKey.Name*/));
         }
 
+        // This implementation uses the new ~ syntax for distributions
+        private NonTypedParameterElement GetParameterValueDefinition2(ParameterElementKey key, string value)
+        {
+            string trimmedValue = value.Trim().ToLowerInvariant();
+
+            double valueasnumber;
+            bool canParseAsNumber = Double.TryParse(trimmedValue, NumberStyles.Float, CultureInfo.InvariantCulture, out valueasnumber);
+
+            int year;
+
+            if (trimmedValue.StartsWith("~"))
+            {
+                int pos_openbracket = trimmedValue.IndexOf('(');
+                int pos_closebracket = trimmedValue.IndexOf(')');
+
+                string distributionname = trimmedValue.Substring(1, pos_openbracket - 1);
+                string argumentstring = trimmedValue.Substring(pos_openbracket + 1, pos_closebracket - pos_openbracket - 1);
+                string[] arguments = argumentstring.Split(';').Select(s => s.Trim()).ToArray();
+
+                string[] positionalargs = arguments.Where(s => !s.Contains('=')).ToArray();
+
+                var namedargs = (from a in arguments
+                                 where a.Contains('=')
+                                 let splitindex = a.IndexOf('=')
+                                 let argname = a.Substring(0, splitindex).ToLowerInvariant()
+                                 let argvalue = a.Substring(splitindex + 1)
+                                 select new
+                                 {
+                                     argname,
+                                     argvalue
+                                 }).ToDictionary(i => i.argname, i => i.argvalue);
+
+                if (distributionname == "n")
+                {
+                    double bestGuess = Double.Parse(positionalargs[0], CultureInfo.InvariantCulture);
+                    double standardDeviation = Double.Parse(positionalargs[1], CultureInfo.InvariantCulture);
+                    double? lowerBound = namedargs.ContainsKey("min") ?
+                        (double?)Double.Parse(namedargs["min"], CultureInfo.InvariantCulture) :
+                        null;
+                    double? upperBound = namedargs.ContainsKey("max") ?
+                        (double?)Double.Parse(namedargs["max"], CultureInfo.InvariantCulture) :
+                        null;
+
+                    return new ParameterElementNormalDistribution(key, bestGuess, standardDeviation, lowerBound, upperBound);
+                }
+                else if (distributionname == "gamma")
+                {
+                    double alpha = Double.Parse(positionalargs[0], CultureInfo.InvariantCulture);
+                    double beta = Double.Parse(positionalargs[1], CultureInfo.InvariantCulture);
+                    double? lowerBound = namedargs.ContainsKey("min") ?
+                        (double?)Double.Parse(namedargs["min"], CultureInfo.InvariantCulture) :
+                        null;
+                    double? upperBound = namedargs.ContainsKey("max") ?
+                        (double?)Double.Parse(namedargs["max"], CultureInfo.InvariantCulture) :
+                        null;
+
+                    return new ParameterElementGammaDistribution(key, alpha, beta, lowerBound, upperBound);
+                }
+                else if (distributionname == "exp")
+                {
+                    double lambda = Double.Parse(positionalargs[0], CultureInfo.InvariantCulture);
+                    double? lowerBound = namedargs.ContainsKey("min") ?
+                        (double?)Double.Parse(namedargs["min"], CultureInfo.InvariantCulture) :
+                        null;
+                    double? upperBound = namedargs.ContainsKey("max") ?
+                        (double?)Double.Parse(namedargs["max"], CultureInfo.InvariantCulture) :
+                        null;
+
+                    return new ParameterElementExponentialDistribution(key, lambda, lowerBound, upperBound);
+                }
+                else if (distributionname == "triangular")
+                {
+                    double min = Double.Parse(positionalargs[0], CultureInfo.InvariantCulture);
+                    double max = Double.Parse(positionalargs[1], CultureInfo.InvariantCulture);
+                    double bestGuess = Double.Parse(positionalargs[2], CultureInfo.InvariantCulture);
+
+                    return new ParameterElementTriangularDistribution(key, bestGuess, min, max);
+                }
+
+                else
+                    throw new InvalidOperationException("Invalid distribution name");
+            }
+            else if (canParseAsNumber)
+            {
+                return new ParameterElementConstant<double>(key, valueasnumber);
+            }
+            else if (trimmedValue.EndsWith("y") && Int32.TryParse(trimmedValue.Substring(0, trimmedValue.Length - 1), out year))
+            {
+                return new ParameterElementConstant<Timestep>(key, Timestep.FromYear(year));
+            }
+            else
+            {
+                return new ParameterElementConstant<string>(key, value);
+            }
+        }
+
         private void ReadExcel2007File(string filename)
         {
             var excelParameters = new Esmf.FundExcelParameterFile(filename);
@@ -487,6 +583,142 @@ namespace Esmf
                     yield return pe;
                 }
             }
+        }
+
+        public Parameter this[string name]
+        {
+            get
+            {
+                return _parametersByName[name];
+            }
+        }
+
+        public void Save(string directoryname)
+        {
+            foreach (var p in this)
+            {
+                p.Save(Path.Combine(directoryname, String.Format("{0}.csv", p.Name)));
+            }
+        }
+
+        public void ReadDirectory(string directoryname)
+        {
+            var filenames = Directory.EnumerateFiles(directoryname);
+
+            foreach (var filename in filenames)
+            {
+                string parameterName = Path.GetFileNameWithoutExtension(filename).ToLowerInvariant();
+                int parameterId = -1;
+
+                if (!_parameterIdsByName.TryGetValue(parameterName, out parameterId))
+                {
+                    parameterId = _nextFreeId;
+                    _parameterIdsByName.Add(parameterName, parameterId);
+                    _nextFreeId++;
+                }
+
+                var lines = (from line in File.ReadLines(filename)
+                             let uncommented = line.Contains('#') ? line.Substring(0, line.IndexOf('#')) : line
+                             let trimmed = uncommented.Trim()
+                             where trimmed.Length > 0
+                             let columns = trimmed.Split(',')
+                             select columns).ToArray();
+
+                if (lines.Select(l => l.Length).Distinct().Count() > 1)
+                    throw new InvalidOperationException(String.Format("Parameter file {0} has different columns counts in different lines.", filename));
+
+                int columncount = lines.Select(l => l.Length).Distinct().First();
+
+                if (columncount == 1)
+                {
+                    var key = new ParameterElementKey(parameterId, parameterName);
+
+                    var parameterValueDef = GetParameterValueDefinition2(key, lines[0][0]);
+
+                    if (parameterValueDef.GetElementType() == typeof(double))
+                    {
+                        var parameter = new ParameterNonDimensional<double>(parameterName, parameterId, (ParameterElement<double>)parameterValueDef);
+
+                        Add(parameter);
+                    }
+                    else if (parameterValueDef.GetElementType() == typeof(Timestep))
+                    {
+                        var parameter = new ParameterNonDimensional<Timestep>(parameterName, parameterId, (ParameterElement<Timestep>)parameterValueDef);
+
+                        Add(parameter);
+                    }
+                    else
+                        throw new InvalidOperationException();
+
+                }
+                else if (columncount == 2)
+                {
+                    var values = (from i in Enumerable.Range(0, lines.Length)
+                                  let key = new ParameterElementKey1Dimensional(parameterId, parameterName, i)
+                                  select GetParameterValueDefinition2(key, lines[i][1])).ToArray();
+
+                    if (values.Select(i => i.GetElementType()).Distinct().Count() != 1)
+                        throw new InvalidOperationException("Cannot load 1 dimensional parameter with different data types");
+
+                    Type datatype = values.Select(i => i.GetElementType()).First();
+
+                    if (datatype == typeof(double))
+                    {
+                        var parameter = new ParameterOneDimensional<double>(parameterName, parameterId, values.Cast<ParameterElement<double>>().ToArray());
+                        Add(parameter);
+                    }
+                    else if (datatype == typeof(string))
+                    {
+                        var parameter = new ParameterOneDimensional<string>(parameterName, parameterId, values.Cast<ParameterElement<string>>().ToArray());
+                        Add(parameter);
+                    }
+                    else
+                        throw new InvalidOperationException();
+                }
+                else if (columncount == 3)
+                {
+                    var index0 = lines.Select(i => i[0]).Distinct().ToList();
+                    var index1 = lines.Select(i => i[1]).Distinct().ToList();
+
+                    var values = (from i in Enumerable.Range(0, lines.Length)
+                                  let key = new ParameterElementKey2Dimensional(parameterId, parameterName, index0.IndexOf(lines[i][0]), index1.IndexOf(lines[i][1]))
+                                  select GetParameterValueDefinition2(key, lines[i][2])).ToArray();
+
+                    if (values.Select(i => i.GetElementType()).Distinct().Count() != 1)
+                        throw new InvalidOperationException("Cannot load 2 dimensional parameter with different data types");
+
+                    Type datatype = values.Select(i => i.GetElementType()).First();
+
+                    if (datatype == typeof(double))
+                    {
+                        ParameterElement<double>[,] vals = new ParameterElement<double>[index0.Count, index1.Count];
+
+                        foreach (var v in values)
+                        {
+                            var key = (ParameterElementKey2Dimensional)v.Key;
+                            vals[key.D1, key.D2] = (ParameterElement<double>)v;
+                        }
+
+                        for (int i = 0; i < index0.Count; i++)
+                        {
+                            for (int l = 0; l < index1.Count; l++)
+                            {
+                                if (vals[i, l] == null)
+                                    throw new InvalidOperationException("Missing element in 2 dimensional parameter");
+                            }
+                        }
+
+                        var parameter = new Parameter2Dimensional<double>(parameterName, parameterId, vals);
+                        Add(parameter);
+                    }
+                    else
+                        throw new InvalidOperationException();
+                }
+                else
+                {
+                    throw new InvalidOperationException("Cannot read parameter files with more than three columns.");
+                }
+            };
         }
     }
 }

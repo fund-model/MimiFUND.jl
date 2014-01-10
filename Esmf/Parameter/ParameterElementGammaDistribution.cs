@@ -28,7 +28,8 @@ namespace Esmf
 
         public override string ToString()
         {
-            return string.Format("~Gam({0},{1}), >{2}, <{3}", _alpha, _beta, _lowerBound, _upperBound);
+            string trim = FormatTrim(_lowerBound, _upperBound);
+            return string.Format("~Gamma({0};{1}{2})", _alpha, _beta, trim);
         }
 
         public override double GetBestGuessValue()

@@ -22,7 +22,12 @@ namespace Esmf
 
         public override string ToString()
         {
-            return _value.ToString();
+            if (_value.GetType() == typeof(Timestep))
+            {
+                return String.Format("{0}y", _value);
+            }
+            else
+                return _value.ToString();
         }
 
         public override T GetBestGuessValue()

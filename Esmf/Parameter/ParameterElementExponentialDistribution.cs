@@ -26,7 +26,8 @@ namespace Esmf
 
         public override string ToString()
         {
-            return string.Format("~Exp({0}), >{1}, <{2}", _lambda, _lowerBound, _upperBound);
+            string trim = FormatTrim(_lowerBound, _upperBound);
+            return string.Format("~Exp({0}{1})", _lambda, trim);
         }
 
 

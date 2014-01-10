@@ -26,7 +26,7 @@ namespace Esmf
 
         public override string ToString()
         {
-            return string.Format("~Tri({0},{1},{2})", _min, _max, _bestGuess);
+            return string.Format("~Triangular({0};{1};{2})", _min, _max, _bestGuess);
         }
 
 

@@ -20,5 +20,13 @@ namespace Esmf
 
         public ParameterElementKey Key { get; private set; }
         public abstract Type GetElementType();
+
+        public static string FormatTrim(double? lowerBound, double? upperBound)
+        {
+            string trim0 = lowerBound.HasValue ? String.Format(";min={0}", lowerBound.Value) : "";
+            string trim1 = upperBound.HasValue ? String.Format(";max={0}", upperBound.Value) : "";
+
+            return trim0 + trim1;
+        }
     }
 }

@@ -28,7 +28,8 @@ namespace Esmf
 
         public override string ToString()
         {
-            return string.Format("~N({0},{1}), >{2}, <{3}", _bestGuess, _standardDeviation, _lowerBound, _upperBound);
+            string trim = FormatTrim(_lowerBound, _upperBound);
+            return string.Format("~N({0};{1}{2})", _bestGuess, _standardDeviation, trim);
         }
 
         public override double GetBestGuessValue()
