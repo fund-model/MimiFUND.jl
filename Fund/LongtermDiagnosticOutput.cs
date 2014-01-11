@@ -155,7 +155,7 @@ namespace Fund
         private static double GetSCGas(MarginalGas gas, double prtp, bool equityWeights)
         {
             var parameters = new Parameters();
-            parameters.ReadExcelFile(@"Data\Parameter - base.xlsm");
+            parameters.ReadDirectory(@"Data\Base");
 
             var m = new MarginalDamage3()
                 {
@@ -175,7 +175,7 @@ namespace Fund
         private static Tuple<double, double> GetSCGasMonteCarlo(MarginalGas gas, double prtp, bool equityWeights, int monteCarloRuns)
         {
             var parameters = new Parameters();
-            parameters.ReadExcelFile(@"Data\Parameter - base.xlsm");
+            parameters.ReadDirectory(@"Data\Base");
 
             var fm = FundModel.GetModel();
             fm.Run(parameters.GetBestGuess());

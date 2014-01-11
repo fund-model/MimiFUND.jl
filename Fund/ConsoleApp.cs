@@ -181,7 +181,7 @@ namespace Fund
             if (lSimulationManager.RunParallel)
             {
                 var parameterDefinition = new Parameters();
-                parameterDefinition.ReadExcelFile(@"Data\Parameter - base.xlsm");
+                parameterDefinition.ReadDirectory(@"Data\Base");
 
                 // Create a new model that inits itself from the parameters just loaded
                 var model = FundModel.GetModel();

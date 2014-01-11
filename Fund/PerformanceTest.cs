@@ -22,7 +22,7 @@ namespace Fund
 
             // Load parameters
             var parameters = new Parameters();
-            parameters.ReadExcelFile(@"Data\Parameter - base.xlsm");
+            parameters.ReadDirectory(@"Data\Base");
 
             // Do one best guess run
             {

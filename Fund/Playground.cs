@@ -18,7 +18,7 @@ namespace Fund
         {
             // Load parameters
             var parameters = new Parameters();
-            parameters.ReadExcelFile(@"Data\Parameter - base.xlsm");
+            parameters.ReadDirectory(@"Data\Base");
 
             // Get best guess parameter values
             var parameterValues = parameters.GetBestGuess();
