@@ -81,41 +81,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="RunMarginalModeWithA1bScenario.GenericTest">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="RunMarginalModeWithA1BScenario100MonteCarlo.GenericTest">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="RunMarginalModeWithA2Scenario.GenericTest">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="RunMarginalModeWithA2Scenario100MonteCarlo.GenericTest">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="RunMarginalModeWithB1Scenario.GenericTest">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="RunMarginalModeWithB1Scenario100MonteCarlo.GenericTest">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="RunMarginalModeWithB2Scenario.GenericTest">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="RunMarginalModeWithB2Scenario100MonteCarlo.GenericTest">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="RunMarginalModeWithFundScenario.GenericTest">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="RunMarginalModeWithFundScenario100MonteCarlo.GenericTest">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="RunTotalModeWithFundScenario.GenericTest">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Esmf\Esmf.csproj">
       <Project>{29289CB5-296D-4F73-8778-CD92F60357BF}</Project>
       <Name>Esmf</Name>

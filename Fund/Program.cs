@@ -16,9 +16,6 @@ namespace Fund
     class FundArguments
     {
 #pragma warning disable 0649
-        [DefaultArgument(ArgumentType.AtMostOnce)]
-        public string ConfigurationFilename;
-
         [Argument(ArgumentType.AtMostOnce)]
         public bool Quiet;
 
@@ -72,10 +69,6 @@ namespace Fund
                 Console.WriteLine();
 
                 LongtermDiagnosticOutput.Run(lParsedCmdArgs.Diagnostic);
-            }
-            else if (lParsedCmdArgs.ConfigurationFilename != null)
-            {
-                Fund.ConsoleApp.Run(lParsedCmdArgs.ConfigurationFilename);
             }
             else
             {

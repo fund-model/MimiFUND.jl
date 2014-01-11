@@ -31,7 +31,6 @@ namespace Fund
         private TextWriter m_YearInputCsv;
         private TextWriter m_RegionYearInputCsv;
 
-        private Run _run;
         private MarginalGas _gas;
         private Timestep _emissionyear;
         private string _outputPath;
@@ -47,15 +46,25 @@ namespace Fund
         public TextWriter RegionYearInputCsv { get { return m_RegionYearInputCsv; } set { m_RegionYearInputCsv = value; } }
         public TextWriter SummaryCsv { get; set; }
         public Action<Esmf.Model.Model> AdditionalInitCode { get; set; }
+        public string WeightingCombination { get; set; }
+        public int MonteCarloRuns { get; set; }
+        public int YearsToAggregate { get; set; }
+        public bool OutputVerbal { get; set; }
+        public string ScenarioName { get; set; }
+        public int ScenarioId { get; set; }
+        public bool CalculateMeanForMonteCarlo { get; set; }
+        public bool OutputAllMonteCarloRuns { get; set; }
 
-        public TMarginalRun(Run runData, MarginalGas gas, Timestep emissionyear, string outputPath, Parameters parameters, Random rand = null)
+
+        public TMarginalRun(MarginalGas gas, Timestep emissionyear, string outputPath, Parameters parameters, string weightingCombination, Random rand = null)
         {
             _parameters = parameters;
-            _run = runData;
             _gas = gas;
             _emissionyear = emissionyear;
             _outputPath = outputPath;
             _rand = rand;
+            this.WeightingCombination = weightingCombination;
+            YearsToAggregate = 1000;
         }
 
         // DA: Run the model once, write away income (GDP), population, market impacts, non market
@@ -66,7 +75,7 @@ namespace Fund
         {
             WeightingCombination[] i_weightingCombinations;
 
-            Fund28LegacyWeightingCombinations.GetWeightingCombinationsFromName(_run.WeightingCombination, out i_weightingCombinations, _emissionyear);
+            Fund28LegacyWeightingCombinations.GetWeightingCombinationsFromName(this.WeightingCombination, out i_weightingCombinations, _emissionyear);
 
             var sccResults = new ConcurrentBag<double>[i_weightingCombinations.Length];
             sccResults = new ConcurrentBag<double>[i_weightingCombinations.Length];
@@ -84,11 +93,11 @@ namespace Fund
 
             int batchSize = 100;
 
-            int batchCount = (_run.MonteCarloRuns / batchSize) + 1;
+            int batchCount = (MonteCarloRuns / batchSize) + 1;
 
             for (int currentBatch = 0; currentBatch < batchCount; currentBatch++)
             {
-                int runsForThisBatch = currentBatch == batchCount - 1 ? _run.MonteCarloRuns % batchSize : batchSize;
+                int runsForThisBatch = currentBatch == batchCount - 1 ? MonteCarloRuns % batchSize : batchSize;
 
                 Parallel.ForEach(
                     _parameters.GetRandom(_rand, runsForThisBatch, currentBatch * batchSize),
@@ -120,7 +129,7 @@ namespace Fund
 
             double[] res2 = new double[i_weightingCombinations.Length];
 
-            if (_run.MonteCarloRuns > 0)
+            if (MonteCarloRuns > 0)
             {
                 for (int l = 0; l < i_weightingCombinations.Length; l++)
                 {
@@ -228,7 +237,7 @@ namespace Fund
 
             i_output2.Load(result2);
 
-            Fund28LegacyWeightingCombinations.GetWeightingCombinationsFromName(_run.WeightingCombination, out i_weightingCombinations, _emissionyear);
+            Fund28LegacyWeightingCombinations.GetWeightingCombinationsFromName(this.WeightingCombination, out i_weightingCombinations, _emissionyear);
 
             // Take out growth effect effect of run 2 by transforming
             // the damage from run 2 into % of GDP of run 2, and then
@@ -253,7 +262,7 @@ namespace Fund
             for (int i = 0; i < i_weightingCombinations.Length; i++)
             {
                 i_weightingCombinations[i].CalculateWeights(i_output1);
-                i_aggregatedDamage = i_weightingCombinations[i].AddDamagesUp(i_marginalDamages, _run.YearsToAggregate, _emissionyear);
+                i_aggregatedDamage = i_weightingCombinations[i].AddDamagesUp(i_marginalDamages, YearsToAggregate, _emissionyear);
 
                 i_weightedAggregatedDamages[i] = i_aggregatedDamage;
 
@@ -267,7 +276,7 @@ namespace Fund
             {
                 foreach (var i_Damage in i_marginalDamages)
                 {
-                    if ((i_Damage.Year >= _emissionyear.Value) && (i_Damage.Year < _emissionyear.Value + _run.YearsToAggregate))
+                    if ((i_Damage.Year >= _emissionyear.Value) && (i_Damage.Year < _emissionyear.Value + this.YearsToAggregate))
                     {
                         for (int k = 0; k < i_weightingCombinations.Length; k++)
                             WriteMarginalDamage(RunId, i_Damage, k, i_weightingCombinations[k][i_Damage.Year, i_Damage.Region], i_weightingCombinations);
@@ -286,21 +295,21 @@ namespace Fund
                 int gas = Convert.ToInt32(_gas);
 
                 m_YearRegionSectorWeightingSchemeCsv.WriteLine(
-                    (_run.OutputVerbal ? _run.Scenario.Name : _run.Scenario.Id.ToString()) +
+                    (OutputVerbal ? ScenarioName : ScenarioId.ToString()) +
                     ";" +
-                    (_run.OutputVerbal ? (RunId == 0 ? "Best guess" : RunId == -1 ? "Mean" : RunId.ToString()) : RunId.ToString()) +
+                    (OutputVerbal ? (RunId == 0 ? "Best guess" : RunId == -1 ? "Mean" : RunId.ToString()) : RunId.ToString()) +
                     ";" +
-                    (_run.OutputVerbal ? (gas == 0 ? "C" : gas == 1 ? "CH4" : gas == 2 ? "N2O" : gas == 3 ? "SF6" : "ERROR") : ((int)_gas).ToString()) +
+                    (OutputVerbal ? (gas == 0 ? "C" : gas == 1 ? "CH4" : gas == 2 ? "N2O" : gas == 3 ? "SF6" : "ERROR") : ((int)_gas).ToString()) +
                     ";" +
                     _emissionyear.ToString() +
                     ";" +
                     (i_Damage.Year + 1950).ToString() +
                     ";" +
-                    (_run.OutputVerbal ? i_Damage.Region.ToString() : i_Damage.Region.ToString()) +
+                    (OutputVerbal ? i_Damage.Region.ToString() : i_Damage.Region.ToString()) +
                     ";" +
-                    (_run.OutputVerbal ? Enum.GetName(typeof(Sector), i_Damage.Sector) : ((int)i_Damage.Sector).ToString()) +
+                    (OutputVerbal ? Enum.GetName(typeof(Sector), i_Damage.Sector) : ((int)i_Damage.Sector).ToString()) +
                     ";" +
-                    (_run.OutputVerbal ? WeightingCombinations[WeightingschemeId].Name : WeightingschemeId.ToString()) +
+                    (OutputVerbal ? WeightingCombinations[WeightingschemeId].Name : WeightingschemeId.ToString()) +
                     ";" +
                     (i_Damage.DamageValue * Weight).ToString("f15")
                     );
@@ -309,9 +318,9 @@ namespace Fund
 
         public void WriteAggregateDamage(int RunId, int WeightingschemeId, double Damage, WeightingCombination[] WeightingCombinations)
         {
-            if (!_run.CalculateMeanForMonteCarlo && (RunId == -1))
+            if (!CalculateMeanForMonteCarlo && (RunId == -1))
                 return;
-            else if (!_run.OutputAllMonteCarloRuns && (RunId > 0))
+            else if (!OutputAllMonteCarloRuns && (RunId > 0))
                 return;
 
             if (m_AggregateDamageCsv != null)
@@ -319,15 +328,15 @@ namespace Fund
                 int gas = (int)_gas;
 
                 m_AggregateDamageCsv.WriteLine(
-                    (_run.OutputVerbal ? _run.Scenario.Name : _run.Scenario.Id.ToString()) +
+                    (OutputVerbal ? ScenarioName : ScenarioId.ToString()) +
                     ";" +
-                    (_run.OutputVerbal ? (gas == 0 ? "C" : gas == 1 ? "CH4" : gas == 2 ? "N2O" : gas == 3 ? "SF6" : "ERROR") : ((int)_gas).ToString()) +
+                    (OutputVerbal ? (gas == 0 ? "C" : gas == 1 ? "CH4" : gas == 2 ? "N2O" : gas == 3 ? "SF6" : "ERROR") : ((int)_gas).ToString()) +
                     ";" +
                     _emissionyear.ToString() +
                     ";" +
-                    (_run.OutputVerbal ? (RunId == 0 ? "Best guess" : RunId == -1 ? "Mean" : RunId.ToString()) : RunId.ToString()) +
+                    (OutputVerbal ? (RunId == 0 ? "Best guess" : RunId == -1 ? "Mean" : RunId.ToString()) : RunId.ToString()) +
                     ";" +
-                    (_run.OutputVerbal ? WeightingCombinations[WeightingschemeId].Name : WeightingschemeId.ToString()) +
+                    (OutputVerbal ? WeightingCombinations[WeightingschemeId].Name : WeightingschemeId.ToString()) +
                     ";" +
                     Damage.ToString("f15")
                     );
@@ -360,10 +369,10 @@ namespace Fund
 
 
                 SummaryCsv.WriteLine("{0};{1};{2};{3};{4:f15};{5:f15};{6:f15};{7:f15};{8:f15};{9:f15};{10:f15};{11:f15};{12:f15};{13:f15};{14:f15};{15:f15};{16:f15}",
-                    _run.OutputVerbal ? _run.Scenario.Name : _run.Scenario.Id.ToString(),
-                    _run.OutputVerbal ? (gas == 0 ? "C" : gas == 1 ? "CH4" : gas == 2 ? "N2O" : gas == 3 ? "SF6" : "ERROR") : ((int)_gas).ToString(),
+                    OutputVerbal ? ScenarioName : ScenarioId.ToString(),
+                    OutputVerbal ? (gas == 0 ? "C" : gas == 1 ? "CH4" : gas == 2 ? "N2O" : gas == 3 ? "SF6" : "ERROR") : ((int)_gas).ToString(),
                     _emissionyear,
-                    _run.OutputVerbal ? WeightingCombinations[WeightingschemeId].Name : WeightingschemeId.ToString(),
+                    OutputVerbal ? WeightingCombinations[WeightingschemeId].Name : WeightingschemeId.ToString(),
                     bgDamage,
                     stats.Mean,
                     trimmedMean0_001,
@@ -382,6 +391,5 @@ namespace Fund
 
             }
         }
-
     }
 }
