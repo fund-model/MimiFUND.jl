@@ -93,13 +93,16 @@ namespace Esmf
             }
         }
 
-        public override void Save(string filename)
+        public override void Save(string filename, string comment=null)
         {
             string[] regions = { "USA", "CAN", "WEU", "JPK", "ANZ", "EEU", "FSU", "MDE", "CAM", "LAM", "SAS", "SEA", "CHI", "MAF", "SSA", "SIS" };
             string[] years = (from i in Enumerable.Range(1950, 3000 - 1950 + 1) select i.ToString()).ToArray();
 
             using (var f = File.CreateText(filename))
             {
+                if (comment != null)
+                    f.WriteLine("# {0}", comment);
+
                 string[] index = _value.Length == 16 ? regions : years;
 
                 for (int i = 0; i < index.Length; i++)

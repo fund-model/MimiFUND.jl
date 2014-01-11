@@ -23,6 +23,6 @@ namespace Esmf
 
         public abstract IEnumerable<NonTypedParameterElement> GetAllElements();
 
-        public abstract void Save(string filename);
+        public abstract void Save(string filename, string comment=null);
     }
 }

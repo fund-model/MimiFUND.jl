@@ -593,11 +593,11 @@ namespace Esmf
             }
         }
 
-        public void Save(string directoryname)
+        public void Save(string directoryname, string comment=null)
         {
             foreach (var p in this)
             {
-                p.Save(Path.Combine(directoryname, String.Format("{0}.csv", p.Name)));
+                p.Save(Path.Combine(directoryname, String.Format("{0}.csv", p.Name)), comment);
             }
         }
 
