@@ -1,45 +1,45 @@
 ﻿using IAMF
 
 @defcomp socioeconomic begin
-	addIndex(regions)
+	regions = Index()
 
-	addVariable(income, Float64, index=[time,regions])
-	addVariable(consumption, Float64, index=[time,regions])
-	addVariable(ypc, Float64, index=[time,regions])
-	addVariable(ygrowth, Float64, index=[time,regions])
+	income = Variable(index=[time,regions])
+	consumption = Variable(index=[time,regions])
+	ypc = Variable(index=[time,regions])
+	ygrowth = Variable(index=[time,regions])
 
-	addVariable(plus, Float64, index=[time,regions])
-	addVariable(urbpop, Float64, index=[time,regions])
-	addVariable(popdens, Float64, index=[time,regions])
+	plus = Variable(index=[time,regions])
+	urbpop = Variable(index=[time,regions])
+	popdens = Variable(index=[time,regions])
 
-	addVariable(globalconsumption, Float64, index=[time])
-	addVariable(globalypc, Float64, index=[time])
-	addVariable(globalincome, Float64, index=[time])
+	globalconsumption = Variable(index=[time])
+	globalypc = Variable(index=[time])
+	globalincome = Variable(index=[time])
 
-	addVariable(ypc90, Float64, index=[regions])
-
-
-	addParameter(pgrowth, Float64, index=[time,regions])
-	addParameter(ypcgrowth, Float64, index=[time,regions])
-	addParameter(eloss, Float64, index=[time,regions])
-	addParameter(sloss, Float64, index=[time,regions])
-	addParameter(mitigationcost, Float64, index=[time,regions])
-	addParameter(area, Float64, index=[time,regions])
-	addParameter(globalpopulation, Float64, index=[time])
-	addParameter(population, Float64, index=[time,regions])
-	addParameter(populationin1, Float64, index=[time,regions])
-
-	addParameter(plus90, Float64, index=[regions])
-	addParameter(gdp90, Float64, index=[regions])
-	addParameter(pop90, Float64, index=[regions])
-	addParameter(urbcorr, Float64, index=[regions])
-	addParameter(gdp0, Float64, index=[regions])
+	ypc90 = Variable(index=[regions])
 
 
-	addParameter(runwithoutdamage, Bool)
-	addParameter(consleak, Float64)
-	addParameter(plusel, Float64)
-    addParameter(savingsrate, Float64)
+	pgrowth = Parameter(index=[time,regions])
+	ypcgrowth = Parameter(index=[time,regions])
+	eloss = Parameter(index=[time,regions])
+	sloss = Parameter(index=[time,regions])
+	mitigationcost = Parameter(index=[time,regions])
+	area = Parameter(index=[time,regions])
+	globalpopulation = Parameter(index=[time])
+	population = Parameter(index=[time,regions])
+	populationin1 = Parameter(index=[time,regions])
+
+	plus90 = Parameter(index=[regions])
+	gdp90 = Parameter(index=[regions])
+	pop90 = Parameter(index=[regions])
+	urbcorr = Parameter(index=[regions])
+	gdp0 = Parameter(index=[regions])
+
+
+	runwithoutdamage::Bool = Parameter()
+	consleak = Parameter()
+	plusel = Parameter()
+    savingsrate = Parameter()
 end
 
 function init(s::socioeconomic)    

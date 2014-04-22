@@ -1,18 +1,18 @@
 ﻿using IAMF
 
 @defcomp population begin
-    addIndex(regions)
+    regions             = Index()
 
-    addVariable(population, Float64, index=[time,regions])
-    addVariable(populationin1, Float64, index=[time,regions])
-    addVariable(globalpopulation, Float64, index=[time])
+    population          = Variable(index=[time,regions])
+    populationin1       = Variable(index=[time,regions])
+    globalpopulation    = Variable(index=[time])
 
-    addParameter(pgrowth, Float64, index=[time,regions])
-    addParameter(enter, Float64, index=[time,regions])
-    addParameter(leave, Float64, index=[time,regions])
-    addParameter(dead, Float64, index=[time,regions])
-    addParameter(pop0, Float64, index=[regions])
-    addParameter(runwithoutpopulationperturbation, Bool)
+    pgrowth             = Parameter(index=[time,regions])
+    enter               = Parameter(index=[time,regions])
+    leave               = Parameter(index=[time,regions])
+    dead                = Parameter(index=[time,regions])
+    pop0                = Parameter(index=[regions])
+    runwithoutpopulationperturbation::Bool = Parameter()
 end
 
 function init(s::population)    
