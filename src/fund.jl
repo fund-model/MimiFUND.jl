@@ -1,12 +1,15 @@
 include("SocioEconomicComponent.jl")
+include("PopulationComponent.jl")
 
 function getfund(nsteps=566)
 	regions = 16
+    indices = {:time=>nsteps, :regions=>regions}
     # ---------------------------------------------
     # Create components
     # ---------------------------------------------
 
-    c_socioeconomic = socioeconomic({:time=>nsteps, :regions=>regions})
+    c_population = population(indices)
+    c_socioeconomic = socioeconomic(indices)
 
     # ---------------------------------------------
     # Set parameters
@@ -29,24 +32,27 @@ function getfund(nsteps=566)
 	c_socioeconomic.Parameters.sloss = ones(nsteps, regions) * 0.0
 	c_socioeconomic.Parameters.mitigationcost = ones(nsteps, regions) * 0.0
 	c_socioeconomic.Parameters.area = ones(nsteps, regions) * 2.0
-	c_socioeconomic.Parameters.globalpopulation = ones(nsteps) * 2.0
-	c_socioeconomic.Parameters.population = ones(nsteps, regions) * 2.0
-	c_socioeconomic.Parameters.populationin1 = ones(nsteps, regions) * 2.0
 
+    c_population.Parameters.pgrowth = ones(nsteps, regions) * 2.0
+    c_population.Parameters.enter = ones(nsteps, regions) * 2.0
+    c_population.Parameters.leave = ones(nsteps, regions) * 2.0
+    c_population.Parameters.dead = ones(nsteps, regions) * 2.0
+    c_population.Parameters.pop0 = ones(nsteps) * 2.0
+    c_population.Parameters.runwithoutpopulationperturbation = false
 
     # ---------------------------------------------
     # Connect parameters to variables
     # ---------------------------------------------
 
-    #c_socioeconomic.Parameters.forcing = c_radforc.Variables.rf
-    #c_ccm.Parameters.temp = c_socioeconomic.Variables.temp
-    #c_radforc.Parameters.atmco2 = c_ccm.Variables.atmco2
+    c_socioeconomic.Parameters.globalpopulation = c_population.Variables.globalpopulation
+    c_socioeconomic.Parameters.populationin1 = c_population.Variables.populationin1
+    c_socioeconomic.Parameters.population = c_population.Variables.population
 
     # ---------------------------------------------
     # Return model
     # ---------------------------------------------
 
-    comps::Vector{ComponentState} = [c_socioeconomic]
+    comps::Vector{ComponentState} = [c_socioeconomic, c_socioeconomic]
     return comps
 end
 
