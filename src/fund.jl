@@ -1,5 +1,6 @@
 include("SocioEconomicComponent.jl")
 include("PopulationComponent.jl")
+include("EmissionsComponent.jl")
 
 function getfund(nsteps=566)
 	regions = 16
@@ -10,6 +11,7 @@ function getfund(nsteps=566)
 
     c_population = population(indices)
     c_socioeconomic = socioeconomic(indices)
+    c_emissions = emissions(indices)
 
     # ---------------------------------------------
     # Set parameters
@@ -52,7 +54,7 @@ function getfund(nsteps=566)
     # Return model
     # ---------------------------------------------
 
-    comps::Vector{ComponentState} = [c_socioeconomic, c_socioeconomic]
+    comps::Vector{ComponentState} = [c_socioeconomic, c_socioeconomic, c_emissions]
     return comps
 end
 
