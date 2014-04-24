@@ -140,7 +140,7 @@ function timestep(s::emissions, t::Int)
 
     # Calculate sf6 emissions
     for r in d.regions
-        v.sf6[t, r] = (p.sf60[r] + p.sf6gdp * (p.income[t, r] - p.GDP90[r]) + p.sf6ypc * (p.income[t - 1, r] / p.population[t - 1, r] - p.GDP90[r] / p.pop90[r])) * (t <= Timestep.FromSimulationYear(60) ? 1 + (t.Value - 40.0) / 40.0 : 1.0 + (60.0 - 40.0) / 40.0) * (t > Timestep.FromSimulationYear(60) ? Math.Pow(0.99, t.Value - 60.0) : 1.0)
+        v.sf6[t, r] = (p.sf60[r] + p.sf6gdp * (p.income[t, r] - p.GDP90[r]) + p.sf6ypc * (p.income[t - 1, r] / p.population[t - 1, r] - p.GDP90[r] / p.pop90[r])) * (t <= 60 ? 1 + (t - 40.0) / 40.0 : 1.0 + (60.0 - 40.0) / 40.0) * (t > 60 ? 0.99^(t - 60.0) : 1.0)
     end
     # Check for unrealistic values
     for r in d.regions
@@ -175,7 +175,7 @@ function timestep(s::emissions, t::Int)
         if v.emission[t, r] / p.income[t, r] - v.minint[t - 1] <= 0
             v.taxpar[t, r] = p.TaxConstant
         else
-            v.taxpar[t, r] = p.TaxConstant - p.TaxEmInt * Math.Sqrt(v.emission[t, r] / p.income[t, r] - v.minint[t - 1])
+            v.taxpar[t, r] = p.TaxConstant - p.TaxEmInt * sqrt(v.emission[t, r] / p.income[t, r] - v.minint[t - 1])
         end
     end
 
@@ -190,7 +190,7 @@ function timestep(s::emissions, t::Int)
     end
 
     for r in d.regions
-        v.ryg[t, r] = v.taxpar[t, r] * Math.Pow(v.co2red[t, r], 2) / v.know[t - 1, r] / v.globknow[t - 1]
+        v.ryg[t, r] = v.taxpar[t, r] * v.co2red[t, r]^2 / v.know[t - 1, r] / v.globknow[t - 1]
     end
 
     # TODO RT check
@@ -205,7 +205,7 @@ function timestep(s::emissions, t::Int)
     # TODO RT check
     for r in d.regions
         if p.currtax[t, r] < p.TaxThreshold
-            v.rcei[t, r] = v.perm[t, r] * 0.5 * Math.Pow(v.co2red[t, r], 2)
+            v.rcei[t, r] = v.perm[t, r] * 0.5 * v.co2red[t, r]^2
         else
             v.rcei[t, r] = v.perm[t, r] * 0.5 * v.co2red[t, r]
         end
@@ -219,7 +219,7 @@ function timestep(s::emissions, t::Int)
 
     for r in d.regions
         if p.currtax[t, r] < 100
-            v.scei[t, r] = 0.9 * v.scei[t - 1, r] + (1 - v.perm[t, r]) * 0.5 * Math.Pow(v.co2red[t, r], 2)
+            v.scei[t, r] = 0.9 * v.scei[t - 1, r] + (1 - v.perm[t, r]) * 0.5 * v.co2red[t, r]^2
         else
             v.scei[t, r] = 0.9 * v.scei[t - 1, r] + (1 - v.perm[t, r]) * 0.5 * v.co2red[t, r] * 1.7
         end
@@ -227,16 +227,16 @@ function timestep(s::emissions, t::Int)
 
     # TODO RT check
     for r in d.regions
-        v.know[t, r] = v.know[t - 1, r] * Math.Sqrt(1 + p.knowpar * v.co2red[t, r])
+        v.know[t, r] = v.know[t - 1, r] * sqrt(1 + p.knowpar * v.co2red[t, r])
 
-        if v.know[t, r] > Math.Sqrt(p.MaxCostFall)
-            v.know[t, r] = Math.Sqrt(p.MaxCostFall)
+        if v.know[t, r] > sqrt(p.MaxCostFall)
+            v.know[t, r] = sqrt(p.MaxCostFall)
         end
     end
 
     v.globknow[t] = v.globknow[t - 1]
     for r in d.regions
-        v.globknow[t] = v.globknow[t] * Math.Sqrt(1 + p.knowgpar * v.co2red[t, r])
+        v.globknow[t] = v.globknow[t] * sqrt(1 + p.knowgpar * v.co2red[t, r])
     end
     if v.globknow[t] > 3.16
         v.globknow[t] = 3.16
@@ -263,12 +263,12 @@ function timestep(s::emissions, t::Int)
     end
 
     for r in d.regions
-        v.ch4cost[t, r] = p.ch4par1[r] * Math.Pow(p.ch4par2[r], 2) * Math.Pow(v.ch4red[t, r], 2)
+        v.ch4cost[t, r] = p.ch4par1[r] * p.ch4par2[r]^2 * v.ch4red[t, r]^2
         v.ch4costindollar[t, r] = v.ch4cost[t, r] * p.income[t, r]
     end
 
     for r in d.regions
-        v.n2ocost[t, r] = p.n2opar1[r] * Math.Pow(p.n2opar2[r], 2) * Math.Pow(v.n2ored[t, r], 2)
+        v.n2ocost[t, r] = p.n2opar1[r] * p.n2opar2[r]^2 * v.n2ored[t, r]^2
     end
 
     minint = Inf
@@ -280,7 +280,7 @@ function timestep(s::emissions, t::Int)
     v.minint[t] = minint
 
     for r in d.regions
-        if t > Timestep.FromYear(2000)
+        if t > 50
             v.cumaeei[t, r] = v.cumaeei[t - 1, r] * (1.0 - 0.01 * p.aeei[t, r] - v.reei[t, r] + v.seei[t - 1, r] - v.seei[t, r])
         else
             v.cumaeei[t, r] = 1.0
@@ -288,7 +288,8 @@ function timestep(s::emissions, t::Int)
     end
 
     for r in d.regions
-        v.mitigationcost[t, r] = (p.taxmp[r] * v.ryg[t, r] /*+ v.ch4cost[t, r]*/ + v.n2ocost[t, r]) * p.income[t, r]
+        #v.mitigationcost[t, r] = (p.taxmp[r] * v.ryg[t, r] /*+ v.ch4cost[t, r]*/ + v.n2ocost[t, r]) * p.income[t, r]
+        v.mitigationcost[t, r] = (p.taxmp[r] * v.ryg[t, r] + v.n2ocost[t, r]) * p.income[t, r]
     end
 
     globco2 = 0
@@ -304,9 +305,9 @@ function timestep(s::emissions, t::Int)
     end
 
     v.mco2[t] = globco2
-    v.globch4[t] = Math.Max(0.0, globch4 + (t.Value > 50 ? p.ch4add * (t.Value - 50) : 0.0))
-    v.globn2o[t] = Math.Max(0.0, globn2o + (t.Value > 50 ? p.n2oadd * (t.Value - 50) : 0))
-    v.globsf6[t] = Math.Max(0.0, globsf6 + (t.Value > 50 ? p.sf6add * (t.Value - 50) : 0.0))
+    v.globch4[t] = max(0.0, globch4 + (t > 50 ? p.ch4add * (t - 50) : 0.0))
+    v.globn2o[t] = max(0.0, globn2o + (t > 50 ? p.n2oadd * (t - 50) : 0))
+    v.globsf6[t] = max(0.0, globsf6 + (t > 50 ? p.sf6add * (t - 50) : 0.0))
 
     v.cumglobco2[t] = v.cumglobco2[t - 1] + v.mco2[t]
     v.cumglobch4[t] = v.cumglobch4[t - 1] + v.globch4[t]
