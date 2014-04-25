@@ -7,6 +7,10 @@ include("GeographyComponent.jl")
 include("ScenarioUncertaintyComponent.jl")
 include("ClimateCO2Cycle.jl")
 include("ClimateCH4CycleComponent.jl")
+include("ClimateN2OCycleComponent.jl")
+include("ClimateSF6CycleComponent.jl")
+include("ClimateForcingComponent.jl")
+include("ClimateDynamicsComponent.jl")
 
 import StatsBase.modes
 function modes(d::Truncated{Gamma})
@@ -118,6 +122,10 @@ function getfund(nsteps=566)
     addcomponent(m, emissions)
     addcomponent(m, climateco2cycle)
     addcomponent(m, climatech4cycle)
+    addcomponent(m, climaten2ocycle)
+    addcomponent(m, climatesf6cycle)
+    addcomponent(m, climateforcing)
+    addcomponent(m, climatedynamics)
 
     # ---------------------------------------------
     # Load parameters
@@ -171,6 +179,17 @@ function getfund(nsteps=566)
 
     bindparameter(m, :climatech4cycle, :globch4, :emissions)
 
+    bindparameter(m, :climaten2ocycle, :globn2o, :emissions)
+
+    bindparameter(m, :climatesf6cycle, :globsf6, :emissions)
+
+    bindparameter(m, :climateforcing, :acco2, :climateco2cycle)
+    bindparameter(m, :climateforcing, :acch4, :climatech4cycle)
+    bindparameter(m, :climateforcing, :acn2o, :climaten2ocycle)
+    bindparameter(m, :climateforcing, :acsf6, :climatesf6cycle)
+
+    bindparameter(m, :climatedynamics, :radforc, :climateforcing)
+
     # ---------------------------------------------
     # Load remaining parameters from file
     # ---------------------------------------------
@@ -183,6 +202,6 @@ function getfund(nsteps=566)
     return m
 end
 
-#m = getfund()
+m = getfund()
 
-#inrun(m)
+run(m)
