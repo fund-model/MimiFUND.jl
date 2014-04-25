@@ -4,6 +4,7 @@ include("SocioEconomicComponent.jl")
 include("PopulationComponent.jl")
 include("EmissionsComponent.jl")
 include("GeographyComponent.jl")
+include("ScenarioUncertaintyComponent.jl")
 
 import StatsBase.modes
 function modes(d::Truncated{Gamma})
@@ -110,8 +111,9 @@ function getfund(nsteps=566)
     c_geography = geography(indices)
     c_socioeconomic = socioeconomic(indices)
     c_emissions = emissions(indices)
+    c_scenariouncertainty = scenariouncertainty(indices)
 
-    comps::Vector{ComponentState} = [c_geography, c_socioeconomic, c_socioeconomic, c_emissions]
+    comps::Vector{ComponentState} = [c_scenariouncertainty, c_geography, c_socioeconomic, c_socioeconomic, c_emissions]
 
     # ---------------------------------------------
     # Load parameters
@@ -135,13 +137,22 @@ function getfund(nsteps=566)
     # Connect parameters to variables
     # ---------------------------------------------
 
+    c_population.Parameters.pgrowth = c_scenariouncertainty.Variables.pgrowth    
+
     c_socioeconomic.Parameters.area = c_geography.Variables.area
     c_socioeconomic.Parameters.globalpopulation = c_population.Variables.globalpopulation
     c_socioeconomic.Parameters.populationin1 = c_population.Variables.populationin1
-    c_socioeconomic.Parameters.population = c_population.Variables.population
+    c_socioeconomic.Parameters.population = c_population.Variables.population  
+    c_socioeconomic.Parameters.pgrowth = c_scenariouncertainty.Variables.pgrowth
+    c_socioeconomic.Parameters.ypcgrowth = c_scenariouncertainty.Variables.ypcgrowth
 
     c_emissions.Parameters.income = c_socioeconomic.Variables.income
     c_emissions.Parameters.population = c_population.Variables.population
+    c_emissions.Parameters.forestemm = c_scenariouncertainty.Variables.forestemm
+    c_emissions.Parameters.aeei = c_scenariouncertainty.Variables.aeei
+    c_emissions.Parameters.acei = c_scenariouncertainty.Variables.acei
+    c_emissions.Parameters.ypcgrowth = c_scenariouncertainty.Variables.ypcgrowth
+    #c_emissions.Parameters.pgrowth = c_scenariouncertainty.Variables.pgrowth
 
     # ---------------------------------------------
     # Load remaining parameters from file

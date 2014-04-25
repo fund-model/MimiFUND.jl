@@ -60,7 +60,7 @@
     currtax = Parameter(index=[time,regions])
     currtaxch4 = Parameter(index=[time,regions])
     currtaxn2o = Parameter(index=[time,regions])
-    pgrowth = Parameter(index=[time,regions])
+#    pgrowth = Parameter(index=[time,regions])
     ypcgrowth = Parameter(index=[time,regions])
     income = Parameter(index=[time,regions])
     population = Parameter(index=[time,regions])
