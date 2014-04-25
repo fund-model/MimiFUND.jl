@@ -101,23 +101,23 @@ function prepparameters!(parameters)
     end
 end
 
-function getfund(nsteps=566)
-	regions = 16
-    indices = {:time=>nsteps, :regions=>regions}
-    
+function getfund(nsteps=566)    
+    m = Model()
+
+    setindex(m, :time, nsteps)
+    setindex(m, :regions, 16)    
+
     # ---------------------------------------------
     # Create components
-    # ---------------------------------------------
-
-    c_population = population(indices)
-    c_geography = geography(indices)
-    c_socioeconomic = socioeconomic(indices)
-    c_emissions = emissions(indices)
-    c_scenariouncertainty = scenariouncertainty(indices)
-    c_climateco2cycle = climateco2cycle(indices)
-    c_climatech4cycle = climatech4cycle(indices)
-
-    comps::Vector{ComponentState} = [c_scenariouncertainty, c_geography, c_socioeconomic, c_socioeconomic, c_emissions, c_climateco2cycle, c_climatech4cycle]
+    # ---------------------------------------------    
+    addcomponent(m, scenariouncertainty)
+    addcomponent(m, population)
+    addcomponent(m, geography)
+    addcomponent(m, socioeconomic)
+    addcomponent(m, socioeconomic)
+    addcomponent(m, emissions)
+    addcomponent(m, climateco2cycle)
+    addcomponent(m, climatech4cycle)
 
     # ---------------------------------------------
     # Load parameters
@@ -131,70 +131,58 @@ function getfund(nsteps=566)
     # Set parameters
     # ---------------------------------------------
 
-	c_socioeconomic.Parameters.eloss = ones(nsteps, regions) * 0.0
-	c_socioeconomic.Parameters.sloss = ones(nsteps, regions) * 0.0
-	c_socioeconomic.Parameters.mitigationcost = ones(nsteps, regions) * 0.0
+    setparameter(m, :population, :enter, zeros(nsteps,16))
+    setparameter(m, :population, :leave, zeros(nsteps,16))
+    setparameter(m, :population, :dead, zeros(nsteps,16))
+    setparameter(m, :population, :runwithoutpopulationperturbation, false)
 
-    c_geography.Parameters.landloss = zeros(nsteps,regions)
 
-    c_climateco2cycle.Parameters.temp = zeros(nsteps)
-    #c_climatech4cycle.Parameters.lifech4 = 12.
+    setparameter(m, :socioeconomic, :eloss, zeros(nsteps,16))
+    setparameter(m, :socioeconomic, :sloss, zeros(nsteps,16))
+    setparameter(m, :socioeconomic, :mitigationcost, zeros(nsteps,16))
+    setparameter(m, :socioeconomic, :runwithoutdamage, true)
+    setparameter(m, :socioeconomic, :savingsrate, 0.2)
+
+    setparameter(m, :geography, :landloss, zeros(nsteps,16))
+
+    setparameter(m, :climateco2cycle, :temp, zeros(nsteps))
 
     # ---------------------------------------------
     # Connect parameters to variables
     # ---------------------------------------------
 
-    c_population.Parameters.pgrowth = c_scenariouncertainty.Variables.pgrowth    
+    bindparameter(m, :population, :pgrowth, :scenariouncertainty)
 
-    c_socioeconomic.Parameters.area = c_geography.Variables.area
-    c_socioeconomic.Parameters.globalpopulation = c_population.Variables.globalpopulation
-    c_socioeconomic.Parameters.populationin1 = c_population.Variables.populationin1
-    c_socioeconomic.Parameters.population = c_population.Variables.population  
-    c_socioeconomic.Parameters.pgrowth = c_scenariouncertainty.Variables.pgrowth
-    c_socioeconomic.Parameters.ypcgrowth = c_scenariouncertainty.Variables.ypcgrowth
+    bindparameter(m, :socioeconomic, :area, :geography)    
+    bindparameter(m, :socioeconomic, :globalpopulation, :population)    
+    bindparameter(m, :socioeconomic, :populationin1, :population)    
+    bindparameter(m, :socioeconomic, :population, :population)    
+    bindparameter(m, :socioeconomic, :pgrowth, :scenariouncertainty)    
+    bindparameter(m, :socioeconomic, :ypcgrowth, :scenariouncertainty)    
 
-    c_emissions.Parameters.income = c_socioeconomic.Variables.income
-    c_emissions.Parameters.population = c_population.Variables.population
-    c_emissions.Parameters.forestemm = c_scenariouncertainty.Variables.forestemm
-    c_emissions.Parameters.aeei = c_scenariouncertainty.Variables.aeei
-    c_emissions.Parameters.acei = c_scenariouncertainty.Variables.acei
-    c_emissions.Parameters.ypcgrowth = c_scenariouncertainty.Variables.ypcgrowth
-    #c_emissions.Parameters.pgrowth = c_scenariouncertainty.Variables.pgrowth
+    bindparameter(m, :emissions, :income, :socioeconomic)
+    bindparameter(m, :emissions, :population, :population)
+    bindparameter(m, :emissions, :forestemm, :scenariouncertainty)
+    bindparameter(m, :emissions, :aeei, :scenariouncertainty)
+    bindparameter(m, :emissions, :acei, :scenariouncertainty)
+    bindparameter(m, :emissions, :ypcgrowth, :scenariouncertainty)
 
-    c_climateco2cycle.Parameters.mco2 = c_emissions.Variables.mco2
-    c_climatech4cycle.Parameters.globch4 = c_emissions.Variables.globch4
+    bindparameter(m, :climateco2cycle, :mco2, :emissions)
+
+    bindparameter(m, :climatech4cycle, :globch4, :emissions)
 
     # ---------------------------------------------
     # Load remaining parameters from file
     # ---------------------------------------------
-
-    println(parameters["lifech4"])
-
-    for c in comps
-        for name in names(c.Parameters)
-            if isa(c,climatech4cycle)
-                println(name)
-                println(isdefined(c.Parameters, name))
-            end
-            if !isdefined(c.Parameters, name)
-                setfield!(c.Parameters,name,parameters[lowercase(string(name))])
-            end
-        end
-    end
-
-    println(c_climatech4cycle.Parameters.lifech4)
+    setleftoverparameters(m, parameters)        
 
     # ---------------------------------------------
     # Return model
     # ---------------------------------------------
     
-    return comps
+    return m
 end
 
-m = getfund()
+#m = getfund()
 
-for c in m
-    resetvariables(c)
-end
-
-run(566, m)
+#run(m)
