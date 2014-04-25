@@ -11,6 +11,9 @@ include("ClimateN2OCycleComponent.jl")
 include("ClimateSF6CycleComponent.jl")
 include("ClimateForcingComponent.jl")
 include("ClimateDynamicsComponent.jl")
+include("BioDiversityComponent.jl")
+include("ClimateRegionalComponent.jl")
+include("OceanComponent.jl")
 
 import StatsBase.modes
 function modes(d::Truncated{Gamma})
@@ -105,7 +108,7 @@ function prepparameters!(parameters)
     end
 end
 
-function getfund(nsteps=566)    
+function getfund(nsteps=1049)    
     m = Model()
 
     setindex(m, :time, nsteps)
@@ -126,6 +129,9 @@ function getfund(nsteps=566)
     addcomponent(m, climatesf6cycle)
     addcomponent(m, climateforcing)
     addcomponent(m, climatedynamics)
+    addcomponent(m, biodiversity)
+    addcomponent(m, climateregional)
+    addcomponent(m, ocean)
 
     # ---------------------------------------------
     # Load parameters
@@ -189,6 +195,12 @@ function getfund(nsteps=566)
     bindparameter(m, :climateforcing, :acsf6, :climatesf6cycle)
 
     bindparameter(m, :climatedynamics, :radforc, :climateforcing)
+
+    bindparameter(m, :climateregional, :inputtemp, :climatedynamics, :temp)
+
+    bindparameter(m, :biodiversity, :temp, :climatedynamics)
+
+    bindparameter(m, :ocean, :temp, :climatedynamics)
 
     # ---------------------------------------------
     # Load remaining parameters from file
