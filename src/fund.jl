@@ -5,6 +5,7 @@ include("PopulationComponent.jl")
 include("EmissionsComponent.jl")
 include("GeographyComponent.jl")
 include("ScenarioUncertaintyComponent.jl")
+include("ClimateCO2Cycle.jl")
 
 import StatsBase.modes
 function modes(d::Truncated{Gamma})
@@ -112,8 +113,9 @@ function getfund(nsteps=566)
     c_socioeconomic = socioeconomic(indices)
     c_emissions = emissions(indices)
     c_scenariouncertainty = scenariouncertainty(indices)
+    c_climateco2cycle = climateco2cycle(indices)
 
-    comps::Vector{ComponentState} = [c_scenariouncertainty, c_geography, c_socioeconomic, c_socioeconomic, c_emissions]
+    comps::Vector{ComponentState} = [c_scenariouncertainty, c_geography, c_socioeconomic, c_socioeconomic, c_emissions, c_climateco2cycle]
 
     # ---------------------------------------------
     # Load parameters
@@ -132,6 +134,8 @@ function getfund(nsteps=566)
 	c_socioeconomic.Parameters.mitigationcost = ones(nsteps, regions) * 0.0
 
     c_geography.Parameters.landloss = zeros(nsteps,regions)
+
+    c_climateco2cycle.Parameters.temp = zeros(nsteps)
 
     # ---------------------------------------------
     # Connect parameters to variables
@@ -154,6 +158,8 @@ function getfund(nsteps=566)
     c_emissions.Parameters.ypcgrowth = c_scenariouncertainty.Variables.ypcgrowth
     #c_emissions.Parameters.pgrowth = c_scenariouncertainty.Variables.pgrowth
 
+    c_climateco2cycle.Parameters.mco2 = c_emissions.Variables.mco2
+
     # ---------------------------------------------
     # Load remaining parameters from file
     # ---------------------------------------------
@@ -175,6 +181,8 @@ end
 
 m = getfund()
 
-resetvariables(m)
+for c in m
+    resetvariables(c)
+end
 
 run(566, m)
