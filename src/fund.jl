@@ -6,6 +6,7 @@ include("EmissionsComponent.jl")
 include("GeographyComponent.jl")
 include("ScenarioUncertaintyComponent.jl")
 include("ClimateCO2Cycle.jl")
+include("ClimateCH4CycleComponent.jl")
 
 import StatsBase.modes
 function modes(d::Truncated{Gamma})
@@ -114,14 +115,15 @@ function getfund(nsteps=566)
     c_emissions = emissions(indices)
     c_scenariouncertainty = scenariouncertainty(indices)
     c_climateco2cycle = climateco2cycle(indices)
+    c_climatech4cycle = climatech4cycle(indices)
 
-    comps::Vector{ComponentState} = [c_scenariouncertainty, c_geography, c_socioeconomic, c_socioeconomic, c_emissions, c_climateco2cycle]
+    comps::Vector{ComponentState} = [c_scenariouncertainty, c_geography, c_socioeconomic, c_socioeconomic, c_emissions, c_climateco2cycle, c_climatech4cycle]
 
     # ---------------------------------------------
     # Load parameters
     # ---------------------------------------------
     files = readdir("../data")
-    parameters = {splitext(file)[1] => readdlm(joinpath("../data",file), ',') for file in files};
+    parameters = {lowercase(splitext(file)[1]) => readdlm(joinpath("../data",file), ',') for file in files};
 
     prepparameters!(parameters)
 
@@ -136,6 +138,7 @@ function getfund(nsteps=566)
     c_geography.Parameters.landloss = zeros(nsteps,regions)
 
     c_climateco2cycle.Parameters.temp = zeros(nsteps)
+    #c_climatech4cycle.Parameters.lifech4 = 12.
 
     # ---------------------------------------------
     # Connect parameters to variables
@@ -159,18 +162,27 @@ function getfund(nsteps=566)
     #c_emissions.Parameters.pgrowth = c_scenariouncertainty.Variables.pgrowth
 
     c_climateco2cycle.Parameters.mco2 = c_emissions.Variables.mco2
+    c_climatech4cycle.Parameters.globch4 = c_emissions.Variables.globch4
 
     # ---------------------------------------------
     # Load remaining parameters from file
     # ---------------------------------------------
 
+    println(parameters["lifech4"])
+
     for c in comps
         for name in names(c.Parameters)
+            if isa(c,climatech4cycle)
+                println(name)
+                println(isdefined(c.Parameters, name))
+            end
             if !isdefined(c.Parameters, name)
                 setfield!(c.Parameters,name,parameters[lowercase(string(name))])
             end
         end
     end
+
+    println(c_climatech4cycle.Parameters.lifech4)
 
     # ---------------------------------------------
     # Return model
