@@ -16,25 +16,21 @@
     ch4pre = Parameter()
 end
 
-function init(s::climatech4cycle)    
-    v = s.Variables
-    p = s.Parameters
-    d = s.Dimensions
-
-    v.ch4decay = 1.0 / p.lifech4
-
-    v.acch4[1] = 1222.0
-end
-
 function timestep(s::climatech4cycle, t::Int)
     v = s.Variables
     p = s.Parameters
     d = s.Dimensions
 
-    # Calculate CH4 concentrations
-    v.acch4[t] = v.acch4[t - 1] + 0.3597 * p.globch4[t] - v.ch4decay * (v.acch4[t - 1] - p.ch4pre)
+    if t==1
+        v.ch4decay = 1.0 / p.lifech4
 
-    if v.acch4[t] < 0
-        error("ch4 atmospheric concentration out of range in $t")
+        v.acch4[1] = 1222.0
+    else
+        # Calculate CH4 concentrations
+        v.acch4[t] = v.acch4[t - 1] + 0.3597 * p.globch4[t] - v.ch4decay * (v.acch4[t - 1] - p.ch4pre)
+    
+        if v.acch4[t] < 0
+            error("ch4 atmospheric concentration out of range in $t")
+        end
     end
 end

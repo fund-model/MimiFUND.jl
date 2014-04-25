@@ -185,4 +185,4 @@ end
 
 #m = getfund()
 
-#run(m)
+#inrun(m)

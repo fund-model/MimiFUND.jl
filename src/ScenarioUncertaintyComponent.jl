@@ -24,12 +24,6 @@
     foremadd = Parameter(index=[regions])
 end
 
-function init(s::scenariouncertainty)    
-    v = s.Variables
-    p = s.Parameters
-    d = s.Dimensions
-end
-
 function timestep(s::scenariouncertainty, t::Int)
     v = s.Variables
     p = s.Parameters

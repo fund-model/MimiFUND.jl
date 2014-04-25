@@ -88,55 +88,50 @@
     tempIn2010 = Variable()
 end
 
-function init(s::climateco2cycle)    
-    v = s.Variables
-    p = s.Parameters
-    d = s.Dimensions
-
-    t = 1
-
-    v.co2decay1 = p.lifeco1
-    v.co2decay2 = exp(-1.0 / p.lifeco2)
-    v.co2decay3 = exp(-1.0 / p.lifeco3)
-    v.co2decay4 = exp(-1.0 / p.lifeco4)
-    v.co2decay5 = exp(-1.0 / p.lifeco5)
-
-    v.TerrCO2Stock[t] = p.TerrCO2Stock0
-
-    v.cbox[t,1] = p.cbox10
-    v.cbox[t,2] = p.cbox20
-    v.cbox[t,3] = p.cbox30
-    v.cbox[t,4] = p.cbox40
-    v.cbox[t,5] = p.cbox50
-    v.acco2[t] = sum(v.cbox[t,:])
-end
-
 function timestep(s::climateco2cycle, t::Int)
     v = s.Variables
     p = s.Parameters
     d = s.Dimensions
 
-    # if t == Timestep.FromYear(2011))
-    if t == 61
-        v.tempIn2010 = p.temp[60]
-    end
-
-    if t > 60
-        v.TerrestrialCO2[t] = (p.temp[t - 1] - v.tempIn2010) * p.TerrCO2Sens * v.TerrCO2Stock[t - 1] / p.TerrCO2Stock0
+    if t==1
+        v.co2decay1 = p.lifeco1
+        v.co2decay2 = exp(-1.0 / p.lifeco2)
+        v.co2decay3 = exp(-1.0 / p.lifeco3)
+        v.co2decay4 = exp(-1.0 / p.lifeco4)
+        v.co2decay5 = exp(-1.0 / p.lifeco5)
+    
+        v.TerrCO2Stock[t] = p.TerrCO2Stock0
+    
+        v.cbox[t,1] = p.cbox10
+        v.cbox[t,2] = p.cbox20
+        v.cbox[t,3] = p.cbox30
+        v.cbox[t,4] = p.cbox40
+        v.cbox[t,5] = p.cbox50
+        v.acco2[t] = sum(v.cbox[t,:])
     else
-        v.TerrestrialCO2[t] = 0
+
+        # if t == Timestep.FromYear(2011))
+        if t == 61
+            v.tempIn2010 = p.temp[60]
+        end
+    
+        if t > 60
+            v.TerrestrialCO2[t] = (p.temp[t - 1] - v.tempIn2010) * p.TerrCO2Sens * v.TerrCO2Stock[t - 1] / p.TerrCO2Stock0
+        else
+            v.TerrestrialCO2[t] = 0
+        end
+    
+        v.TerrCO2Stock[t] = max(v.TerrCO2Stock[t - 1] - v.TerrestrialCO2[t], 0.0)
+    
+        v.globc[t] = p.mco2[t] + v.TerrestrialCO2[t]
+    
+        # Calculate CO2 concentrations
+        v.cbox[t,1] = v.cbox[t - 1,1] * v.co2decay1 + 0.000471 * p.co2frac1 * (v.globc[t])
+        v.cbox[t,2] = v.cbox[t - 1,2] * v.co2decay2 + 0.000471 * p.co2frac2 * (v.globc[t])
+        v.cbox[t,3] = v.cbox[t - 1,3] * v.co2decay3 + 0.000471 * p.co2frac3 * (v.globc[t])
+        v.cbox[t,4] = v.cbox[t - 1,4] * v.co2decay4 + 0.000471 * p.co2frac4 * (v.globc[t])
+        v.cbox[t,5] = v.cbox[t - 1,5] * v.co2decay5 + 0.000471 * p.co2frac5 * (v.globc[t])
+    
+        v.acco2[t] = sum(v.cbox[t,:])
     end
-
-    v.TerrCO2Stock[t] = max(v.TerrCO2Stock[t - 1] - v.TerrestrialCO2[t], 0.0)
-
-    v.globc[t] = p.mco2[t] + v.TerrestrialCO2[t]
-
-    # Calculate CO2 concentrations
-    v.cbox[t,1] = v.cbox[t - 1,1] * v.co2decay1 + 0.000471 * p.co2frac1 * (v.globc[t])
-    v.cbox[t,2] = v.cbox[t - 1,2] * v.co2decay2 + 0.000471 * p.co2frac2 * (v.globc[t])
-    v.cbox[t,3] = v.cbox[t - 1,3] * v.co2decay3 + 0.000471 * p.co2frac3 * (v.globc[t])
-    v.cbox[t,4] = v.cbox[t - 1,4] * v.co2decay4 + 0.000471 * p.co2frac4 * (v.globc[t])
-    v.cbox[t,5] = v.cbox[t - 1,5] * v.co2decay5 + 0.000471 * p.co2frac5 * (v.globc[t])
-
-    v.acco2[t] = sum(v.cbox[t,:])
 end
