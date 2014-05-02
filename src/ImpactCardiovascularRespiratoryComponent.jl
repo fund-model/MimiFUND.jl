@@ -1,49 +1,38 @@
-﻿// FUND - Climate Framework for Uncertainty, Negotiation and Distribution
-// Copyright (C) 2012 David Anthoff and Richard S.J. Tol
-// http://www.fund-model.org
-// Licensed under the MIT license
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Esmf;
-using Fund.CommonDimensions;
+﻿using IAMF
 
-namespace Fund.Components
-{
+@defcomp impactcardiovascularrespiratory begin
+    regions = Index()
 
-    public interface IImpactCardiovascularRespiratoryState
-    {
-        IVariable2Dimensional<Timestep, Region, double> basecardvasc { get; }
-        IVariable2Dimensional<Timestep, Region, double> baseresp { get; }
+    basecardvasc = Variable(index=[time,regions])
+    baseresp = Variable(index=[time,regions])
 
-        IVariable2Dimensional<Timestep, Region, double> cardheat { get; }
-        IVariable2Dimensional<Timestep, Region, double> resp { get; }
-        IVariable2Dimensional<Timestep, Region, double> cardcold { get; }
+    cardheat = Variable(index=[time,regions])
+    resp = Variable(index=[time,regions])
+    cardcold = Variable(index=[time,regions])
 
-        IParameter1Dimensional<Region, double> cardvasc90 { get; }
-        IParameter1Dimensional<Region, double> plus90 { get; }
-        IParameter1Dimensional<Region, double> resp90 { get; }
-        IParameter1Dimensional<Region, double> chplbm { get; }
-        IParameter1Dimensional<Region, double> chmlbm { get; }
-        IParameter1Dimensional<Region, double> chpqbm { get; }
-        IParameter1Dimensional<Region, double> chmqbm { get; }
-        IParameter1Dimensional<Region, double> rlbm { get; }
-        IParameter1Dimensional<Region, double> rqbm { get; }
-        IParameter1Dimensional<Region, double> ccplbm { get; }
-        IParameter1Dimensional<Region, double> ccmlbm { get; }
-        IParameter1Dimensional<Region, double> ccpqbm { get; }
-        IParameter1Dimensional<Region, double> ccmqbm { get; }
+    IParameter1Dimensional<Region, double> cardvasc90 = Parameter(index=[regions])
+    IParameter1Dimensional<Region, double> plus90 = Parameter(index=[regions])
+    IParameter1Dimensional<Region, double> resp90 = Parameter(index=[regions])
+    IParameter1Dimensional<Region, double> chplbm = Parameter(index=[regions])
+    IParameter1Dimensional<Region, double> chmlbm = Parameter(index=[regions])
+    IParameter1Dimensional<Region, double> chpqbm = Parameter(index=[regions])
+    IParameter1Dimensional<Region, double> chmqbm = Parameter(index=[regions])
+    IParameter1Dimensional<Region, double> rlbm = Parameter(index=[regions])
+    IParameter1Dimensional<Region, double> rqbm = Parameter(index=[regions])
+    IParameter1Dimensional<Region, double> ccplbm = Parameter(index=[regions])
+    IParameter1Dimensional<Region, double> ccmlbm = Parameter(index=[regions])
+    IParameter1Dimensional<Region, double> ccpqbm = Parameter(index=[regions])
+    IParameter1Dimensional<Region, double> ccmqbm = Parameter(index=[regions])
 
-        IParameter2Dimensional<Timestep, Region, double> plus { get; }
-        IParameter2Dimensional<Timestep, Region, double> temp { get; }
-        IParameter2Dimensional<Timestep, Region, double> urbpop { get; }
-        IParameter2Dimensional<Timestep, Region, double> population { get; }
+    IParameter2Dimensional<Timestep, Region, double> plus { get; }
+    IParameter2Dimensional<Timestep, Region, double> temp { get; }
+    IParameter2Dimensional<Timestep, Region, double> urbpop { get; }
+    IParameter2Dimensional<Timestep, Region, double> population { get; }
 
-        double cvlin { get; }
-        double rlin { get; }
-        double maxcardvasc { get; }
-    }
+    double cvlin { get; }
+    double rlin { get; }
+    double maxcardvasc { get; }
+end
 
     public class ImpactCardiovascularRespiratoryComponent
     {
