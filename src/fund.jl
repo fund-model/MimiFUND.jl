@@ -15,6 +15,8 @@ include("BioDiversityComponent.jl")
 include("ClimateRegionalComponent.jl")
 include("OceanComponent.jl")
 include("ImpactAgricultureComponent.jl")
+include("ImpactBioDiversityComponent.jl")
+include("ImpactCardiovascularRespiratoryComponent.jl")
 
 import StatsBase.modes
 function modes(d::Truncated{Gamma})
@@ -134,6 +136,8 @@ function getfund(nsteps=1049)
     addcomponent(m, climateregional)
     addcomponent(m, ocean)
     addcomponent(m, impactagriculture)
+    addcomponent(m, impactbiodiversity)
+    addcomponent(m, impactcardiovascularrespiratory)
 
     # ---------------------------------------------
     # Load parameters
@@ -209,6 +213,15 @@ function getfund(nsteps=1049)
     bindparameter(m, :impactagriculture, :temp, :climateregional)
     bindparameter(m, :impactagriculture, :acco2, :climateco2cycle)
 
+    bindparameter(m, :impactbiodiversity, :temp, :climateregional)
+    bindparameter(m, :impactbiodiversity, :nospecies, :biodiversity)
+    bindparameter(m, :impactbiodiversity, :income, :socioeconomic)
+    bindparameter(m, :impactbiodiversity, :population, :population)
+
+    bindparameter(m, :impactcardiovascularrespiratory, :population, :population)
+    bindparameter(m, :impactcardiovascularrespiratory, :temp, :climateregional)
+    bindparameter(m, :impactcardiovascularrespiratory, :plus, :socioeconomic)
+    bindparameter(m, :impactcardiovascularrespiratory, :urbpop, :socioeconomic)
 
     # ---------------------------------------------
     # Load remaining parameters from file

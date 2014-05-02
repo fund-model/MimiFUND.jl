@@ -10,78 +10,77 @@
     resp = Variable(index=[time,regions])
     cardcold = Variable(index=[time,regions])
 
-    IParameter1Dimensional<Region, double> cardvasc90 = Parameter(index=[regions])
-    IParameter1Dimensional<Region, double> plus90 = Parameter(index=[regions])
-    IParameter1Dimensional<Region, double> resp90 = Parameter(index=[regions])
-    IParameter1Dimensional<Region, double> chplbm = Parameter(index=[regions])
-    IParameter1Dimensional<Region, double> chmlbm = Parameter(index=[regions])
-    IParameter1Dimensional<Region, double> chpqbm = Parameter(index=[regions])
-    IParameter1Dimensional<Region, double> chmqbm = Parameter(index=[regions])
-    IParameter1Dimensional<Region, double> rlbm = Parameter(index=[regions])
-    IParameter1Dimensional<Region, double> rqbm = Parameter(index=[regions])
-    IParameter1Dimensional<Region, double> ccplbm = Parameter(index=[regions])
-    IParameter1Dimensional<Region, double> ccmlbm = Parameter(index=[regions])
-    IParameter1Dimensional<Region, double> ccpqbm = Parameter(index=[regions])
-    IParameter1Dimensional<Region, double> ccmqbm = Parameter(index=[regions])
+    cardvasc90 = Parameter(index=[regions])
+    plus90 = Parameter(index=[regions])
+    resp90 = Parameter(index=[regions])
+    chplbm = Parameter(index=[regions])
+    chmlbm = Parameter(index=[regions])
+    chpqbm = Parameter(index=[regions])
+    chmqbm = Parameter(index=[regions])
+    rlbm = Parameter(index=[regions])
+    rqbm = Parameter(index=[regions])
+    ccplbm = Parameter(index=[regions])
+    ccmlbm = Parameter(index=[regions])
+    ccpqbm = Parameter(index=[regions])
+    ccmqbm = Parameter(index=[regions])
 
-    IParameter2Dimensional<Timestep, Region, double> plus { get; }
-    IParameter2Dimensional<Timestep, Region, double> temp { get; }
-    IParameter2Dimensional<Timestep, Region, double> urbpop { get; }
-    IParameter2Dimensional<Timestep, Region, double> population { get; }
+    plus = Parameter(index=[time,regions])
+    temp = Parameter(index=[time,regions])
+    urbpop = Parameter(index=[time,regions])
+    population = Parameter(index=[time,regions])
 
-    double cvlin { get; }
-    double rlin { get; }
-    double maxcardvasc { get; }
+    cvlin = Parameter()
+    rlin = Parameter()
+    maxcardvasc = Parameter()
 end
 
-    public class ImpactCardiovascularRespiratoryComponent
-    {
-        public void Run(Clock clock, IImpactCardiovascularRespiratoryState state, IDimensions dimensions)
-        {
-            var s = state;
-            var t = clock.Current;
+function timestep(s::impactcardiovascularrespiratory, t::Int)
+    v = s.Variables
+    p = s.Parameters
+    d = s.Dimensions
 
-            if (clock.IsFirstTimestep)
-            {
+    if t==1
+    else
+        for r in d.regions
+            v.basecardvasc[t, r] = p.cardvasc90[r] + p.cvlin * (p.plus[t, r] - p.plus90[r])
+            if v.basecardvasc[t, r] > 1.0
+                v.basecardvasc[t, r] = 1.0
+            end
 
-            }
-            else
-            {
-                foreach (var r in dimensions.GetValues<Region>())
-                {
-                    s.basecardvasc[t, r] = s.cardvasc90[r] + s.cvlin * (s.plus[t, r] - s.plus90[r]);
-                    if (s.basecardvasc[t, r] > 1.0)
-                        s.basecardvasc[t, r] = 1.0;
+            v.baseresp[t, r] = p.resp90[r] + p.rlin * (p.plus[t, r] - p.plus90[r])
+            if v.baseresp[t, r] > 1.0
+                v.baseresp[t, r] = 1.0
+            end
 
-                    s.baseresp[t, r] = s.resp90[r] + s.rlin * (s.plus[t, r] - s.plus90[r]);
-                    if (s.baseresp[t, r] > 1.0)
-                        s.baseresp[t, r] = 1.0;
+            v.cardheat[t, r] = (p.chplbm[r] * p.plus[t, r] + p.chmlbm[r] * (1.0 - p.plus[t, r])) * p.temp[t, r] +
+                       (p.chpqbm[r] * p.plus[t, r] + p.chmqbm[r] * (1.0 - p.plus[t, r])) * p.temp[t, r]^2
+            v.cardheat[t, r] = v.cardheat[t, r] * p.urbpop[t, r] * p.population[t, r] * 10
+            if v.cardheat[t, r] > 1000.0 * p.maxcardvasc * v.basecardvasc[t, r] * p.urbpop[t, r] * p.population[t, r]
+                v.cardheat[t, r] = 1000 * p.maxcardvasc * v.basecardvasc[t, r] * p.urbpop[t, r] * p.population[t, r]
+            end            
+            if v.cardheat[t, r] < 0.0
+                v.cardheat[t, r] = 0
+            end
 
-                    s.cardheat[t, r] = (s.chplbm[r] * s.plus[t, r] + s.chmlbm[r] * (1.0 - s.plus[t, r])) * s.temp[t, r] +
-                               (s.chpqbm[r] * s.plus[t, r] + s.chmqbm[r] * (1.0 - s.plus[t, r])) * Math.Pow(s.temp[t, r], 2);
-                    s.cardheat[t, r] = s.cardheat[t, r] * s.urbpop[t, r] * s.population[t, r] * 10;
-                    if (s.cardheat[t, r] > 1000.0 * s.maxcardvasc * s.basecardvasc[t, r] * s.urbpop[t, r] * s.population[t, r])
-                        s.cardheat[t, r] = 1000 * s.maxcardvasc * s.basecardvasc[t, r] * s.urbpop[t, r] * s.population[t, r];
-                    if (s.cardheat[t, r] < 0.0)
-                        s.cardheat[t, r] = 0;
+            v.resp[t, r] = p.rlbm[r] * p.temp[t, r] + p.rqbm[r] * p.temp[t, r]^2
+            v.resp[t, r] = v.resp[t, r] * p.urbpop[t, r] * p.population[t, r] * 10
+            if v.resp[t, r] > 1000 * p.maxcardvasc * v.baseresp[t, r] * p.urbpop[t, r] * p.population[t, r]
+                v.resp[t, r] = 1000 * p.maxcardvasc * v.baseresp[t, r] * p.urbpop[t, r] * p.population[t, r]
+            end
+            if v.resp[t, r] < 0
+                v.resp[t, r] = 0
+            end
 
-                    s.resp[t, r] = s.rlbm[r] * s.temp[t, r] + s.rqbm[r] * Math.Pow(s.temp[t, r], 2);
-                    s.resp[t, r] = s.resp[t, r] * s.urbpop[t, r] * s.population[t, r] * 10;
-                    if (s.resp[t, r] > 1000 * s.maxcardvasc * s.baseresp[t, r] * s.urbpop[t, r] * s.population[t, r])
-                        s.resp[t, r] = 1000 * s.maxcardvasc * s.baseresp[t, r] * s.urbpop[t, r] * s.population[t, r];
-                    if (s.resp[t, r] < 0)
-                        s.resp[t, r] = 0;
-
-                    s.cardcold[t, r] = (s.ccplbm[r] * s.plus[t, r] + s.ccmlbm[r] * (1.0 - s.plus[t, r])) * s.temp[t, r] +
-                               (s.ccpqbm[r] * s.plus[t, r] + s.ccmqbm[r] * (1.0 - s.plus[t, r])) * Math.Pow(s.temp[t, r], 2);
-                    s.cardcold[t, r] = s.cardcold[t, r] * s.population[t, r] * 10;
-                    if (s.cardcold[t, r] < -1000 * s.maxcardvasc * s.basecardvasc[t, r] * s.population[t, r])
-                        s.cardcold[t, r] = -1000 * s.maxcardvasc * s.basecardvasc[t, r] * s.population[t, r];
-                    if (s.cardcold[t, r] > 0)
-                        s.cardcold[t, r] = 0;
-                }
-            }
-        }
-
-    }
-}
+            v.cardcold[t, r] = (p.ccplbm[r] * p.plus[t, r] + p.ccmlbm[r] * (1.0 - p.plus[t, r])) * p.temp[t, r] +
+                       (p.ccpqbm[r] * p.plus[t, r] + p.ccmqbm[r] * (1.0 - p.plus[t, r])) * p.temp[t, r]^2
+            v.cardcold[t, r] = v.cardcold[t, r] * p.population[t, r] * 10
+            if v.cardcold[t, r] < -1000 * p.maxcardvasc * v.basecardvasc[t, r] * p.population[t, r]
+                v.cardcold[t, r] = -1000 * p.maxcardvasc * v.basecardvasc[t, r] * p.population[t, r]
+            end
+            if v.cardcold[t, r] > 0
+                v.cardcold[t, r] = 0
+            end
+        end
+    end
+end
+ 
