@@ -17,6 +17,7 @@ include("OceanComponent.jl")
 include("ImpactAgricultureComponent.jl")
 include("ImpactBioDiversityComponent.jl")
 include("ImpactCardiovascularRespiratoryComponent.jl")
+include("ImpactCoolingComponent.jl")
 
 import StatsBase.modes
 function modes(d::Truncated{Gamma})
@@ -138,6 +139,7 @@ function getfund(nsteps=1049)
     addcomponent(m, impactagriculture)
     addcomponent(m, impactbiodiversity)
     addcomponent(m, impactcardiovascularrespiratory)
+    addcomponent(m, impactcooling)
 
     # ---------------------------------------------
     # Load parameters
@@ -222,6 +224,11 @@ function getfund(nsteps=1049)
     bindparameter(m, :impactcardiovascularrespiratory, :temp, :climateregional)
     bindparameter(m, :impactcardiovascularrespiratory, :plus, :socioeconomic)
     bindparameter(m, :impactcardiovascularrespiratory, :urbpop, :socioeconomic)
+
+    bindparameter(m, :impactcooling, :population, :population)
+    bindparameter(m, :impactcooling, :income, :socioeconomic)
+    bindparameter(m, :impactcooling, :temp, :climateregional)
+    bindparameter(m, :impactcooling, :cumaeei, :emissions)
 
     # ---------------------------------------------
     # Load remaining parameters from file
