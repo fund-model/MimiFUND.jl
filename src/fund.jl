@@ -18,6 +18,7 @@ include("ImpactAgricultureComponent.jl")
 include("ImpactBioDiversityComponent.jl")
 include("ImpactCardiovascularRespiratoryComponent.jl")
 include("ImpactCoolingComponent.jl")
+include("ImpactDeathMorbidityComponent.jl")
 
 import StatsBase.modes
 function modes(d::Truncated{Gamma})
@@ -140,7 +141,8 @@ function getfund(nsteps=1049)
     addcomponent(m, impactbiodiversity)
     addcomponent(m, impactcardiovascularrespiratory)
     addcomponent(m, impactcooling)
-
+    # Finish this once all upstream components are done
+    #addcomponent(m, impactdeathmorbidity)
     # ---------------------------------------------
     # Load parameters
     # ---------------------------------------------
