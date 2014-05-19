@@ -23,6 +23,7 @@ include("ImpactExtratropicalStormsComponent.jl")
 include("ImpactDeathMorbidityComponent.jl")
 include("ImpactForests.jl")
 include("ImpactHeatingComponent.jl")
+include("ImpactVectorBorneDiseasesComponent.jl")
 
 import StatsBase.modes
 function modes(d::Truncated{Gamma})
@@ -148,6 +149,7 @@ function getfund(nsteps=1049)
     addcomponent(m, impactextratropicalstorms)
     addcomponent(m, impactforests)
     addcomponent(m, impactheating)
+    addcomponent(m, impactvectorbornediseases)
     # Finish this once all upstream components are done
     #addcomponent(m, impactdeathmorbidity)
     # ---------------------------------------------
@@ -256,6 +258,10 @@ function getfund(nsteps=1049)
     bindparameter(m, :impactheating, :income, :socioeconomic)
     bindparameter(m, :impactheating, :temp, :climateregional)
     bindparameter(m, :impactheating, :cumaeei, :emissions)
+
+    bindparameter(m, :impactvectorbornediseases, :population, :population)
+    bindparameter(m, :impactvectorbornediseases, :income, :socioeconomic)
+    bindparameter(m, :impactvectorbornediseases, :temp, :climateregional)
     # ---------------------------------------------
     # Load remaining parameters from file
     # ---------------------------------------------
