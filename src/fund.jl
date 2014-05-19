@@ -18,6 +18,7 @@ include("ImpactAgricultureComponent.jl")
 include("ImpactBioDiversityComponent.jl")
 include("ImpactCardiovascularRespiratoryComponent.jl")
 include("ImpactCoolingComponent.jl")
+include("ImpactDiarrhoeaComponent.jl")
 include("ImpactDeathMorbidityComponent.jl")
 
 import StatsBase.modes
@@ -61,8 +62,7 @@ function convertparametervalue(pv)
                         haskey(optargs,"max") ? float64(optargs["max"]) : Inf)
                 end            
             elseif beginswith(pv, "~Triangular(")
-                # ERROR
-                triang = TriangularDist(float64(fixedargs[3]), float64(fixedargs[2])-float64(fixedargs[3]))
+                triang = TriangularDist(float64(fixedargs[1]), float64(fixedargs[2]), float64(fixedargs[3]))
                 return triang
             else
                 error("Unknown distribution")
@@ -141,6 +141,7 @@ function getfund(nsteps=1049)
     addcomponent(m, impactbiodiversity)
     addcomponent(m, impactcardiovascularrespiratory)
     addcomponent(m, impactcooling)
+    addcomponent(m, impactdiarrhoea)
     # Finish this once all upstream components are done
     #addcomponent(m, impactdeathmorbidity)
     # ---------------------------------------------
@@ -231,6 +232,10 @@ function getfund(nsteps=1049)
     bindparameter(m, :impactcooling, :income, :socioeconomic)
     bindparameter(m, :impactcooling, :temp, :climateregional)
     bindparameter(m, :impactcooling, :cumaeei, :emissions)
+
+    bindparameter(m, :impactdiarrhoea, :population, :population)
+    bindparameter(m, :impactdiarrhoea, :income, :socioeconomic)
+    bindparameter(m, :impactdiarrhoea, :regtmp, :climateregional)
 
     # ---------------------------------------------
     # Load remaining parameters from file
