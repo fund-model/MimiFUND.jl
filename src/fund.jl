@@ -152,8 +152,8 @@ function getfund(nsteps=1049)
     addcomponent(m, impactheating)
     addcomponent(m, impactvectorbornediseases)
     addcomponent(m, impacttropicalstorms)
-    # Finish this once all upstream components are done
-    #addcomponent(m, impactdeathmorbidity)
+    addcomponent(m, impactdeathmorbidity)
+
     # ---------------------------------------------
     # Load parameters
     # ---------------------------------------------
@@ -268,6 +268,20 @@ function getfund(nsteps=1049)
     bindparameter(m, :impacttropicalstorms, :population, :population)
     bindparameter(m, :impacttropicalstorms, :income, :socioeconomic)
     bindparameter(m, :impacttropicalstorms, :regstmp, :climateregional)
+
+    bindparameter(m, :impactdeathmorbidity, :population, :population)
+    bindparameter(m, :impactdeathmorbidity, :income, :socioeconomic)
+    bindparameter(m, :impactdeathmorbidity, :dengue, :impactvectorbornediseases)
+    bindparameter(m, :impactdeathmorbidity, :schisto, :impactvectorbornediseases)
+    bindparameter(m, :impactdeathmorbidity, :malaria, :impactvectorbornediseases)
+    bindparameter(m, :impactdeathmorbidity, :cardheat, :impactcardiovascularrespiratory)
+    bindparameter(m, :impactdeathmorbidity, :cardcold, :impactcardiovascularrespiratory)
+    bindparameter(m, :impactdeathmorbidity, :resp, :impactcardiovascularrespiratory)
+    bindparameter(m, :impactdeathmorbidity, :diadead, :impactdiarrhoea)
+    bindparameter(m, :impactdeathmorbidity, :hurrdead, :impacttropicalstorms)
+    bindparameter(m, :impactdeathmorbidity, :extratropicalstormsdead, :impactextratropicalstorms)
+    bindparameter(m, :impactdeathmorbidity, :diasick, :impactdiarrhoea)
+
     # ---------------------------------------------
     # Load remaining parameters from file
     # ---------------------------------------------
