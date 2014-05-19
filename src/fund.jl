@@ -27,6 +27,7 @@ include("ImpactVectorBorneDiseasesComponent.jl")
 include("ImpactTropicalStormsComponent.jl")
 include("ImpactWaterResourcesComponent.jl")
 include("ImpactSeaLevelRiseComponent.jl")
+include("ImpactAggregationComponent.jl")
 
 import StatsBase.modes
 function modes(d::Truncated{Gamma})
@@ -157,6 +158,7 @@ function getfund(nsteps=1049)
     addcomponent(m, impactdeathmorbidity)
     addcomponent(m, impactwaterresources)
     addcomponent(m, impactsealevelrise)
+    addcomponent(m, impactaggregation)
 
     # ---------------------------------------------
     # Load parameters
@@ -170,34 +172,32 @@ function getfund(nsteps=1049)
     # Set parameters
     # ---------------------------------------------
 
-    setparameter(m, :population, :enter, zeros(nsteps,16))
-    setparameter(m, :population, :leave, zeros(nsteps,16))
-    setparameter(m, :population, :dead, zeros(nsteps,16))
     setparameter(m, :population, :runwithoutpopulationperturbation, false)
-
-
-    setparameter(m, :socioeconomic, :eloss, zeros(nsteps,16))
-    setparameter(m, :socioeconomic, :sloss, zeros(nsteps,16))
-    setparameter(m, :socioeconomic, :mitigationcost, zeros(nsteps,16))
-    setparameter(m, :socioeconomic, :runwithoutdamage, true)
+    setparameter(m, :socioeconomic, :runwithoutdamage, false)
     setparameter(m, :socioeconomic, :savingsrate, 0.2)
-
-    setparameter(m, :geography, :landloss, zeros(nsteps,16))
-
-    setparameter(m, :climateco2cycle, :temp, zeros(nsteps))
+    
 
     # ---------------------------------------------
     # Connect parameters to variables
     # ---------------------------------------------
 
-    bindparameter(m, :population, :pgrowth, :scenariouncertainty)
+    bindparameter(m, :geography, :landloss, :impactsealevelrise)
 
+    bindparameter(m, :population, :pgrowth, :scenariouncertainty)
+    bindparameter(m, :population, :enter, :impactsealevelrise)
+    bindparameter(m, :population, :leave, :impactsealevelrise)
+    bindparameter(m, :population, :dead, :impactdeathmorbidity)
+    
     bindparameter(m, :socioeconomic, :area, :geography)    
     bindparameter(m, :socioeconomic, :globalpopulation, :population)    
     bindparameter(m, :socioeconomic, :populationin1, :population)    
     bindparameter(m, :socioeconomic, :population, :population)    
     bindparameter(m, :socioeconomic, :pgrowth, :scenariouncertainty)    
-    bindparameter(m, :socioeconomic, :ypcgrowth, :scenariouncertainty)    
+    bindparameter(m, :socioeconomic, :ypcgrowth, :scenariouncertainty)
+
+    bindparameter(m, :socioeconomic, :eloss, :impactaggregation)
+    bindparameter(m, :socioeconomic, :sloss, :impactaggregation)
+    bindparameter(m, :socioeconomic, :mitigationcost, :emissions)
 
     bindparameter(m, :emissions, :income, :socioeconomic)
     bindparameter(m, :emissions, :population, :population)
@@ -211,6 +211,7 @@ function getfund(nsteps=1049)
     bindparameter(m, :climatech4cycle, :globch4, :emissions)
 
     bindparameter(m, :climaten2ocycle, :globn2o, :emissions)
+    bindparameter(m, :climateco2cycle, :temp, :climatedynamics)
 
     bindparameter(m, :climatesf6cycle, :globsf6, :emissions)
 
@@ -294,6 +295,23 @@ function getfund(nsteps=1049)
     bindparameter(m, :impactsealevelrise, :income, :socioeconomic)
     bindparameter(m, :impactsealevelrise, :sea, :ocean)
     bindparameter(m, :impactsealevelrise, :area, :geography)
+
+    bindparameter(m, :impactaggregation, :income, :socioeconomic)
+    bindparameter(m, :impactaggregation, :heating, :impactheating)
+    bindparameter(m, :impactaggregation, :cooling, :impactcooling)
+    bindparameter(m, :impactaggregation, :agcost, :impactagriculture)
+    bindparameter(m, :impactaggregation, :species, :impactbiodiversity)
+    bindparameter(m, :impactaggregation, :water, :impactwaterresources)
+    bindparameter(m, :impactaggregation, :hurrdam, :impacttropicalstorms)
+    bindparameter(m, :impactaggregation, :extratropicalstormsdam, :impactextratropicalstorms)
+    bindparameter(m, :impactaggregation, :forests, :impactforests)
+    bindparameter(m, :impactaggregation, :drycost, :impactsealevelrise)
+    bindparameter(m, :impactaggregation, :protcost, :impactsealevelrise)
+    bindparameter(m, :impactaggregation, :entercost, :impactsealevelrise)
+    bindparameter(m, :impactaggregation, :deadcost, :impactdeathmorbidity)
+    bindparameter(m, :impactaggregation, :morbcost, :impactdeathmorbidity)
+    bindparameter(m, :impactaggregation, :wetcost, :impactsealevelrise)
+    bindparameter(m, :impactaggregation, :leavecost, :impactsealevelrise)
 
     # ---------------------------------------------
     # Load remaining parameters from file

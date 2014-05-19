@@ -1,0 +1,65 @@
+﻿using IAMF
+
+@defcomp impactaggregation begin
+    regions = Index()
+
+    eloss = Variable(index=[time,regions])
+    sloss = Variable(index=[time,regions])
+    loss = Variable(index=[time,regions])
+
+    income = Parameter(index=[time,regions])
+
+    water = Parameter(index=[time,regions])
+    forests = Parameter(index=[time,regions])
+    heating = Parameter(index=[time,regions])
+    cooling = Parameter(index=[time,regions])
+    agcost = Parameter(index=[time,regions])
+    drycost = Parameter(index=[time,regions])
+    protcost = Parameter(index=[time,regions])
+    entercost = Parameter(index=[time,regions])
+    hurrdam = Parameter(index=[time,regions])
+    extratropicalstormsdam = Parameter(index=[time,regions])
+    species = Parameter(index=[time,regions])
+    deadcost = Parameter(index=[time,regions])
+    morbcost = Parameter(index=[time,regions])
+    wetcost = Parameter(index=[time,regions])
+    leavecost = Parameter(index=[time,regions])
+end
+
+function timestep(s::impactaggregation, t::Int)
+    v = s.Variables
+    p = s.Parameters
+    d = s.Dimensions
+
+    if t==1
+        for r in d.regions
+            v.eloss[t, r] = 0.0
+            v.sloss[t, r] = 0.0
+        end
+    else
+        for r in d.regions
+            v.eloss[t, r] = min(
+                0.0
+                - p.water[t, r]
+                - p.forests[t, r]
+                - p.heating[t, r]
+                - p.cooling[t, r]
+                - p.agcost[t, r]
+                + p.drycost[t, r]
+                + p.protcost[t, r]
+                + p.entercost[t, r]
+                + p.hurrdam[t, r]
+                + p.extratropicalstormsdam[t, r],
+                p.income[t, r])
+
+            v.sloss[t, r] = 0.0
+                + p.species[t, r]
+                + p.deadcost[t, r]
+                + p.morbcost[t, r]
+                + p.wetcost[t, r]
+                + p.leavecost[t, r]
+
+            v.loss[t, r] = (v.eloss[t, r] + v.sloss[t, r]) * 1000000000.0
+        end
+    end
+end
