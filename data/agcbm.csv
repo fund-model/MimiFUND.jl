@@ -1,3 +1,4 @@
+# FUND scenario
 USA,~N(0.089;0.1484;min=0)
 CAN,~N(0.0402;0.065;min=0)
 WEU,~N(0.1541;0.1183;min=0)

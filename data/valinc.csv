@@ -1,3 +1,4 @@
+# FUND scenario
 USA,~N(30000;10000;min=0)
 CAN,~N(30000;10000;min=0)
 WEU,~N(30000;10000;min=0)
