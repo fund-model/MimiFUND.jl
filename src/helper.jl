@@ -1,4 +1,5 @@
 using Distributions
+include("triangular.jl")
 
 import StatsBase.modes
 function modes(d::Truncated{Gamma})
