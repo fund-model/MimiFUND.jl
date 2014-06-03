@@ -7,7 +7,7 @@ This is an implementation of FUND in Julia.
 The IAMF.jl package is a requirement. To install do
 
 ````jl
-Pkg.clone("git@bitbucket.org:davidanthoff/iamf.jl.git")
+Pkg.clone("git@bitbucket.org:davidanthoff/IAMF.jl.git")
 ````
 
 Also make sure you have the latest version by periodically calling
