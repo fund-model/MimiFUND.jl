@@ -26,7 +26,7 @@ function timestep(s::climatesf6cycle, t::Int)
 
         v.acsf6[t] = p.sf6pre
     else
-        # Calculate SF6 concentrations   
+        # Calculate SF6 concentrations
         v.acsf6[t] = p.sf6pre + (v.acsf6[t - 1] - p.sf6pre) * (1 - v.sf6decay) + p.globsf6[t] / 25.1
 
         if v.acsf6[t] < 0

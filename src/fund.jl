@@ -42,11 +42,11 @@ function getfund(;nsteps=1049, datadir="../data", params=nothing)
     m = Model()
 
     setindex(m, :time, nsteps)
-    setindex(m, :regions, 16)    
+    setindex(m, :regions, 16)
 
     # ---------------------------------------------
     # Create components
-    # ---------------------------------------------    
+    # ---------------------------------------------
     addcomponent(m, scenariouncertainty)
     addcomponent(m, population)
     addcomponent(m, geography)
@@ -92,7 +92,7 @@ function getfund(;nsteps=1049, datadir="../data", params=nothing)
     setparameter(m, :population, :runwithoutpopulationperturbation, false)
     setparameter(m, :socioeconomic, :runwithoutdamage, false)
     setparameter(m, :socioeconomic, :savingsrate, 0.2)
-    
+
 
     # ---------------------------------------------
     # Connect parameters to variables
@@ -104,12 +104,12 @@ function getfund(;nsteps=1049, datadir="../data", params=nothing)
     bindparameter(m, :population, :enter, :impactsealevelrise)
     bindparameter(m, :population, :leave, :impactsealevelrise)
     bindparameter(m, :population, :dead, :impactdeathmorbidity)
-    
-    bindparameter(m, :socioeconomic, :area, :geography)    
-    bindparameter(m, :socioeconomic, :globalpopulation, :population)    
-    bindparameter(m, :socioeconomic, :populationin1, :population)    
-    bindparameter(m, :socioeconomic, :population, :population)    
-    bindparameter(m, :socioeconomic, :pgrowth, :scenariouncertainty)    
+
+    bindparameter(m, :socioeconomic, :area, :geography)
+    bindparameter(m, :socioeconomic, :globalpopulation, :population)
+    bindparameter(m, :socioeconomic, :populationin1, :population)
+    bindparameter(m, :socioeconomic, :population, :population)
+    bindparameter(m, :socioeconomic, :pgrowth, :scenariouncertainty)
     bindparameter(m, :socioeconomic, :ypcgrowth, :scenariouncertainty)
 
     bindparameter(m, :socioeconomic, :eloss, :impactaggregation)
@@ -233,11 +233,11 @@ function getfund(;nsteps=1049, datadir="../data", params=nothing)
     # ---------------------------------------------
     # Load remaining parameters from file
     # ---------------------------------------------
-    setleftoverparameters(m, parameters)        
+    setleftoverparameters(m, parameters)
 
     # ---------------------------------------------
     # Return model
     # ---------------------------------------------
-    
+
     return m
 end

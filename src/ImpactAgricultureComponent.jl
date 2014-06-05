@@ -70,6 +70,6 @@ function timestep(s::impactagriculture, t::Int)
 
         for r in d.regions
             v.agcost[t, r] = min(1.0, v.agrate[t, r] + v.aglevel[t, r] + v.agco2[t, r]) * v.agrish[t, r] * p.income[t, r]
-        end   
+        end
     end
 end

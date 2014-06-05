@@ -194,7 +194,7 @@ function timestep(s::impactsealevelrise, t::Int)
 
             v.cumwetlandloss[t, r] = v.cumwetlandloss[t - 1, r] + v.wetlandloss[t, r]
 
-            # Calculate wetland growth                    
+            # Calculate wetland growth
             v.wetlandgrowth[t, r] = (p.wetland90[r] - v.cumwetlandloss[t, r]) / (p.wetland90[r] - v.cumwetlandloss[t - 1, r]) - 1.0
 
             v.wetcost[t, r] = v.wetval[t, r] * v.wetlandloss[t, r]

@@ -9,16 +9,16 @@
     diamort = Parameter(index=[regions])
     diamortel = Parameter()
     diamortnl = Parameter()
-    
+
     diayld = Parameter(index=[regions])
     diayldel = Parameter()
     diayldnl = Parameter()
-    
+
     income = Parameter(index=[time,regions])
     population = Parameter(index=[time,regions])
     gdp90 = Parameter(index=[regions])
     pop90 = Parameter(index=[regions])
-    
+
     temp90 = Parameter(index=[regions])
     bregtmp = Parameter(index=[regions])
     regtmp = Parameter(index=[time,regions])

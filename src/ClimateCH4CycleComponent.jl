@@ -28,7 +28,7 @@ function timestep(s::climatech4cycle, t::Int)
     else
         # Calculate CH4 concentrations
         v.acch4[t] = v.acch4[t - 1] + 0.3597 * p.globch4[t] - v.ch4decay * (v.acch4[t - 1] - p.ch4pre)
-    
+
         if v.acch4[t] < 0
             error("ch4 atmospheric concentration out of range in $t")
         end

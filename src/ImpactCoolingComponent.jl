@@ -34,4 +34,4 @@ function timestep(s::impactcooling, t::Int)
             v.cooling[t, r] = p.cebm[r] * p.cumaeei[t, r] * p.gdp90[r] * (p.temp[t, r] / 1.0)^p.cenl * (ypc / ypc90)^p.ceel * p.population[t, r] / p.pop90[r]
         end
     end
-end            
+end

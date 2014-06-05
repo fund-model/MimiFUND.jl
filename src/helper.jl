@@ -13,34 +13,34 @@ function convertparametervalue(pv)
             dist_name = pv[2:args_start_index-1]
             args = split(pv[args_start_index+1:end-1], ';')
             fixedargs = filter(i->!contains(i,"="),args)
-            optargs = {split(i,'=')[1]=>split(i,'=')[2] for i in filter(i->contains(i,"="),args)}            
-            
+            optargs = {split(i,'=')[1]=>split(i,'=')[2] for i in filter(i->contains(i,"="),args)}
+
             if dist_name == "N"
                 if length(fixedargs)!=2 error() end
                 if length(optargs)>2 error() end
-            
+
                 basenormal = Normal(float64(fixedargs[1]),float64(fixedargs[2]))
-            
+
                 if length(optargs)==0
                     return basenormal
-                else    
+                else
                     return Truncated(basenormal,
                         haskey(optargs,"min") ? float64(optargs["min"]) : -Inf,
                         haskey(optargs,"max") ? float64(optargs["max"]) : Inf)
-                end            
+                end
             elseif beginswith(pv, "~Gamma(")
                 if length(fixedargs)!=2 error() end
                 if length(optargs)>2 error() end
-                
+
                 basegamma = Gamma(float64(fixedargs[1]),float64(fixedargs[2]))
-                
+
                 if length(optargs)==0
                     return basegamma
-                else    
+                else
                     return Truncated(basegamma,
                         haskey(optargs,"min") ? float64(optargs["min"]) : -Inf,
                         haskey(optargs,"max") ? float64(optargs["max"]) : Inf)
-                end            
+                end
             elseif beginswith(pv, "~Triangular(")
                 triang = TriangularDist(float64(fixedargs[1]), float64(fixedargs[2]), float64(fixedargs[3]))
                 return triang
@@ -55,7 +55,7 @@ function convertparametervalue(pv)
         return pv
     else
         return pv
-    end    
+    end
 end
 
 function getbestguess(p)
@@ -72,9 +72,9 @@ function prepparameters!(parameters)
         column_count = size(p,2)
         if column_count == 1
             parameters[i[1]] = getbestguess(convertparametervalue(p[1,1]))
-        elseif column_count == 2    
+        elseif column_count == 2
             parameters[i[1]] = Float64[getbestguess(convertparametervalue(p[j,2])) for j in 1:size(p,1)]
-        elseif column_count == 3    
+        elseif column_count == 3
             length_index1 = length(unique(p[:,1]))
             length_index2 = length(unique(p[:,2]))
             new_p = Array(Float64,length_index1,length_index2)
@@ -89,6 +89,6 @@ function prepparameters!(parameters)
                 end
             end
             parameters[i[1]] = new_p
-        end    
+        end
     end
 end

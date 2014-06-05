@@ -24,7 +24,7 @@ function timestep(s::ocean, t::Int)
         v.delaysea = 1.0 / p.lifesea
         v.sea[t] = 0.0
     else
-        # Calculate sea level rise  
+        # Calculate sea level rise
         ds = v.delaysea * p.seas * p.temp[t] - v.delaysea * v.sea[t - 1]
 
         v.sea[t] = v.sea[t - 1] + ds

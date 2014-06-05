@@ -10,7 +10,7 @@
     # N2O decay
     n2odecay = Variable()
 
-    # 
+    #
     lifen2o = Parameter()
 
     # N2o pre industrial
