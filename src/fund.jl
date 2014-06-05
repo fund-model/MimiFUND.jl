@@ -241,7 +241,3 @@ function getfund(;nsteps=1049, datadir="../data", params=nothing)
     
     return m
 end
-
-m = getfund()
-
-run(m)
