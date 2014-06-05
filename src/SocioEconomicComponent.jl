@@ -104,7 +104,7 @@ function timestep(s::socioeconomic, t::Int)
     
         for r in d.regions
             # ERROR This doesn't make sense for t < 40
-            #v.urbpop[t, r] = (0.031 * sqrt(v.ypc[t, r]) - 0.011 * sqrt(v.popdens[t, r])) / (1.0 + 0.031 * sqrt(v.ypc[t,    r]) - 0.011 * sqrt(v.popdens[t, r])) / (1 + p.urbcorr[r] / (1 + 0.001 * (yearspast1950-40.)^2.)) 
+            v.urbpop[t, r] = (0.031 * sqrt(v.ypc[t, r]) - 0.011 * sqrt(v.popdens[t, r])) / (1.0 + 0.031 * sqrt(v.ypc[t,    r]) - 0.011 * sqrt(v.popdens[t, r])) / (1 + p.urbcorr[r] / (1 + 0.001 * (yearspast1950-40.)^2.))
             # DA: urbcorr needs to be changed to a function if this is to be made uncertain
         end
         
