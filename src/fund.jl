@@ -31,7 +31,7 @@ include("ImpactAggregationComponent.jl")
 
 
 
-function getfund(nsteps=1049)
+function getfund(;nsteps=1049, paramdir="../data")
     m = Model()
 
     setindex(m, :time, nsteps)
@@ -73,8 +73,8 @@ function getfund(nsteps=1049)
     # ---------------------------------------------
     # Load parameters
     # ---------------------------------------------
-    files = readdir("../data")
-    parameters = {lowercase(splitext(file)[1]) => readdlm(joinpath("../data",file), ',') for file in files};
+    files = readdir(paramdir)
+    parameters = {lowercase(splitext(file)[1]) => readdlm(joinpath(paramdir,file), ',') for file in files};
 
     prepparameters!(parameters)
 
