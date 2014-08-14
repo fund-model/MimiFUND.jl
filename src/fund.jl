@@ -29,9 +29,16 @@ include("ImpactWaterResourcesComponent.jl")
 include("ImpactSeaLevelRiseComponent.jl")
 include("ImpactAggregationComponent.jl")
 
+function loadparameters(datadir="../data")
+    files = readdir(datadir)
+    parameters = {lowercase(splitext(file)[1]) => readdlm(joinpath(datadir,file), ',') for file in files};
 
+    prepparameters!(parameters)
 
-function getfund(;nsteps=1049, paramdir="../data")
+    return parameters
+end
+
+function getfund(;nsteps=1049, datadir="../data", params=nothing)
     m = Model()
 
     setindex(m, :time, nsteps)
@@ -43,7 +50,6 @@ function getfund(;nsteps=1049, paramdir="../data")
     addcomponent(m, scenariouncertainty)
     addcomponent(m, population)
     addcomponent(m, geography)
-    addcomponent(m, socioeconomic)
     addcomponent(m, socioeconomic)
     addcomponent(m, emissions)
     addcomponent(m, climateco2cycle)
@@ -73,10 +79,11 @@ function getfund(;nsteps=1049, paramdir="../data")
     # ---------------------------------------------
     # Load parameters
     # ---------------------------------------------
-    files = readdir(paramdir)
-    parameters = {lowercase(splitext(file)[1]) => readdlm(joinpath(paramdir,file), ',') for file in files};
-
-    prepparameters!(parameters)
+    if params==nothing
+        parameters = loadparameters(datadir)
+    else
+        parameters = params
+    end
 
     # ---------------------------------------------
     # Set parameters

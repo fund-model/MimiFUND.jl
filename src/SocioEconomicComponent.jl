@@ -53,63 +53,63 @@ function timestep(s::socioeconomic, t::Int)
             v.ypc[t, r] = v.income[t, r] / p.population[t, r] * 1000.0
             v.consumption[t, r] = v.income[t, r] * 1000000000.0 * (1.0 - p.savingsrate)
         end
-    
+
         v.globalconsumption[t] = sum(v.consumption[t,:])
-    
+
         for r in d.regions
             v.ypc90[r] = p.gdp90[r] / p.pop90[r] * 1000
         end
     else
         yearspast1950 = t
-    
-        # Calculate income growth rate  
+
+        # Calculate income growth rate
         for r in d.regions
             v.ygrowth[t, r] = (1 + 0.01 * p.pgrowth[t - 1, r]) * (1 + 0.01 * p.ypcgrowth[t - 1, r]) - 1
         end
-    
-        # Calculate income  
+
+        # Calculate income
         for r in d.regions
             oldincome = v.income[t - 1, r] - (yearspast1950 >= 40 && !p.runwithoutdamage ? p.consleak * p.eloss[t - 1, r]   / 10.0 : 0)
-    
+
             v.income[t, r] = (1 + v.ygrowth[t, r]) * oldincome - p.mitigationcost[t - 1, r]
         end
-    
+
         # Check for unrealistic values
         for r in d.regions
             if v.income[t, r] < 0.01 * p.population[t, r]
                 v.income[t, r] = 0.1 * p.population[t, r]
             end
         end
-    
+
         for r in d.regions
             v.ypc[t, r] = v.income[t, r] / p.population[t, r] * 1000.0
         end
-    
+
         for r in d.regions
             v.consumption[t, r] = max(v.income[t, r] * 1000000000.0 * (1.0 - p.savingsrate) - (p.runwithoutdamage ? 0.0 :   (p.eloss[t - 1, r] + p.sloss[t - 1, r]) * 1000000000.0),0.0)
         end
         v.globalconsumption[t] = sum(v.consumption[t,:])
-    
+
         for r in d.regions
             v.plus[t, r] = p.plus90[r] * (v.ypc[t, r] / v.ypc90[r])^p.plusel
-    
+
             if v.plus[t, r] > 1
                 v.plus[t, r] = 1.0
             end
         end
-    
+
         for r in d.regions
             v.popdens[t, r] = p.population[t, r] / p.area[t, r] * 1000000.0
-        end    
-    
+        end
+
         for r in d.regions
             # ERROR This doesn't make sense for t < 40
-            #v.urbpop[t, r] = (0.031 * sqrt(v.ypc[t, r]) - 0.011 * sqrt(v.popdens[t, r])) / (1.0 + 0.031 * sqrt(v.ypc[t,    r]) - 0.011 * sqrt(v.popdens[t, r])) / (1 + p.urbcorr[r] / (1 + 0.001 * (yearspast1950-40.)^2.)) 
+            v.urbpop[t, r] = (0.031 * sqrt(v.ypc[t, r]) - 0.011 * sqrt(v.popdens[t, r])) / (1.0 + 0.031 * sqrt(v.ypc[t,    r]) - 0.011 * sqrt(v.popdens[t, r])) / (1 + p.urbcorr[r] / (1 + 0.001 * (yearspast1950-40.)^2.))
             # DA: urbcorr needs to be changed to a function if this is to be made uncertain
         end
-        
+
         v.globalincome[t] = sum(v.income[t,:])
-    
+
         v.globalypc[t] = sum(v.income[t,:] .* 1000000000.0) / sum(p.populationin1[t,:])
     end
 end

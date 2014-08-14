@@ -57,7 +57,7 @@ function timestep(s::impactcardiovascularrespiratory, t::Int)
             v.cardheat[t, r] = v.cardheat[t, r] * p.urbpop[t, r] * p.population[t, r] * 10
             if v.cardheat[t, r] > 1000.0 * p.maxcardvasc * v.basecardvasc[t, r] * p.urbpop[t, r] * p.population[t, r]
                 v.cardheat[t, r] = 1000 * p.maxcardvasc * v.basecardvasc[t, r] * p.urbpop[t, r] * p.population[t, r]
-            end            
+            end
             if v.cardheat[t, r] < 0.0
                 v.cardheat[t, r] = 0
             end
@@ -83,4 +83,3 @@ function timestep(s::impactcardiovascularrespiratory, t::Int)
         end
     end
 end
- 

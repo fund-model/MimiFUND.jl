@@ -34,7 +34,7 @@ function timestep(s::climatedynamics, t::Int)
 
         temps = p.ClimateSensitivity / 5.35 / log(2.0)
 
-        # Calculate temperature          
+        # Calculate temperature
         dtemp = delaytemp * temps * p.radforc[t] - delaytemp * v.temp[t - 1]
 
         v.temp[t] = v.temp[t - 1] + dtemp

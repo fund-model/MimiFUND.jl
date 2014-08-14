@@ -58,19 +58,19 @@
     # Carbon decay in box 5
     lifeco5 = Parameter()
 
-    # Fraction of carbon emission in box 1  
+    # Fraction of carbon emission in box 1
     co2frac1 = Parameter()
 
-    # Fraction of carbon emission in box 2  
+    # Fraction of carbon emission in box 2
     co2frac2 = Parameter()
 
-    # Fraction of carbon emission in box 3  
+    # Fraction of carbon emission in box 3
     co2frac3 = Parameter()
 
-    # Fraction of carbon emission in box 4  
+    # Fraction of carbon emission in box 4
     co2frac4 = Parameter()
 
-    # Fraction of carbon emission in box 5  
+    # Fraction of carbon emission in box 5
     co2frac5 = Parameter()
 
     # Atmospheric CO2 concentration
@@ -99,9 +99,9 @@ function timestep(s::climateco2cycle, t::Int)
         v.co2decay3 = exp(-1.0 / p.lifeco3)
         v.co2decay4 = exp(-1.0 / p.lifeco4)
         v.co2decay5 = exp(-1.0 / p.lifeco5)
-    
+
         v.TerrCO2Stock[t] = p.TerrCO2Stock0
-    
+
         v.cbox[t,1] = p.cbox10
         v.cbox[t,2] = p.cbox20
         v.cbox[t,3] = p.cbox30
@@ -114,24 +114,24 @@ function timestep(s::climateco2cycle, t::Int)
         if t == 61
             v.tempIn2010 = p.temp[60]
         end
-    
+
         if t > 60
             v.TerrestrialCO2[t] = (p.temp[t - 1] - v.tempIn2010) * p.TerrCO2Sens * v.TerrCO2Stock[t - 1] / p.TerrCO2Stock0
         else
             v.TerrestrialCO2[t] = 0
         end
-    
+
         v.TerrCO2Stock[t] = max(v.TerrCO2Stock[t - 1] - v.TerrestrialCO2[t], 0.0)
-    
+
         v.globc[t] = p.mco2[t] + v.TerrestrialCO2[t]
-    
+
         # Calculate CO2 concentrations
         v.cbox[t,1] = v.cbox[t - 1,1] * v.co2decay1 + 0.000471 * p.co2frac1 * (v.globc[t])
         v.cbox[t,2] = v.cbox[t - 1,2] * v.co2decay2 + 0.000471 * p.co2frac2 * (v.globc[t])
         v.cbox[t,3] = v.cbox[t - 1,3] * v.co2decay3 + 0.000471 * p.co2frac3 * (v.globc[t])
         v.cbox[t,4] = v.cbox[t - 1,4] * v.co2decay4 + 0.000471 * p.co2frac4 * (v.globc[t])
         v.cbox[t,5] = v.cbox[t - 1,5] * v.co2decay5 + 0.000471 * p.co2frac5 * (v.globc[t])
-    
+
         v.acco2[t] = sum(v.cbox[t,:])
     end
 end

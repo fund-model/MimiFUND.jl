@@ -89,7 +89,7 @@ function timestep(s::emissions, t::Int)
     d = s.Dimensions
 
     if t==1
-        for r in d.regions 
+        for r in d.regions
             v.energint[t, r] = 1
             v.energuse[t, r] = p.gdp0[r]
             v.emissint[t, r] = p.emissint0[r]
@@ -107,16 +107,16 @@ function timestep(s::emissions, t::Int)
             v.n2ored[t, r] = 0
             v.mitigationcost[t, r] = 0
         end
-    
+
         v.globknow[t] = 1
         v.cumglobco2[t] = 0.0
         v.cumglobch4[t] = 0.0
         v.cumglobn2o[t] = 0.0
         v.cumglobsf6[t] = 0.0
-    
+
         # SocioEconomicState.minint[t]=Inf
         minint = Inf
-        for r in d.regions 
+        for r in d.regions
             if v.emission[t, r] / p.income[t, r] < minint
                 minint = v.emission[t, r] / p.income[t, r]
             end
