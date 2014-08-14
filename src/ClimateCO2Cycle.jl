@@ -107,15 +107,14 @@ function timestep(s::climateco2cycle, t::Int)
         v.cbox[t,3] = p.cbox30
         v.cbox[t,4] = p.cbox40
         v.cbox[t,5] = p.cbox50
-        v.acco2[t] = sum(v.cbox[t,:])
+        v.acco2[t] = v.cbox[t,1] + v.cbox[t,2] + v.cbox[t,3] + v.cbox[t,4] + v.cbox[t,5]
     else
 
-        # if t == Timestep.FromYear(2011))
-        if t == 61
-            v.tempIn2010 = p.temp[60]
+        if t == getindexfromyear(2011)
+            v.tempIn2010 = p.temp[getindexfromyear(2010)]
         end
 
-        if t > 60
+        if t > getindexfromyear(2010)
             v.TerrestrialCO2[t] = (p.temp[t - 1] - v.tempIn2010) * p.TerrCO2Sens * v.TerrCO2Stock[t - 1] / p.TerrCO2Stock0
         else
             v.TerrestrialCO2[t] = 0
@@ -132,6 +131,6 @@ function timestep(s::climateco2cycle, t::Int)
         v.cbox[t,4] = v.cbox[t - 1,4] * v.co2decay4 + 0.000471 * p.co2frac4 * (v.globc[t])
         v.cbox[t,5] = v.cbox[t - 1,5] * v.co2decay5 + 0.000471 * p.co2frac5 * (v.globc[t])
 
-        v.acco2[t] = sum(v.cbox[t,:])
+        v.acco2[t] = v.cbox[t,1] + v.cbox[t,2] + v.cbox[t,3] + v.cbox[t,4] + v.cbox[t,5]
     end
 end

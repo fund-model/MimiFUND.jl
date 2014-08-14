@@ -60,7 +60,6 @@ function timestep(s::socioeconomic, t::Int)
             v.ypc90[r] = p.gdp90[r] / p.pop90[r] * 1000
         end
     else
-        yearspast1950 = t
 
         # Calculate income growth rate
         for r in d.regions
@@ -69,7 +68,7 @@ function timestep(s::socioeconomic, t::Int)
 
         # Calculate income
         for r in d.regions
-            oldincome = v.income[t - 1, r] - (yearspast1950 >= 40 && !p.runwithoutdamage ? p.consleak * p.eloss[t - 1, r]   / 10.0 : 0)
+            oldincome = v.income[t - 1, r] - (t >= 41 && !p.runwithoutdamage ? p.consleak * p.eloss[t - 1, r]   / 10.0 : 0)
 
             v.income[t, r] = (1 + v.ygrowth[t, r]) * oldincome - p.mitigationcost[t - 1, r]
         end
@@ -104,7 +103,7 @@ function timestep(s::socioeconomic, t::Int)
 
         for r in d.regions
             # ERROR This doesn't make sense for t < 40
-            v.urbpop[t, r] = (0.031 * sqrt(v.ypc[t, r]) - 0.011 * sqrt(v.popdens[t, r])) / (1.0 + 0.031 * sqrt(v.ypc[t,    r]) - 0.011 * sqrt(v.popdens[t, r])) / (1 + p.urbcorr[r] / (1 + 0.001 * (yearspast1950-40.)^2.))
+            v.urbpop[t, r] = (0.031 * sqrt(v.ypc[t, r]) - 0.011 * sqrt(v.popdens[t, r])) / (1.0 + 0.031 * sqrt(v.ypc[t,r]) - 0.011 * sqrt(v.popdens[t, r])) / (1 + p.urbcorr[r] / (1 + 0.001 * (t-41.)^2.))
             # DA: urbcorr needs to be changed to a function if this is to be made uncertain
         end
 

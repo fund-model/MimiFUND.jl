@@ -76,7 +76,6 @@ function timestep(s::impactsealevelrise, t::Int)
                 v.imigrate[r1, r2] = p.migrate[r2, r1] / immsumm
             end
 
-            #var t0 = clock.StartTime
             t0 = 1
             v.landloss[t0, r1] = 0.0
             v.cumlandloss[t0, r1] = 0.0
@@ -92,8 +91,7 @@ function timestep(s::impactsealevelrise, t::Int)
             ypcprev = p.income[t - 1, r] / p.population[t - 1, r] * 1000.0
             ypcgrowth = ypc / ypcprev - 1.0
 
-            #if (t == Timestep.FromYear(1951))
-            if t == 2
+            if t == getindexfromyear(1951)
                 ypcgrowth = 0
             end
 

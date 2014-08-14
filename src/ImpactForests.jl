@@ -27,8 +27,7 @@ function timestep(s::impactforests, t::Int)
     p = s.Parameters
     d = s.Dimensions
 
-    if t==1
-    else
+    if t>1
         for r in d.regions
             ypc = 1000.0 * p.income[t, r] / p.population[t, r]
             ypc90 = p.gdp90[r] / p.pop90[r] * 1000.0

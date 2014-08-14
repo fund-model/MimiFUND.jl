@@ -39,8 +39,7 @@ function timestep(s::impactcardiovascularrespiratory, t::Int)
     p = s.Parameters
     d = s.Dimensions
 
-    if t==1
-    else
+    if t>1
         for r in d.regions
             v.basecardvasc[t, r] = p.cardvasc90[r] + p.cvlin * (p.plus[t, r] - p.plus90[r])
             if v.basecardvasc[t, r] > 1.0

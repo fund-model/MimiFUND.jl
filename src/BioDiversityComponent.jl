@@ -25,7 +25,7 @@ function timestep(s::biodiversity, t::Int)
     p = s.Parameters
     d = s.Dimensions
 
-    if t > 50
+    if t > getindexfromyear(2000)
         dt = abs(p.temp[t] - p.temp[t - 1])
 
         v.nospecies[t] = max(

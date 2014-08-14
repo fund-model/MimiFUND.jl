@@ -27,8 +27,7 @@ function timestep(s::impactbiodiversity, t::Int)
     p = s.Parameters
     d = s.Dimensions
 
-    if t==1
-    else
+    if t>1
         v.biodiv[t] = p.nospecbase / p.nospecies[t]
 
         for r in d.regions

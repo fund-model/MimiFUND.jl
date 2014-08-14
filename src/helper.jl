@@ -6,6 +6,11 @@ function modes(d::Truncated{Gamma})
     return [mode(d.untruncated)]
 end
 
+function getindexfromyear(year)
+    const baseyear = 1950
+    return year - baseyear + 1
+end
+
 function convertparametervalue(pv)
     if !isa(pv,Float64)
         if beginswith(pv,"~") & endswith(pv,")")

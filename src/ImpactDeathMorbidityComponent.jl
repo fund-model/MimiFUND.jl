@@ -48,8 +48,7 @@ function timestep(s::impactdeathmorbidity, t::Int)
     p = s.Parameters
     d = s.Dimensions
 
-    if t==1
-    else
+    if t>1
         for r in d.regions
             ypc = p.income[t, r] / p.population[t, r] * 1000.0
 

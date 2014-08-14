@@ -26,10 +26,8 @@ function timestep(s::impactwaterresources, t::Int)
     p = s.Parameters
     d = s.Dimensions
 
-    #if t > Timestep.FromYear(2000)
-    if t > 50
-        #v.watech[t] = Math.Pow(1.0 - s.watechrate, t.Value - Timestep.FromYear(2000).Value)
-        v.watech[t] = (1.0 - p.watechrate)^(t - 50)
+    if t > getindexfromyear(2000)
+        v.watech[t] = (1.0 - p.watechrate)^(t - getindexfromyear(2000))
     else
         v.watech[t] = 1.0
     end

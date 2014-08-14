@@ -132,7 +132,7 @@ function timestep(s::emissions, t::Int)
 
         # Calculate sf6 emissions
         for r in d.regions
-            v.sf6[t, r] = (p.sf60[r] + p.sf6gdp * (p.income[t, r] - p.GDP90[r]) + p.sf6ypc * (p.income[t - 1, r] / p.population[t - 1, r] - p.GDP90[r] / p.pop90[r])) * (t <= 60 ? 1 + (t - 40.0) / 40.0 : 1.0 + (60.0 - 40.0) / 40.0) * (t > 60 ? 0.99^(t - 60.0) : 1.0)
+            v.sf6[t, r] = (p.sf60[r] + p.sf6gdp * (p.income[t, r] - p.GDP90[r]) + p.sf6ypc * (p.income[t - 1, r] / p.population[t - 1, r] - p.GDP90[r] / p.pop90[r])) * (t <= 61 ? 1 + (t - 41.0) / 40.0 : 1.0 + (61.0 - 41.0) / 40.0) * (t > 61 ? 0.99^(t - 61.0) : 1.0)
         end
 
         # Check for unrealistic values
@@ -275,7 +275,7 @@ function timestep(s::emissions, t::Int)
         v.minint[t] = minint
 
         for r in d.regions
-            if t > 60
+            if t > getindexfromyear(2000)
                 v.cumaeei[t, r] = v.cumaeei[t - 1, r] * (1.0 - 0.01 * p.aeei[t, r] - v.reei[t, r] + v.seei[t - 1, r] - v.seei[t, r])
             else
                 v.cumaeei[t, r] = 1.0
@@ -300,9 +300,9 @@ function timestep(s::emissions, t::Int)
         end
 
         v.mco2[t] = globco2
-        v.globch4[t] = max(0.0, globch4 + (t > 50 ? p.ch4add * (t - 50) : 0.0))
-        v.globn2o[t] = max(0.0, globn2o + (t > 50 ? p.n2oadd * (t - 50) : 0))
-        v.globsf6[t] = max(0.0, globsf6 + (t > 50 ? p.sf6add * (t - 50) : 0.0))
+        v.globch4[t] = max(0.0, globch4 + (t > 51 ? p.ch4add * (t - 51) : 0.0))
+        v.globn2o[t] = max(0.0, globn2o + (t > 51 ? p.n2oadd * (t - 51) : 0))
+        v.globsf6[t] = max(0.0, globsf6 + (t > 51 ? p.sf6add * (t - 51) : 0.0))
 
         v.cumglobco2[t] = v.cumglobco2[t - 1] + v.mco2[t]
         v.cumglobch4[t] = v.cumglobch4[t - 1] + v.globch4[t]
