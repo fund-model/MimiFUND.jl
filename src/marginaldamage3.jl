@@ -3,7 +3,6 @@ include("fund.jl")
 function marginaldamage3(;emissionyear=2010,parameters=nothing,yearstoaggregate=1000,gas=:C,useequityweights=false,eta=1.0,prtp=0.001)
     yearstorun = min(1049, getindexfromyear(emissionyear) + yearstoaggregate)
 
-
 	m1 = getfund(nsteps=yearstorun,params=parameters)
 	run(m1)
 
@@ -16,30 +15,18 @@ function marginaldamage3(;emissionyear=2010,parameters=nothing,yearstoaggregate=
     if gas==:C
         bindparameter(m2,:marginalemission,:input,:emissions,:mco2)
         bindparameter(m2, :climateco2cycle,:mco2,:marginalemission,:output)
+    elseif gas==:CH4
+        bindparameter(m2,:marginalemission,:input,:emissions,:globch4)
+        bindparameter(m2, :climatech4cycle,:globch4,:marginalemission,:output)
+    elseif gas==:N2O
+        bindparameter(m2,:marginalemission,:input,:emissions,:globn2o)
+        bindparameter(m2, :climaten2ocycle,:globn2o,:marginalemission,:output)
+    elseif gas==:SF6
+        bindparameter(m2,:marginalemission,:input,:emissions,:globsf6)
+        bindparameter(m2, :climatesf6cycle,:globsf6,:marginalemission,:output)
     else
-        error("Not yet implemented")
+        error("Unknown gas.")
     end
-            #switch (Gas)
-            #{
-            #    case MarginalGas.C:
-            #        f2["marginalemission"].Parameters["emission"].Bind("emissions", "mco2");
-            #        f2["climateco2cycle"].Parameters["mco2"].Bind("marginalemission", "modemission");
-            #        break;
-            #    case MarginalGas.CH4:
-            #        f2["marginalemission"].Parameters["emission"].Bind("emissions", "globch4");
-            #        f2["climatech4cycle"].Parameters["globch4"].Bind("marginalemission", "modemission");
-            #        break;
-            #    case MarginalGas.N2O:
-            #        f2["marginalemission"].Parameters["emission"].Bind("emissions", "globn2o");
-            #        f2["climaten2ocycle"].Parameters["globn2o"].Bind("marginalemission", "modemission");
-            #        break;
-            #    case MarginalGas.SF6:
-            #        f2["marginalemission"].Parameters["emission"].Bind("emissions", "globsf6");
-            #        f2["climatesf6cycle"].Parameters["globsf6"].Bind("marginalemission", "modemission");
-            #        break;
-            #    default:
-            #        throw new NotImplementedException();
-            #}
 
     run(m2)
 
@@ -50,7 +37,7 @@ function marginaldamage3(;emissionyear=2010,parameters=nothing,yearstoaggregate=
     damage2 = m2[:impactaggregation,:loss]./m2[:socioeconomic,:income].*m1[:socioeconomic,:income]
 
     # Calculate the marginal damage between run 1 and 2 for each
-    # year/region/sector
+    # year/region
     marginaldamage = (damage2.-damage1)/10000000.0
 
     ypc = m1[:socioeconomic,:ypc]
