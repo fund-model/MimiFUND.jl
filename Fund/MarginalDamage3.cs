@@ -133,7 +133,7 @@ namespace Fund
             var weightingcom = new WeightingCombination();
             if (UseEquityWeights)
             {
-                weightingcom.Add(new ConstantDiscountrate(Prtp));
+                weightingcom.Add(new ConstantDiscountrate(Prtp, EmissionYear.Value));
                 weightingcom.Add(new EquityWeighting(EmissionYear.Value, -1, Eta));
             }
             else
