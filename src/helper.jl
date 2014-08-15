@@ -1,6 +1,15 @@
 using Distributions
 include("triangular.jl")
 
+function loadparameters(datadir="../data")
+    files = readdir(datadir)
+    parameters = {lowercase(splitext(file)[1]) => readdlm(joinpath(datadir,file), ',') for file in files};
+
+    prepparameters!(parameters)
+
+    return parameters
+end
+
 import StatsBase.modes
 function modes(d::Truncated{Gamma})
     return [mode(d.untruncated)]
