@@ -300,9 +300,9 @@ function timestep(s::emissions, t::Int)
         end
 
         v.mco2[t] = globco2
-        v.globch4[t] = max(0.0, globch4 + (t > 51 ? p.ch4add * (t - 51) : 0.0))
-        v.globn2o[t] = max(0.0, globn2o + (t > 51 ? p.n2oadd * (t - 51) : 0))
-        v.globsf6[t] = max(0.0, globsf6 + (t > 51 ? p.sf6add * (t - 51) : 0.0))
+        v.globch4[t] = max(0.0, globch4 + (t > getindexfromyear(2000) ? p.ch4add * (t - getindexfromyear(2000)) : 0.0))
+        v.globn2o[t] = max(0.0, globn2o + (t > getindexfromyear(2000) ? p.n2oadd * (t - getindexfromyear(2000)) : 0.0))
+        v.globsf6[t] = max(0.0, globsf6 + (t > getindexfromyear(2000) ? p.sf6add * (t - getindexfromyear(2000)) : 0.0))
 
         v.cumglobco2[t] = v.cumglobco2[t - 1] + v.mco2[t]
         v.cumglobch4[t] = v.cumglobch4[t - 1] + v.globch4[t]
