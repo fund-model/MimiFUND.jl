@@ -37,11 +37,9 @@ function timestep(s::impactdiarrhoea, t::Int)
         absoluteRegionalTempPreIndustrial = p.temp90[r] - 0.49 * p.bregtmp[r]
 
         if absoluteRegionalTempPreIndustrial > 0.0
-            v.diadead[t, r] = p.diamort[r] * p.population[t, r] * (ypc / ypc90)^p.diamortel
-                * (((absoluteRegionalTempPreIndustrial + p.regtmp[t, r]) / absoluteRegionalTempPreIndustrial)^p.diamortnl - 1.0)
+            v.diadead[t, r] = p.diamort[r] * p.population[t, r] * (ypc / ypc90)^p.diamortel * (((absoluteRegionalTempPreIndustrial + p.regtmp[t, r]) / absoluteRegionalTempPreIndustrial)^p.diamortnl - 1.0)
 
-            v.diasick[t, r] = p.diayld[r] * p.population[t, r] * (ypc / ypc90)^p.diayldel
-                * (((absoluteRegionalTempPreIndustrial + p.regtmp[t, r]) / absoluteRegionalTempPreIndustrial)^p.diayldnl - 1.0)
+            v.diasick[t, r] = p.diayld[r] * p.population[t, r] * (ypc / ypc90)^p.diayldel * (((absoluteRegionalTempPreIndustrial + p.regtmp[t, r]) / absoluteRegionalTempPreIndustrial)^p.diayldnl - 1.0)
         else
             v.diadead[t, r] = 0.0
             v.diasick[t, r] = 0.0

@@ -1,13 +1,13 @@
-#using IAMF
 include("fund.jl")
 
 function marginaldamage3(;emissionyear=2010,parameters=nothing,yearstoaggregate=1000,gas=:C,useequityweights=false,eta=1.0,prtp=0.001)
-	yearstorun = min(1049, getindexfromyear(emissionyear) + yearstoaggregate)
+    yearstorun = min(1049, getindexfromyear(emissionyear) + yearstoaggregate)
 
-	m1 = getfund(nsteps=yearstorun)
+
+	m1 = getfund(nsteps=yearstorun,params=parameters)
 	run(m1)
 
-	m2 = getfund(nsteps=yearstorun)
+	m2 = getfund(nsteps=yearstorun,params=parameters)
 
     addcomponent(m2, adder, :marginalemission, before=:climateco2cycle)
     addem = zeros(yearstorun)
@@ -55,8 +55,17 @@ function marginaldamage3(;emissionyear=2010,parameters=nothing,yearstoaggregate=
 
     ypc = m1[:socioeconomic,:ypc]
 
+    df = zeros(yearstorun,16)
     if !useequityweights
-        df = [t>getindexfromyear(emissionyear) ? (ypc[getindexfromyear(emissionyear),r]/ypc[t,r])^eta / (1+prtp)^(t-getindexfromyear(emissionyear)) : 0.0 for t=1:yearstorun,r=1:16]
+        for r=1:16
+            x = 1.
+            for t=getindexfromyear(emissionyear):yearstorun
+                df[t,r] = x
+                gr = (ypc[t,r]-ypc[t-1,r])/ypc[t-1,r]
+                x = x / (1. + prtp + eta * gr)
+            end
+        end
+        #df = float64([t>=getindexfromyear(emissionyear) ? (ypc[getindexfromyear(emissionyear),r]/ypc[t,r])^eta / (1.0+prtp)^(t-getindexfromyear(emissionyear)) : 0.0 for t=1:yearstorun,r=1:16])
     else
         error("not implemented")
     end

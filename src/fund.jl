@@ -38,7 +38,7 @@ function loadparameters(datadir="../data")
     return parameters
 end
 
-function getfund(;nsteps=1049, datadir="../data", params=nothing)
+function getfund(;nsteps=1050, datadir="../data", params=nothing)
     m = Model()
 
     setindex(m, :time, nsteps)
