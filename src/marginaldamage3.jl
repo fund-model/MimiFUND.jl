@@ -1,13 +1,9 @@
 include("fund.jl")
 
-function marginaldamage3(;emissionyear=2010,parameters=nothing,yearstoaggregate=1000,gas=:C,useequityweights=false,eta=1.0,prtp=0.001)
-    yearstorun = min(1049, getindexfromyear(emissionyear) + yearstoaggregate)
+function getmarginalmodels(;gas=:C,emissionyear=2010,parameters=nothing,yearstorun=1050)
+    m1 = getfund(nsteps=yearstorun,params=parameters)
 
-	m1 = getfund(nsteps=yearstorun,params=parameters)
-	run(m1)
-
-	m2 = getfund(nsteps=yearstorun,params=parameters)
-
+    m2 = getfund(nsteps=yearstorun,params=parameters)
     addcomponent(m2, adder, :marginalemission, before=:climateco2cycle)
     addem = zeros(yearstorun)
     addem[getindexfromyear(emissionyear):getindexfromyear(emissionyear)+9] = 1.0
@@ -28,7 +24,16 @@ function marginaldamage3(;emissionyear=2010,parameters=nothing,yearstoaggregate=
         error("Unknown gas.")
     end
 
+    run(m1)
     run(m2)
+
+    return m1, m2
+end
+
+function marginaldamage3(;emissionyear=2010,parameters=nothing,yearstoaggregate=1000,gas=:C,useequityweights=false,eta=1.0,prtp=0.001)
+    yearstorun = min(1049, getindexfromyear(emissionyear) + yearstoaggregate)
+
+    m1, m2 = getmarginalmodels(emissionyear=emissionyear, parameters=parameters,yearstorun=yearstorun,gas=gas)
 
     damage1 = m1[:impactaggregation,:loss]
     # Take out growth effect effect of run 2 by transforming
