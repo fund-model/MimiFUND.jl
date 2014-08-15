@@ -68,7 +68,7 @@ function timestep(s::socioeconomic, t::Int)
 
         # Calculate income
         for r in d.regions
-            oldincome = v.income[t - 1, r] - (t >= 41 && !p.runwithoutdamage ? p.consleak * p.eloss[t - 1, r]   / 10.0 : 0)
+            oldincome = v.income[t - 1, r] - (t >= getindexfromyear(1990) && !p.runwithoutdamage ? p.consleak * p.eloss[t - 1, r]   / 10.0 : 0)
 
             v.income[t, r] = (1 + v.ygrowth[t, r]) * oldincome - p.mitigationcost[t - 1, r]
         end

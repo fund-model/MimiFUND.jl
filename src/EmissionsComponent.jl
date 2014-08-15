@@ -132,7 +132,7 @@ function timestep(s::emissions, t::Int)
 
         # Calculate sf6 emissions
         for r in d.regions
-            v.sf6[t, r] = (p.sf60[r] + p.sf6gdp * (p.income[t, r] - p.GDP90[r]) + p.sf6ypc * (p.income[t - 1, r] / p.population[t - 1, r] - p.GDP90[r] / p.pop90[r])) * (t <= 61 ? 1 + (t - 41.0) / 40.0 : 1.0 + (61.0 - 41.0) / 40.0) * (t > 61 ? 0.99^(t - 61.0) : 1.0)
+            v.sf6[t, r] = (p.sf60[r] + p.sf6gdp * (p.income[t, r] - p.GDP90[r]) + p.sf6ypc * (p.income[t - 1, r] / p.population[t - 1, r] - p.GDP90[r] / p.pop90[r])) * (t <= getindexfromyear(2010) ? 1 + (t - getindexfromyear(1990)) / 40.0 : 1.0 + (60.0 - 40.0) / 40.0) * (t > getindexfromyear(2010) ? 0.99^(t - getindexfromyear(2010)) : 1.0)
         end
 
         # Check for unrealistic values
