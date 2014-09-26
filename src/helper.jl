@@ -61,6 +61,10 @@ function convertparametervalue(pv)
             else
                 error("Unknown distribution")
             end
+        elseif pv=="true"
+            return true
+        elseif pv=="false"
+            return false
         elseif endswith(pv, "y")
             return int64(strip(pv,'y'))
         else
