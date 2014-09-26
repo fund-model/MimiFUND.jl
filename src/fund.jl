@@ -82,8 +82,6 @@ function getfund(;nsteps=1050, datadir="../data", params=nothing)
 
     setparameter(m, :population, :runwithoutpopulationperturbation, false)
     setparameter(m, :socioeconomic, :runwithoutdamage, false)
-    setparameter(m, :socioeconomic, :savingsrate, 0.2)
-
 
     # ---------------------------------------------
     # Connect parameters to variables
