@@ -29,7 +29,7 @@ include("ImpactWaterResourcesComponent.jl")
 include("ImpactSeaLevelRiseComponent.jl")
 include("ImpactAggregationComponent.jl")
 
-function getfund(;nsteps=1050, datadir="../data", params=nothing)
+function constructfund(;nsteps=1050)
     m = Model()
 
     setindex(m, :time, nsteps)
@@ -66,15 +66,6 @@ function getfund(;nsteps=1050, datadir="../data", params=nothing)
     addcomponent(m, impactwaterresources)
     addcomponent(m, impactsealevelrise)
     addcomponent(m, impactaggregation)
-
-    # ---------------------------------------------
-    # Load parameters
-    # ---------------------------------------------
-    if params==nothing
-        parameters = loadparameters(datadir)
-    else
-        parameters = params
-    end
 
     # ---------------------------------------------
     # Connect parameters to variables
@@ -211,6 +202,24 @@ function getfund(;nsteps=1050, datadir="../data", params=nothing)
     bindparameter(m, :impactaggregation, :morbcost, :impactdeathmorbidity)
     bindparameter(m, :impactaggregation, :wetcost, :impactsealevelrise)
     bindparameter(m, :impactaggregation, :leavecost, :impactsealevelrise)
+
+    return m
+end
+
+function getfund(;nsteps=1050, datadir="../data", params=nothing)
+    # ---------------------------------------------
+    # Load parameters
+    # ---------------------------------------------
+    if params==nothing
+        parameters = loadparameters(datadir)
+    else
+        parameters = params
+    end
+
+    # ---------------------------------------------
+    # Construct model
+    # ---------------------------------------------
+    m = constructfund(nsteps=nsteps)
 
     # ---------------------------------------------
     # Load remaining parameters from file
