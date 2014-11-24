@@ -1,5 +1,4 @@
 using Distributions
-include("triangular.jl")
 
 function loadparameters(datadir="../data")
     files = readdir(datadir)
