@@ -26,6 +26,8 @@ function timestep(s::vslvmorb, t::Int)
         for r in d.regions
             ypc = p.income[t, r] / p.population[t, r] * 1000.0
 
+            v.vsl[t, r] = p.vslbm * (ypc / p.vslypc0)^p.vslel
+
             v.vmorb[t, r] = p.vmorbbm * (ypc / p.vmorbypc0)^p.vmorbel
         end
     end
