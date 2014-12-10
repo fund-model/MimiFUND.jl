@@ -3,7 +3,7 @@
 @defcomp socioeconomic begin
 	regions = Index()
 
-	income = Variable(index=[time,regions])
+	income = Variable(index=[time,regions], unit="bn USD1995")
 	consumption = Variable(index=[time,regions])
 	ypc = Variable(index=[time,regions])
 	ygrowth = Variable(index=[time,regions])
