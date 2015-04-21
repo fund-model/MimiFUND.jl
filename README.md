@@ -4,26 +4,18 @@ This is an implementation of FUND in Julia. Everything is experimental at this p
 
 ## Requirements
 
-The minimum requirement to run FUND is [Julia](http://julialang.org/) and the [IAMF](https://bitbucket.org/davidanthoff/iamf.jl) package. To plot you should also install the [Winston](https://github.com/nolta/Winston.jl) package. To run the example IJulia notebook file you need to install [IJulia](https://github.com/JuliaLang/IJulia.jl).
+The minimum requirement to run FUND is [Julia](http://julialang.org/) and the [IAMF](https://github.com/davidanthoff/IAMF.jl) package. To run the example IJulia notebook file you need to install [IJulia](https://github.com/JuliaLang/IJulia.jl).
 
 ### Installing Julia
 
-You can download Julia from [http://julialang.org/downloads/](http://julialang.org/downloads/). You should use the v0.3.0-prerelease version and install it.
+You can download Julia from [http://julialang.org/downloads/](http://julialang.org/downloads/). You should use the v0.3.7 version and install it.
 
 ### Installing the IAMF package
 
-Ask David Anthoff to give you access to the [IAMF repository](https://bitbucket.org/davidanthoff/iamf.jl) on bitbucket. Then start Julia and enter the following command on the Julia prompt:
+Start Julia and enter the following command on the Julia prompt:
 
 ````jl
-Pkg.clone("git@bitbucket.org:davidanthoff/IAMF.jl.git")
-````
-
-### Installing Winston (optional)
-
-[Winston](https://github.com/nolta/Winston.jl) is one of many Julia plotting packages. To install it, start Julia and enter the following command on the Julia prompt:
-
-````jl
-Pkg.add("Winston")
+Pkg.clone("https://github.com/davidanthoff/IAMF.jl.git")
 ````
 
 ### Installing IJulia (optional)
