@@ -5,7 +5,7 @@ function getmarginalmodels(;gas=:C,emissionyear=2010,parameters=nothing,yearstor
 
     m2 = getfund(nsteps=yearstorun,params=parameters)
     addcomponent(m2, adder, :marginalemission, before=:climateco2cycle)
-    addem = zeros(yearstorun)
+    addem = zeros(yearstorun+1)
     addem[getindexfromyear(emissionyear):getindexfromyear(emissionyear)+9] = 1.0
     setparameter(m2,:marginalemission,:add,addem)
     if gas==:C
@@ -31,7 +31,7 @@ function getmarginalmodels(;gas=:C,emissionyear=2010,parameters=nothing,yearstor
 end
 
 function marginaldamage3(;emissionyear=2010,parameters=nothing,yearstoaggregate=1000,gas=:C,useequityweights=false,eta=1.0,prtp=0.001)
-    yearstorun = min(1049, getindexfromyear(emissionyear) + yearstoaggregate)
+    yearstorun = min(1050, getindexfromyear(emissionyear) + yearstoaggregate)
 
     m1, m2 = getmarginalmodels(emissionyear=emissionyear, parameters=parameters,yearstorun=yearstorun,gas=gas)
 
@@ -47,7 +47,7 @@ function marginaldamage3(;emissionyear=2010,parameters=nothing,yearstoaggregate=
 
     ypc = m1[:socioeconomic,:ypc]
 
-    df = zeros(yearstorun,16)
+    df = zeros(yearstorun+1,16)
     if !useequityweights
         for r=1:16
             x = 1.
