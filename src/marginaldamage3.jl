@@ -9,17 +9,17 @@ function getmarginalmodels(;gas=:C,emissionyear=2010,parameters=nothing,yearstor
     addem[getindexfromyear(emissionyear):getindexfromyear(emissionyear)+9] = 1.0
     setparameter(m2,:marginalemission,:add,addem)
     if gas==:C
-        bindparameter(m2,:marginalemission,:input,:emissions,:mco2)
-        bindparameter(m2, :climateco2cycle,:mco2,:marginalemission,:output)
+        connectparameter(m2,:marginalemission,:input,:emissions,:mco2)
+        connectparameter(m2, :climateco2cycle,:mco2,:marginalemission,:output)
     elseif gas==:CH4
-        bindparameter(m2,:marginalemission,:input,:emissions,:globch4)
-        bindparameter(m2, :climatech4cycle,:globch4,:marginalemission,:output)
+        connectparameter(m2,:marginalemission,:input,:emissions,:globch4)
+        connectparameter(m2, :climatech4cycle,:globch4,:marginalemission,:output)
     elseif gas==:N2O
-        bindparameter(m2,:marginalemission,:input,:emissions,:globn2o)
-        bindparameter(m2, :climaten2ocycle,:globn2o,:marginalemission,:output)
+        connectparameter(m2,:marginalemission,:input,:emissions,:globn2o)
+        connectparameter(m2, :climaten2ocycle,:globn2o,:marginalemission,:output)
     elseif gas==:SF6
-        bindparameter(m2,:marginalemission,:input,:emissions,:globsf6)
-        bindparameter(m2, :climatesf6cycle,:globsf6,:marginalemission,:output)
+        connectparameter(m2,:marginalemission,:input,:emissions,:globsf6)
+        connectparameter(m2, :climatesf6cycle,:globsf6,:marginalemission,:output)
     else
         error("Unknown gas.")
     end
