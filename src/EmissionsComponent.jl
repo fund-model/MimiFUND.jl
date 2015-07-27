@@ -43,7 +43,7 @@
 
     taxmp = Parameter(index=[regions])
     sf60 = Parameter(index=[regions])
-    GDP90 = Parameter(index=[regions])
+    gdp90 = Parameter(index=[regions])
     pop90 = Parameter(index=[regions])
     ch4par1 = Parameter(index=[regions])
     ch4par2 = Parameter(index=[regions])
@@ -72,11 +72,11 @@
     gwpch4 = Parameter()
     gwpn2o = Parameter()
 
-    TaxConstant = Parameter()
-    TaxEmInt = Parameter()
-    TaxThreshold = Parameter()
-    TaxDepreciation = Parameter()
-    MaxCostFall = Parameter()
+    taxconstant = Parameter()
+    taxemint = Parameter()
+    taxthreshold = Parameter()
+    taxdepreciation = Parameter()
+    maxcostfall = Parameter()
 
     ch4add = Parameter()
     n2oadd = Parameter()
@@ -132,7 +132,7 @@ function timestep(s::emissions, t::Int)
 
         # Calculate sf6 emissions
         for r in d.regions
-            v.sf6[t, r] = (p.sf60[r] + p.sf6gdp * (p.income[t, r] - p.GDP90[r]) + p.sf6ypc * (p.income[t - 1, r] / p.population[t - 1, r] - p.GDP90[r] / p.pop90[r])) * (t <= getindexfromyear(2010) ? 1 + (t - getindexfromyear(1990)) / 40.0 : 1.0 + (60.0 - 40.0) / 40.0) * (t > getindexfromyear(2010) ? 0.99^(t - getindexfromyear(2010)) : 1.0)
+            v.sf6[t, r] = (p.sf60[r] + p.sf6gdp * (p.income[t, r] - p.gdp90[r]) + p.sf6ypc * (p.income[t - 1, r] / p.population[t - 1, r] - p.gdp90[r] / p.pop90[r])) * (t <= getindexfromyear(2010) ? 1 + (t - getindexfromyear(1990)) / 40.0 : 1.0 + (60.0 - 40.0) / 40.0) * (t > getindexfromyear(2010) ? 0.99^(t - getindexfromyear(2010)) : 1.0)
         end
 
         # Check for unrealistic values
@@ -167,9 +167,9 @@ function timestep(s::emissions, t::Int)
         # TODO RT check
         for r in d.regions
             if (v.emission[t, r] / p.income[t, r] - v.minint[t - 1] <= 0)
-                v.taxpar[t, r] = p.TaxConstant
+                v.taxpar[t, r] = p.taxconstant
             else
-                v.taxpar[t, r] = p.TaxConstant - p.TaxEmInt * sqrt(v.emission[t, r] / p.income[t, r] - v.minint[t - 1])
+                v.taxpar[t, r] = p.taxconstant - p.taxemint * sqrt(v.emission[t, r] / p.income[t, r] - v.minint[t - 1])
             end
         end
 
@@ -189,7 +189,7 @@ function timestep(s::emissions, t::Int)
 
         # TODO RT check
         for r in d.regions
-            v.perm[t, r] = 1.0 - 1.0 / p.TaxThreshold * p.currtax[t, r] / (1 + 1.0 / p.TaxThreshold * p.currtax[t, r])
+            v.perm[t, r] = 1.0 - 1.0 / p.taxthreshold * p.currtax[t, r] / (1 + 1.0 / p.taxthreshold * p.currtax[t, r])
         end
 
         for r in d.regions
@@ -198,7 +198,7 @@ function timestep(s::emissions, t::Int)
 
         # TODO RT check
         for r in d.regions
-            if (p.currtax[t, r] < p.TaxThreshold)
+            if (p.currtax[t, r] < p.taxthreshold)
                 v.rcei[t, r] = v.perm[t, r] * 0.5 * v.co2red[t, r]^2
             else
                 v.rcei[t, r] = v.perm[t, r] * 0.5 * v.co2red[t, r]
@@ -208,7 +208,7 @@ function timestep(s::emissions, t::Int)
         # TODO RT check
         # TODO RT what is the 1.7?
         for r in d.regions
-            v.seei[t, r] = (1.0 - p.TaxDepreciation) * v.seei[t - 1, r] + (1.0 - v.perm[t, r]) * 0.5 * v.co2red[t, r] * 1.7
+            v.seei[t, r] = (1.0 - p.taxdepreciation) * v.seei[t - 1, r] + (1.0 - v.perm[t, r]) * 0.5 * v.co2red[t, r] * 1.7
         end
 
         for r in d.regions
@@ -223,8 +223,8 @@ function timestep(s::emissions, t::Int)
         for r in d.regions
             v.know[t, r] = v.know[t - 1, r] * sqrt(1 + p.knowpar * v.co2red[t, r])
 
-            if (v.know[t, r] > sqrt(p.MaxCostFall))
-                v.know[t, r] = sqrt(p.MaxCostFall)
+            if (v.know[t, r] > sqrt(p.maxcostfall))
+                v.know[t, r] = sqrt(p.maxcostfall)
             end
         end
 
