@@ -232,6 +232,8 @@ function getfund(;nsteps=1050, datadir="../data", params=nothing)
     # ---------------------------------------------
     setleftoverparameters(m, parameters)
 
+
+    setbestguess(m)
     # ---------------------------------------------
     # Return model
     # ---------------------------------------------
