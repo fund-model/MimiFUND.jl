@@ -1,6 +1,6 @@
 # Fund.jl
 
-This is an implementation of FUND in Julia. Everything is experimental at this point and this is not the official FUND code. We have not finished to cross check this code with the official C# implementation, so it might still have bugs. Please do not use this code for any publication at this point.
+This is an implementation of FUND in Julia. Everything is experimental at this point and this is not the official FUND code. We have not finished to cross check this code with the official C# implementation, so it might still have bugs. Please do not use this code for any publication at this point. This code will also migrate to a different github repository once it is finalized.
 
 ## Requirements
 
