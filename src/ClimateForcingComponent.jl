@@ -1,4 +1,4 @@
-﻿using IAMF
+﻿using Mimi
 
 @defcomp climateforcing begin
     # Atmospheric CO2 concentration

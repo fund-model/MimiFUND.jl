@@ -1,4 +1,4 @@
-﻿using IAMF
+﻿using Mimi
 
 @defcomp climatesf6cycle begin
     # Global SF6 emissions in kt of SF6

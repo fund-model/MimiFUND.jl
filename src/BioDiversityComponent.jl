@@ -1,4 +1,4 @@
-﻿using IAMF
+﻿using Mimi
 
 @defcomp biodiversity begin
     # Number of species

@@ -1,4 +1,4 @@
-﻿using IAMF
+﻿using Mimi
 
 @defcomp climateregional begin
     regions = Index()

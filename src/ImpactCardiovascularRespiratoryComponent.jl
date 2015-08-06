@@ -1,4 +1,4 @@
-﻿using IAMF
+﻿using Mimi
 
 @defcomp impactcardiovascularrespiratory begin
     regions = Index()

@@ -1,4 +1,4 @@
-﻿using IAMF
+﻿using Mimi
 
 @defcomp climatech4cycle begin
     # Global CH4 emissions in Mt of CH4

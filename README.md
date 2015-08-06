@@ -4,18 +4,18 @@ This is an implementation of FUND in Julia. Everything is experimental at this p
 
 ## Requirements
 
-The minimum requirement to run FUND is [Julia](http://julialang.org/) and the [IAMF](https://github.com/davidanthoff/IAMF.jl) package. To run the example IJulia notebook file you need to install [IJulia](https://github.com/JuliaLang/IJulia.jl).
+The minimum requirement to run FUND is [Julia](http://julialang.org/) and the [Mimi](https://github.com/davidanthoff/Mimi.jl) package. To run the example IJulia notebook file you need to install [IJulia](https://github.com/JuliaLang/IJulia.jl).
 
 ### Installing Julia
 
 You can download Julia from [http://julialang.org/downloads/](http://julialang.org/downloads/). You should use the v0.3.x version and install it.
 
-### Installing the IAMF package
+### Installing the Mimi package
 
 Start Julia and enter the following command on the Julia prompt:
 
 ````jl
-Pkg.clone("https://github.com/davidanthoff/IAMF.jl.git")
+Pkg.clone("https://github.com/davidanthoff/Mimi.jl.git")
 ````
 
 ### Installing IJulia (optional)

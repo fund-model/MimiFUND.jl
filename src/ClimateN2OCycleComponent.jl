@@ -1,4 +1,4 @@
-﻿using IAMF
+﻿using Mimi
 
 @defcomp climaten2ocycle begin
     # Global N2O emissions in Mt of N
