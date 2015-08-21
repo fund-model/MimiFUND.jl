@@ -67,7 +67,11 @@ function convertparametervalue(pv)
         elseif endswith(pv, "y")
             return int64(strip(pv,'y'))
         else
-            error(pv)
+            try
+                return float64(pv)
+            catch e
+                error(pv)
+            end
         end
         return pv
     else
