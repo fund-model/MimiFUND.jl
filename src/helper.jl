@@ -2,7 +2,7 @@ using Distributions
 
 function loadparameters(datadir="../data")
     files = readdir(datadir)
-    parameters = {lowercase(splitext(file)[1]) => readdlm(joinpath(datadir,file), ',') for file in files};
+    parameters = Dict{Any, Any}([lowercase(splitext(file)[1]) => readdlm(joinpath(datadir,file), ',') for file in files])
 
     prepparameters!(parameters)
 
@@ -20,42 +20,42 @@ function getindexfromyear(year)
 end
 
 function convertparametervalue(pv)
-    if !isa(pv,Float64)
-        if beginswith(pv,"~") & endswith(pv,")")
+    if isa(pv,String)
+        if startswith(pv,"~") & endswith(pv,")")
             args_start_index = search(pv,'(')
             dist_name = pv[2:args_start_index-1]
             args = split(pv[args_start_index+1:end-1], ';')
             fixedargs = filter(i->!contains(i,"="),args)
-            optargs = {split(i,'=')[1]=>split(i,'=')[2] for i in filter(i->contains(i,"="),args)}
+            optargs = Dict([split(i,'=')[1]=>split(i,'=')[2] for i in filter(i->contains(i,"="),args)])
 
             if dist_name == "N"
                 if length(fixedargs)!=2 error() end
                 if length(optargs)>2 error() end
 
-                basenormal = Normal(float64(fixedargs[1]),float64(fixedargs[2]))
+                basenormal = Normal(parse(Float64, fixedargs[1]),parse(Float64, fixedargs[2]))
 
                 if length(optargs)==0
                     return basenormal
                 else
                     return Truncated(basenormal,
-                        haskey(optargs,"min") ? float64(optargs["min"]) : -Inf,
-                        haskey(optargs,"max") ? float64(optargs["max"]) : Inf)
+                        haskey(optargs,"min") ? parse(Float64, optargs["min"]) : -Inf,
+                        haskey(optargs,"max") ? parse(Float64, optargs["max"]) : Inf)
                 end
-            elseif beginswith(pv, "~Gamma(")
+            elseif startswith(pv, "~Gamma(")
                 if length(fixedargs)!=2 error() end
                 if length(optargs)>2 error() end
 
-                basegamma = Gamma(float64(fixedargs[1]),float64(fixedargs[2]))
+                basegamma = Gamma(parse(Float64, fixedargs[1]),parse(Float64, fixedargs[2]))
 
                 if length(optargs)==0
                     return basegamma
                 else
                     return Truncated(basegamma,
-                        haskey(optargs,"min") ? float64(optargs["min"]) : -Inf,
-                        haskey(optargs,"max") ? float64(optargs["max"]) : Inf)
+                        haskey(optargs,"min") ? parse(Float64, optargs["min"]) : -Inf,
+                        haskey(optargs,"max") ? parse(Float64, optargs["max"]) : Inf)
                 end
-            elseif beginswith(pv, "~Triangular(")
-                triang = TriangularDist(float64(fixedargs[1]), float64(fixedargs[2]), float64(fixedargs[3]))
+            elseif startswith(pv, "~Triangular(")
+                triang = TriangularDist(parse(Float64, fixedargs[1]), parse(Float64, fixedargs[2]), parse(Float64, fixedargs[3]))
                 return triang
             else
                 error("Unknown distribution")
@@ -65,7 +65,7 @@ function convertparametervalue(pv)
         elseif pv=="false"
             return false
         elseif endswith(pv, "y")
-            return int64(strip(pv,'y'))
+            return parse(Int, strip(pv,'y'))
         else
             try
                 return float64(pv)

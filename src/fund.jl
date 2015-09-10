@@ -33,7 +33,7 @@ include("VslVmorbComponent.jl")
 function constructfund(;nsteps=1050)
     m = Model()
 
-    setindex(m, :time, [1950:1950+nsteps])
+    setindex(m, :time, collect(1950:1950+nsteps))
     setindex(m, :regions, ["USA", "CAN", "WEU", "JPK", "ANZ", "EEU", "FSU", "MDE", "CAM", "LAM", "SAS", "SEA", "CHI", "MAF", "SSA", "SIS"])
 
     # ---------------------------------------------
