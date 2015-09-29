@@ -15,7 +15,7 @@ You can download Julia from [http://julialang.org/downloads/](http://julialang.o
 Start Julia and enter the following command on the Julia prompt:
 
 ````jl
-Pkg.clone("https://github.com/davidanthoff/Mimi.jl.git")
+Pkg.clone("Mimi")
 ````
 
 ### Installing IJulia (optional)
