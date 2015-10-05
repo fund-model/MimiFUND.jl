@@ -20,7 +20,7 @@ function getindexfromyear(year)
 end
 
 function convertparametervalue(pv)
-    if isa(pv,String)
+    if isa(pv,AbstractString)
         if startswith(pv,"~") & endswith(pv,")")
             args_start_index = search(pv,'(')
             dist_name = pv[2:args_start_index-1]
