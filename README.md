@@ -15,27 +15,8 @@ You can download Julia from [http://julialang.org/downloads/](http://julialang.o
 Start Julia and enter the following command on the Julia prompt:
 
 ````jl
-Pkg.clone("https://github.com/davidanthoff/Mimi.jl.git")
+Pkg.add("Mimi")
 ````
-
-### Installing IJulia (optional)
-
-[IJulia](https://github.com/JuliaLang/IJulia.jl) provides the excellent [IPython](http://ipython.org/) interface for the Julia language. Installation is a two step procedure:
-
-First, you need a working IPython installation. The Anaconda distribution [(http://continuum.io/downloads)](http://continuum.io/downloads) is currently the easiest way to install IPython.
-
-Second, start Julia, then enter the following command on the Julia prompt:
-
-````jl
-Pkg.add("IJulia")
-````
-
-To start the IJulia notebook, open a normal command prompt (not Julia), change to the directory with the FUND source code and enter the following command:
-
-````
-ipython notebook --profile julia
-````
-
 
 ### Keeping requirements up-to-date (optional)
 
