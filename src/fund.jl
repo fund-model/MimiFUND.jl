@@ -210,6 +210,8 @@ function constructfund(;nsteps=1050)
     connectparameter(m, :impactaggregation, :morbcost, :impactdeathmorbidity, :morbcost)
     connectparameter(m, :impactaggregation, :wetcost, :impactsealevelrise, :wetcost)
     connectparameter(m, :impactaggregation, :leavecost, :impactsealevelrise, :leavecost)
+    setparameter(m, :impactaggregation, :eloss_other, zeros(nsteps+1, 16)) # This is a connection point for other impact components
+    setparameter(m, :impactaggregation, :sloss_other, zeros(nsteps+1, 16)) # This is a connection point for other impact components
 
     return m
 end
