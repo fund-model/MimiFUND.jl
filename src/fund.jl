@@ -182,6 +182,8 @@ function constructfund(;nsteps=1050)
     connectparameter(m, :impactdeathmorbidity, :hurrdead, :impacttropicalstorms, :hurrdead)
     connectparameter(m, :impactdeathmorbidity, :extratropicalstormsdead, :impactextratropicalstorms, :extratropicalstormsdead)
     connectparameter(m, :impactdeathmorbidity, :diasick, :impactdiarrhoea, :diasick)
+    setparameter(m, :impactdeathmorbidity, :dead_other, zeros(nsteps+1, 16)) # This is a connection point for other impact components
+    setparameter(m, :impactdeathmorbidity, :sick_other, zeros(nsteps+1, 16)) # This is a connection point for other impact components
 
     connectparameter(m, :impactwaterresources, :population, :population, :population)
     connectparameter(m, :impactwaterresources, :income, :socioeconomic, :income)
