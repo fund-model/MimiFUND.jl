@@ -68,7 +68,7 @@ function convertparametervalue(pv)
             return parse(Int, strip(pv,'y'))
         else
             try
-                return convert(Float64, pv)
+                return parse(Float64, pv)
             catch e
                 error(pv)
             end
