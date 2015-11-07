@@ -8,7 +8,7 @@ The minimum requirement to run FUND is [Julia](http://julialang.org/) and the [M
 
 ### Installing Julia
 
-You can download Julia from [http://julialang.org/downloads/](http://julialang.org/downloads/). You should use the v0.3.x version and install it.
+You can download Julia from [http://julialang.org/downloads/](http://julialang.org/downloads/). You should use the v0.4.x version and install it.
 
 ### Installing the Mimi package
 
