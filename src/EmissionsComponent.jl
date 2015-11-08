@@ -49,7 +49,6 @@
     ch4par2 = Parameter(index=[regions])
     n2opar1 = Parameter(index=[regions])
     n2opar2 = Parameter(index=[regions])
-    gdp0 = Parameter(index=[regions])
     emissint0 = Parameter(index=[regions])
 
     forestemm = Parameter(index=[time,regions])
@@ -91,7 +90,7 @@ function timestep(s::emissions, t::Int)
     if t==1
         for r in d.regions
             v.energint[t, r] = 1
-            v.energuse[t, r] = p.gdp0[r]
+            v.energuse[t, r] = p.income[t,r]
             v.emissint[t, r] = p.emissint0[r]
             v.emission[t, r] = v.emissint[t, r] / v.energuse[t, r]
             v.ch4cost[t, r] = 0
