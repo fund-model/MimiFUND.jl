@@ -27,7 +27,7 @@
     entercost = Variable(index=[time,regions])
     leavecost = Variable(index=[time,regions])
 
-    imigrate = Variable(index=[time,regions])
+    imigrate = Variable(index=[regions,regions])
 
     incdens = Parameter()
     emcst = Parameter()
