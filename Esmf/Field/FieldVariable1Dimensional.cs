@@ -7,10 +7,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Diagnostics;
+using System.IO;
 
 namespace Esmf
 {
-    public class FieldVariable1Dimensional<D1, T> : IParameter1DimensionalTypeless<T>, IVariable1Dimensional<D1, T>, IParameter1Dimensional<D1, T>
+    public class FieldVariable1Dimensional<D1, T> : IParameter1DimensionalTypeless<T>, IVariable1Dimensional<D1, T>, IParameter1Dimensional<D1, T>, IVariableWriter
         where D1 : IDimension
     {
         private JaggedArrayWrapper<T> _values;
@@ -120,6 +121,14 @@ namespace Esmf
             for (int i = 0; i < _values.Length; i++)
             {
                 yield return _values[i];
+            }
+        }
+
+        void IVariableWriter.WriteData(StreamWriter file)
+        {
+            for(int i=0;i<_values.Length;i++)
+            {
+                file.WriteLine(_values[i]);
             }
         }
     }

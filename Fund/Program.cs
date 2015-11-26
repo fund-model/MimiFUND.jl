@@ -24,6 +24,9 @@ namespace Fund
 
         [Argument(ArgumentType.AtMostOnce)]
         public bool MPI;
+
+        [Argument(ArgumentType.AtMostOnce)]
+        public bool JuliaComparison;
 #pragma warning restore 0649
     }
 
@@ -69,6 +72,14 @@ namespace Fund
                 Console.WriteLine();
 
                 LongtermDiagnosticOutput.Run(lParsedCmdArgs.Diagnostic);
+            }
+            else if(lParsedCmdArgs.JuliaComparison)
+            {
+                Console.WriteLine();
+                Console.WriteLine("Julia comparison mode");
+                Console.WriteLine();
+
+                JuliaComparison.Run();
             }
             else
             {

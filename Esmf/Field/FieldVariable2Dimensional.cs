@@ -7,10 +7,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Diagnostics;
+using System.IO;
 
 namespace Esmf
 {
-    public class FieldVariable2Dimensional<D1, D2, T> : IParameter2DimensionalTypeless<T>, IVariable2Dimensional<D1, D2, T>, IParameter2Dimensional<D1, D2, T>
+    public class FieldVariable2Dimensional<D1, D2, T> : IParameter2DimensionalTypeless<T>, IVariable2Dimensional<D1, D2, T>, IParameter2Dimensional<D1, D2, T>, IVariableWriter
         where D1 : IDimension
         where D2 : IDimension
     {
@@ -123,6 +124,22 @@ namespace Esmf
                 {
                     yield return new Parameter2DimensionalMember<T>(dimensionValues1[i], dimensionValues2[l], _values[i, l], _parent.AttachedDimensions);
                 }
+            }
+        }
+
+        void IVariableWriter.WriteData(StreamWriter file)
+        {
+            for (int i = 0; i < _values.Length0; i++)
+            {
+                for (int j = 0; j < _values.Length1; j++)
+                {
+                    if(j>0)
+                    {
+                        file.Write(",");
+                    }
+                    file.Write(_values[i, j]);
+                }
+                file.WriteLine();
             }
         }
     }

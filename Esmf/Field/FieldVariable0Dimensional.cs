@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Diagnostics;
+using System.IO;
 
 namespace Esmf
 {
@@ -16,7 +17,7 @@ namespace Esmf
         public abstract object GetFieldSetter();
     }
 
-    public class FieldVariable0Dimensional<T> : FieldVariable0DimensionalTypeless
+    public class FieldVariable0Dimensional<T> : FieldVariable0DimensionalTypeless, IVariableWriter
         where T : struct
     {
         private T _value;
@@ -95,6 +96,11 @@ namespace Esmf
         public override object GetFieldSetter()
         {
             return _setter;
+        }
+
+        void IVariableWriter.WriteData(StreamWriter file)
+        {
+            file.WriteLine(_value);
         }
     }
 }

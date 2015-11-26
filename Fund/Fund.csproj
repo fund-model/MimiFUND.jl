@@ -88,6 +88,7 @@
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="FundModel.cs" />
+    <Compile Include="JuliaComparison.cs" />
     <Compile Include="LongtermDiagnosticOutput.cs" />
     <Compile Include="MarginalDamage.cs" />
     <Compile Include="MarginalDamage3.cs" />

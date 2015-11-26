@@ -65,6 +65,11 @@ namespace Esmf
         T this[D1 index] { get; }
     }
 
+    public interface IVariableWriter
+    {
+        void WriteData(System.IO.StreamWriter file);
+    }
+
     public interface IVariable1Dimensional<D1, T>
     {
         T this[D1 index] { get; set; }

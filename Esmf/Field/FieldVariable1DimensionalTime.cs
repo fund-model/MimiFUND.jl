@@ -7,10 +7,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Diagnostics;
+using System.IO;
 
 namespace Esmf
 {
-    public class FieldVariable1DimensionalTime<T> : IParameter1DimensionalTypeless<T>, IVariable1Dimensional<Timestep, T>, IParameter1Dimensional<Timestep, T>
+    public class FieldVariable1DimensionalTime<T> : IParameter1DimensionalTypeless<T>, IVariable1Dimensional<Timestep, T>, IParameter1Dimensional<Timestep, T>, IVariableWriter
     {
         private JaggedArrayWrapper<T> _values;
         private bool[] _valuesHasBeenSet;
@@ -126,6 +127,14 @@ namespace Esmf
             for (int i = 0; i < _values.Length; i++)
             {
                 yield return _values[i];
+            }
+        }
+
+        void IVariableWriter.WriteData(StreamWriter file)
+        {
+            for (int i = 0; i < _values.Length; i++)
+            {
+                file.WriteLine(_values[i]);
             }
         }
     }

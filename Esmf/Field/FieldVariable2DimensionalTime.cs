@@ -7,10 +7,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Diagnostics;
+using System.IO;
 
 namespace Esmf
 {
-    public class FieldVariable2DimensionalTime<D2, T> : IParameter2DimensionalTypeless<T>, IVariable2Dimensional<Timestep, D2, T>, IParameter2Dimensional<Timestep, D2, T>, IFieldInternal
+    public class FieldVariable2DimensionalTime<D2, T> : IParameter2DimensionalTypeless<T>, IVariable2Dimensional<Timestep, D2, T>, IParameter2Dimensional<Timestep, D2, T>, IFieldInternal, IVariableWriter
         where D2 : IDimension
     {
         private JaggedArrayWrapper2<T> _values;
@@ -144,6 +145,22 @@ namespace Esmf
         void IFieldInternal.SwitchOffChecks()
         {
             _switchOffChecks = true;
+        }
+
+        void IVariableWriter.WriteData(StreamWriter file)
+        {
+            for (int i = 0; i < _values.Length0; i++)
+            {
+                for (int j = 0; j < _values.Length1; j++)
+                {
+                    if (j > 0)
+                    {
+                        file.Write(",");
+                    }
+                    file.Write(_values[i, j]);
+                }
+                file.WriteLine();
+            }
         }
     }
 }
