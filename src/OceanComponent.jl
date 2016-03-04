@@ -1,7 +1,7 @@
 ﻿using Mimi
 
 @defcomp ocean begin
-    # Sea-level rise in cm
+    # Sea-level rise in meters
     sea = Variable(index=[time])
 
     lifesea = Parameter()
