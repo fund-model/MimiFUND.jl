@@ -142,7 +142,7 @@ Emissions from land use change and deforestation are exogenous, and
 cannot be mitigated. Numbers are found in Tables CO2F, again for five
 alternative scenarios.
 
-3.2. Methane (CH~4~<span id="OLE_LINK1" class="anchor"><span id="OLE_LINK2" class="anchor"></span></span>)
+3.2. Methane (CH~4~)
 ----------------------------------------------------------------------------------------------------------
 
 Methane emissions are exogenous, specified in Table CH4 (emissions for
@@ -744,8 +744,6 @@ where
 
 -   $A$ is the area (in square kilometre) at time $t$ of region $r$;
 
-<!-- -->
-
 -   $\varphi$ is a parameter; $\varphi$ = 4 (2,&gt;0) million dollar per
     square kilometre (Darwin *et al*., 1995);
 
@@ -970,8 +968,6 @@ where
 -   $\eta$ is a parameter, the consumption elasticity of marginal
     utility; $\eta$ = 1;
 
-<!-- -->
-
 -   $\beta$ is a parameter, the income elasticity of wetland value;
     $\beta$ = 1.16 (0.46,&gt;0); this value is taken from Brander et al.
     (2006);
@@ -1105,8 +1101,6 @@ D_{t,r}^{d} = \mu_{r}^{d}P_{t,r}\left( \frac{y_{t,r}}{y_{1990,r}} \right)^{\epsi
 where
 
 -   $P_{t,r}$ denotes population,
-
-<!-- -->
 
 -   $r$ indexes region
 
@@ -1243,8 +1237,6 @@ where
 
 -   $t$ indexes time;
 
-<!-- -->
-
 -   $T$ denotes the change in regional mean temperature (in degree
     Celsius);
 
@@ -1301,7 +1293,7 @@ where
 
 See section 5.12. for a description of the valuation of mortality and
 morbidity. Morbidity is proportional to mortality, using the factor
-specified in Table HM. <span id="_Toc102558364" class="anchor"></span>
+specified in Table HM.
 
 5.10. Extreme weather: Tropical storms
 --------------------------------------
