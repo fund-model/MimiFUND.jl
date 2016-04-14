@@ -506,7 +506,7 @@ W_{t,r} = \min\left\{ \alpha_{r}Y_{1990,r}\left( 1 - \tau \right)^{t - 2000}\lef
 where
 
 -   $W$ denotes the change in water resources (in 1995 US dollar) at
-    time *t* in region *r*;
+    time $t$ in region $r$;
 
 -   $t$ denotes time;
 
@@ -890,7 +890,7 @@ where
 
 Equation (SLR.9) is due to Fankhauser (1994). See below.
 
-Table SLR reports average costs per year over the next century. NPV*VP*
+Table SLR reports average costs per year over the next century. $\mathrm{\text{NPV}}\text{VP}$
 is calculated assuming annual costs to be constant. This is based on the
 following. Firstly, the coastal protection decision makers anticipate a
 linear sea level rise. Secondly, coastal protection entails large
@@ -898,8 +898,8 @@ infrastructural works which last for decades. Thirdly, the considered
 costs are direct investments only, and technologies for coastal
 protection are mature. Throughout the analysis, a pure rate of time
 preference, $\rho$, of 1% per year is used. The actual discount rate
-lies thus 1% above the growth rate of the economy, *g*. The net present
-costs of protection *PC* equal
+lies thus 1% above the growth rate of the economy, $g$. The net present
+costs of protection $PC$ equal
 
 $$\begin{matrix}
 \mathrm{\text{NPV}}VP_{t,r} = \sum_{s = t}^{\infty}{\left( \frac{1}{1 + \rho + \eta g_{t,r}} \right)^{s - t}\pi_{r}\Delta S_{t}} = \frac{1 + \rho + \eta g_{t,r}}{\rho + \eta g_{t,r}}\pi_{r}\Delta S_{t}\#\left( \mathrm{SLR.10} \right) \\
@@ -1095,8 +1095,8 @@ be constant until the year 2000 at 14,000,000 species.
 5.7. Human health: Diarrhoea
 ----------------------------
 
-The number of additional diarrhoea deaths $D_{t,r}^{d}$ in region *r*
-and time *t* is given by
+The number of additional diarrhoea deaths $D_{t,r}^{d}$ in region $r$
+and time $t$ is given by
 
 $$\begin{matrix}
 D_{t,r}^{d} = \mu_{r}^{d}P_{t,r}\left( \frac{y_{t,r}}{y_{1990,r}} \right)^{\epsilon}\left( \frac{T_{t,r}}{T_{\mathrm{pre - industrial},r}} \right)^{\eta}\#\left( \mathrm{HD.1} \right) \\
@@ -1128,7 +1128,7 @@ where
 -   $\eta$ = 1.14 (0.51) is a parameter, the degree of non-linearity of
     the response of diarrhoea mortality to regional warming.
 
-Equation (HD.1), specifically parameters $\epsilon$ and $\eta$*,* was
+Equation (HD.1), specifically parameters $\epsilon$ and $\eta$, was
 estimated based on the WHO Global Burden of Diseases data
 (http://www.who.int/health\_topics/global\_burden\_of\_disease/en/).
 Diarrhoea morbidity has the same equation as mortality, but with
@@ -1152,7 +1152,7 @@ D_{t,r}^{v} = D_{1990,r}^{v}\alpha_{r}^{v}\left( T_{t} - T_{1990} \right)^{\beta
 where
 
 -   $D_{t,r}^{v}$ denotes climate-change-induced mortality due to
-    disease *v* in region $r$ at time $t$;
+    disease $v$ in region $r$ at time $t$;
 
 -   $D_{1990,r}^{v}$ denotes mortality from vector-borne diseases in
     region $r$ in 1990 (see Table HV, column “base”);
@@ -1306,7 +1306,7 @@ specified in Table HM. <span id="_Toc102558364" class="anchor"></span>
 5.10. Extreme weather: Tropical storms
 --------------------------------------
 
-The economic damage *TD* due to an increase in the intensity of tropical
+The economic damage $TD$ due to an increase in the intensity of tropical
 storms (hurricanes, typhoons) follows
 
 $$\begin{matrix}
