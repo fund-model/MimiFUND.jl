@@ -36,9 +36,7 @@ equal to the values of the year 2300, while population does not change.
 Carbon dioxide emissions are calculated on the basis of the Kaya
 identity:
 
-$$\begin{matrix}
-\mathbf{M}_{\mathbf{t,r}}\mathbf{=}\frac{\mathbf{M}_{\mathbf{t,r}}}{\mathbf{E}_{\mathbf{t,r}}}\frac{\mathbf{E}_{\mathbf{t,r}}}{\mathbf{Y}_{\mathbf{t,r}}}\frac{\mathbf{Y}_{\mathbf{t,r}}}{\mathbf{P}_{\mathbf{t,r}}}\mathbf{P}_{\mathbf{t,r}}\mathbf{=}\mathbf{\psi}_{\mathbf{t,r}}\mathbf{\varphi}_{\mathbf{t,r}}\mathbf{Y}_{\mathbf{t,r}}\mathbf{\#}\left( \mathrm{CO2.1} \right) \\
-\end{matrix}\mathbf{\ }$$
+$$M_{t,r}=\frac{M_{t,r}}{E_{t,r}}\frac{E_{t,r}}{Y_{t,r}}\frac{Y_{t,r}}{P_{t,r}}P_{t,r}=\psi_{t,r}\varphi_{t,r}Y_{t,r}$$ {#eq:CO2_1}
 
 where $M$ denotes emissions, $E$ denote energy use, $Y$ denotes GDP and
 $P$ denotes population; $t$ is the index for time, $r$ for region. The
