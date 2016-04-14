@@ -43,9 +43,7 @@ $P$ denotes population; $t$ is the index for time, $r$ for region. The
 carbon intensity of energy use, and the energy intensity of production
 follow from:
 
-$$\begin{matrix}
-\psi_{t,r} = g_{t - 1,r}^{\psi}\psi_{t - 1,r} - \alpha_{t - 1,r}\tau_{t - 1,r}\#\left( \mathrm{CO2.2} \right) \\
-\end{matrix}$$
+$$\psi_{t,r} = g_{t - 1,r}^{\psi}\psi_{t - 1,r} - \alpha_{t - 1,r}\tau_{t - 1,r}$$ {#eq:CO2_2}
 
 and
 
