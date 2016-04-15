@@ -65,14 +65,14 @@ $\kappa_{\psi} = \kappa_{\varphi} = 0.9$ and
 
 $$\alpha_{t,r} = 1 - \frac{\tau_{t,r}/100}{1 + \tau_{t,r}/100}$$ {#eq:CO2_6}
 
-So that $\alpha = 0.5$ if $\tau = \frac{\$ 100}{\text{tC}}$. One may
+So that $\alpha = 0.5$ if $\tau = \$100/\text{tC}$. One may
 interpret the difference between permanent and temporary emission
 reduction as affecting commercial technologies and capital stocks,
 respectively. The emission reduction module is a reduced form way of
 modelling that part of the emission reduction fades away after the
 policy intervention is reversed, but that another part remains through
 technological lock-in. Learning effects are described below. The
-parameters of the model are chosen so that FUND roughly resembles the
+parameters of the model are chosen so that *FUND* roughly resembles the
 behaviour of other models, particularly those of the Energy Modeling
 Forum (Weyant, 2004; Weyant *et al.*, 2006).
 
@@ -207,7 +207,7 @@ with
 $$C_{t} = \sum_{i = 1}^{5}{\alpha_{i}\text{Bo}x_{i,t}}$$ {#eq:C_2b}
 
 where $\alpha_{i}$ denotes the fraction of emissions $E$ (in million
-metric tonnes of carbon) that is allocated to $\text{Bo}x_{i}$ (0.13,
+metric tonnes of carbon) that is allocated to $Box_{i}$ (0.13,
 0.20, 0.32, 0.25 and 0.10, respectively) and $\rho$ the decay-rate of
 the boxes ($\rho = exp( - \frac{1}{\mathrm{\text{lifetime}}})$, with
 life-times infinity, 363, 74, 17 and 2 years, respectively). The model
@@ -233,13 +233,13 @@ the forcing as interpreted by IMAGE 2.2.
 -----------------------------------
 
 The global mean temperature $T$ is governed by a geometric build-up to
-its equilibrium (determined by radiative forcing $\text{RF}$). In the
+its equilibrium (determined by radiative forcing $RF$). In the
 base case, global mean temperature $T$ rises in equilibrium by 3.0°C for
 a doubling of carbon dioxide equivalents, so:
 
 $$T_{t} = \left( 1 - \frac{1}{\varphi} \right)T_{t - 1} + \frac{1}{\varphi}\frac{CS}{5.35\ln 2}RF_{t}$$ {#eq:C_4}
 
-where $\text{CS}$ is climate sensitivity, set to 3.0 (with a gamma
+where $CS$ is climate sensitivity, set to 3.0 (with a gamma
 distribution with shape=6.48 and scale=0.55). $\varphi$ is the e-folding
 time and set to
 
@@ -259,8 +259,8 @@ determined by the temperature and a life-time of 500 years:
 
 $$S_{t} = \left( 1 - \frac{1}{\rho} \right)S_{t - 1} + \gamma\frac{1}{\rho}T_{t}$$ {#eq:C_6}
 
-where $\rho$ = 500 (with a triangular distribution bounded by 250 and
-1000) is the e-folding time. $\gamma$ = 2 (with a gamma distribution
+where $\rho = 500$ (with a triangular distribution bounded by 250 and
+1000) is the e-folding time. $\gamma = 2$ (with a gamma distribution
 with shape=6 and scale=0.4) is sea-level sensitivity to temperature.
 
 Temperature and sea level are calibrated to the best guess temperature
