@@ -2,6 +2,7 @@ site_name: FUND documentation
 docs_dir: doc
 theme: readthedocs
 extra_javascript:
+  - mkdocs.js
   - http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML
 markdown_extensions:
   - mdx_math:
