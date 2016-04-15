@@ -16,13 +16,13 @@ other scenarios follow the SRES A1B, A2, B1 and B2 scenarios
 Team, 2001).
 
 We assume that all regions are in a steady state after the year 2300.
-For the years 2301-3000per capita income growth rates are constant and
+For the years 2301-3000 per capita income growth rates are constant and
 equal to the values of the year 2300, while population does not change.
 
 3. Emission, abatement and costs
 ================================
 
-3.1. Carbon dioxide (CO2)
+3.1. Carbon dioxide (CO~2~)
 -------------------------
 
 Carbon dioxide emissions are calculated on the basis of the Kaya
