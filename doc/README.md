@@ -18,3 +18,8 @@ To create the pdf, run ``build.ps`` on Windows.
 ## Mkdocs version
 
 The documentation also gets build and deployed to http://fundjl.readthedocs.org/en/latest/ with every commit. That feature is a bit experimental at the moment, in particular we need to figure out how we can get equation numbering to work.
+
+To view the mkdoc version locally, you need to install
+
+- [MkDocs](http://www.mkdocs.org/)
+- [python-markdown-math](https://github.com/mitya57/python-markdown-math)
