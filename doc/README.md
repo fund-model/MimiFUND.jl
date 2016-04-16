@@ -11,7 +11,6 @@ To make changes to the documentation, edit the file  ``science.md``.
 You need to install
 
 - [pandoc](http://pandoc.org/)
-- [pandoc-eqnos](https://github.com/tomduck/pandoc-eqnos)
 
 To create the pdf, run ``build.ps`` on Windows.
 
