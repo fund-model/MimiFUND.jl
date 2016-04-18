@@ -1,3 +1,6 @@
+Intro
+=====
+
 The Climate Framework for Uncertainty, Negotiation and
 Distribution (FUND) is a so-called integrated assessment model of
 climate change. FUND was originally set-up to study the role of
