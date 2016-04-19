@@ -28,18 +28,18 @@ equal to the values of the year 2300, while population does not change.
 Carbon dioxide emissions are calculated on the basis of the Kaya
 identity:
 
-$$M_{t,r}=\frac{M_{t,r}}{E_{t,r}}\frac{E_{t,r}}{Y_{t,r}}\frac{Y_{t,r}}{P_{t,r}}P_{t,r}=\psi_{t,r}\varphi_{t,r}Y_{t,r}$$ {#eq:CO2_1}
+$$M_{t,r}=\frac{M_{t,r}}{E_{t,r}}\frac{E_{t,r}}{Y_{t,r}}\frac{Y_{t,r}}{P_{t,r}}P_{t,r}=\psi_{t,r}\varphi_{t,r}Y_{t,r}$$ {#eq:CO2_1 tag="CO1.1"}
 
 where $M$ denotes emissions, $E$ denote energy use, $Y$ denotes GDP and
 $P$ denotes population; $t$ is the index for time, $r$ for region. The
 carbon intensity of energy use, and the energy intensity of production
 follow from:
 
-$$\psi_{t,r} = g_{t - 1,r}^{\psi}\psi_{t - 1,r} - \alpha_{t - 1,r}\tau_{t - 1,r}$$ {#eq:CO2_2}
+$$\psi_{t,r} = g_{t - 1,r}^{\psi}\psi_{t - 1,r} - \alpha_{t - 1,r}\tau_{t - 1,r}$$ {#eq:CO2_2 tag="CO2.2"}
 
 and
 
-$$\varphi_{t,r} = g_{t - 1,r}^{\varphi}\varphi_{t - 1,r} - \alpha_{t - 1,r}\tau_{t - 1,r}$$ {#eq:CO2_3}
+$$\varphi_{t,r} = g_{t - 1,r}^{\varphi}\varphi_{t - 1,r} - \alpha_{t - 1,r}\tau_{t - 1,r}$$ {#eq:CO2_3 tag="CO2.3"}
 
 where $\tau$ is policy intervention and $\alpha$ is a parameter. The
 exogenous growth rates $g$ are referred to as the Autonomous Energy
@@ -48,13 +48,13 @@ Improvement (ACEI). See Tables AEEI and ACEI for the five alternative
 scenarios (values for the years 2301-3000 again equal the values for the
 year 2300). Policy also affects emissions via
 
-$$M_{t,r} = \left( \psi_{t,r} - \chi_{t,r}^{\psi} \right)\left( \varphi_{t,r} - \chi_{t,r}^{\varphi} \right)Y_{t,r}$$ {#eq:CO2_1b}
+$$M_{t,r} = \left( \psi_{t,r} - \chi_{t,r}^{\psi} \right)\left( \varphi_{t,r} - \chi_{t,r}^{\varphi} \right)Y_{t,r}$$ {#eq:CO2_1b tag="CO2.1'"}
 
-$$\chi_{t,r}^{\psi} = \kappa_{\psi}\chi_{t - 1,r} + \left( 1 - \alpha_{t - 1,r} \right)\tau_{t - 1,r}^{\psi}$$ {#eq:CO2_4}
+$$\chi_{t,r}^{\psi} = \kappa_{\psi}\chi_{t - 1,r} + \left( 1 - \alpha_{t - 1,r} \right)\tau_{t - 1,r}^{\psi}$$ {#eq:CO2_4 tag="CO2.4"}
 
 and
 
-$$\chi_{t,r}^{\varphi} = \kappa_{\varphi}\chi_{t - 1,r} + \left( 1 - \alpha_{t - 1,r} \right)\tau_{t - 1,r}^{\varphi}$$ {#eq:CO2_5}
+$$\chi_{t,r}^{\varphi} = \kappa_{\varphi}\chi_{t - 1,r} + \left( 1 - \alpha_{t - 1,r} \right)\tau_{t - 1,r}^{\varphi}$$ {#eq:CO2_5 tag="CO2.5"}
 
 Thus, the variable $0 < \alpha < 1$ governs which part of emission
 reduction is *permanent* (reducing carbon and energy intensities at all
@@ -63,7 +63,7 @@ future times) and which part of emission reduction is *temporary*
 rate of $0 < \kappa < 1$. In the base case,
 $\kappa_{\psi} = \kappa_{\varphi} = 0.9$ and
 
-$$\alpha_{t,r} = 1 - \frac{\tau_{t,r}/100}{1 + \tau_{t,r}/100}$$ {#eq:CO2_6}
+$$\alpha_{t,r} = 1 - \frac{\tau_{t,r}/100}{1 + \tau_{t,r}/100}$$ {#eq:CO2_6 tag="CO2.6"}
 
 So that $\alpha = 0.5$ if $\tau = \$100/\text{tC}$. One may
 interpret the difference between permanent and temporary emission
@@ -77,7 +77,7 @@ behaviour of other models, particularly those of the Energy Modeling
 Forum (Weyant, 2004; Weyant *et al.*, 2006).
 
 The costs of emission reduction $C$ are given by
-$$\frac{C_{t,r}}{Y_{t,r}} = \frac{\beta_{t,r}\tau_{t,r}^{2}}{H_{t,r}H_{t}^{g}}$$ {#eq:CO2_7}
+$$\frac{C_{t,r}}{Y_{t,r}} = \frac{\beta_{t,r}\tau_{t,r}^{2}}{H_{t,r}H_{t}^{g}}$$ {#eq:CO2_7 tag="CO2.7"}
 
 $H$ denotes the stock of knowledge. Equation (@eq:CO2_6) gives the costs of
 emission reduction in a particular year for emission reduction in that
@@ -85,7 +85,7 @@ year. In combination with Equations (@eq:CO2_2)-(@eq:CO2_5), emission reduction
 is cheaper if smeared out over a longer time period. The parameter
 $\beta$ follows from
 
-$$\beta_{t,r} = 0.784 - 0.084\sqrt{\frac{M_{t,r}}{Y_{t,r}} - \operatorname{}\frac{M_{t,s}}{Y_{t,s}}}$$ {#eq:CO2_8}
+$$\beta_{t,r} = 0.784 - 0.084\sqrt{\frac{M_{t,r}}{Y_{t,r}} - \operatorname{}\frac{M_{t,s}}{Y_{t,s}}}$$ {#eq:CO2_8 tag="CO2.8"}
 
 That is, emission reduction is relatively expensive for the region that
 has the lowest emission intensity. The calibration is such that a 10%
@@ -106,11 +106,11 @@ supply that is available in unlimited quantities at fixed average costs.
 
 The regional and global knowledge stocks follow from
 
-$$H_{t,r} = H_{t - 1,r}\sqrt{1 + \gamma_{R}\tau_{t - 1,r}}$$ {#eq:CO2_9}
+$$H_{t,r} = H_{t - 1,r}\sqrt{1 + \gamma_{R}\tau_{t - 1,r}}$$ {#eq:CO2_9 tag="CO2.9"}
 
 and
 
-$$H_{t}^{G} = H_{t - 1}^{G}\sqrt{1 + \gamma_{G}\tau_{t,r}}$$ {#eq:CO2_10}
+$$H_{t}^{G} = H_{t - 1}^{G}\sqrt{1 + \gamma_{G}\tau_{t,r}}$$ {#eq:CO2_10 tag="CO2.10"}
 
 Knowledge accumulates with emission abatement. More knowledge implies
 lower emission reduction costs. The parameters $\gamma$ determine which
@@ -154,11 +154,11 @@ There is no option to reduce SF~6~ emissions.
 
 Emissions from the terrestrial biosphere follow
 
-$$E_{t}^{B} = \beta\left( T_{t} - T_{2010} \right)\frac{B_{t}}{B_{\mathrm{\max}}}$$ {#eq:DB_1}
+$$E_{t}^{B} = \beta\left( T_{t} - T_{2010} \right)\frac{B_{t}}{B_{\mathrm{\max}}}$$ {#eq:DB_1 tag="DB.1"}
 
 with
 
-$$B_{t} = B_{t - 1} - E_{t - 1}^{B}$$ {#eq:DB_2}
+$$B_{t} = B_{t - 1} - E_{t - 1}^{B}$$ {#eq:DB_2 tag="DB.2"}
 
 where
 
@@ -189,7 +189,7 @@ from the terrestrial biosphere before the year 2010 are zero.
 Methane, nitrous oxide and sulphur hexafluoride are taken up in the
 atmosphere, and then geometrically depleted:
 
-$$C_{t} = C_{t - 1} + \alpha E_{t} - \beta\left( C_{t - 1} - C_{\text{pre}} \right)$$ {#eq:C_1}
+$$C_{t} = C_{t - 1} + \alpha E_{t} - \beta\left( C_{t - 1} - C_{\text{pre}} \right)$$ {#eq:C_1 tag="C.1"}
 
 where $C$ denotes concentration, $E$ emissions, $t$ year, and
 $\text{pre}$ pre-industrial. Table C displays the parameters $\alpha$
@@ -199,11 +199,11 @@ and $\beta$ for all gases. Parameters are taken from Forster *et al*.
 The atmospheric concentration of carbon dioxide follows from a five-box
 model:
 
-$$Box_{i,t} = \rho_{i}Box_{i,t - 1} + 0.000471\alpha_{i}E_{t}$$ {#eq:C_2a}
+$$Box_{i,t} = \rho_{i}Box_{i,t - 1} + 0.000471\alpha_{i}E_{t}$$ {#eq:C_2a tag="C.2a"}
 
 with
 
-$$C_{t} = \sum_{i = 1}^{5}{\alpha_{i}\text{Bo}x_{i,t}}$$ {#eq:C_2b}
+$$C_{t} = \sum_{i = 1}^{5}{\alpha_{i}\text{Bo}x_{i,t}}$$ {#eq:C_2b tag="C.2b"}
 
 where $\alpha_{i}$ denotes the fraction of emissions $E$ (in million
 metric tonnes of carbon) that is allocated to $Box_{i}$ (0.13,
@@ -227,7 +227,7 @@ $$\begin{aligned}
   &- 0.47\ln\left( 1 + 2.01 + 10^{- 5}790^{0.75}N2O_{t}^{0.75} + 5.31 \times 10^{- 15}790^{2.52}N2O_{t}^{1.52} \right) \\
   &+ 2 \times 0.47\ln\left( 1 + 2.01 \times 10^{- 5}790^{0.75}285^{0.75} + 5.31 \times 10^{- 15}790^{2.52}285^{1.52} \right) \\
   &+ 0.00052\left( \text{SF}6_{t} - 0.04 \right) + rfSO2_{t}
-\end{aligned}$$ {#eq:id}
+\end{aligned}$$ {#eq:C_3 tag="C.3"}
 
 Parameters are taken from Ramaswamy *et al.* (2001) and Forster et al.
 (2007) for the indirect effect of methane on tropospheric ozone.
@@ -243,13 +243,13 @@ its equilibrium (determined by radiative forcing $RF$). In the
 base case, global mean temperature $T$ rises in equilibrium by 3.0°C for
 a doubling of carbon dioxide equivalents, so:
 
-$$T_{t} = \left( 1 - \frac{1}{\varphi} \right)T_{t - 1} + \frac{1}{\varphi}\frac{CS}{5.35\ln 2}RF_{t}$$ {#eq:C_4}
+$$T_{t} = \left( 1 - \frac{1}{\varphi} \right)T_{t - 1} + \frac{1}{\varphi}\frac{CS}{5.35\ln 2}RF_{t}$$ {#eq:C_4 tag="C.4"}
 
 where $CS$ is climate sensitivity, set to 3.0 (with a gamma
 distribution with shape=6.48 and scale=0.55). $\varphi$ is the e-folding
 time and set to
 
-$$\varphi = \max\left( \alpha + \beta^{l}CS + \beta^{q}CS^{2},1 \right)$$ {#eq:C_5}
+$$\varphi = \max\left( \alpha + \beta^{l}CS + \beta^{q}CS^{2},1 \right)$$ {#eq:C_5 tag="C.5"}
 
 where $\alpha$ is set to -42.7, $\beta^{l}$ is set to 29.1 and
 $\beta^{q}$ is set to 0.001, such that the best guess e-folding time for
@@ -263,7 +263,7 @@ spatial climate change pattern averaged over 14 GCMs (Mendelsohn et al.
 Global mean sea level is also geometric, with its equilibrium level
 determined by the temperature and a life-time of 500 years:
 
-$$S_{t} = \left( 1 - \frac{1}{\rho} \right)S_{t - 1} + \gamma\frac{1}{\rho}T_{t}$$ {#eq:C_6}
+$$S_{t} = \left( 1 - \frac{1}{\rho} \right)S_{t - 1} + \gamma\frac{1}{\rho}T_{t}$$ {#eq:C_6 tag="C.6"}
 
 where $\rho = 500$ (with a triangular distribution bounded by 250 and
 1000) is the e-folding time. $\gamma = 2$ (with a gamma distribution
@@ -283,7 +283,7 @@ are split into three parts: impacts due to the rate of climate change
 $A_{t,r}^{r}$; impacts due to the level of climate change $A_{t,r}^{l}$;
 and impacts from carbon dioxide fertilisation $A_{t,r}^{f}$:
 
-$$A_{t,r} = A_{t,r}^{r} + A_{t,r}^{l} + A_{t,r}^{f}$$ {#eq:A_1}
+$$A_{t,r} = A_{t,r}^{r} + A_{t,r}^{l} + A_{t,r}^{f}$$ {#eq:A_1 tag="A.1"}
 
 The first part (rate) is always negative: As farmers have imperfect
 foresight and are locked into production practices, climate change
@@ -298,7 +298,7 @@ are smaller nearer to the optimum.
 For the impact of the rate of climate change (i.e., the annual change of
 climate) on agriculture, the assumed model is:
 
-$$A_{t,r}^{r} = \alpha_{r}\left( \frac{\Delta T_{t}}{0.04} \right)^{\beta} + \left( 1 - \frac{1}{\rho} \right)A_{t - 1,r}^{r}$$ {#eq:A_2}
+$$A_{t,r}^{r} = \alpha_{r}\left( \frac{\Delta T_{t}}{0.04} \right)^{\beta} + \left( 1 - \frac{1}{\rho} \right)A_{t - 1,r}^{r}$$ {#eq:A_2 tag="A.2"}
 
 where
 
@@ -326,7 +326,7 @@ where
 The model for the impact due to the level of climate change since 1990
 is:
 
-$$A_{t,r}^{l} = \delta_{r}^{l}T_{t} + \delta_{r}^{q}T_{t}^{2}$$ {#eq:A_3}
+$$A_{t,r}^{l} = \delta_{r}^{l}T_{t} + \delta_{r}^{q}T_{t}^{2}$$ {#eq:A_3 tag="A.3"}
 
 where
 
@@ -349,7 +349,7 @@ where
 CO~2~ fertilisation has a positive, but saturating effect on
 agriculture, specified by
 
-$$A_{t,r}^{f} = \gamma_{r}\ln\frac{\text{CO}2_{t}}{275}$$ {#eq:A_4}
+$$A_{t,r}^{f} = \gamma_{r}\ln\frac{\text{CO}2_{t}}{275}$$ {#eq:A_4 tag="A.4"}
 
 where
 
@@ -387,7 +387,7 @@ of agricultural production. In order to express this as a percentage of
 income, we need to know the share of agricultural production in total
 income. This is assumed to fall with per capita income, that is,
 
-$$\frac{\text{GA}P_{t,r}}{Y_{t,r}} = \frac{\text{GA}P_{1990,r}}{Y_{1990,r}}\left( \frac{y_{1990,r}}{y_{t,r}} \right)^{\epsilon}$$ {#eq:A_5}
+$$\frac{\text{GA}P_{t,r}}{Y_{t,r}} = \frac{\text{GA}P_{1990,r}}{Y_{1990,r}}\left( \frac{y_{1990,r}}{y_{t,r}} \right)^{\epsilon}$$ {#eq:A_5 tag="A.5"}
 
 where
 
@@ -415,7 +415,7 @@ where
 
 The model is:
 
-$$F_{t,r} = \alpha_{r}\left( \frac{y_{t,r}}{y_{1990,r}} \right)^{\epsilon}\left( 0.5\left( \frac{T_{t}}{1.0} \right)^{\beta} + 0.5\gamma\ln\left( \frac{\text{CO}2_{t}}{275} \right) \right)$$ {#eq:F_1}
+$$F_{t,r} = \alpha_{r}\left( \frac{y_{t,r}}{y_{1990,r}} \right)^{\epsilon}\left( 0.5\left( \frac{T_{t}}{1.0} \right)^{\beta} + 0.5\gamma\ln\left( \frac{\text{CO}2_{t}}{275} \right) \right)$$ {#eq:F_1 tag="F.1"}
 
 where
 
@@ -459,7 +459,7 @@ shown in Table EFW. The standard deviation follows.
 
 The impact of climate change on water resources follows:
 
-$$W_{t,r} = \min\left\{ \alpha_{r}Y_{1990,r}\left( 1 - \tau \right)^{t - 2000}\left( \frac{y_{t,r}}{y_{1990,r}} \right)^{\beta}\left( \frac{P_{t,r}}{P_{1990,r}} \right)^{\eta}\left( \frac{T_{t}}{1.0} \right)^{\gamma},\frac{Y_{t,r}}{10} \right\}$$ {#eq:W_1}
+$$W_{t,r} = \min\left\{ \alpha_{r}Y_{1990,r}\left( 1 - \tau \right)^{t - 2000}\left( \frac{y_{t,r}}{y_{1990,r}} \right)^{\beta}\left( \frac{P_{t,r}}{P_{1990,r}} \right)^{\eta}\left( \frac{T_{t}}{1.0} \right)^{\gamma},\frac{Y_{t,r}}{10} \right\}$$ {#eq:W_1 tag="W.1"}
 
 where
 
@@ -501,7 +501,7 @@ These parameters are from calibrating *FUND* to the results of Downing
 
 For space heating, the model is:
 
-$$SH_{t,r} = \frac{\alpha_{r}Y_{1990,r}\frac{\operatorname{atan}T_{t}}{\operatorname{atan}{1.0}}\left( \frac{y_{t,r}}{y_{1990,r}} \right)^{\epsilon}\left( \frac{P_{t,r}}{P_{1990,r}} \right)}{\prod_{s = 1990}^{t}{\text{AEE}I_{s,r}}}$$ {#eq:E_1}
+$$SH_{t,r} = \frac{\alpha_{r}Y_{1990,r}\frac{\operatorname{atan}T_{t}}{\operatorname{atan}{1.0}}\left( \frac{y_{t,r}}{y_{1990,r}} \right)^{\epsilon}\left( \frac{P_{t,r}}{P_{1990,r}} \right)}{\prod_{s = 1990}^{t}{\text{AEE}I_{s,r}}}$$ {#eq:E_1 tag="E.1"}
 
 where
 
@@ -545,7 +545,7 @@ efficiency improvements in the economy.
 
 For space cooling, the model is:
 
-$$SC_{t,r} = \frac{\alpha_{r}Y_{1990,r}\left( \frac{T_{t}}{1.0} \right)^{\beta}\left( \frac{y_{t,r}}{y_{1990,r}} \right)^{\epsilon}\left( \frac{P_{t,r}}{P_{1990,r}} \right)}{\prod_{s = 1990}^{t}{\text{AEE}I_{s,r}}}$$ {#eq:E_2}
+$$SC_{t,r} = \frac{\alpha_{r}Y_{1990,r}\left( \frac{T_{t}}{1.0} \right)^{\beta}\left( \frac{y_{t,r}}{y_{1990,r}} \right)^{\epsilon}\left( \frac{P_{t,r}}{P_{1990,r}} \right)}{\prod_{s = 1990}^{t}{\text{AEE}I_{s,r}}}$$ {#eq:E_2 tag="E.2"}
 
 where
 
@@ -601,7 +601,7 @@ procedures of Tol (2002a).
 Potential cumulative dryland loss without protection is assumed to be a
 function of sea level rise:
 
-$${\overset{\overline{}}{\text{CD}}}_{t,r} = \min\left\lbrack \delta_{r}S_{t}^{\gamma_{r}},\zeta_{r} \right\rbrack$$ {#eq:SLR_1}
+$${\overset{\overline{}}{\text{CD}}}_{t,r} = \min\left\lbrack \delta_{r}S_{t}^{\gamma_{r}},\zeta_{r} \right\rbrack$$ {#eq:SLR_1 tag="SLR.1"}
 
 where
 
@@ -629,7 +629,7 @@ Potential dryland loss in the current year without protection is given
 by potential cumulative dryland loss without protection minus actual
 cumulative dryland lost in previous years:
 
-$${\overset{\overline{}}{D}}_{t,r} = {\overset{\overline{}}{\text{CD}}}_{t,r} - CD_{t - 1,r}$$ {#eq:SLR_2}
+$${\overset{\overline{}}{D}}_{t,r} = {\overset{\overline{}}{\text{CD}}}_{t,r} - CD_{t - 1,r}$$ {#eq:SLR_2 tag="SLR.2"}
 
 where
 
@@ -646,7 +646,7 @@ where
 Actual dryland loss in the current year depends on the level of
 protection:
 
-$$D_{t,r} = \left( 1 - P_{t,r} \right){\overset{\overline{}}{D}}_{t,r}$$ {#eq:SLR_3}
+$$D_{t,r} = \left( 1 - P_{t,r} \right){\overset{\overline{}}{D}}_{t,r}$$ {#eq:SLR_3 tag="SLR.3"}
 
 where
 
@@ -660,7 +660,7 @@ where
 
 Actual cumulative dryland loss is given by:
 
-$$\text{CD}_{t,r} = CD_{t - 1,r} + D_{t,r}$$ {#eq:SLR_4}
+$$\text{CD}_{t,r} = CD_{t - 1,r} + D_{t,r}$$ {#eq:SLR_4 tag="SLR.4"}
 
 where
 
@@ -672,7 +672,7 @@ where
 The value of dryland is assumed to be linear in income density
 (\$/km^2^):
 
-$$VD_{t,r} = \varphi\left( \frac{\frac{Y_{t,r}}{A_{t,r}}}{YA_{0}} \right)^{\epsilon}$$ {#eq:SLR_5}
+$$VD_{t,r} = \varphi\left( \frac{\frac{Y_{t,r}}{A_{t,r}}}{YA_{0}} \right)^{\epsilon}$$ {#eq:SLR_5 tag="SLR.5"}
 
 where
 
@@ -700,7 +700,7 @@ where
 
 Wetland loss is assumed to be a linear function of sea level rise:
 
-$$W_{t,r} = \omega_{r}^{S}\Delta S_{t} + \omega_{r}^{M}P_{t,r}\Delta S_{t}$$ {#eq:SLR_6}
+$$W_{t,r} = \omega_{r}^{S}\Delta S_{t} + \omega_{r}^{M}P_{t,r}\Delta S_{t}$$ {#eq:SLR_6 tag="SLR.6"}
 
 where
 
@@ -726,7 +726,7 @@ where
 
 Cumulative wetland loss is given by
 
-$$W_{t,r}^{C} = \min\left( W_{t - 1,r}^{C} + W_{t - 1,r},W_{r}^{M} \right)$$ {#eq:SLR_7}
+$$W_{t,r}^{C} = \min\left( W_{t - 1,r}^{C} + W_{t - 1,r},W_{r}^{M} \right)$$ {#eq:SLR_7 tag="SLR.7"}
 
 where
 
@@ -743,7 +743,7 @@ rise in a region is lost.
 Wetland value is assumed to increase with income and population density,
 and fall with wetland size:
 
-$$VW_{t,r} = \alpha\left( \frac{y_{t,r}}{y_{0}} \right)^{\beta}\left( \frac{d_{t,r}}{d_{0}} \right)^{\gamma}\left( \frac{W_{1990,r} - W_{t,r}^{C}}{W_{1990,r}} \right)^{\delta}$$ {#eq:SLR_8}
+$$VW_{t,r} = \alpha\left( \frac{y_{t,r}}{y_{0}} \right)^{\beta}\left( \frac{d_{t,r}}{d_{0}} \right)^{\gamma}\left( \frac{W_{1990,r} - W_{t,r}^{C}}{W_{1990,r}} \right)^{\delta}$$ {#eq:SLR_8 tag="SLR.8"}
 
 where
 
@@ -806,7 +806,7 @@ that is, costs of coastal protection are linear in sea level rise. The
 level of protection, that is, the share of the coastline protected, is
 based on a cost-benefit analysis:
 
-$$P_{t,r} = \max\left\{ 0,1 - \frac{1}{2}\left( \frac{\mathrm{\text{NPV}}VP_{t,r} + \mathrm{\text{NPV}}VW_{t,r}}{\mathrm{\text{NPV}}VD_{t,r}} \right) \right\}$$ {#eq:SLR_9}
+$$P_{t,r} = \max\left\{ 0,1 - \frac{1}{2}\left( \frac{\mathrm{\text{NPV}}VP_{t,r} + \mathrm{\text{NPV}}VW_{t,r}}{\mathrm{\text{NPV}}VD_{t,r}} \right) \right\}$$ {#eq:SLR_9 tag="SLR.9"}
 
 where
 
@@ -835,7 +835,7 @@ preference, $\rho$, of 1% per year is used. The actual discount rate
 lies thus 1% above the growth rate of the economy, $g$. The net present
 costs of protection $PC$ equal
 
-$$\mathrm{\text{NPV}}VP_{t,r} = \sum_{s = t}^{\infty}{\left( \frac{1}{1 + \rho + \eta g_{t,r}} \right)^{s - t}\pi_{r}\Delta S_{t}} = \frac{1 + \rho + \eta g_{t,r}}{\rho + \eta g_{t,r}}\pi_{r}\Delta S_{t}$$ {#eq:SLR_10}
+$$\mathrm{\text{NPV}}VP_{t,r} = \sum_{s = t}^{\infty}{\left( \frac{1}{1 + \rho + \eta g_{t,r}} \right)^{s - t}\pi_{r}\Delta S_{t}} = \frac{1 + \rho + \eta g_{t,r}}{\rho + \eta g_{t,r}}\pi_{r}\Delta S_{t}$$ {#eq:SLR_10 tag="SLR.10"}
 
 where
 
@@ -868,7 +868,7 @@ in line with Equation (@eq:SLR_8). All growth rates and the rate of wetland
 loss are as in the current year. The net present costs of wetland loss
 $\text{WL}$ follow from
 
-$$\mathrm{\text{NPV}}VW_{t,r} = \sum_{s = t}^{\infty}{W_{t,r}VW_{s,r}\left( \frac{1}{1 + \rho + \eta g_{t,r}} \right)^{s - t}} = W_{t,r}VW_{t,r}\frac{1 + \rho + \eta g_{t,r}}{\rho + \eta g_{t,r} - \beta g_{t,r} - \gamma p_{t,r} - \delta w_{t,r}}$$ {#eq:SLR_11}
+$$\mathrm{\text{NPV}}VW_{t,r} = \sum_{s = t}^{\infty}{W_{t,r}VW_{s,r}\left( \frac{1}{1 + \rho + \eta g_{t,r}} \right)^{s - t}} = W_{t,r}VW_{t,r}\frac{1 + \rho + \eta g_{t,r}}{\rho + \eta g_{t,r} - \beta g_{t,r} - \gamma p_{t,r} - \delta w_{t,r}}$$ {#eq:SLR_11 tag="SLR.11"}
 
 where
 
@@ -918,7 +918,7 @@ rise at the rate of income growth. All growth rates and the rate of
 wetland loss are as in the current year. The net present costs of
 dryland loss are
 
-$$\mathrm{\text{NPV}}VD_{t,r} = \sum_{s = t}^{\infty}{{\overset{\overline{}}{D}}_{t,r}VD_{t,r}\left( \frac{1 + \epsilon d_{t,r}}{1 + \rho + \eta g_{t,r}} \right)^{s - t}} = {\overset{\overline{}}{D}}_{t,r}VD_{t,r}\frac{1 + \rho + \eta g_{t,r}}{\rho + \eta g_{t,r} - \epsilon d_{t,r}}$$ {#eq:SLR_12}
+$$\mathrm{\text{NPV}}VD_{t,r} = \sum_{s = t}^{\infty}{{\overset{\overline{}}{D}}_{t,r}VD_{t,r}\left( \frac{1 + \epsilon d_{t,r}}{1 + \rho + \eta g_{t,r}} \right)^{s - t}} = {\overset{\overline{}}{D}}_{t,r}VD_{t,r}\frac{1 + \rho + \eta g_{t,r}}{\rho + \eta g_{t,r} - \epsilon d_{t,r}}$$ {#eq:SLR_12 tag="SLR.12"}
 
 where
 
@@ -962,7 +962,7 @@ location and time of the presumed change, *etcetera* – although the
 probability of detection of impacts by the “general public” is
 increasing in the rate of warming. This value is specified as
 
-$$E_{t,r} = \alpha P_{t,r}\frac{\frac{y_{t,r}}{y_{r}^{b}}}{1 + \frac{y_{t,r}}{y_{r}^{b}}}\frac{\frac{\Delta T_{t}}{\tau}}{1 + \frac{\Delta T_{t}}{\tau}}\left( 1 - \sigma + \sigma\frac{B_{0}}{B_{t}} \right)$$ {#eq:E_1}
+$$E_{t,r} = \alpha P_{t,r}\frac{\frac{y_{t,r}}{y_{r}^{b}}}{1 + \frac{y_{t,r}}{y_{r}^{b}}}\frac{\frac{\Delta T_{t}}{\tau}}{1 + \frac{\Delta T_{t}}{\tau}}\left( 1 - \sigma + \sigma\frac{B_{0}}{B_{t}} \right)$$ {#eq:E_1 tag="E.1"}
 
 where
 
@@ -1003,7 +1003,7 @@ where
 
 The number of species follows
 
-$$B_{t} = \max\left\{ \frac{B_{0}}{100},B_{t - 1}\left( 1 - \rho - \gamma\frac{\Delta T^{2}}{\tau^{2}} \right) \right\}$$ {#eq:E_2}
+$$B_{t} = \max\left\{ \frac{B_{0}}{100},B_{t - 1}\left( 1 - \rho - \gamma\frac{\Delta T^{2}}{\tau^{2}} \right) \right\}$$ {#eq:E_2 tag="E.2"}
 
 where
 
@@ -1020,7 +1020,7 @@ be constant until the year 2000 at 14,000,000 species.
 The number of additional diarrhoea deaths $D_{t,r}^{d}$ in region $r$
 and time $t$ is given by
 
-$$D_{t,r}^{d} = \mu_{r}^{d}P_{t,r}\left( \frac{y_{t,r}}{y_{1990,r}} \right)^{\epsilon}\left( \frac{T_{t,r}}{T_{\mathrm{pre - industrial},r}} \right)^{\eta}$$ {#eq:HD_1}
+$$D_{t,r}^{d} = \mu_{r}^{d}P_{t,r}\left( \frac{y_{t,r}}{y_{1990,r}} \right)^{\epsilon}\left( \frac{T_{t,r}}{T_{\mathrm{pre - industrial},r}} \right)^{\eta}$$ {#eq:HD_1 tag="HD.1"}
 
 where
 
@@ -1063,7 +1063,7 @@ morbidity.
 The number of additional deaths from vector-borne diseases,
 $D_{t,r}^{v}$ is given by:
 
-$$D_{t,r}^{v} = D_{1990,r}^{v}\alpha_{r}^{v}\left( T_{t} - T_{1990} \right)^{\beta}\left( \frac{y_{t,r}}{y_{1990,r}} \right)^{\gamma}$$ {#eq:HV}
+$$D_{t,r}^{v} = D_{1990,r}^{v}\alpha_{r}^{v}\left( T_{t} - T_{1990} \right)^{\beta}\left( \frac{y_{t,r}}{y_{1990,r}} \right)^{\gamma}$$ {#eq:HV tag="HV"}
 
 where
 
@@ -1111,7 +1111,7 @@ cold and extreme hot weather. Martens (1998) assesses the increase in
 mortality for 17 countries. Tol (2002a) extrapolates these findings to
 all other countries, based on formulae of the shape:
 
-$$D^{c} = \alpha^{c} + \beta^{c}T_{B}$$ {#eq:HC_1}
+$$D^{c} = \alpha^{c} + \beta^{c}T_{B}$$ {#eq:HC_1 tag="HC.1"}
 
 where
 
@@ -1140,7 +1140,7 @@ change in the global mean temperature, the equation becomes quadratic.
 Summing country-specific quadratic functions results in quadratic
 functions for the regions:
 
-$$D_{t,r}^{c} = \alpha_{r}^{c}T_{t} + \beta_{r}^{c}T_{t}^{2}$$ {#eq:HC_2}
+$$D_{t,r}^{c} = \alpha_{r}^{c}T_{t} + \beta_{r}^{c}T_{t}^{2}$$ {#eq:HC_2 tag="HC.2"}
 
 where
 
@@ -1188,7 +1188,7 @@ is estimated using data from http://earthtrends.wri.org
 Heat-related mortality is assumed to be limited to urban populations.
 Urbanisation is a function of per capita income and population density:
 
-$$U_{t,r} = \frac{\alpha\sqrt{y_{t,r}} + \beta\sqrt{PD_{t,r}}}{1 + \alpha\sqrt{y_{t,r}} + \beta\sqrt{PD_{t,r}}}$$ {#eq:HC_3}
+$$U_{t,r} = \frac{\alpha\sqrt{y_{t,r}} + \beta\sqrt{PD_{t,r}}}{1 + \alpha\sqrt{y_{t,r}} + \beta\sqrt{PD_{t,r}}}$$ {#eq:HC_3 tag="HC.3"}
 
 where
 
@@ -1217,7 +1217,7 @@ specified in Table HM.
 The economic damage $TD$ due to an increase in the intensity of tropical
 storms (hurricanes, typhoons) follows
 
-$$TD_{t,r} = \alpha_{r}Y_{t,r}\left( \frac{y_{t,r}}{y_{1990,r}} \right)^{\epsilon}\left\lbrack \left( 1 + \delta T_{t,r} \right)^{\gamma} - 1 \right\rbrack$$ {#eq:TS_1}
+$$TD_{t,r} = \alpha_{r}Y_{t,r}\left( \frac{y_{t,r}}{y_{1990,r}} \right)^{\epsilon}\left\lbrack \left( 1 + \delta T_{t,r} \right)^{\gamma} - 1 \right\rbrack$$ {#eq:TS_1 tag="TS.1"}
 
 where
 
@@ -1253,7 +1253,7 @@ where
 The mortality $\text{TM}$ due to an increase in the intensity of
 tropical storms (hurricanes, typhoons) follows
 
-$$TM_{t,r} = \beta_{r}P_{t,r}\left( \frac{y_{t,r}}{y_{1990,r}} \right)^{\eta}\left\lbrack \left( 1 + \delta T_{t,r} \right)^{\gamma} - 1 \right\rbrack$$ {#eq:TS_2}
+$$TM_{t,r} = \beta_{r}P_{t,r}\left( \frac{y_{t,r}}{y_{1990,r}} \right)^{\eta}\left\lbrack \left( 1 + \delta T_{t,r} \right)^{\gamma} - 1 \right\rbrack$$ {#eq:TS_2 tag="TS.2"}
 
 where
 
@@ -1294,7 +1294,7 @@ morbidity.
 The economic damage due to an increase in the intensity of extratropical
 storms follows the equation below:
 
-$$\text{ET}D_{t,r} = \alpha_{r}Y_{t,r}\left( \frac{y_{t,r}}{y_{1990,r}} \right)^{\epsilon}\delta_{r}\left\lbrack \left( \frac{C_{CO2,t}}{C_{CO2,pre}} \right)^{\gamma} - 1 \right\rbrack$$ {#eq:ETS_1}
+$$\text{ET}D_{t,r} = \alpha_{r}Y_{t,r}\left( \frac{y_{t,r}}{y_{1990,r}} \right)^{\epsilon}\delta_{r}\left\lbrack \left( \frac{C_{CO2,t}}{C_{CO2,pre}} \right)^{\gamma} - 1 \right\rbrack$$ {#eq:ETS_1 tag="ETS.1"}
 
 where
 
@@ -1320,7 +1320,7 @@ where
 
 -   $\gamma$=1 is a parameter.
 
-$$\text{ET}M_{t,r} = \beta_{r}P_{t,r}\left( \frac{y_{t,r}}{y_{1990,r}} \right)^{\varphi}\delta_{r}\left\lbrack \left( \frac{C_{CO2,t}}{C_{CO2,pre}} \right)^{\gamma} - 1 \right\rbrack$$ {#eq:EST_2}
+$$\text{ET}M_{t,r} = \beta_{r}P_{t,r}\left( \frac{y_{t,r}}{y_{1990,r}} \right)^{\varphi}\delta_{r}\left\lbrack \left( \frac{C_{CO2,t}}{C_{CO2,pre}} \right)^{\gamma} - 1 \right\rbrack$$ {#eq:EST_2 tag="EST.2"}
 
 where
 
@@ -1354,7 +1354,7 @@ morbidity.
 
 The value of a statistical life is given by
 
-$$\text{VS}L_{t,r} = \alpha\left( \frac{y_{t,r}}{y_{0}} \right)^{\epsilon}$$ {#eq:MM_1}
+$$\text{VS}L_{t,r} = \alpha\left( \frac{y_{t,r}}{y_{0}} \right)^{\epsilon}$$ {#eq:MM_1 tag="MM.1"}
 
 where
 
@@ -1375,7 +1375,7 @@ that is 200 times per capita income (Cline, 1992).
 
 The value of a year of morbidity is given by
 
-$$VM_{t,r} = \beta\left( \frac{y_{t,r}}{y_{0}} \right)^{\eta}$$ {#eq:MM_2}
+$$VM_{t,r} = \beta\left( \frac{y_{t,r}}{y_{0}} \right)^{\eta}$$ {#eq:MM_2 tag="MM.2"}
 
 where
 
