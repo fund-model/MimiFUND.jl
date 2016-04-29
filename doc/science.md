@@ -1063,7 +1063,7 @@ morbidity.
 The number of additional deaths from vector-borne diseases,
 $D_{t,r}^{v}$ is given by:
 
-$$D_{t,r}^{v} = D_{1990,r}^{v}\alpha_{r}^{v}\left( T_{t} - T_{1990} \right)^{\beta}\left( \frac{y_{t,r}}{y_{1990,r}} \right)^{\gamma}$$ {#eq:HV tag="HV"}
+$$D_{t,r}^{v} = D_{1990,r}^{v}\alpha_{r}^{v}T_{t}^{\beta}\left( \frac{y_{t,r}}{y_{1990,r}} \right)^{\gamma}$$ {#eq:HV tag="HV"}
 
 where
 
@@ -1155,8 +1155,8 @@ where
 
 -   $t$ indexes time;
 
--   $T$ denotes the change in regional mean temperature (in degree
-    Celsius);
+-   $T_{t}$ denotes the mean temperature in year $t$, in degrees Celcius
+    (C);
 
 -   $\alpha$ and $\beta$ are parameters, specified in Tables HC.2-4 (in
     probabilistic mode all probablitiy distributions are constrained so
