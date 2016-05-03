@@ -13,7 +13,7 @@ Contents:
 
    intro
    science
-
+   tables
 
 
 Indices and tables

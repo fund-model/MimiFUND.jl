@@ -1,1 +1,3 @@
-git+https://github.com/tomduck/pandoc-eqnos.git
+pandoc-eqnos
+pandoc-tablenos
+

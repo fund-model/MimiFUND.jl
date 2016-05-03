@@ -294,3 +294,4 @@ import os
 here = os.path.dirname(os.path.abspath(__file__))
 check_call(["pandoc", "--filter", "pandoc-eqnos", "../intro.md", "-o" "intro.rst"], cwd=here)
 check_call(["pandoc", "--filter", "pandoc-eqnos", "../science.md", "-o" "science.rst"], cwd=here)
+check_call(["pandoc", "--filter", "pandoc-eqnos", "--filter", "pandoc-tablenos", "../tables.md", "-o" "tables.rst"], cwd=here)
