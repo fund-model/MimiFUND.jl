@@ -31,7 +31,7 @@
     minint = Variable(index=[time])
     globknow = Variable(index=[time])
 
-    mco2 = Variable(index=[time], unit="Mt C")
+    mco2 = Variable(index=[time])
     globch4 = Variable(index=[time])
     globn2o = Variable(index=[time])
     globsf6 = Variable(index=[time])
