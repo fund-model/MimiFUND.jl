@@ -22,7 +22,7 @@
     regstmp = Parameter(index=[time,regions])
 end
 
-function timestep(s::impacttropicalstorms, t::Int)
+function run_timestep(s::impacttropicalstorms, t::Int)
     v = s.Variables
     p = s.Parameters
     d = s.Dimensions

@@ -22,7 +22,7 @@
     dbsta = Parameter()
 end
 
-function timestep(s::impactbiodiversity, t::Int)
+function run_timestep(s::impactbiodiversity, t::Int)
     v = s.Variables
     p = s.Parameters
     d = s.Dimensions

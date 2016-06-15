@@ -88,7 +88,7 @@
     tempIn2010 = Variable()
 end
 
-function timestep(s::climateco2cycle, t::Int)
+function run_timestep(s::climateco2cycle, t::Int)
     v = s.Variables
     p = s.Parameters
     d = s.Dimensions

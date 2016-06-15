@@ -20,7 +20,7 @@
     cumaeei = Parameter(index=[time,regions])
 end
 
-function timestep(s::impactheating, t::Int)
+function run_timestep(s::impactheating, t::Int)
     v = s.Variables
     p = s.Parameters
     d = s.Dimensions

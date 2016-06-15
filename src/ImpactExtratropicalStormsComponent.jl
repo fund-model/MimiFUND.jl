@@ -23,7 +23,7 @@
     co2pre = Parameter()
 end
 
-function timestep(s::impactextratropicalstorms, t::Int)
+function run_timestep(s::impactextratropicalstorms, t::Int)
     v = s.Variables
     p = s.Parameters
     d = s.Dimensions

@@ -24,7 +24,7 @@
     regtmp = Parameter(index=[time,regions])
 end
 
-function timestep(s::impactdiarrhoea, t::Int)
+function run_timestep(s::impactdiarrhoea, t::Int)
     v = s.Variables
     p = s.Parameters
     d = s.Dimensions

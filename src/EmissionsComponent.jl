@@ -82,7 +82,7 @@
     sf6add = Parameter()
 end
 
-function timestep(s::emissions, t::Int)
+function run_timestep(s::emissions, t::Int)
     v = s.Variables
     p = s.Parameters
     d = s.Dimensions

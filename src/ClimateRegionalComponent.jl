@@ -12,7 +12,7 @@
     regstmp = Variable(index=[time,regions])
 end
 
-function timestep(s::climateregional, t::Int)
+function run_timestep(s::climateregional, t::Int)
     v = s.Variables
     p = s.Parameters
     d = s.Dimensions

@@ -20,7 +20,7 @@
     nospecbase = Parameter()
 end
 
-function timestep(s::biodiversity, t::Int)
+function run_timestep(s::biodiversity, t::Int)
     v = s.Variables
     p = s.Parameters
     d = s.Dimensions

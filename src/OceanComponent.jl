@@ -14,7 +14,7 @@
     temp = Parameter(index=[time])
 end
 
-function timestep(s::ocean, t::Int)
+function run_timestep(s::ocean, t::Int)
     v = s.Variables
     p = s.Parameters
     d = s.Dimensions

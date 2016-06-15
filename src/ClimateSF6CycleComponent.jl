@@ -16,7 +16,7 @@
     lifesf6 = Parameter()
 end
 
-function timestep(s::climatesf6cycle, t::Int)
+function run_timestep(s::climatesf6cycle, t::Int)
     v = s.Variables
     p = s.Parameters
     d = s.Dimensions

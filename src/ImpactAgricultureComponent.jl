@@ -33,7 +33,7 @@ end
 
 const DBsT = 0.04     # base case yearly warming
 
-function timestep(s::impactagriculture, t::Int)
+function run_timestep(s::impactagriculture, t::Int)
     v = s.Variables
     p = s.Parameters
     d = s.Dimensions

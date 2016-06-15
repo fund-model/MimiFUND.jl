@@ -31,7 +31,7 @@
     sloss_other = Parameter(index=[time,regions])
 end
 
-function timestep(s::impactaggregation, t::Int)
+function run_timestep(s::impactaggregation, t::Int)
     v = s.Variables
     p = s.Parameters
     d = s.Dimensions

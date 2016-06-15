@@ -22,7 +22,7 @@
 end
 
 
-function timestep(s::impactforests, t::Int)
+function run_timestep(s::impactforests, t::Int)
     v = s.Variables
     p = s.Parameters
     d = s.Dimensions

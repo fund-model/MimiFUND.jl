@@ -16,7 +16,7 @@
     ch4pre = Parameter()
 end
 
-function timestep(s::climatech4cycle, t::Int)
+function run_timestep(s::climatech4cycle, t::Int)
     v = s.Variables
     p = s.Parameters
     d = s.Dimensions

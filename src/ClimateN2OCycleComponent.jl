@@ -17,7 +17,7 @@
     n2opre = Parameter()
 end
 
-function timestep(s::climaten2ocycle, t::Int)
+function run_timestep(s::climaten2ocycle, t::Int)
     v = s.Variables
     p = s.Parameters
     d = s.Dimensions

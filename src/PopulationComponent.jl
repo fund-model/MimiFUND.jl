@@ -15,7 +15,7 @@
     runwithoutpopulationperturbation::Bool = Parameter()
 end
 
-function timestep(s::population, t::Int)
+function run_timestep(s::population, t::Int)
     v = s.Variables
     p = s.Parameters
     d = s.Dimensions

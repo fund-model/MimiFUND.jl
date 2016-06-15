@@ -9,7 +9,7 @@
     area0 = Parameter(index=[regions])
 end
 
-function timestep(s::geography, t::Int)
+function run_timestep(s::geography, t::Int)
     v = s.Variables
     p = s.Parameters
     d = s.Dimensions

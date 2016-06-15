@@ -39,7 +39,7 @@
     sick_other = Parameter(index=[time,regions])
 end
 
-function timestep(s::impactdeathmorbidity, t::Int)
+function run_timestep(s::impactdeathmorbidity, t::Int)
     v = s.Variables
     p = s.Parameters
     d = s.Dimensions

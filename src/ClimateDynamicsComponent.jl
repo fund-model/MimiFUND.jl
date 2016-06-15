@@ -20,7 +20,7 @@
     ClimateSensitivity = Parameter()
 end
 
-function timestep(s::climatedynamics, t::Int)
+function run_timestep(s::climatedynamics, t::Int)
     v = s.Variables
     p = s.Parameters
     d = s.Dimensions

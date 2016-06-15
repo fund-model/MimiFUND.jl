@@ -42,7 +42,7 @@
     savingsrate = Parameter()
 end
 
-function timestep(s::socioeconomic, t::Int)
+function run_timestep(s::socioeconomic, t::Int)
     v = s.Variables
     p = s.Parameters
     d = s.Dimensions

@@ -61,7 +61,7 @@
     area = Parameter(index=[time,regions])
 end
 
-function timestep(s::impactsealevelrise, t::Int)
+function run_timestep(s::impactsealevelrise, t::Int)
     v = s.Variables
     p = s.Parameters
     d = s.Dimensions

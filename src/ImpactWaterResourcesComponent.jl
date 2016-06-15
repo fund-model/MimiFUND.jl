@@ -21,7 +21,7 @@
     temp = Parameter(index=[time,regions])
 end
 
-function timestep(s::impactwaterresources, t::Int)
+function run_timestep(s::impactwaterresources, t::Int)
     v = s.Variables
     p = s.Parameters
     d = s.Dimensions

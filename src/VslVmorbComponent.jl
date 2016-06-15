@@ -17,7 +17,7 @@ using Mimi
     vmorbypc0 = Parameter()
 end
 
-function timestep(s::vslvmorb, t::Int)
+function run_timestep(s::vslvmorb, t::Int)
     v = s.Variables
     p = s.Parameters
     d = s.Dimensions

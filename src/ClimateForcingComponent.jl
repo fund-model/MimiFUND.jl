@@ -55,7 +55,7 @@ function interact(M, N)
     return 0.47 * log(d)
 end
 
-function timestep(s::climateforcing, t::Int)
+function run_timestep(s::climateforcing, t::Int)
     v = s.Variables
     p = s.Parameters
     d = s.Dimensions

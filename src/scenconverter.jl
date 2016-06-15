@@ -20,7 +20,7 @@ using Mimi
     emissint = Variable(index=[time,regions])
 end
 
-function timestep(s::scenconverter, t::Int)
+function run_timestep(s::scenconverter, t::Int)
     v = s.Variables
     p = s.Parameters
     d = s.Dimensions

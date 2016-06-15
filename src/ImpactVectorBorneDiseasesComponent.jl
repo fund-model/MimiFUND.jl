@@ -27,7 +27,7 @@
     malnl = Parameter()
 end
 
-function timestep(s::impactvectorbornediseases, t::Int)
+function run_timestep(s::impactvectorbornediseases, t::Int)
     v = s.Variables
     p = s.Parameters
     d = s.Dimensions

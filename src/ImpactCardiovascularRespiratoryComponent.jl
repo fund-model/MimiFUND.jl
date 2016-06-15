@@ -34,7 +34,7 @@
     maxcardvasc = Parameter()
 end
 
-function timestep(s::impactcardiovascularrespiratory, t::Int)
+function run_timestep(s::impactcardiovascularrespiratory, t::Int)
     v = s.Variables
     p = s.Parameters
     d = s.Dimensions
