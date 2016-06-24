@@ -25,3 +25,6 @@ Many of these requirements are regularily updated. To make sure you have the lat
 ````jl
 Pkg.update()
 ````
+## Acknowledgements
+
+This work is partially supported by the National Science Foundation through the Network for Sustainable Climate Risk Management ([SCRiM](http://scrimhub.org/)) under NSF cooperative agreement GEO-1240507.
