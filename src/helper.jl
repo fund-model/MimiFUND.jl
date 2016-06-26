@@ -81,7 +81,7 @@ function convertparametervalue(pv)
 end
 
 function getbestguess(p)
-    if isa(p, ContinuousUnivariateDistribution) then
+    if isa(p, ContinuousUnivariateDistribution)
         return modes(p)[1]
     else
         return p
