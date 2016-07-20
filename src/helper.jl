@@ -10,9 +10,9 @@ function loadparameters(datadir="../data")
     return parameters
 end
 
-import StatsBase.modes
-function modes(d::Truncated{Gamma})
-    return [mode(d.untruncated)]
+import StatsBase.mode
+function mode(d::Truncated{Gamma{Float64},Continuous})
+    return mode(d.untruncated)
 end
 
 function getindexfromyear(year)
