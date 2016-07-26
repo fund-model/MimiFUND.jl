@@ -82,7 +82,7 @@ end
 
 function getbestguess(p)
     if isa(p, ContinuousUnivariateDistribution)
-        return modes(p)[1]
+        return mode(p)[1]
     else
         return p
     end
