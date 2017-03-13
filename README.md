@@ -10,7 +10,7 @@ The minimum requirement to run FUND is [Julia](http://julialang.org/) and the [M
 
 ### Installing Julia
 
-You can download Julia from [http://julialang.org/downloads/](http://julialang.org/downloads/). You should use the v0.4.x version and install it.
+You can download Julia from [http://julialang.org/downloads/](http://julialang.org/downloads/). You should use the v0.5.x version and install it.
 
 ### Installing the Mimi package
 
@@ -27,6 +27,7 @@ Many of these requirements are regularily updated. To make sure you have the lat
 ````jl
 Pkg.update()
 ````
+
 ## Acknowledgements
 
 This work is partially supported by the National Science Foundation through the Network for Sustainable Climate Risk Management ([SCRiM](http://scrimhub.org/)) under NSF cooperative agreement GEO-1240507.
