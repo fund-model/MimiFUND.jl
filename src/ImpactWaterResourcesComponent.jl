@@ -3,7 +3,7 @@
 @defcomp impactwaterresources begin
     regions = Index()
 
-    watech = Variable(index=[time,regions])
+    watech = Variable(index=[time])
     watechrate = Parameter()
 
     water = Variable(index=[time,regions])
