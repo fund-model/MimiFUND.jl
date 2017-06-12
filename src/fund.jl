@@ -212,7 +212,7 @@ function constructfund(;nsteps=1050)
     return m
 end
 
-function getfund(;nsteps=1050, datadir="../data", params=nothing)
+function getfund(;nsteps=1050, datadir=joinpath(dirname(@__FILE__), "..", "data"), params=nothing)
     # ---------------------------------------------
     # Load parameters
     # ---------------------------------------------

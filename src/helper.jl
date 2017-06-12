@@ -1,6 +1,6 @@
 using Distributions
 
-function loadparameters(datadir="../data")
+function loadparameters(datadir=joinpath(dirname(@__FILE__), "..", "data"))
     files = readdir(datadir)
     filter!(i->i!="desktop.ini", files)
     parameters = Dict{Any, Any}([lowercase(splitext(file)[1]) => readdlm(joinpath(datadir,file), ',') for file in files])
