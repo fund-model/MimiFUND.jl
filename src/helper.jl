@@ -3,7 +3,7 @@ using Distributions
 function loadparameters(datadir="../data")
     files = readdir(datadir)
     filter!(i->i!="desktop.ini", files)
-    parameters = Dict{String, Any}([lowercase(splitext(file)[1]) => readdlm(joinpath(datadir,file), ',') for file in files])
+    parameters = Dict{String, Any}(lowercase(splitext(file)[1]) => readdlm(joinpath(datadir,file), ',') for file in files)
 
     prepparameters!(parameters)
 
@@ -27,7 +27,7 @@ function convertparametervalue(pv)
             dist_name = pv[2:args_start_index-1]
             args = split(pv[args_start_index+1:end-1], ';')
             fixedargs = filter(i->!contains(i,"="),args)
-            optargs = Dict([split(i,'=')[1]=>split(i,'=')[2] for i in filter(i->contains(i,"="),args)])
+            optargs = Dict(split(i,'=')[1]=>split(i,'=')[2] for i in filter(i->contains(i,"="),args))
 
             if dist_name == "N"
                 if length(fixedargs)!=2 error() end
