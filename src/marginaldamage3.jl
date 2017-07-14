@@ -59,7 +59,7 @@ function marginaldamage3(;emissionyear=2010,parameters=nothing,yearstoaggregate=
         end
     else
         globalypc = m1[:socioeconomic,:globalypc]
-        df = float64([t>=getindexfromyear(emissionyear) ? (globalypc[getindexfromyear(emissionyear)]/ypc[t,r])^eta / (1.0+prtp)^(t-getindexfromyear(emissionyear)) : 0.0 for t=1:yearstorun,r=1:16])
+        df = Float64[t>=getindexfromyear(emissionyear) ? (globalypc[getindexfromyear(emissionyear)]/ypc[t,r])^eta / (1.0+prtp)^(t-getindexfromyear(emissionyear)) : 0.0 for t=1:yearstorun+1,r=1:16]
     end
 
     scc = sum(marginaldamage[2:end,:].*df[2:end,:])
