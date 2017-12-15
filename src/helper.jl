@@ -99,7 +99,7 @@ function prepparameters!(parameters)
         elseif column_count == 3
             length_index1 = length(unique(p[:,1]))
             length_index2 = length(unique(p[:,2]))
-            new_p = Array(Float64,length_index1,length_index2)
+            new_p = Array{Float64}(length_index1,length_index2)
             cur_1 = 1
             cur_2 = 1
             for j in 1:size(p,1)
