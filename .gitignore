@@ -1,13 +1,5 @@
-[Bb]in/
-[Oo]bj/
-[Tt]estResults/
-[Pp]ackages/
-
-# User-specific files
-*.suo
-*.user
-*.sln.docstates
-
-# Visual Studio profiler
-*.psess
-*.vsp
+.ipynb_checkpoints
+desktop.ini
+doc/fund-scientific.pdf
+doc/fund-tables.pdf
+.DS_Store
