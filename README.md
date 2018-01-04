@@ -1,5 +1,7 @@
 # FUND
 
+[![Build Status](https://travis-ci.org/fund-model/fund.svg?branch=master)](https://travis-ci.org/fund-model/fund)
+
 ## Overview
 
 The Climate Framework for Uncertainty, Negotiation and Distribution (FUND) is a so-called integrated assessment model of climate change. FUND was originally set-up to study the role of international capital transfers in climate policy, but it soon evolved into a test-bed for studying impacts of climate change in a dynamic context, and it is now often used to perform cost-benefit and cost-effectiveness analyses of greenhouse gas emission reduction policies, to study equity of climate change and climate policy, and to support game-theoretic investigations into international environmental agreements.
