@@ -1,5 +1,4 @@
-Copyright (C) 2012 David Anthoff and Richard S.J. Tol
-http://www.fund-model.org
+Copyright (C) 1994-2018 David Anthoff and Richard S.J. Tol.
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
@@ -19,23 +18,3 @@ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
 LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
----
-
-This software contains some code that is not provided under this
-license, but rather under specific licenses from the original authors.
-
-CommandLineArguments.cs and MersenneTwister.cs contain their own 
-copyright and license notice.
-
-DocumentFormat.OpenXml.dll: Copyright Microsoft Corporation. To see the
-license, download the OpenXML SDK 2.0, during setup the license is shown.
-
-DynamicDataDisplay.dll: Copyright Microsoft Corporation. Licensed 
-under the Microsoft Reciprocal License.
-
-MPI.dll: Copyright The Trustees of Indiana University. Licensed
-under the Boost Software License.
-
-WPFToolkit: Copyright Microsoft Corporation. Licensed under the
-Microsoft Public License.
