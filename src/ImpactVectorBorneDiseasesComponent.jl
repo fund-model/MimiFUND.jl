@@ -25,25 +25,22 @@
     vbel = Parameter()
     smnl = Parameter()
     malnl = Parameter()
-end
 
-function run_timestep(s::impactvectorbornediseases, t::Int)
-    v = s.Variables
-    p = s.Parameters
-    d = s.Dimensions
+    function run_timestep(p, v, d, t)
 
-    for r in d.regions
-        ypc = 1000.0 * p.income[t, r] / p.population[t, r]
-        ypc90 = p.gdp90[r] / p.pop90[r] * 1000.0
+        for r in d.regions
+            ypc = 1000.0 * p.income[t, r] / p.population[t, r]
+            ypc90 = p.gdp90[r] / p.pop90[r] * 1000.0
 
-        v.dengue[t, r] = p.dfbs[r] * p.population[t, r] * p.dfch[r] * p.temp[t, r]^p.dfnl * (ypc / ypc90)^p.vbel
+            v.dengue[t, r] = p.dfbs[r] * p.population[t, r] * p.dfch[r] * p.temp[t, r]^p.dfnl * (ypc / ypc90)^p.vbel
 
-        v.schisto[t, r] = p.smbs[r] * p.population[t, r] * p.smch[r] * p.temp[t, r]^p.smnl * (ypc / ypc90)^p.vbel
+            v.schisto[t, r] = p.smbs[r] * p.population[t, r] * p.smch[r] * p.temp[t, r]^p.smnl * (ypc / ypc90)^p.vbel
 
-        if v.schisto[t, r] < -p.smbs[r] * p.population[t, r] * (ypc / ypc90)^p.vbel
-            v.schisto[t, r] = -p.smbs[r] * p.population[t, r] * (ypc / ypc90)^p.vbel
+            if v.schisto[t, r] < -p.smbs[r] * p.population[t, r] * (ypc / ypc90)^p.vbel
+                v.schisto[t, r] = -p.smbs[r] * p.population[t, r] * (ypc / ypc90)^p.vbel
+            end
+
+            v.malaria[t, r] = p.malbs[r] * p.population[t, r] * p.malch[r] * p.temp[t, r]^p.malnl * (ypc / ypc90)^p.vbel
         end
-
-        v.malaria[t, r] = p.malbs[r] * p.population[t, r] * p.malch[r] * p.temp[t, r]^p.malnl * (ypc / ypc90)^p.vbel
     end
 end

@@ -32,52 +32,49 @@
     cvlin = Parameter()
     rlin = Parameter()
     maxcardvasc = Parameter()
-end
 
-function run_timestep(s::impactcardiovascularrespiratory, t::Int)
-    v = s.Variables
-    p = s.Parameters
-    d = s.Dimensions
+    function run_timestep(p, v, d, t)
 
-    if t>1
-        for r in d.regions
-            v.basecardvasc[t, r] = p.cardvasc90[r] + p.cvlin * (p.plus[t, r] - p.plus90[r])
-            if v.basecardvasc[t, r] > 1.0
-                v.basecardvasc[t, r] = 1.0
-            end
+        if t>1
+            for r in d.regions
+                v.basecardvasc[t, r] = p.cardvasc90[r] + p.cvlin * (p.plus[t, r] - p.plus90[r])
+                if v.basecardvasc[t, r] > 1.0
+                    v.basecardvasc[t, r] = 1.0
+                end
 
-            v.baseresp[t, r] = p.resp90[r] + p.rlin * (p.plus[t, r] - p.plus90[r])
-            if v.baseresp[t, r] > 1.0
-                v.baseresp[t, r] = 1.0
-            end
+                v.baseresp[t, r] = p.resp90[r] + p.rlin * (p.plus[t, r] - p.plus90[r])
+                if v.baseresp[t, r] > 1.0
+                    v.baseresp[t, r] = 1.0
+                end
 
-            v.cardheat[t, r] = (p.chplbm[r] * p.plus[t, r] + p.chmlbm[r] * (1.0 - p.plus[t, r])) * p.temp[t, r] +
-                       (p.chpqbm[r] * p.plus[t, r] + p.chmqbm[r] * (1.0 - p.plus[t, r])) * p.temp[t, r]^2
-            v.cardheat[t, r] = v.cardheat[t, r] * p.urbpop[t, r] * p.population[t, r] * 10
-            if v.cardheat[t, r] > 1000.0 * p.maxcardvasc * v.basecardvasc[t, r] * p.urbpop[t, r] * p.population[t, r]
-                v.cardheat[t, r] = 1000 * p.maxcardvasc * v.basecardvasc[t, r] * p.urbpop[t, r] * p.population[t, r]
-            end
-            if v.cardheat[t, r] < 0.0
-                v.cardheat[t, r] = 0
-            end
+                v.cardheat[t, r] = (p.chplbm[r] * p.plus[t, r] + p.chmlbm[r] * (1.0 - p.plus[t, r])) * p.temp[t, r] +
+                        (p.chpqbm[r] * p.plus[t, r] + p.chmqbm[r] * (1.0 - p.plus[t, r])) * p.temp[t, r]^2
+                v.cardheat[t, r] = v.cardheat[t, r] * p.urbpop[t, r] * p.population[t, r] * 10
+                if v.cardheat[t, r] > 1000.0 * p.maxcardvasc * v.basecardvasc[t, r] * p.urbpop[t, r] * p.population[t, r]
+                    v.cardheat[t, r] = 1000 * p.maxcardvasc * v.basecardvasc[t, r] * p.urbpop[t, r] * p.population[t, r]
+                end
+                if v.cardheat[t, r] < 0.0
+                    v.cardheat[t, r] = 0
+                end
 
-            v.resp[t, r] = p.rlbm[r] * p.temp[t, r] + p.rqbm[r] * p.temp[t, r]^2
-            v.resp[t, r] = v.resp[t, r] * p.urbpop[t, r] * p.population[t, r] * 10
-            if v.resp[t, r] > 1000 * p.maxcardvasc * v.baseresp[t, r] * p.urbpop[t, r] * p.population[t, r]
-                v.resp[t, r] = 1000 * p.maxcardvasc * v.baseresp[t, r] * p.urbpop[t, r] * p.population[t, r]
-            end
-            if v.resp[t, r] < 0
-                v.resp[t, r] = 0
-            end
+                v.resp[t, r] = p.rlbm[r] * p.temp[t, r] + p.rqbm[r] * p.temp[t, r]^2
+                v.resp[t, r] = v.resp[t, r] * p.urbpop[t, r] * p.population[t, r] * 10
+                if v.resp[t, r] > 1000 * p.maxcardvasc * v.baseresp[t, r] * p.urbpop[t, r] * p.population[t, r]
+                    v.resp[t, r] = 1000 * p.maxcardvasc * v.baseresp[t, r] * p.urbpop[t, r] * p.population[t, r]
+                end
+                if v.resp[t, r] < 0
+                    v.resp[t, r] = 0
+                end
 
-            v.cardcold[t, r] = (p.ccplbm[r] * p.plus[t, r] + p.ccmlbm[r] * (1.0 - p.plus[t, r])) * p.temp[t, r] +
-                       (p.ccpqbm[r] * p.plus[t, r] + p.ccmqbm[r] * (1.0 - p.plus[t, r])) * p.temp[t, r]^2
-            v.cardcold[t, r] = v.cardcold[t, r] * p.population[t, r] * 10
-            if v.cardcold[t, r] < -1000 * p.maxcardvasc * v.basecardvasc[t, r] * p.population[t, r]
-                v.cardcold[t, r] = -1000 * p.maxcardvasc * v.basecardvasc[t, r] * p.population[t, r]
-            end
-            if v.cardcold[t, r] > 0
-                v.cardcold[t, r] = 0
+                v.cardcold[t, r] = (p.ccplbm[r] * p.plus[t, r] + p.ccmlbm[r] * (1.0 - p.plus[t, r])) * p.temp[t, r] +
+                        (p.ccpqbm[r] * p.plus[t, r] + p.ccmqbm[r] * (1.0 - p.plus[t, r])) * p.temp[t, r]^2
+                v.cardcold[t, r] = v.cardcold[t, r] * p.population[t, r] * 10
+                if v.cardcold[t, r] < -1000 * p.maxcardvasc * v.basecardvasc[t, r] * p.population[t, r]
+                    v.cardcold[t, r] = -1000 * p.maxcardvasc * v.basecardvasc[t, r] * p.population[t, r]
+                end
+                if v.cardcold[t, r] > 0
+                    v.cardcold[t, r] = 0
+                end
             end
         end
     end

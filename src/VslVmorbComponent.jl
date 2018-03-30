@@ -15,20 +15,17 @@ using Mimi
     vmorbel = Parameter()
     vslypc0 = Parameter()
     vmorbypc0 = Parameter()
-end
 
-function run_timestep(s::vslvmorb, t::Int)
-    v = s.Variables
-    p = s.Parameters
-    d = s.Dimensions
+    function run_timestep(p, v, d, t)
 
-    if t>1
-        for r in d.regions
-            ypc = p.income[t, r] / p.population[t, r] * 1000.0
+        if t>1
+            for r in d.regions
+                ypc = p.income[t, r] / p.population[t, r] * 1000.0
 
-            v.vsl[t, r] = p.vslbm * (ypc / p.vslypc0)^p.vslel
+                v.vsl[t, r] = p.vslbm * (ypc / p.vslypc0)^p.vslel
 
-            v.vmorb[t, r] = p.vmorbbm * (ypc / p.vmorbypc0)^p.vmorbel
+                v.vmorb[t, r] = p.vmorbbm * (ypc / p.vmorbypc0)^p.vmorbel
+            end
         end
     end
 end

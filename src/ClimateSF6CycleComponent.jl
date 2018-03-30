@@ -14,23 +14,20 @@
     sf6decay = Variable()
 
     lifesf6 = Parameter()
-end
 
-function run_timestep(s::climatesf6cycle, t::Int)
-    v = s.Variables
-    p = s.Parameters
-    d = s.Dimensions
+    function run_timestep(p, v, d, t)
+        
+        if t==1
+            v.sf6decay = 1.0 / p.lifesf6
 
-    if t==1
-        v.sf6decay = 1.0 / p.lifesf6
+            v.acsf6[t] = p.sf6pre
+        else
+            # Calculate SF6 concentrations
+            v.acsf6[t] = p.sf6pre + (v.acsf6[t - 1] - p.sf6pre) * (1 - v.sf6decay) + p.globsf6[t] / 25.1
 
-        v.acsf6[t] = p.sf6pre
-    else
-        # Calculate SF6 concentrations
-        v.acsf6[t] = p.sf6pre + (v.acsf6[t - 1] - p.sf6pre) * (1 - v.sf6decay) + p.globsf6[t] / 25.1
-
-        if v.acsf6[t] < 0
-            error("sf6 atmospheric concentration out of range")
+            if v.acsf6[t] < 0
+                error("sf6 atmospheric concentration out of range")
+            end
         end
     end
 end

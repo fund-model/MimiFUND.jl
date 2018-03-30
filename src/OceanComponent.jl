@@ -12,21 +12,18 @@
 
     # Temperature incrase in C°
     temp = Parameter(index=[time])
-end
 
-function run_timestep(s::ocean, t::Int)
-    v = s.Variables
-    p = s.Parameters
-    d = s.Dimensions
+    function run_timestep(p, v, d, t)
 
-    if t==1
-        # Delay in sea-level rise
-        v.delaysea = 1.0 / p.lifesea
-        v.sea[t] = 0.0
-    else
-        # Calculate sea level rise
-        ds = v.delaysea * p.seas * p.temp[t] - v.delaysea * v.sea[t - 1]
+        if t==1
+            # Delay in sea-level rise
+            v.delaysea = 1.0 / p.lifesea
+            v.sea[t] = 0.0
+        else
+            # Calculate sea level rise
+            ds = v.delaysea * p.seas * p.temp[t] - v.delaysea * v.sea[t - 1]
 
-        v.sea[t] = v.sea[t - 1] + ds
+            v.sea[t] = v.sea[t - 1] + ds
+        end
     end
 end

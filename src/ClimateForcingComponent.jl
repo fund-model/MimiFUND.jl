@@ -48,31 +48,28 @@
 
     # EMF22 radiative forcing
     rfEMF22 = Variable(index=[time])
-end
 
-function interact(M, N)
-    d = 1.0 + (M * N)^0.75 * 2.01E-5 + (M * N)^1.52 * M * 5.31E-15
-    return 0.47 * log(d)
-end
+    function interact(M, N)
+        d = 1.0 + (M * N)^0.75 * 2.01E-5 + (M * N)^1.52 * M * 5.31E-15
+        return 0.47 * log(d)
+    end
 
-function run_timestep(s::climateforcing, t::Int)
-    v = s.Variables
-    p = s.Parameters
-    d = s.Dimensions
+    function run_timestep(p, v, d, t)
+        
+        if t>1
+            ch4n2o = interact(p.ch4pre, p.n2opre)
 
-    if t>1
-        ch4n2o = interact(p.ch4pre, p.n2opre)
+            v.rfCO2[t] = 5.35 * log(p.acco2[t] / p.co2pre)
 
-        v.rfCO2[t] = 5.35 * log(p.acco2[t] / p.co2pre)
+            v.rfCH4[t] = 0.036 * (1.0 + p.ch4ind) * (sqrt(p.acch4[t]) - sqrt(p.ch4pre)) - interact(p.acch4[t], p.n2opre) + ch4n2o
 
-        v.rfCH4[t] = 0.036 * (1.0 + p.ch4ind) * (sqrt(p.acch4[t]) - sqrt(p.ch4pre)) - interact(p.acch4[t], p.n2opre) + ch4n2o
+            v.rfN2O[t] = 0.12 * (sqrt(p.acn2o[t]) - sqrt(p.n2opre)) - interact(p.ch4pre, p.acn2o[t]) + ch4n2o
 
-        v.rfN2O[t] = 0.12 * (sqrt(p.acn2o[t]) - sqrt(p.n2opre)) - interact(p.ch4pre, p.acn2o[t]) + ch4n2o
+            v.rfSF6[t] = 0.00052 * (p.acsf6[t] - p.sf6pre)
 
-        v.rfSF6[t] = 0.00052 * (p.acsf6[t] - p.sf6pre)
+            v.radforc[t] = v.rfCO2[t] + v.rfCH4[t] + v.rfN2O[t] + v.rfSF6[t] + p.rfSO2[t]
 
-        v.radforc[t] = v.rfCO2[t] + v.rfCH4[t] + v.rfN2O[t] + v.rfSF6[t] + p.rfSO2[t]
-
-        v.rfEMF22[t] = v.rfCO2[t] + v.rfCH4[t] + v.rfN2O[t]
+            v.rfEMF22[t] = v.rfCO2[t] + v.rfCH4[t] + v.rfN2O[t]
+        end
     end
 end

@@ -20,28 +20,25 @@
     spbm = Parameter()
     valbase = Parameter()
     dbsta = Parameter()
-end
 
-function run_timestep(s::impactbiodiversity, t::Int)
-    v = s.Variables
-    p = s.Parameters
-    d = s.Dimensions
+    function run_timestep(p, v, d, t)
 
-    if t>1
-        v.biodiv[t] = p.nospecbase / p.nospecies[t]
+        if t>1
+            v.biodiv[t] = p.nospecbase / p.nospecies[t]
 
-        for r in d.regions
-            ypc = 1000.0 * p.income[t, r] / p.population[t, r]
+            for r in d.regions
+                ypc = 1000.0 * p.income[t, r] / p.population[t, r]
 
-            dt = abs(p.temp[t, r] - p.temp[t - 1, r])
+                dt = abs(p.temp[t, r] - p.temp[t - 1, r])
 
-            valadj = p.valbase / p.valinc[r] / (1 + p.valbase / p.valinc[r])
+                valadj = p.valbase / p.valinc[r] / (1 + p.valbase / p.valinc[r])
 
-            v.species[t, r] = p.spbm /
-                            p.valbase * ypc / p.valinc[r] / (1.0 + ypc / p.valinc[r]) / valadj * ypc *
-                            p.population[t, r] / 1000.0 *
-                            dt / p.dbsta / (1.0 + dt / p.dbsta) *
-                            (1.0 - p.bioshare + p.bioshare * v.biodiv[t])
+                v.species[t, r] = p.spbm /
+                                p.valbase * ypc / p.valinc[r] / (1.0 + ypc / p.valinc[r]) / valadj * ypc *
+                                p.population[t, r] / 1000.0 *
+                                dt / p.dbsta / (1.0 + dt / p.dbsta) *
+                                (1.0 - p.bioshare + p.bioshare * v.biodiv[t])
+            end
         end
     end
 end

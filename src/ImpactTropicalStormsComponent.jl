@@ -20,20 +20,17 @@
     income = Parameter(index=[time,regions])
 
     regstmp = Parameter(index=[time,regions])
-end
 
-function run_timestep(s::impacttropicalstorms, t::Int)
-    v = s.Variables
-    p = s.Parameters
-    d = s.Dimensions
+    function run_timestep(p, v, d, t)
 
-    for r in d.regions
-        ypc = p.income[t, r] / p.population[t, r] * 1000.0
-        ypc90 = p.gdp90[r] / p.pop90[r] * 1000.0
+        for r in d.regions
+            ypc = p.income[t, r] / p.population[t, r] * 1000.0
+            ypc90 = p.gdp90[r] / p.pop90[r] * 1000.0
 
-        # This is hurrican damage
-        v.hurrdam[t, r] = 0.001 * p.hurrbasedam[r] * p.income[t, r] * (ypc / ypc90)^p.hurrdamel * ((1.0 + p.hurrpar * p.regstmp[t, r])^p.hurrnl - 1.0)
+            # This is hurrican damage
+            v.hurrdam[t, r] = 0.001 * p.hurrbasedam[r] * p.income[t, r] * (ypc / ypc90)^p.hurrdamel * ((1.0 + p.hurrpar * p.regstmp[t, r])^p.hurrnl - 1.0)
 
-        v.hurrdead[t, r] = 1000.0 * p.hurrbasedead[r] * p.population[t, r] * (ypc / ypc90)^p.hurrdeadel * ((1.0 + p.hurrpar * p.regstmp[t, r])^p.hurrnl - 1.0)
+            v.hurrdead[t, r] = 1000.0 * p.hurrbasedead[r] * p.population[t, r] * (ypc / ypc90)^p.hurrdeadel * ((1.0 + p.hurrpar * p.regstmp[t, r])^p.hurrnl - 1.0)
+        end
     end
 end

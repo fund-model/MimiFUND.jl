@@ -18,25 +18,22 @@
 
     # Climate sensitivity
     ClimateSensitivity = Parameter()
-end
 
-function run_timestep(s::climatedynamics, t::Int)
-    v = s.Variables
-    p = s.Parameters
-    d = s.Dimensions
+    function run_timestep(p, v, d, t)
+        
+        if t==1
+            v.temp[t] = 0.20
+        else
+            LifeTemp = max(p.LifeTempConst + p.LifeTempLin * p.ClimateSensitivity + p.LifeTempQd * p.ClimateSensitivity^2.0, 1.0)
 
-    if t==1
-        v.temp[t] = 0.20
-    else
-        LifeTemp = max(p.LifeTempConst + p.LifeTempLin * p.ClimateSensitivity + p.LifeTempQd * p.ClimateSensitivity^2.0, 1.0)
+            delaytemp = 1.0 / LifeTemp
 
-        delaytemp = 1.0 / LifeTemp
+            temps = p.ClimateSensitivity / 5.35 / log(2.0)
 
-        temps = p.ClimateSensitivity / 5.35 / log(2.0)
+            # Calculate temperature
+            dtemp = delaytemp * temps * p.radforc[t] - delaytemp * v.temp[t - 1]
 
-        # Calculate temperature
-        dtemp = delaytemp * temps * p.radforc[t] - delaytemp * v.temp[t - 1]
-
-        v.temp[t] = v.temp[t - 1] + dtemp
+            v.temp[t] = v.temp[t - 1] + dtemp
+        end
     end
 end
