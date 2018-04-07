@@ -58,6 +58,7 @@ FUND = Model()
 
 set_dimension!(FUND, :time, collect(1950:1950+nsteps))
 set_dimension!(FUND, :regions, ["USA", "CAN", "WEU", "JPK", "ANZ", "EEU", "FSU", "MDE", "CAM", "LAM", "SAS", "SEA", "CHI", "MAF", "SSA", "SIS"])
+set_dimension!(FUND, :cpools, 1:5)
 
 # ---------------------------------------------
 # Create components

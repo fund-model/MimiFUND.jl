@@ -1,4 +1,5 @@
 ﻿using Mimi
+using Mimi
 
 @defcomp climateco2cycle begin
     # Anthropogenic CO2 emissions in Mt of C
@@ -11,7 +12,7 @@
     globc = Variable(index=[time])
 
     # Carbon boxes
-    cbox = Variable(index=[time,5])
+    cbox = Variable(index=[time,cpools])
 
     # Initial carbon box 1
     cbox10 = Parameter()
