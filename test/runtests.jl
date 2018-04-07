@@ -1,3 +1,8 @@
+using Mimi
+
 include("../src/fund.jl")
-m = getfund(datadir=joinpath(dirname(@__FILE__),"..","data"))
+using fund
+
+m = fund.FUND
 run(m)
+
