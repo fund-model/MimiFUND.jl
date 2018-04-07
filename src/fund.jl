@@ -45,6 +45,14 @@ const global datadir = joinpath(dirname(@__FILE__), "..", "data")
 const global params = nothing
 
 # ---------------------------------------------
+# Set dimensions
+# ---------------------------------------------
+
+set_dimension!(FUND, :time, collect(1950:1950+nsteps))
+set_dimension!(FUND, :regions, ["USA", "CAN", "WEU", "JPK", "ANZ", "EEU", "FSU", "MDE", "CAM", "LAM", "SAS", "SEA", "CHI", "MAF", "SSA", "SIS"])
+set_dimension!(FUND, :cpools, 1:5)
+
+# ---------------------------------------------
 # Load parameters
 # ---------------------------------------------
 
@@ -54,11 +62,12 @@ else
     parameters = params
 end
 
-FUND = Model()
 
-set_dimension!(FUND, :time, collect(1950:1950+nsteps))
-set_dimension!(FUND, :regions, ["USA", "CAN", "WEU", "JPK", "ANZ", "EEU", "FSU", "MDE", "CAM", "LAM", "SAS", "SEA", "CHI", "MAF", "SSA", "SIS"])
-set_dimension!(FUND, :cpools, 1:5)
+# ---------------------------------------------
+# Create model
+# ---------------------------------------------
+
+FUND = Model()
 
 # ---------------------------------------------
 # Create components
@@ -112,8 +121,6 @@ connect_parameter(FUND, :socioeconomic, :populationin1, :population, :population
 connect_parameter(FUND, :socioeconomic, :population, :population, :population, offset = 0)
 connect_parameter(FUND, :socioeconomic, :pgrowth, :scenariouncertainty, :pgrowth, offset = 0)
 connect_parameter(FUND, :socioeconomic, :ypcgrowth, :scenariouncertainty, :ypcgrowth, offset = 0)
-
-connect_parameter(FUND, :socioeconomic, :eloss, :impactaggregation, :eloss, offset = 1)
 connect_parameter(FUND, :socioeconomic, :eloss, :impactaggregation, :eloss, offset = 1)
 connect_parameter(FUND, :socioeconomic, :sloss, :impactaggregation, :sloss, offset = 1)
 connect_parameter(FUND, :socioeconomic, :mitigationcost, :emissions, :mitigationcost, offset = 1)
@@ -130,6 +137,7 @@ connect_parameter(FUND, :climateco2cycle, :mco2, :emissions, :mco2, offset = 0)
 connect_parameter(FUND, :climatech4cycle, :globch4, :emissions, :globch4, offset = 0)
 
 connect_parameter(FUND, :climaten2ocycle, :globn2o, :emissions, :globn2o, offset = 0)
+
 connect_parameter(FUND, :climateco2cycle, :temp, :climatedynamics, :temp, offset = 1)
 
 connect_parameter(FUND, :climatesf6cycle, :globsf6, :emissions, :globsf6, offset = 0)
@@ -185,9 +193,9 @@ connect_parameter(FUND, :impactheating, :income, :socioeconomic, :income, offset
 connect_parameter(FUND, :impactheating, :temp, :climateregional, :temp, offset = 0)
 connect_parameter(FUND, :impactheating, :cumaeei, :emissions, :cumaeei, offset = 0)
 
-connect_parameter(FUND, :impactvectorbornediseases, :population, :population, :population)
-connect_parameter(FUND, :impactvectorbornediseases, :income, :socioeconomic, :income)
-connect_parameter(FUND, :impactvectorbornediseases, :temp, :climateregional, :temp)
+connect_parameter(FUND, :impactvectorbornediseases, :population, :population, :population, offset = 0)
+connect_parameter(FUND, :impactvectorbornediseases, :income, :socioeconomic, :income, offset = 0)
+connect_parameter(FUND, :impactvectorbornediseases, :temp, :climateregional, :temp, offset = 0)
 
 connect_parameter(FUND, :impacttropicalstorms, :population, :population, :population, offset = 0)
 connect_parameter(FUND, :impacttropicalstorms, :income, :socioeconomic, :income, offset = 0)
@@ -237,6 +245,10 @@ connect_parameter(FUND, :impactaggregation, :wetcost, :impactsealevelrise, :wetc
 connect_parameter(FUND, :impactaggregation, :leavecost, :impactsealevelrise, :leavecost, offset = 0)
 
 add_connector_comps(FUND)
+
+# ---------------------------------------------
+# Set leftover parameters
+# ---------------------------------------------
 
 setleftoverparameters(FUND, parameters)
 
