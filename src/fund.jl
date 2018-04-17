@@ -45,14 +45,6 @@ const global datadir = joinpath(dirname(@__FILE__), "..", "data")
 const global params = nothing
 
 # ---------------------------------------------
-# Set dimensions
-# ---------------------------------------------
-
-set_dimension!(FUND, :time, collect(1950:1950+nsteps))
-set_dimension!(FUND, :regions, ["USA", "CAN", "WEU", "JPK", "ANZ", "EEU", "FSU", "MDE", "CAM", "LAM", "SAS", "SEA", "CHI", "MAF", "SSA", "SIS"])
-set_dimension!(FUND, :cpools, 1:5)
-
-# ---------------------------------------------
 # Load parameters
 # ---------------------------------------------
 
@@ -68,6 +60,15 @@ end
 # ---------------------------------------------
 
 FUND = Model()
+
+
+# ---------------------------------------------
+# Set dimensions
+# ---------------------------------------------
+
+set_dimension!(FUND, :time, collect(1950:1950+nsteps))
+set_dimension!(FUND, :regions, ["USA", "CAN", "WEU", "JPK", "ANZ", "EEU", "FSU", "MDE", "CAM", "LAM", "SAS", "SEA", "CHI", "MAF", "SSA", "SIS"])
+set_dimension!(FUND, :cpools, 1:5)
 
 # ---------------------------------------------
 # Create components
@@ -250,6 +251,6 @@ add_connector_comps(FUND)
 # Set leftover parameters
 # ---------------------------------------------
 
-setleftoverparameters(FUND, parameters)
+set_leftover_params!(FUND, parameters)
 
 end #module

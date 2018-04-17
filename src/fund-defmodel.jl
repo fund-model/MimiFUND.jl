@@ -44,14 +44,6 @@ const global params = nothing
 @defmodel FUND begin 
 
     # ---------------------------------------------
-    # Set indexes 
-    # ---------------------------------------------
-
-    index[time]     = collect(1950:1950+nsteps)
-    index[regions]  = ["USA", "CAN", "WEU", "JPK", "ANZ", "EEU", "FSU", "MDE", "CAM", "LAM", "SAS", "SEA", "CHI", "MAF", "SSA", "SIS"]
-    index[cpools]   = 1:5
-
-    # ---------------------------------------------
     # Load parameters
     # ---------------------------------------------
 
@@ -66,6 +58,14 @@ const global params = nothing
     # ---------------------------------------------
 
     FUND = Model()
+
+    # ---------------------------------------------
+    # Set indexes 
+    # ---------------------------------------------
+
+    index[time]     = collect(1950:1950+nsteps)
+    index[regions]  = ["USA", "CAN", "WEU", "JPK", "ANZ", "EEU", "FSU", "MDE", "CAM", "LAM", "SAS", "SEA", "CHI", "MAF", "SSA", "SIS"]
+    index[cpools]   = 1:5
 
     # ---------------------------------------------
     # Create components
@@ -246,7 +246,7 @@ const global params = nothing
     # Set leftover parameters
     # ---------------------------------------------
 
-    setleftoverparameters(FUND, parameters)
+    set_leftover_params!(FUND, parameters)
 
 end #defmodel
 
