@@ -6,7 +6,7 @@ using Mimi
     mco2 = Parameter(index=[time])
 
     # Terrestrial biosphere CO2 emissions in Mt of C
-    TerrestrialCO2 = Variable(index=[time])
+    terrestrialco2 = Variable(index=[time])
 
     # Net CO2 emissions in Mt of C
     globc = Variable(index=[time])
@@ -78,15 +78,15 @@ using Mimi
     acco2 = Variable(index=[time])
 
     # Stock of CO2 in the terrestrial biosphere
-    TerrCO2Stock = Variable(index=[time])
+    terrco2stock = Variable(index=[time])
 
     # Temperature
     temp = Parameter(index=[time])
 
-    TerrCO2Sens = Parameter()
-    TerrCO2Stock0 = Parameter()
+    terrco2sens = Parameter()
+    terrco2stock0 = Parameter()
 
-    tempIn2010 = Variable()
+    tempin2010 = Variable()
 
     function run_timestep(p, v, d, t)
 
@@ -97,7 +97,7 @@ using Mimi
             v.co2decay4 = exp(-1.0 / p.lifeco4)
             v.co2decay5 = exp(-1.0 / p.lifeco5)
 
-            v.TerrCO2Stock[t] = p.TerrCO2Stock0
+            v.terrco2stock[t] = p.terrco2stock0
 
             v.cbox[t,1] = p.cbox10
             v.cbox[t,2] = p.cbox20
@@ -108,18 +108,18 @@ using Mimi
         else
 
             if t == getindexfromyear(2011)
-                v.tempIn2010 = p.temp[getindexfromyear(2010)]
+                v.tempin2010 = p.temp[getindexfromyear(2010)]
             end
 
             if t > getindexfromyear(2010)
-                v.TerrestrialCO2[t] = (p.temp[t - 1] - v.tempIn2010) * p.TerrCO2Sens * v.TerrCO2Stock[t - 1] / p.TerrCO2Stock0
+                v.terrestrialco2[t] = (p.temp[t - 1] - v.tempin2010) * p.terrco2sens * v.terrco2stock[t - 1] / p.terrco2stock0
             else
-                v.TerrestrialCO2[t] = 0
+                v.terrestrialco2[t] = 0
             end
 
-            v.TerrCO2Stock[t] = max(v.TerrCO2Stock[t - 1] - v.TerrestrialCO2[t], 0.0)
+            v.terrco2stock[t] = max(v.terrco2stock[t - 1] - v.terrestrialco2[t], 0.0)
 
-            v.globc[t] = p.mco2[t] + v.TerrestrialCO2[t]
+            v.globc[t] = p.mco2[t] + v.terrestrialco2[t]
 
             # Calculate CO2 concentrations
             v.cbox[t,1] = v.cbox[t - 1,1] * v.co2decay1 + 0.000471 * p.co2frac1 * (v.globc[t])
