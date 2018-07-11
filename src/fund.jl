@@ -49,7 +49,7 @@ const global params = nothing
 # ---------------------------------------------
 
 if params == nothing
-    parameters = loadparameters(datadir)
+    parameters = load_default_parameters(datadir)
 else
     parameters = params
 end
