@@ -1,6 +1,6 @@
 using DataStructures
 
-txt_out = "src/mcs_RVs.txt"
+txt_out = "src/montecarlo/mcs_RVs.txt"
 datadir = "data"
 
 files = readdir(datadir)

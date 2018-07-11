@@ -1,6 +1,9 @@
 using Mimi
 using Distributions
 
+include("../fund.jl")
+using fund
+
 mcs = @defmcs begin
 
     # Distributional parameters from data directory
@@ -105,6 +108,6 @@ mcs = @defmcs begin
 end 
 
 function do_montecarlo_runs(samplesize::Int)
-    generate_trials!(mcs, samplesize, joinpath(@__DIR__, "../output/fund_mc_trials.csv"))
-    run_mcs(m, mcs, 100, joinpath(@__DIR__, "../output/fund_mc_output.csv"))
+    generate_trials!(mcs, samplesize, joinpath(@__DIR__, "../../output/fund_mc_trials.csv"))
+    run_mcs(fund.FUND, mcs, 100, joinpath(@__DIR__, "../../output/fund_mc_output.csv"))
 end
