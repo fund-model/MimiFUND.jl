@@ -13,6 +13,11 @@ m = fund.FUND
 run(m)
 
 @testset "test-integration" begin
+
+    nullvalue = -999.999
+    err_number = 1.0e-10
+    err_array = 0.0
+    
     for c in map(name, Mimi.compdefs(m)), v in Mimi.variable_names(m, c)
         
         #load data for comparison
@@ -21,7 +26,7 @@ run(m)
 
         if typeof(results) <: Number
             validation_results = readtable(filename)[1,1]
-            @test results ≈ validation_results atol = 1.0e-10 #slight imprecision with these values due to rounding
+            @test results ≈ validation_results atol = err_number #slight imprecision with these values due to rounding
             
         else
             validation_results = convert(Array, readtable(filename))
@@ -32,10 +37,10 @@ run(m)
             end
 
             #remove NaNs
-            results[isnan.(results)] = 1.0
-            validation_results[isnan.(validation_results)] = 1.0
+            results[isnan.(results)] = nullvalue
+            validation_results[isnan.(validation_results)] = nullvalue
 
-            @test results ≈ validation_results atol = 0.0
+            @test results ≈ validation_results atol = err_array
             
         end
     end
