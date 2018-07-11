@@ -12,7 +12,7 @@ using fund
 m = fund.FUND
 run(m)
 
-@testset begin
+@testset "test-integration" begin
     for c in map(name, Mimi.compdefs(m)), v in Mimi.variable_names(m, c)
         
         #load data for comparison
@@ -21,7 +21,7 @@ run(m)
 
         if typeof(results) <: Number
             validation_results = readtable(filename)[1,1]
-            @test results ≈ validation_results atol = 1e-10 #slight imprecision with these values due to rounding
+            @test results ≈ validation_results atol = 1.0e-10 #slight imprecision with these values due to rounding
             
         else
             validation_results = convert(Array, readtable(filename))
