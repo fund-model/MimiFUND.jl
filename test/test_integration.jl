@@ -1,28 +1,7 @@
+# Check that the results from running Mimi v0.4.0 match those with Mimi v0.5.0 
 using Mimi
 using Base.Test
 using DataFrames
-
-@testset "fund" begin
-
-#------------------------------------------------------------------------------
-#   1. Run the whole model
-#------------------------------------------------------------------------------
-
-@testset "fund-model" begin
-
-include("../src/fund.jl")
-using fund
-
-m = fund.FUND
-run(m)
-
-end #fund-model testset
-
-#------------------------------------------------------------------------------
-#   2. Run tests to make sure integration version (Mimi v0.5.0)
-#   values match Mimi 0.4.0 values
-#------------------------------------------------------------------------------
-@testset "test-integration" begin
 
 Mimi.reset_compdefs()
 
@@ -32,6 +11,8 @@ using fund
 
 m = fund.FUND
 run(m)
+
+@testset "test-integration" begin
 
     nullvalue = -999.999
     err_number = 1.0e-10
@@ -63,8 +44,4 @@ run(m)
             
         end
     end
-end #fund-integration testset
-
-end #fund testset
-
-nothing
+end #testset
