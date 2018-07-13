@@ -1,22 +1,21 @@
 include("helper.jl")
-include("fund.jl")
-using fund
+include("getfund.jl")
 
-# TODO: do we need to support the option to use an alternate parameters dictionary?
-# How do we do this with new integrated fund module structure?
 """
-Returns one default FUND model and one model with a additional emissions of the specified gas in the specified year.
+Returns one default FUND model and one model with additional emissions of the specified gas in the specified year.
 """
 function getmarginalmodels(; gas = :C, emissionyear = 2010, parameters = nothing, yearstorun = 1050)
 
     # Get default FUND model
-    m1 = fund.FUND # (nsteps=yearstorun,params=parameters)
+    # m1 = fund.FUND
+    m1 = getfund(nsteps = yearstorun, params = parameters)
 
     # Get model to add marginal emissions to
-    m2 = fund.FUND # (nsteps=yearstorun,params=parameters)
-    addcomponent(m2, adder, :marginalemission, before=:climateco2cycle)
+    # m2 = fund.FUND
+    m2 = getfund(nsteps = yearstorun, params = parameters)
+    addcomponent(m2, adder, :marginalemission, before = :climateco2cycle)
     addem = zeros(yearstorun + 1)
-    addem[getindexfromyear(emissionyear) : getindexfromyear(emissionyear) + 9] = 1.0
+    addem[getindexfromyear(emissionyear):getindexfromyear(emissionyear) + 9] = 1.0
     set_parameter!(m2, :marginalemission, :add, addem)
 
     # Reconnect the appropriate emissions in the marginal model
@@ -37,8 +36,8 @@ function getmarginalmodels(; gas = :C, emissionyear = 2010, parameters = nothing
     end
 
     # Run each model
-    run(m1; ntimesteps = yearstorun)
-    run(m2; ntimesteps = yearstorun)
+    run(m1)
+    run(m2)
 
     return m1, m2
 end
