@@ -4,6 +4,7 @@ samplesize = 10
 emissionyear = 2010
 
 include(joinpath(dirname(@__FILE__), "defmcs.jl"))
+include(joinpath(dirname(@__FILE__), "scc_mcs_tools.jl"))
 include(joinpath(dirname(@__FILE__), "../marginaldamage3.jl"))
 
 base, marginal = getmarginalmodels(emissionyear = emissionyear)
@@ -18,4 +19,6 @@ mkdir("$output/results")
 generate_trials!(mcs, samplesize; filename = joinpath(@__DIR__, "$output/trials/fund_mc_trials_$samplesize.csv"))
 
 # Run monte carlo trials
-run_mcs(mcs, [base, marginal]; output_dir = "$output/results")
+set_models!(mcs, [base, marginal])
+run_mcs(mcs; output_dir = "$output/results", post_trial_func = scc_calculation)
+
