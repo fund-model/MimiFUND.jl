@@ -1,5 +1,5 @@
-include("helper.jl")
-include("fund.jl")
+include("../helper.jl")
+include("../fund.jl")
 using fund 
 
 """
