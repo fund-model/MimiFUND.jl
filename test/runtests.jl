@@ -13,8 +13,22 @@ using DataFrames
 include("../src/fund.jl")
 using fund
 
-m = fund.FUND
+#default model exported by fund module
+default_nsteps = 1050
+m = FUND
 run(m)
+@test Mimi.time_labels(m1) == collect(1950:1:1950+default_nsteps)
+   
+#default model created by getfund()
+m1 = getfund()
+run(m1)
+@test Mimi.time_labels(m1) == collect(1950:1:1950+default_nsteps)
+
+#use optional args for getfund()
+new_nsteps = 10
+m2 = getfund(nsteps = new_nsteps)
+run(m2)        
+@test Mimi.time_labels(m2) == collect(1950:1:1950+new_nsteps)
 
 end #fund-model testset
 
