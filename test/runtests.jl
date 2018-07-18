@@ -27,7 +27,6 @@ end #fund-model testset
 Mimi.reset_compdefs()
 
 include("../src/fund.jl")
-
 using fund
 
 m = fund.FUND
@@ -40,7 +39,7 @@ run(m)
     for c in map(name, Mimi.compdefs(m)), v in Mimi.variable_names(m, c)
         
         #load data for comparison
-        filename = "../contrib/validation_data_v040/$c-$v.csv"        
+        filename = joinpath(dirname(@__FILE__), "../contrib/validation_data_v040/$c-$v.csv")    
         results = m[c, v]
 
         if typeof(results) <: Number
