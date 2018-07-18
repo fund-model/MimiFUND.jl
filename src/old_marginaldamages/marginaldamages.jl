@@ -11,10 +11,10 @@ function getmarginaldamages(; emissionyear=2010, parameters = nothing, yearstoag
     yearstorun = min(1050, getindexfromyear(emissionyear) + yearstoaggregate)
 
     # Get default FUND model
-    m1 = Model(fund.FUND)
+    m1 = getfund(nsteps = yearstorun, params = parameters)
 
     # Get model to add marginal emissions to
-    m2 = Model(fund.FUND)
+    m2 = getfund(nsteps = yearstorun, params = parameters)
     addcomponent(m2, adder, :marginalemission, before = :climateco2cycle)
     addem = zeros(yearstorun + 1)
     addem[getindexfromyear(emissionyear):getindexfromyear(emissionyear) + 9] = 1.0

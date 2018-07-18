@@ -1,3 +1,5 @@
+using Mimi
+
 include("helper.jl")
 include("fund.jl")
 using fund 
@@ -9,10 +11,10 @@ Creates a MarginalModel of FUND with additional emissions in the specified year 
 function create_marginal_FUND_model(; gas = :C, emissionyear = 2010, parameters = nothing, yearstorun = 1050)
 
     # Get default FUND model
-    FUND = Model(fund.FUND)
+    FUND = getfund(nsteps = yearstorun, params = parameters)
 
     # Build marginal model
-    mm = MarginalModel(FUND)
+    mm = create_marginal_model(FUND)
     m1, m2 = mm.base, mm.marginal
 
     # Add additional emissions to m2
