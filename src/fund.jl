@@ -39,6 +39,11 @@ export
     getfund     # Function that returns a version of fund allowing for different user specifications
 
 
+# const global nsteps = 1050
+# const global datadir = joinpath(dirname(@__FILE__), "..", "data")
+# const global params = nothing
+  
+# function getfund(; nsteps = nsteps, datadir = datadir, params = params)
 function getfund(; nsteps = 1050, datadir = joinpath(dirname(@__FILE__), "..", "data"), params = nothing)
 
     # ---------------------------------------------
@@ -51,13 +56,11 @@ function getfund(; nsteps = 1050, datadir = joinpath(dirname(@__FILE__), "..", "
         parameters = params
     end
 
-
     # ---------------------------------------------
     # Create model
     # ---------------------------------------------
 
     FUND = Model()
-
 
     # ---------------------------------------------
     # Set dimensions
@@ -100,7 +103,6 @@ function getfund(; nsteps = 1050, datadir = joinpath(dirname(@__FILE__), "..", "
     addcomponent(FUND, impactwaterresources, :impactwaterresources)
     addcomponent(FUND, impactsealevelrise, :impactsealevelrise)
     addcomponent(FUND, impactaggregation, :impactaggregation)
-
 
     # ---------------------------------------------
     # Connect parameters to variables
@@ -254,12 +256,10 @@ function getfund(; nsteps = 1050, datadir = joinpath(dirname(@__FILE__), "..", "
 
 end 
 
+#
+# N.B. See fund-defmodel.jl for the @defmodel version of the following
+#
 
-const global nsteps = 1050
-const global datadir = joinpath(dirname(@__FILE__), "..", "data")
-const global params = nothing
-
-# Default version is exported
 FUND = getfund()
 
 end #module
