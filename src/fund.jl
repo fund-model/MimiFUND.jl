@@ -39,12 +39,11 @@ export
     getfund     # Function that returns a version of fund allowing for different user specifications
 
 
-# const global nsteps = 1050
-# const global datadir = joinpath(dirname(@__FILE__), "..", "data")
-# const global params = nothing
+const global default_nsteps = 1050
+const global default_datadir = joinpath(dirname(@__FILE__), "..", "data")
+const global default_params = nothing
   
-# function getfund(; nsteps = nsteps, datadir = datadir, params = params)
-function getfund(; nsteps = 1050, datadir = joinpath(dirname(@__FILE__), "..", "data"), params = nothing)
+function getfund(; nsteps = default_nsteps, datadir = default_datadir, params = default_params)
 
     # ---------------------------------------------
     # Load parameters
