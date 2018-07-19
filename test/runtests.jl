@@ -26,9 +26,7 @@ run(m1)
 
 #use optional args for getfund()
 new_nsteps = 10
-m2 = getfund(nsteps = new_nsteps)
-run(m2)        
-@test Mimi.time_labels(m2) == collect(1950:1:1950+new_nsteps)
+@test_throws ErrorException m2 = getfund(nsteps = new_nsteps) #should error because parameter lenghts won't match time dim
 
 end #fund-model testset
 
