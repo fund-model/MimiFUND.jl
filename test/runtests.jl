@@ -17,7 +17,7 @@ using fund
 default_nsteps = 1050
 m = fund.FUND
 run(m)
-@test Mimi.time_labels(m1) == collect(1950:1:1950+default_nsteps)
+@test Mimi.time_labels(m) == collect(1950:1:1950+default_nsteps)
    
 #default model created by getfund()
 m1 = getfund()
