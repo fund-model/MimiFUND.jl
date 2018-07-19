@@ -15,7 +15,7 @@ using fund
 
 #default model exported by fund module
 default_nsteps = 1050
-m = FUND
+m = fund.FUND
 run(m)
 @test Mimi.time_labels(m1) == collect(1950:1:1950+default_nsteps)
    
