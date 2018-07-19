@@ -5,7 +5,7 @@ Converts a year value into an integer corresponding to fund's time index.
 """
 function getindexfromyear(year)
     const baseyear = 1950
-    return year - baseyear + 1
+    return Int(year - baseyear + 1)
 end
 
 

@@ -50,7 +50,7 @@ function getfund(; nsteps = default_nsteps, datadir = default_datadir, params = 
     # ---------------------------------------------
 
     if params == nothing
-        parameters = loadparameters(datadir)
+        parameters = load_default_parameters(datadir)
     else
         parameters = params
     end
