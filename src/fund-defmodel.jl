@@ -1,7 +1,7 @@
 module fund
 
 using Mimi
-
+import Mimi.@defmodel
 
 include("helper.jl")
 
@@ -63,7 +63,8 @@ const global params = nothing
     # Set indexes 
     # ---------------------------------------------
 
-    index[time]     = collect(1950:1950+nsteps)
+    # index[time]     = collect(1950:1950+nsteps)
+    index[time]     = collect(1950:3000)
     index[regions]  = ["USA", "CAN", "WEU", "JPK", "ANZ", "EEU", "FSU", "MDE", "CAM", "LAM", "SAS", "SEA", "CHI", "MAF", "SSA", "SIS"]
     index[cpools]   = 1:5
 
@@ -112,7 +113,7 @@ const global params = nothing
     impactdeathmorbidity.dead[t-1]  => population.dead
 
     geography.area                  => socioeconomic.area
-    populatoin.globalpopulation     => socioeconomic.globalpopulation
+    population.globalpopulation     => socioeconomic.globalpopulation
     population.populationin1        => socioeconomic.populationin1
     population.population           => socioeconomic.population
     scenariouncertainty.pgrowth     => socioeconomic.pgrowth
@@ -173,7 +174,7 @@ const global params = nothing
 
     population.population   => impactdiarrhoea.population
     socioeconomic.income    => impactdiarrhoea.income
-    climateregional.regtmp  => impactdiarrhoea.regtemp
+    climateregional.regtmp  => impactdiarrhoea.regtmp
 
     population.population   => impactextratropicalstorms.population
     socioeconomic.income    => impactextratropicalstorms.income
@@ -195,7 +196,7 @@ const global params = nothing
 
     population.population   => impacttropicalstorms.population
     socioeconomic.income    => impacttropicalstorms.income
-    climateregional.temp    => impacttropicalstorms.temp
+    climateregional.regstmp => impacttropicalstorms.regstmp
 
     population.population   => vslvmorb.population
     socioeconomic.income    => vslvmorb.income
@@ -226,7 +227,7 @@ const global params = nothing
     socioeconomic.income            => impactaggregation.income
     impactheating.heating           => impactaggregation.heating
     impactcooling.cooling           => impactaggregation.cooling
-    impactaggregation.agcost        => impactaggregation.agcost
+    impactagriculture.agcost        => impactaggregation.agcost
     impactbiodiversity.species      => impactaggregation.species
     impactwaterresources.water      => impactaggregation.water
     impacttropicalstorms.hurrdam    => impactaggregation.hurrdam
