@@ -24,7 +24,7 @@ function load_default_parameters(datadir=joinpath(dirname(@__FILE__), "..", "dat
 end
 
 
-# For Truncated distributions, fund uses the mode of the untrucated distribution as it's default value.
+# For Truncated Gamma distributions, fund uses the mode of the untrucated distribution as it's default value.
 import StatsBase.mode
 function mode(d::Truncated{Gamma{Float64},Continuous})
     return mode(d.untruncated)
@@ -141,3 +141,13 @@ function convertparametervalue(pv)
         return pv
     end
 end
+
+"""
+Clears all directories and files in the output folder.
+"""
+function _clearoutput()
+    rm(joinpath(@__DIR__, "../output"), recursive=true)
+    mkdir(joinpath(@__DIR__, "../output"))
+end 
+
+nothing
