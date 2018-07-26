@@ -4,7 +4,7 @@ using DataStructures
 This function loads the FUND input parameters stored in datadir into the syntax
 needed for the @defmcs macro. This script writes to a text file which can then be copied into a @defmcs macro.
 """
-function load_mcs_RVs(txt_out = joinpath(@__DIR__, "mcs_RVs.txt"), datadir = joinpath(@__DIR__, "../../data"))
+function load_mcs_RVs(; txt_out = joinpath(@__DIR__, "mcs_RVs.txt"), datadir = joinpath(@__DIR__, "../../data"), string_labels = false)
 
     files = readdir(datadir)
     filter!(i->i!="desktop.ini", files)
@@ -12,7 +12,7 @@ function load_mcs_RVs(txt_out = joinpath(@__DIR__, "mcs_RVs.txt"), datadir = joi
 
     open(txt_out, "w") do f 
         for (k, v) in parameters
-            val = prepparameter(v)
+            val = prepparameter(v, string_labels)
             if val != nothing
                 write(f, "$k = $val\n")
             end
@@ -81,7 +81,7 @@ Takes the contents of one file and turns it into the string needed for a definit
 Input 'p' may be a scalar, a 1-D array (defined as two columns in long format), or a 2-D array (defined as three columns in long format).
 If p contains no distributional values, then this returns nothing.
 """
-function prepparameter(p)
+function prepparameter(p, string_labels)
     column_count = size(p,2)
     if column_count == 1
         return convert(p[1,1])
@@ -90,7 +90,7 @@ function prepparameter(p)
         for i in 1:size(p, 1)
             dist = convert(p[i, 2])
             if dist !== nothing 
-                push!(vals, "$(p[i,1]) => $dist")
+                string_labels ? push!(vals, "\"$(p[i,1])\" => $dist") : push!(vals, "$(p[i,1]) => $dist")
             end
         end
         return isempty(vals) ? nothing : "[$(reduce(_cat, vals))]"
@@ -99,7 +99,7 @@ function prepparameter(p)
         for i in 1:size(p, 1)
             dist = convert(p[i, 3])
             if dist !== nothing
-                push!(vals, "[$(p[i,1]), $(p[i,2])] => $dist")
+                string_labels ? push!(vals, "[\"$(p[i,1])\", \"$(p[i,2])\"] => $dist") : push!(vals, "[$(p[i,1]), $(p[i,2])] => $dist")
             end
         end
         return isempty(vals) ? nothing : "[$(reduce(_cat, vals))]"
