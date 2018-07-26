@@ -90,7 +90,7 @@ using Mimi
 
     function run_timestep(p, v, d, t)
 
-        if t==1
+        if is_first(t)
             v.co2decay1 = p.lifeco1
             v.co2decay2 = exp(-1.0 / p.lifeco2)
             v.co2decay3 = exp(-1.0 / p.lifeco3)
@@ -107,11 +107,11 @@ using Mimi
             v.acco2[t] = v.cbox[t,1] + v.cbox[t,2] + v.cbox[t,3] + v.cbox[t,4] + v.cbox[t,5]
         else
 
-            if t == getindexfromyear(2011)
+            if gettime(t) == 2011
                 v.tempin2010 = p.temp[getindexfromyear(2010)]
             end
 
-            if t > getindexfromyear(2010)
+            if gettime(t) > 2010
                 v.terrestrialco2[t] = (p.temp[t - 1] - v.tempin2010) * p.terrco2sens * v.terrco2stock[t - 1] / p.terrco2stock0
             else
                 v.terrestrialco2[t] = 0

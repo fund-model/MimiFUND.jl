@@ -56,7 +56,7 @@
             return 0.47 * log(d)
         end
 
-        if t>1
+        if !is_first(t)
             ch4n2o = interact(p.ch4pre, p.n2opre)
 
             v.rfco2[t] = 5.35 * log(p.acco2[t] / p.co2pre)

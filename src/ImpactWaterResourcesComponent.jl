@@ -22,8 +22,8 @@
 
     function run_timestep(p, v, d, t)
 
-        if t > getindexfromyear(2000)
-            v.watech[t] = (1.0 - p.watechrate)^(t - getindexfromyear(2000))
+        if gettime(t) > 2000
+            v.watech[t] = (1.0 - p.watechrate)^(gettime(t) - 2000)
         else
             v.watech[t] = 1.0
         end

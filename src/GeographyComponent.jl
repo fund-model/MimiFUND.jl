@@ -10,7 +10,7 @@
 
     function run_timestep(p, v, d, t);
 
-        if t==1
+        if is_first(t)
             for r in d.regions
                 v.area[t, r] = p.area0[r]
             end

@@ -18,7 +18,7 @@
 
     function run_timestep(p, v, d, t)
 
-        if t==1
+        if is_first(t)
             v.n2odecay = 1.0 / p.lifen2o
 
             v.acn2o[t] = 296

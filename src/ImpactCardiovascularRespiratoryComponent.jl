@@ -35,7 +35,7 @@
 
     function run_timestep(p, v, d, t)
 
-        if t>1
+        if !is_first(t)
             for r in d.regions
                 v.basecardvasc[t, r] = p.cardvasc90[r] + p.cvlin * (p.plus[t, r] - p.plus90[r])
                 if v.basecardvasc[t, r] > 1.0

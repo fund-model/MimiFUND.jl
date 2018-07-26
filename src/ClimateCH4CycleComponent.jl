@@ -17,7 +17,7 @@
 
     function run_timestep(p, v, d, t)
         
-        if t==1
+        if is_first(t)
             v.ch4decay = 1.0 / p.lifech4
 
             v.acch4[1] = 1222.0

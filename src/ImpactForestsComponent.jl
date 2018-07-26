@@ -22,7 +22,7 @@
 
     function run_timestep(p, v, d, t)
 
-        if t>1
+        if !is_first(t)
             for r in d.regions
                 ypc = 1000.0 * p.income[t, r] / p.population[t, r]
                 ypc90 = p.gdp90[r] / p.pop90[r] * 1000.0

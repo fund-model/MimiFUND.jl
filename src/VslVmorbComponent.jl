@@ -18,7 +18,7 @@ using Mimi
 
     function run_timestep(p, v, d, t)
 
-        if t>1
+        if !is_first(t)
             for r in d.regions
                 ypc = p.income[t, r] / p.population[t, r] * 1000.0
 

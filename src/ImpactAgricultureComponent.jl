@@ -34,7 +34,7 @@
         
         const DBsT = 0.04     # base case yearly warming
         
-        if t==1
+        if is_first(t)
             for r in d.regions
                 v.agrate[t, r] = p.agrbm[r] * (0.005 / DBsT)^p.agnl * p.agtime[r]
             end

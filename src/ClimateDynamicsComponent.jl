@@ -21,7 +21,7 @@
 
     function run_timestep(p, v, d, t)
         
-        if t==1
+        if is_first(t)
             v.temp[t] = 0.20
         else
             LifeTemp = max(p.lifetempconst + p.lifetemplin * p.climatesensitivity + p.lifetempqd * p.climatesensitivity^2.0, 1.0)

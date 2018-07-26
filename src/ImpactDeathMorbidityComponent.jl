@@ -40,7 +40,7 @@
 
     function run_timestep(p, v, d, t)
 
-        if t>1
+        if !is_first(t)
             for r in d.regions
                 v.dead[t, r] = p.dengue[t, r] + p.schisto[t, r] + p.malaria[t, r] + p.cardheat[t, r] + p.cardcold[t, r] + p.resp[t, r] + p.diadead[t, r] + p.hurrdead[t, r] + p.extratropicalstormsdead[t, r] + p.dead_other[t,r]
                 if v.dead[t, r] > p.population[t, r] * 1000000.0

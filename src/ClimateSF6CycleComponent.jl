@@ -17,7 +17,7 @@
 
     function run_timestep(p, v, d, t)
         
-        if t==1
+        if is_first(t)
             v.sf6decay = 1.0 / p.lifesf6
 
             v.acsf6[t] = p.sf6pre
