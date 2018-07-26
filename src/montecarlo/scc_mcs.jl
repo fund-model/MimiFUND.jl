@@ -1,7 +1,10 @@
 using Mimi
 
+include(joinpath(@__DIR__, "../fund.jl"))
 include(joinpath(dirname(@__FILE__), "defmcs.jl"))                  # Defines FUND's distributional parameters
-# include(joinpath(dirname(@__FILE__), "../new_marginaldamages.jl"))  # Defines FUND's marginal emissions model
+include(joinpath(dirname(@__FILE__), "../new_marginaldamages.jl"))  # Defines FUND's marginal emissions model
+
+using fund
 
 function run_FUND_SCC(trials = 10; year = 2010, years = nothing, rate = 0.03, rates = nothing)
 
@@ -57,8 +60,6 @@ function run_FUND_SCC(trials = 10; year = 2010, years = nothing, rate = 0.03, ra
         base, marginal = mcs.models
         marginaldamages = (marginal[:impactaggregation, :loss] - base[:impactaggregation, :loss]) / 10000000.0
     
-        println(base[:climatedynamics, :climatesensitivity]) #DELETE
-
         # Calculate discount factor
         T = ntimesteps == typemax(Int) ? length(dimension(base, :time)) : ntimesteps
         discount_factor = zeros(T)
