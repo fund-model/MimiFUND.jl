@@ -15,7 +15,7 @@
 
     function run_timestep(p, v, d, t)
 
-        if t==1
+        if is_first(t)
             # Delay in sea-level rise
             v.delaysea = 1.0 / p.lifesea
             v.sea[t] = 0.0

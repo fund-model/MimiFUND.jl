@@ -21,7 +21,7 @@
 
     function run_timestep(p, v, d, t)
         
-        if t > getindexfromyear(2000)
+        if gettime(t) > 2000
             dt = abs(p.temp[t] - p.temp[t - 1])
 
             v.nospecies[t] = max(

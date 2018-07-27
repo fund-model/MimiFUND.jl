@@ -32,7 +32,7 @@
 
     function run_timestep(p, v, d, t)
         
-        if t==1
+        if is_first(t)
             for r in d.regions
                 v.eloss[t, r] = 0.0
                 v.sloss[t, r] = 0.0

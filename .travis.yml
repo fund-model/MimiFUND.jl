@@ -8,5 +8,7 @@ notifications:
 before_install:
   - julia -e 'Pkg.add("Distributions")'
   - julia -e 'Pkg.add("Mimi")'
+  - julia -e 'Pkg.checkout("Mimi", "master")'
+
 script:
   - julia test/runtests.jl

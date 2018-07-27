@@ -62,7 +62,7 @@
 
     function run_timestep(p, v, d, t)
 
-        if t==1
+        if is_first(t)
             for r1 in d.regions
                 for r2 in d.regions
                     immsumm = 0
@@ -87,7 +87,7 @@
                 ypcprev = p.income[t - 1, r] / p.population[t - 1, r] * 1000.0
                 ypcgrowth = ypc / ypcprev - 1.0
 
-                if t == getindexfromyear(1951)
+                if gettime(t) == 1951
                     ypcgrowth = 0
                 end
 

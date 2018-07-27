@@ -21,7 +21,7 @@ using Mimi
 
     function run_timestep(p, v, d, t)
 
-        if t==1
+        if is_first(t)
             for r in d.regions
                 v.pop0[r] = p.population[t, r]
                 v.gdp0[r] = p.income[t, r]
@@ -34,7 +34,7 @@ using Mimi
         end
 
         for r in d.regions
-            if t<1050
+            if t.t < 1050
                 v.scenpgrowth[t, r] = (p.population[t+1, r] / p.population[t, r] - 1.) * 100.
                 v.scenypcgrowth[t, r] = (p.income[t+1, r] / p.income[t, r] / (1 + 0.01 * v.scenpgrowth[t, r]) - 1.) * 100.
             end
@@ -42,7 +42,7 @@ using Mimi
             v.energint[t, r] = p.energuse[t, r] / p.income[t,r]
             v.emissint[t, r] = p.emission[t, r] / p.energuse[t, r]
 
-            if t>1
+            if !is_first(t)
                 v.scenaeei[t, r] = -(v.energint[t, r] / v.energint[t - 1, r] - 1.) * 100.
                 v.scenacei[t, r] = -(v.emissint[t, r] / v.emissint[t - 1, r] - 1.) * 100.
             end

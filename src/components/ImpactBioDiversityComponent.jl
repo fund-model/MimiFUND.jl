@@ -23,7 +23,7 @@
 
     function run_timestep(p, v, d, t)
 
-        if t>1
+        if !is_first(t)
             v.biodiv[t] = p.nospecbase / p.nospecies[t]
 
             for r in d.regions

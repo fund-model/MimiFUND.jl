@@ -83,7 +83,7 @@
     
     function run_timestep(p, v, d, t)
 
-        if t==1
+        if is_first(t)
             for r in d.regions
                 v.energint[t, r] = 1
                 v.energuse[t, r] = p.income[t,r]
@@ -127,7 +127,7 @@
 
             # Calculate sf6 emissions
             for r in d.regions
-                v.sf6[t, r] = (p.sf60[r] + p.sf6gdp * (p.income[t, r] - p.gdp90[r]) + p.sf6ypc * (p.income[t - 1, r] / p.population[t - 1, r] - p.gdp90[r] / p.pop90[r])) * (t <= getindexfromyear(2010) ? 1 + (t - getindexfromyear(1990)) / 40.0 : 1.0 + (60.0 - 40.0) / 40.0) * (t > getindexfromyear(2010) ? 0.99^(t - getindexfromyear(2010)) : 1.0)
+                v.sf6[t, r] = (p.sf60[r] + p.sf6gdp * (p.income[t, r] - p.gdp90[r]) + p.sf6ypc * (p.income[t - 1, r] / p.population[t - 1, r] - p.gdp90[r] / p.pop90[r])) * (gettime(t) <= 2010 ? 1 + (gettime(t) - 1990) / 40.0 : 1.0 + (60.0 - 40.0) / 40.0) * (gettime(t) > 2010 ? 0.99^(gettime(t) - 2010) : 1.0)
             end
 
             # Check for unrealistic values
@@ -270,7 +270,7 @@
             v.minint[t] = minint
 
             for r in d.regions
-                if t > getindexfromyear(2000)
+                if gettime(t) > 2000
                     v.cumaeei[t, r] = v.cumaeei[t - 1, r] * (1.0 - 0.01 * p.aeei[t, r] - v.reei[t, r] + v.seei[t - 1, r] - v.seei[t, r])
                 else
                     v.cumaeei[t, r] = 1.0
@@ -295,9 +295,9 @@
             end
 
             v.mco2[t] = globco2
-            v.globch4[t] = max(0.0, globch4 + (t > getindexfromyear(2000) ? p.ch4add * (t - getindexfromyear(2000)) : 0.0))
-            v.globn2o[t] = max(0.0, globn2o + (t > getindexfromyear(2000) ? p.n2oadd * (t - getindexfromyear(2000)) : 0.0))
-            v.globsf6[t] = max(0.0, globsf6 + (t > getindexfromyear(2000) ? p.sf6add * (t - getindexfromyear(2000)) : 0.0))
+            v.globch4[t] = max(0.0, globch4 + (gettime(t) > 2000 ? p.ch4add * (gettime(t) - 2000) : 0.0))
+            v.globn2o[t] = max(0.0, globn2o + (gettime(t) > 2000 ? p.n2oadd * (gettime(t) - 2000) : 0.0))
+            v.globsf6[t] = max(0.0, globsf6 + (gettime(t) > 2000 ? p.sf6add * (gettime(t) - 2000) : 0.0))
 
             v.cumglobco2[t] = v.cumglobco2[t - 1] + v.mco2[t]
             v.cumglobch4[t] = v.cumglobch4[t - 1] + v.globch4[t]
