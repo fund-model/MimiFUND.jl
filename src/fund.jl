@@ -243,8 +243,6 @@ function getfund(; nsteps = default_nsteps, datadir = default_datadir, params = 
     connect_param!(FUND, :impactaggregation, :wetcost, :impactsealevelrise, :wetcost, offset = 0)
     connect_param!(FUND, :impactaggregation, :leavecost, :impactsealevelrise, :leavecost, offset = 0)
 
-    add_connector_comps(FUND)
-
     # ---------------------------------------------
     # Set leftover parameters
     # ---------------------------------------------
