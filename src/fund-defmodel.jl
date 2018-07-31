@@ -240,9 +240,7 @@ const global params = nothing
     impactdeathmorbidity.morbcost   => impactaggregation.morbcost
     impactsealevelrise.wetcost      => impactaggregation.wetcost
     impactsealevelrise.leavecost    => impactaggregation.leavecost
-    
-    add_connector_comps(FUND)
-    
+        
     # ---------------------------------------------
     # Set leftover parameters
     # ---------------------------------------------
