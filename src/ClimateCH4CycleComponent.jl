@@ -10,10 +10,10 @@
     # CH4 decay
     ch4decay = Variable()
 
-    lifech4 = Parameter()
+    lifech4 = Parameter(default = 12.0)
 
     #  CH4 pre industrial
-    ch4pre = Parameter()
+    ch4pre = Parameter(default = 790.0)
 
     function run_timestep(p, v, d, t)
         

@@ -11,8 +11,8 @@
     enter               = Parameter(index=[time,regions])
     leave               = Parameter(index=[time,regions])
     dead                = Parameter(index=[time,regions])
-    pop0                = Parameter(index=[regions])
-    runwithoutpopulationperturbation::Bool = Parameter()
+    pop0                = Parameter(index=[regions], default = [157.8, 13.7, 304.3, 104.0, 10.1, 87.7, 180.1, 58.6, 35.0, 114.9, 464.1, 183.2, 567.2, 44.1, 175.8, 19.8])
+    runwithoutpopulationperturbation::Bool = Parameter(default = false)
 
     function run_timestep(p, v, d, t)
         if is_first(t)
