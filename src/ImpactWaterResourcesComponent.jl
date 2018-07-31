@@ -12,7 +12,7 @@
     wrnl = Parameter(default = 1)
     wrpl = Parameter(default = 0.85)
 
-    gdp90 = Parameter(index=[regions], default = default = [6343.0, 532.5, 8285.4, 5100.7, 359.5, 338.1, 915.1, 447.3, 296.0, 1078.0, 351.5, 456.2, 511.4, 137.3, 275.1, 37.2])
+    gdp90 = Parameter(index=[regions], default = [6343.0, 532.5, 8285.4, 5100.7, 359.5, 338.1, 915.1, 447.3, 296.0, 1078.0, 351.5, 456.2, 511.4, 137.3, 275.1, 37.2])
     income = Parameter(index=[time,regions])
 
     population = Parameter(index=[time,regions])
