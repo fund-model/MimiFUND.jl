@@ -8,16 +8,16 @@
     temp = Variable(index=[time])
 
     # lifetempconst
-    lifetempconst = Parameter()
+    lifetempconst = Parameter(default = -42.7421952811)
 
     # lifetemplin
-    lifetemplin = Parameter()
+    lifetemplin = Parameter(default = 29.0603120788)
 
     # lifetempqd
-    lifetempqd = Parameter()
+    lifetempqd = Parameter(default = 0.0014564222822)
 
     # Climate sensitivity
-    climatesensitivity = Parameter()
+    climatesensitivity = Parameter(default = 2.999999803762826)
 
     function run_timestep(p, v, d, t)
         

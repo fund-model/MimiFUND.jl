@@ -9,17 +9,17 @@
     species = Variable(index=[time,regions])
 
     # Number of species in the year 2000
-    nospecbase = Parameter()
+    nospecbase = Parameter(default = 1.4e7)
 
     nospecies = Parameter(index=[time])
     temp = Parameter(index=[time,regions])
     income = Parameter(index=[time,regions])
     population = Parameter(index=[time,regions])
-    valinc = Parameter(index=[regions])
-    bioshare = Parameter()
-    spbm = Parameter()
-    valbase = Parameter()
-    dbsta = Parameter()
+    valinc = Parameter(index=[regions], default = [30000.0, 30000.0, 30000.0, 30000.0, 30000.0, 30000.0, 30000.0, 30000.0, 30000.0, 30000.0, 30000.0, 30000.0, 30000.0, 30000.0, 30000.0, 30000.0])
+    bioshare = Parameter(default = 0.05)
+    spbm = Parameter(default = 50)
+    valbase = Parameter(default = 24401)
+    dbsta = Parameter(default = 0.025)
 
     function run_timestep(p, v, d, t)
 
