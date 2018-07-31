@@ -15,24 +15,24 @@ function getmarginaldamages(; emissionyear=2010, parameters = nothing, yearstoag
 
     # Get model to add marginal emissions to
     m2 = getfund(nsteps = yearstorun, params = parameters)
-    addcomponent(m2, adder, :marginalemission, before = :climateco2cycle)
+    add_comp!(m2, adder, :marginalemission, before = :climateco2cycle)
     addem = zeros(yearstorun + 1)
     addem[getindexfromyear(emissionyear):getindexfromyear(emissionyear) + 9] = 1.0
-    set_parameter!(m2, :marginalemission, :add, addem)
+    set_param!(m2, :marginalemission, :add, addem)
 
     # Reconnect the appropriate emissions in the marginal model
     if gas == :C
-        connect_parameter(m2, :marginalemission, :input, :emissions, :mco2)
-        connect_parameter(m2, :climateco2cycle, :mco2, :marginalemission, :output)
+        connect_param!(m2, :marginalemission, :input, :emissions, :mco2)
+        connect_param!(m2, :climateco2cycle, :mco2, :marginalemission, :output)
     elseif gas == :CH4
-        connect_parameter(m2, :marginalemission, :input, :emissions, :globch4)
-        connect_parameter(m2, :climatech4cycle, :globch4, :marginalemission, :output)
+        connect_param!(m2, :marginalemission, :input, :emissions, :globch4)
+        connect_param!(m2, :climatech4cycle, :globch4, :marginalemission, :output)
     elseif gas == :N2O
-        connect_parameter(m2, :marginalemission, :input, :emissions, :globn2o)
-        connect_parameter(m2, :climaten2ocycle, :globn2o, :marginalemission, :output)
+        connect_param!(m2, :marginalemission, :input, :emissions, :globn2o)
+        connect_param!(m2, :climaten2ocycle, :globn2o, :marginalemission, :output)
     elseif gas == :SF6
-        connect_parameter(m2, :marginalemission, :input, :emissions,:globsf6)
-        connect_parameter(m2, :climatesf6cycle, :globsf6, :marginalemission, :output)
+        connect_param!(m2, :marginalemission, :input, :emissions,:globsf6)
+        connect_param!(m2, :climatesf6cycle, :globsf6, :marginalemission, :output)
     else
         error("Unknown gas.")
     end
