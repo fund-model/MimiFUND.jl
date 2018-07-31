@@ -5,7 +5,7 @@
 
     heating = Variable(index=[time,regions])
 
-    hebm = Parameter(index=[regions])
+    hebm = Parameter(index=[regions], default = [0.00429, 0.00378, 0.00241, 0.00207, 0.00151, 0.00456, 0.01663, 0.02074, 0.00366, 0.00395, 0.00361, 0.00695, 0.03971, 0.00015, 6.0e-5, 0.00366])
     gdp90 = Parameter(index=[regions], default = [6343.0, 532.5, 8285.4, 5100.7, 359.5, 338.1, 915.1, 447.3, 296.0, 1078.0, 351.5, 456.2, 511.4, 137.3, 275.1, 37.2])
 
     population = Parameter(index=[time,regions])
