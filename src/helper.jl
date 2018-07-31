@@ -114,3 +114,5 @@ function prepparameters!(parameters)
         end
     end
 end
+
+# Base.show(io::IO, x::Union{Float64,Float32}) = Base.Grisu._show(io, x, Base.Grisu.SHORTEST, 0, true, false)

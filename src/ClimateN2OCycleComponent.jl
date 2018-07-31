@@ -11,10 +11,10 @@
     n2odecay = Variable()
 
     #
-    lifen2o = Parameter()
+    lifen2o = Parameter(default = 114.0)
 
     # N2o pre industrial
-    n2opre = Parameter()
+    n2opre = Parameter(default = 285.0)
 
     function run_timestep(p, v, d, t)
 

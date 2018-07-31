@@ -26,9 +26,9 @@
     leavecost = Parameter(index=[time,regions])
 
     # Other economic losses
-    eloss_other = Parameter(index=[time,regions])
+    eloss_other = Parameter(index=[time,regions], default = zeros(1051, 16))
     # Other non-economic losses
-    sloss_other = Parameter(index=[time,regions])
+    sloss_other = Parameter(index=[time,regions], default = zeros(1051, 16))
 
     function run_timestep(p, v, d, t)
         
