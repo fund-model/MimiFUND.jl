@@ -8,12 +8,12 @@
     acsf6 = Variable(index=[time])
 
     #SF6 pre industrial
-    sf6pre = Parameter()
+    sf6pre = Parameter(default = 0.04)
 
     #SF6 decay
     sf6decay = Variable()
 
-    lifesf6 = Parameter()
+    lifesf6 = Parameter(default = 3200.0)
 
     function run_timestep(p, v, d, t)
         

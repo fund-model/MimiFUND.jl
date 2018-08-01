@@ -15,19 +15,19 @@ using Mimi
     cbox = Variable(index=[time,cpools])
 
     # Initial carbon box 1
-    cbox10 = Parameter()
+    cbox10 = Parameter(default = 296.002949511)
 
     # Initial carbon box 2
-    cbox20 = Parameter()
+    cbox20 = Parameter(default = 5.52417779186)
 
     # Initial carbon box 3
-    cbox30 = Parameter()
+    cbox30 = Parameter(default = 6.65150094285)
 
     # Initial carbon box 4
-    cbox40 = Parameter()
+    cbox40 = Parameter(default = 2.39635475726)
 
     # Initial carbon box 5
-    cbox50 = Parameter()
+    cbox50 = Parameter(default = 0.17501699667)
 
     # Carbon decay in box 1
     co2decay1 = Variable()
@@ -45,34 +45,34 @@ using Mimi
     co2decay5 = Variable()
 
     # Carbon decay in box 1
-    lifeco1 = Parameter()
+    lifeco1 = Parameter(default = 1.0)
 
     # Carbon decay in box 2
-    lifeco2 = Parameter()
+    lifeco2 = Parameter(default = 363.0)
 
     # Carbon decay in box 3
-    lifeco3 = Parameter()
+    lifeco3 = Parameter(default = 74.0)
 
     # Carbon decay in box 4
-    lifeco4 = Parameter()
+    lifeco4 = Parameter(default = 17.0)
 
     # Carbon decay in box 5
-    lifeco5 = Parameter()
+    lifeco5 = Parameter(default = 2.0)
 
     # Fraction of carbon emission in box 1
-    co2frac1 = Parameter()
+    co2frac1 = Parameter(default = 0.13)
 
     # Fraction of carbon emission in box 2
-    co2frac2 = Parameter()
+    co2frac2 = Parameter(default = 0.2)
 
     # Fraction of carbon emission in box 3
-    co2frac3 = Parameter()
+    co2frac3 = Parameter(default = 0.32)
 
     # Fraction of carbon emission in box 4
-    co2frac4 = Parameter()
+    co2frac4 = Parameter(default = 0.25)
 
     # Fraction of carbon emission in box 5
-    co2frac5 = Parameter()
+    co2frac5 = Parameter(default = 0.1)
 
     # Atmospheric CO2 concentration
     acco2 = Variable(index=[time])
@@ -83,8 +83,8 @@ using Mimi
     # Temperature
     temp = Parameter(index=[time])
 
-    terrco2sens = Parameter()
-    terrco2stock0 = Parameter()
+    terrco2sens = Parameter(default = 2600.000000000002)
+    terrco2stock0 = Parameter(default = 1.9e6)
 
     tempin2010 = Variable()
 

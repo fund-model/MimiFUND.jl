@@ -9,19 +9,19 @@
     acei = Variable(index=[time,regions])
     forestemm = Variable(index=[time,regions])
 
-    timeofuncertaintystart::Int = Parameter()
+    timeofuncertaintystart::Int = Parameter(default = 2000)
 
-    scenpgrowth = Parameter(index=[time,regions])
-    scenypcgrowth = Parameter(index=[time,regions])
-    scenaeei = Parameter(index=[time,regions])
-    scenacei = Parameter(index=[time,regions])
-    scenforestemm = Parameter(index=[time,regions])
+    scenpgrowth     = Parameter(index=[time,regions])   # has default, but 2-D
+    scenypcgrowth   = Parameter(index=[time,regions])   # has default, but 2-D
+    scenaeei        = Parameter(index=[time,regions])   # has default, but 2-D
+    scenacei        = Parameter(index=[time,regions])   # has default, but 2-D
+    scenforestemm   = Parameter(index=[time,regions])   # has default, but 2-D
 
-    ecgradd = Parameter(index=[regions])
-    pgadd = Parameter(index=[regions])
-    aeeiadd = Parameter(index=[regions])
-    aceiadd = Parameter(index=[regions])
-    foremadd = Parameter(index=[regions])
+    ecgradd     = Parameter(index=[regions], default = zeros(16))
+    pgadd       = Parameter(index=[regions], default = zeros(16))
+    aeeiadd     = Parameter(index=[regions], default = zeros(16))
+    aceiadd     = Parameter(index=[regions], default = zeros(16))
+    foremadd    = Parameter(index=[regions], default = zeros(16))
 
     function run_timestep(p, v, d, t)
         yearsFromUncertaintyStart = gettime(t) - p.timeofuncertaintystart

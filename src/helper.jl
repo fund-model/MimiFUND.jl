@@ -150,4 +150,4 @@ function _clearoutput()
     mkdir(joinpath(@__DIR__, "../output"))
 end 
 
-nothing
+# Base.show(io::IO, x::Union{Float64,Float32}) = Base.Grisu._show(io, x, Base.Grisu.SHORTEST, 0, true, false)
