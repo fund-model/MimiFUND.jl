@@ -10,9 +10,9 @@ using Mimi
     income = Parameter(index=[time,regions])
 
     vslbm       = Parameter(default = 4.99252262888626e6)
-    vslel       = Parameter(default = 1)
+    vslel       = Parameter(default = 1.)
     vmorbbm     = Parameter(default = 19970.090515545)
-    vmorbel     = Parameter(default = 1)
+    vmorbel     = Parameter(default = 1.)
     vslypc0     = Parameter(default = 24962.6131444313)
     vmorbypc0   = Parameter(default = 24962.6131444313)
 
