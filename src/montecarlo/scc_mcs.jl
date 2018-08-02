@@ -42,12 +42,8 @@ function run_FUND_SCC(trials = 10; year = 2010, years = nothing, rate = 0.03, ra
         base, marginal = mcs.models
     
         # Perturb emissons in the marginal model
-        ci = marginal.mi.components[:marginalemission]
-        emissions = Mimi.get_parameter_value(ci, :add)
-        emissions[:] = 0
-        emissions[getindexfromyear(emissionyear):getindexfromyear(emissionyear) + 9] = 1.0
+        perturb_marginal_emissions!(marginal, emissionyear)
     
-        nothing
     end
 
     # Define post trial function
@@ -61,7 +57,7 @@ function run_FUND_SCC(trials = 10; year = 2010, years = nothing, rate = 0.03, ra
         marginaldamages = (marginal[:impactaggregation, :loss] - base[:impactaggregation, :loss]) / 10000000.0
     
         # Calculate discount factor
-        T = ntimesteps == typemax(Int) ? length(dimension(base, :time)) : ntimesteps
+        T = ntimesteps == typemax(Int) ? length(Mimi.dimension(base, :time)) : ntimesteps
         discount_factor = zeros(T)
         idx = getindexfromyear(emissionyear)
         discount_factor[idx:T] = [1 / ((1 + rate) ^ t) for t in 0:T-idx]
