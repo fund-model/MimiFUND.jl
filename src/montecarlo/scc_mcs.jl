@@ -1,16 +1,15 @@
 using Mimi
 
 include(joinpath(@__DIR__, "../fund.jl"))
-include(joinpath(dirname(@__FILE__), "defmcs.jl"))                  # Defines FUND's distributional parameters
-include(joinpath(dirname(@__FILE__), "../new_marginaldamages.jl"))  # Defines FUND's marginal emissions model
+include(joinpath(@__DIR__, "defmcs.jl"))                  # Defines FUND's distributional parameters
+include(joinpath(@__DIR__, "../new_marginaldamages.jl"))  # Defines FUND's marginal emissions model
 
 using fund
 
-function run_FUND_SCC(trials = 10; year = 2010, years = nothing, rate = 0.03, rates = nothing)
+function run_fund_scc(trials = 10; year = 2020, years = nothing, rate = 0.03, rates = nothing, ntimesteps = 1051, save_trials = false)
 
     # Set up output directories
-    output = joinpath(dirname(@__FILE__), "../../output/", "SCC $(Dates.format(now(), "yyyy-mm-dd HH-MM-SS"))")
-    mkpath("$output/trials")
+    output = joinpath(@__DIR__, "../../output/", "SCC $(Dates.format(now(), "yyyy-mm-dd HH-MM-SS"))")
     mkpath("$output/results")
 
     # Write header in SCC output file
@@ -26,8 +25,13 @@ function run_FUND_SCC(trials = 10; year = 2010, years = nothing, rate = 0.03, ra
     ]
 
     # Generate trials
-    generate_trials!(mcs, trials; filename = joinpath(@__DIR__, "$output/trials/fund_mc_trials_$trials.csv"))
-    
+    if save_trials
+        mkpath("$output/trials")
+        generate_trials!(mcs, trials; filename = joinpath(@__DIR__, "$output/trials/fund_mc_trials_$trials.csv"))
+    else 
+        generate_trials!(mcs, trials)
+    end
+
     # Get FUND marginal model
     mm = create_marginal_FUND_model()
     set_model!(mcs, mm)
@@ -74,7 +78,8 @@ function run_FUND_SCC(trials = 10; year = 2010, years = nothing, rate = 0.03, ra
     end
 
     # Run monte carlo trials
-    run_mcs(mcs, trials; 
+    run_mcs(mcs, trials, 2; 
+        ntimesteps = ntimesteps,
         output_dir = "$output/results",
         scenario_args = scenario_args, 
         scenario_func = _scenario_func,   
