@@ -2,7 +2,7 @@ using Mimi
 
 include("helper.jl")
 include("fund.jl")
-using fund 
+using Fund 
 
 
 """

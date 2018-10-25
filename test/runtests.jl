@@ -11,11 +11,11 @@ using DataFrames
 @testset "fund-model" begin
 
 include("../src/fund.jl")
-using fund
+using Fund
 
 #default model exported by fund module
 default_nsteps = 1050
-m = FUND
+m = getfund()
 run(m)
 @test Mimi.time_labels(m) == collect(1950:1:1950+default_nsteps)
    
@@ -39,41 +39,42 @@ end #fund-model testset
 Mimi.reset_compdefs()
 
 include("../src/fund.jl")
-using fund
+using Fund
 
-m = fund.FUND
+m = getfund()
 run(m)
 
-    nullvalue = -999.999
-    err_number = 1.0e-10
-    err_array = 0.0
+nullvalue = -999.999
+err_number = 1.0e-10
+err_array = 0.0
+
+for c in map(name, Mimi.compdefs(m)), v in Mimi.variable_names(m, c)
     
-    for c in map(name, Mimi.compdefs(m)), v in Mimi.variable_names(m, c)
+    #load data for comparison
+    filename = joinpath(@__DIR__, "../contrib/validation_data_v040/$c-$v.csv")    
+    results = m[c, v]
+
+    if typeof(results) <: Number
+        validation_results = readtable(filename)[1,1]
+        @test results ≈ validation_results atol = err_number #slight imprecision with these values due to rounding
         
-        #load data for comparison
-        filename = joinpath(dirname(@__FILE__), "../contrib/validation_data_v040/$c-$v.csv")    
-        results = m[c, v]
+    else
+        validation_results = convert(Array, readtable(filename))
 
-        if typeof(results) <: Number
-            validation_results = readtable(filename)[1,1]
-            @test results ≈ validation_results atol = err_number #slight imprecision with these values due to rounding
-            
-        else
-            validation_results = convert(Array, readtable(filename))
-
-            #match dimensions
-            if size(validation_results,1) == 1
-                validation_results = validation_results'
-            end
-
-            #remove NaNs
-            results[isnan.(results)] = nullvalue
-            validation_results[isnan.(validation_results)] = nullvalue
-
-            @test results ≈ validation_results atol = err_array
-            
+        #match dimensions
+        if size(validation_results,1) == 1
+            validation_results = validation_results'
         end
+
+        #remove NaNs
+        results[isnan.(results)] = nullvalue
+        validation_results[isnan.(validation_results)] = nullvalue
+
+        @test results ≈ validation_results atol = err_array
+        
     end
+end
+
 end #fund-integration testset
 
 end #fund testset

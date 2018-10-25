@@ -1,6 +1,6 @@
 include("../helper.jl")
 include("../fund.jl")
-using fund 
+using Fund 
 
 """
 Returns one default FUND model and one model with additional emissions of the specified gas in the specified year.

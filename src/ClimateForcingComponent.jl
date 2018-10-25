@@ -1,5 +1,10 @@
 ﻿using Mimi
 
+function interact(M, N)
+    d = 1.0 + (M * N)^0.75 * 2.01E-5 + (M * N)^1.52 * M * 5.31E-15
+    return 0.47 * log(d)
+end
+
 @defcomp climateforcing begin
     # Atmospheric CO2 concentration
     acco2 = Parameter(index=[time])
@@ -50,11 +55,6 @@
     rfemf22 = Variable(index=[time])
 
     function run_timestep(p, v, d, t)
-        
-        function interact(M, N)
-            d = 1.0 + (M * N)^0.75 * 2.01E-5 + (M * N)^1.52 * M * 5.31E-15
-            return 0.47 * log(d)
-        end
 
         if !is_first(t)
             ch4n2o = interact(p.ch4pre, p.n2opre)
