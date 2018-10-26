@@ -14,19 +14,19 @@
     cbox = Variable(index=[time,cpools])
 
     # Initial carbon box 1
-    cbox10 = Parameter(default = 296.002949511)
+    cbox10 = Parameter()
 
     # Initial carbon box 2
-    cbox20 = Parameter(default = 5.52417779186)
+    cbox20 = Parameter()
 
     # Initial carbon box 3
-    cbox30 = Parameter(default = 6.65150094285)
+    cbox30 = Parameter()
 
     # Initial carbon box 4
-    cbox40 = Parameter(default = 2.39635475726)
+    cbox40 = Parameter()
 
     # Initial carbon box 5
-    cbox50 = Parameter(default = 0.17501699667)
+    cbox50 = Parameter()
 
     # Carbon decay in box 1
     co2decay1 = Variable()

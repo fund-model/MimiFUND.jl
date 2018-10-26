@@ -5,11 +5,11 @@
 
     heating = Variable(index=[time,regions])
 
-    hebm = Parameter(index=[regions], default = [0.00429, 0.00378, 0.00241, 0.00207, 0.00151, 0.00456, 0.01663, 0.02074, 0.00366, 0.00395, 0.00361, 0.00695, 0.03971, 0.00015, 6.0e-5, 0.00366])
-    gdp90 = Parameter(index=[regions], default = [6343.0, 532.5, 8285.4, 5100.7, 359.5, 338.1, 915.1, 447.3, 296.0, 1078.0, 351.5, 456.2, 511.4, 137.3, 275.1, 37.2])
+    hebm = Parameter(index=[regions])
+    gdp90 = Parameter(index=[regions])
 
     population = Parameter(index=[time,regions])
-    pop90 = Parameter(index=[regions], default = [254.1, 27.8, 376.6, 166.4, 20.2, 124.3, 289.6, 189.2, 106.3, 300.2, 1131.7, 444.1, 1184.1, 117.8, 494.4, 39.9])
+    pop90 = Parameter(index=[regions])
 
     income = Parameter(index=[time,regions])
     heel = Parameter(default = 0.8)
