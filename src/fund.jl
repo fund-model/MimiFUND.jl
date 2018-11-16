@@ -1,3 +1,7 @@
+module Fund
+
+using Mimi
+
 include("helper.jl")
 
 include("SocioEconomicComponent.jl")
@@ -30,211 +34,221 @@ include("ImpactSeaLevelRiseComponent.jl")
 include("ImpactAggregationComponent.jl")
 include("VslVmorbComponent.jl")
 
-function constructfund(;nsteps=1050)
-    m = Model()
+export 
+    getfund     # Function that returns a version of fund allowing for different user specifications
 
-    setindex(m, :time, collect(1950:1950+nsteps))
-    setindex(m, :regions, ["USA", "CAN", "WEU", "JPK", "ANZ", "EEU", "FSU", "MDE", "CAM", "LAM", "SAS", "SEA", "CHI", "MAF", "SSA", "SIS"])
 
-    # ---------------------------------------------
-    # Create components
-    # ---------------------------------------------
-    addcomponent(m, scenariouncertainty, :scenariouncertainty)
-    addcomponent(m, population, :population)
-    addcomponent(m, geography, :geography)
-    addcomponent(m, socioeconomic, :socioeconomic)
-    addcomponent(m, emissions, :emissions)
-    addcomponent(m, climateco2cycle, :climateco2cycle)
-    addcomponent(m, climatech4cycle, :climatech4cycle)
-    addcomponent(m, climaten2ocycle, :climaten2ocycle)
-    addcomponent(m, climatesf6cycle, :climatesf6cycle)
-    addcomponent(m, climateforcing, :climateforcing)
-    addcomponent(m, climatedynamics, :climatedynamics)
-    addcomponent(m, biodiversity, :biodiversity)
-    addcomponent(m, climateregional, :climateregional)
-    addcomponent(m, ocean, :ocean)
-    addcomponent(m, impactagriculture, :impactagriculture)
-    addcomponent(m, impactbiodiversity, :impactbiodiversity)
-    addcomponent(m, impactcardiovascularrespiratory, :impactcardiovascularrespiratory)
-    addcomponent(m, impactcooling, :impactcooling)
-    addcomponent(m, impactdiarrhoea, :impactdiarrhoea)
-    addcomponent(m, impactextratropicalstorms, :impactextratropicalstorms)
-    addcomponent(m, impactforests, :impactforests)
-    addcomponent(m, impactheating, :impactheating)
-    addcomponent(m, impactvectorbornediseases, :impactvectorbornediseases)
-    addcomponent(m, impacttropicalstorms, :impacttropicalstorms)
-    addcomponent(m, vslvmorb, :vslvmorb)
-    addcomponent(m, impactdeathmorbidity, :impactdeathmorbidity)
-    addcomponent(m, impactwaterresources, :impactwaterresources)
-    addcomponent(m, impactsealevelrise, :impactsealevelrise)
-    addcomponent(m, impactaggregation, :impactaggregation)
+const global default_nsteps = 1050
+const global default_datadir = joinpath(dirname(@__FILE__), "..", "data")
+const global default_params = nothing
+  
+function getfund(; nsteps = default_nsteps, datadir = default_datadir, params = default_params)
 
-    # ---------------------------------------------
-    # Connect parameters to variables
-    # ---------------------------------------------
-
-    connectparameter(m, :geography, :landloss, :impactsealevelrise, :landloss)
-
-    connectparameter(m, :population, :pgrowth, :scenariouncertainty, :pgrowth)
-    connectparameter(m, :population, :enter, :impactsealevelrise, :enter)
-    connectparameter(m, :population, :leave, :impactsealevelrise, :leave)
-    connectparameter(m, :population, :dead, :impactdeathmorbidity, :dead)
-
-    connectparameter(m, :socioeconomic, :area, :geography, :area)
-    connectparameter(m, :socioeconomic, :globalpopulation, :population, :globalpopulation)
-    connectparameter(m, :socioeconomic, :populationin1, :population, :populationin1)
-    connectparameter(m, :socioeconomic, :population, :population, :population)
-    connectparameter(m, :socioeconomic, :pgrowth, :scenariouncertainty, :pgrowth)
-    connectparameter(m, :socioeconomic, :ypcgrowth, :scenariouncertainty, :ypcgrowth)
-
-    connectparameter(m, :socioeconomic, :eloss, :impactaggregation, :eloss)
-    connectparameter(m, :socioeconomic, :sloss, :impactaggregation, :sloss)
-    connectparameter(m, :socioeconomic, :mitigationcost, :emissions, :mitigationcost)
-
-    connectparameter(m, :emissions, :income, :socioeconomic, :income)
-    connectparameter(m, :emissions, :population, :population, :population)
-    connectparameter(m, :emissions, :forestemm, :scenariouncertainty, :forestemm)
-    connectparameter(m, :emissions, :aeei, :scenariouncertainty, :aeei)
-    connectparameter(m, :emissions, :acei, :scenariouncertainty, :acei)
-    connectparameter(m, :emissions, :ypcgrowth, :scenariouncertainty, :ypcgrowth)
-
-    connectparameter(m, :climateco2cycle, :mco2, :emissions, :mco2)
-
-    connectparameter(m, :climatech4cycle, :globch4, :emissions, :globch4)
-
-    connectparameter(m, :climaten2ocycle, :globn2o, :emissions, :globn2o)
-    connectparameter(m, :climateco2cycle, :temp, :climatedynamics, :temp)
-
-    connectparameter(m, :climatesf6cycle, :globsf6, :emissions, :globsf6)
-
-    connectparameter(m, :climateforcing, :acco2, :climateco2cycle, :acco2)
-    connectparameter(m, :climateforcing, :acch4, :climatech4cycle, :acch4)
-    connectparameter(m, :climateforcing, :acn2o, :climaten2ocycle, :acn2o)
-    connectparameter(m, :climateforcing, :acsf6, :climatesf6cycle, :acsf6)
-
-    connectparameter(m, :climatedynamics, :radforc, :climateforcing, :radforc)
-
-    connectparameter(m, :climateregional, :inputtemp, :climatedynamics, :temp)
-
-    connectparameter(m, :biodiversity, :temp, :climatedynamics, :temp)
-
-    connectparameter(m, :ocean, :temp, :climatedynamics, :temp)
-
-    connectparameter(m, :impactagriculture, :population, :population, :population)
-    connectparameter(m, :impactagriculture, :income, :socioeconomic, :income)
-    connectparameter(m, :impactagriculture, :temp, :climateregional, :temp)
-    connectparameter(m, :impactagriculture, :acco2, :climateco2cycle, :acco2)
-
-    connectparameter(m, :impactbiodiversity, :temp, :climateregional, :temp)
-    connectparameter(m, :impactbiodiversity, :nospecies, :biodiversity, :nospecies)
-    connectparameter(m, :impactbiodiversity, :income, :socioeconomic, :income)
-    connectparameter(m, :impactbiodiversity, :population, :population, :population)
-
-    connectparameter(m, :impactcardiovascularrespiratory, :population, :population, :population)
-    connectparameter(m, :impactcardiovascularrespiratory, :temp, :climateregional, :temp)
-    connectparameter(m, :impactcardiovascularrespiratory, :plus, :socioeconomic, :plus)
-    connectparameter(m, :impactcardiovascularrespiratory, :urbpop, :socioeconomic, :urbpop)
-
-    connectparameter(m, :impactcooling, :population, :population, :population)
-    connectparameter(m, :impactcooling, :income, :socioeconomic, :income)
-    connectparameter(m, :impactcooling, :temp, :climateregional, :temp)
-    connectparameter(m, :impactcooling, :cumaeei, :emissions, :cumaeei)
-
-    connectparameter(m, :impactdiarrhoea, :population, :population, :population)
-    connectparameter(m, :impactdiarrhoea, :income, :socioeconomic, :income)
-    connectparameter(m, :impactdiarrhoea, :regtmp, :climateregional, :regtmp)
-
-    connectparameter(m, :impactextratropicalstorms, :population, :population, :population)
-    connectparameter(m, :impactextratropicalstorms, :income, :socioeconomic, :income)
-    connectparameter(m, :impactextratropicalstorms, :acco2, :climateco2cycle, :acco2)
-
-    connectparameter(m, :impactforests, :population, :population, :population)
-    connectparameter(m, :impactforests, :income, :socioeconomic, :income)
-    connectparameter(m, :impactforests, :temp, :climateregional, :temp)
-    connectparameter(m, :impactforests, :acco2, :climateco2cycle, :acco2)
-
-    connectparameter(m, :impactheating, :population, :population, :population)
-    connectparameter(m, :impactheating, :income, :socioeconomic, :income)
-    connectparameter(m, :impactheating, :temp, :climateregional, :temp)
-    connectparameter(m, :impactheating, :cumaeei, :emissions, :cumaeei)
-
-    connectparameter(m, :impactvectorbornediseases, :population, :population, :population)
-    connectparameter(m, :impactvectorbornediseases, :income, :socioeconomic, :income)
-    connectparameter(m, :impactvectorbornediseases, :temp, :climateregional, :temp)
-
-    connectparameter(m, :impacttropicalstorms, :population, :population, :population)
-    connectparameter(m, :impacttropicalstorms, :income, :socioeconomic, :income)
-    connectparameter(m, :impacttropicalstorms, :regstmp, :climateregional, :regstmp)
-
-    connectparameter(m, :vslvmorb, :population, :population, :population)
-    connectparameter(m, :vslvmorb, :income, :socioeconomic, :income)
-
-    connectparameter(m, :impactdeathmorbidity, :vsl, :vslvmorb, :vsl)
-    connectparameter(m, :impactdeathmorbidity, :vmorb, :vslvmorb, :vmorb)
-    connectparameter(m, :impactdeathmorbidity, :population, :population, :population)
-    connectparameter(m, :impactdeathmorbidity, :dengue, :impactvectorbornediseases, :dengue)
-    connectparameter(m, :impactdeathmorbidity, :schisto, :impactvectorbornediseases, :schisto)
-    connectparameter(m, :impactdeathmorbidity, :malaria, :impactvectorbornediseases, :malaria)
-    connectparameter(m, :impactdeathmorbidity, :cardheat, :impactcardiovascularrespiratory, :cardheat)
-    connectparameter(m, :impactdeathmorbidity, :cardcold, :impactcardiovascularrespiratory, :cardcold)
-    connectparameter(m, :impactdeathmorbidity, :resp, :impactcardiovascularrespiratory, :resp)
-    connectparameter(m, :impactdeathmorbidity, :diadead, :impactdiarrhoea, :diadead)
-    connectparameter(m, :impactdeathmorbidity, :hurrdead, :impacttropicalstorms, :hurrdead)
-    connectparameter(m, :impactdeathmorbidity, :extratropicalstormsdead, :impactextratropicalstorms, :extratropicalstormsdead)
-    connectparameter(m, :impactdeathmorbidity, :diasick, :impactdiarrhoea, :diasick)
-
-    connectparameter(m, :impactwaterresources, :population, :population, :population)
-    connectparameter(m, :impactwaterresources, :income, :socioeconomic, :income)
-    connectparameter(m, :impactwaterresources, :temp, :climateregional, :temp)
-
-    connectparameter(m, :impactsealevelrise, :population, :population, :population)
-    connectparameter(m, :impactsealevelrise, :income, :socioeconomic, :income)
-    connectparameter(m, :impactsealevelrise, :sea, :ocean, :sea)
-    connectparameter(m, :impactsealevelrise, :area, :geography, :area)
-
-    connectparameter(m, :impactaggregation, :income, :socioeconomic, :income)
-    connectparameter(m, :impactaggregation, :heating, :impactheating, :heating)
-    connectparameter(m, :impactaggregation, :cooling, :impactcooling, :cooling)
-    connectparameter(m, :impactaggregation, :agcost, :impactagriculture, :agcost)
-    connectparameter(m, :impactaggregation, :species, :impactbiodiversity, :species)
-    connectparameter(m, :impactaggregation, :water, :impactwaterresources, :water)
-    connectparameter(m, :impactaggregation, :hurrdam, :impacttropicalstorms, :hurrdam)
-    connectparameter(m, :impactaggregation, :extratropicalstormsdam, :impactextratropicalstorms, :extratropicalstormsdam)
-    connectparameter(m, :impactaggregation, :forests, :impactforests, :forests)
-    connectparameter(m, :impactaggregation, :drycost, :impactsealevelrise, :drycost)
-    connectparameter(m, :impactaggregation, :protcost, :impactsealevelrise, :protcost)
-    connectparameter(m, :impactaggregation, :entercost, :impactsealevelrise, :entercost)
-    connectparameter(m, :impactaggregation, :deadcost, :impactdeathmorbidity, :deadcost)
-    connectparameter(m, :impactaggregation, :morbcost, :impactdeathmorbidity, :morbcost)
-    connectparameter(m, :impactaggregation, :wetcost, :impactsealevelrise, :wetcost)
-    connectparameter(m, :impactaggregation, :leavecost, :impactsealevelrise, :leavecost)
-
-    return m
-end
-
-function getfund(;nsteps=1050, datadir=joinpath(dirname(@__FILE__), "..", "data"), params=nothing)
     # ---------------------------------------------
     # Load parameters
     # ---------------------------------------------
-    if params==nothing
+
+    if params == nothing
         parameters = loadparameters(datadir)
     else
         parameters = params
     end
 
     # ---------------------------------------------
-    # Construct model
+    # Create model
     # ---------------------------------------------
-    m = constructfund(nsteps=nsteps)
+
+    m = Model()
 
     # ---------------------------------------------
-    # Load remaining parameters from file
+    # Set dimensions
     # ---------------------------------------------
-    setleftoverparameters(m, parameters)
+
+    set_dimension!(m, :time, collect(1950:1950+nsteps))
+    set_dimension!(m, :regions, ["USA", "CAN", "WEU", "JPK", "ANZ", "EEU", "FSU", "MDE", "CAM", "LAM", "SAS", "SEA", "CHI", "MAF", "SSA", "SIS"])
+    set_dimension!(m, :cpools, 1:5)
+    # ---------------------------------------------
+    # Create components
+    # ---------------------------------------------
+
+    add_comp!(m, scenariouncertainty)
+    add_comp!(m, population)
+    add_comp!(m, geography)
+    add_comp!(m, socioeconomic)
+    add_comp!(m, emissions)
+    add_comp!(m, climateco2cycle)
+    add_comp!(m, climatech4cycle)
+    add_comp!(m, climaten2ocycle)
+    add_comp!(m, climatesf6cycle)
+    add_comp!(m, climateforcing)
+    add_comp!(m, climatedynamics)
+    add_comp!(m, biodiversity)
+    add_comp!(m, climateregional)
+    add_comp!(m, ocean)
+    add_comp!(m, impactagriculture)
+    add_comp!(m, impactbiodiversity)
+    add_comp!(m, impactcardiovascularrespiratory)
+    add_comp!(m, impactcooling)
+    add_comp!(m, impactdiarrhoea)
+    add_comp!(m, impactextratropicalstorms)
+    add_comp!(m, impactforests)
+    add_comp!(m, impactheating)
+    add_comp!(m, impactvectorbornediseases)
+    add_comp!(m, impacttropicalstorms)
+    add_comp!(m, vslvmorb)
+    add_comp!(m, impactdeathmorbidity)
+    add_comp!(m, impactwaterresources)
+    add_comp!(m, impactsealevelrise)
+    add_comp!(m, impactaggregation)
 
     # ---------------------------------------------
-    # Return model
+    # Connect parameters to variables
     # ---------------------------------------------
+
+    connect_param!(m, :geography, :landloss, :impactsealevelrise, :landloss)
+
+    connect_param!(m, :population, :pgrowth, :scenariouncertainty, :pgrowth)
+    connect_param!(m, :population, :enter, :impactsealevelrise, :enter)
+    connect_param!(m, :population, :leave, :impactsealevelrise, :leave)
+    connect_param!(m, :population, :dead, :impactdeathmorbidity, :dead)
+
+    connect_param!(m, :socioeconomic, :area, :geography, :area)
+    connect_param!(m, :socioeconomic, :globalpopulation, :population, :globalpopulation)
+    connect_param!(m, :socioeconomic, :populationin1, :population, :populationin1)
+    connect_param!(m, :socioeconomic, :population, :population, :population)
+    connect_param!(m, :socioeconomic, :pgrowth, :scenariouncertainty, :pgrowth)
+    connect_param!(m, :socioeconomic, :ypcgrowth, :scenariouncertainty, :ypcgrowth)
+    connect_param!(m, :socioeconomic, :eloss, :impactaggregation, :eloss)
+    connect_param!(m, :socioeconomic, :sloss, :impactaggregation, :sloss)
+    connect_param!(m, :socioeconomic, :mitigationcost, :emissions, :mitigationcost)
+
+    connect_param!(m, :emissions, :income, :socioeconomic, :income)
+    connect_param!(m, :emissions, :population, :population, :population)
+    connect_param!(m, :emissions, :forestemm, :scenariouncertainty, :forestemm)
+    connect_param!(m, :emissions, :aeei, :scenariouncertainty, :aeei)
+    connect_param!(m, :emissions, :acei, :scenariouncertainty, :acei)
+    connect_param!(m, :emissions, :ypcgrowth, :scenariouncertainty, :ypcgrowth)
+
+    connect_param!(m, :climateco2cycle, :mco2, :emissions, :mco2)
+
+    connect_param!(m, :climatech4cycle, :globch4, :emissions, :globch4)
+
+    connect_param!(m, :climaten2ocycle, :globn2o, :emissions, :globn2o)
+
+    connect_param!(m, :climateco2cycle, :temp, :climatedynamics, :temp)
+
+    connect_param!(m, :climatesf6cycle, :globsf6, :emissions, :globsf6)
+
+    connect_param!(m, :climateforcing, :acco2, :climateco2cycle, :acco2)
+    connect_param!(m, :climateforcing, :acch4, :climatech4cycle, :acch4)
+    connect_param!(m, :climateforcing, :acn2o, :climaten2ocycle, :acn2o)
+    connect_param!(m, :climateforcing, :acsf6, :climatesf6cycle, :acsf6)
+
+    connect_param!(m, :climatedynamics, :radforc, :climateforcing, :radforc)
+
+    connect_param!(m, :climateregional, :inputtemp, :climatedynamics, :temp)
+
+    connect_param!(m, :biodiversity, :temp, :climatedynamics, :temp)
+
+    connect_param!(m, :ocean, :temp, :climatedynamics, :temp)
+
+    connect_param!(m, :impactagriculture, :population, :population, :population)
+    connect_param!(m, :impactagriculture, :income, :socioeconomic, :income)
+    connect_param!(m, :impactagriculture, :temp, :climateregional, :temp)
+    connect_param!(m, :impactagriculture, :acco2, :climateco2cycle, :acco2)
+
+    connect_param!(m, :impactbiodiversity, :temp, :climateregional, :temp)
+    connect_param!(m, :impactbiodiversity, :nospecies, :biodiversity, :nospecies)
+    connect_param!(m, :impactbiodiversity, :income, :socioeconomic, :income)
+    connect_param!(m, :impactbiodiversity, :population, :population, :population)
+
+    connect_param!(m, :impactcardiovascularrespiratory, :population, :population, :population)
+    connect_param!(m, :impactcardiovascularrespiratory, :temp, :climateregional, :temp)
+    connect_param!(m, :impactcardiovascularrespiratory, :plus, :socioeconomic, :plus)
+    connect_param!(m, :impactcardiovascularrespiratory, :urbpop, :socioeconomic, :urbpop)
+
+    connect_param!(m, :impactcooling, :population, :population, :population)
+    connect_param!(m, :impactcooling, :income, :socioeconomic, :income)
+    connect_param!(m, :impactcooling, :temp, :climateregional, :temp)
+    connect_param!(m, :impactcooling, :cumaeei, :emissions, :cumaeei)
+
+    connect_param!(m, :impactdiarrhoea, :population, :population, :population)
+    connect_param!(m, :impactdiarrhoea, :income, :socioeconomic, :income)
+    connect_param!(m, :impactdiarrhoea, :regtmp, :climateregional, :regtmp)
+
+    connect_param!(m, :impactextratropicalstorms, :population, :population, :population)
+    connect_param!(m, :impactextratropicalstorms, :income, :socioeconomic, :income)
+    connect_param!(m, :impactextratropicalstorms, :acco2, :climateco2cycle, :acco2)
+
+    connect_param!(m, :impactforests, :population, :population, :population)
+    connect_param!(m, :impactforests, :income, :socioeconomic, :income)
+    connect_param!(m, :impactforests, :temp, :climateregional, :temp)
+    connect_param!(m, :impactforests, :acco2, :climateco2cycle, :acco2)
+
+    connect_param!(m, :impactheating, :population, :population, :population)
+    connect_param!(m, :impactheating, :income, :socioeconomic, :income)
+    connect_param!(m, :impactheating, :temp, :climateregional, :temp)
+    connect_param!(m, :impactheating, :cumaeei, :emissions, :cumaeei)
+
+    connect_param!(m, :impactvectorbornediseases, :population, :population, :population)
+    connect_param!(m, :impactvectorbornediseases, :income, :socioeconomic, :income)
+    connect_param!(m, :impactvectorbornediseases, :temp, :climateregional, :temp)
+
+    connect_param!(m, :impacttropicalstorms, :population, :population, :population)
+    connect_param!(m, :impacttropicalstorms, :income, :socioeconomic, :income)
+    connect_param!(m, :impacttropicalstorms, :regstmp, :climateregional, :regstmp)
+
+    connect_param!(m, :vslvmorb, :population, :population, :population)
+    connect_param!(m, :vslvmorb, :income, :socioeconomic, :income)
+
+    connect_param!(m, :impactdeathmorbidity, :vsl, :vslvmorb, :vsl)
+    connect_param!(m, :impactdeathmorbidity, :vmorb, :vslvmorb, :vmorb)
+    connect_param!(m, :impactdeathmorbidity, :population, :population, :population)
+    connect_param!(m, :impactdeathmorbidity, :dengue, :impactvectorbornediseases, :dengue)
+    connect_param!(m, :impactdeathmorbidity, :schisto, :impactvectorbornediseases, :schisto)
+    connect_param!(m, :impactdeathmorbidity, :malaria, :impactvectorbornediseases, :malaria)
+    connect_param!(m, :impactdeathmorbidity, :cardheat, :impactcardiovascularrespiratory, :cardheat)
+    connect_param!(m, :impactdeathmorbidity, :cardcold, :impactcardiovascularrespiratory, :cardcold)
+    connect_param!(m, :impactdeathmorbidity, :resp, :impactcardiovascularrespiratory, :resp)
+    connect_param!(m, :impactdeathmorbidity, :diadead, :impactdiarrhoea, :diadead)
+    connect_param!(m, :impactdeathmorbidity, :hurrdead, :impacttropicalstorms, :hurrdead)
+    connect_param!(m, :impactdeathmorbidity, :extratropicalstormsdead, :impactextratropicalstorms, :extratropicalstormsdead)
+    connect_param!(m, :impactdeathmorbidity, :diasick, :impactdiarrhoea, :diasick)
+
+    connect_param!(m, :impactwaterresources, :population, :population, :population)
+    connect_param!(m, :impactwaterresources, :income, :socioeconomic, :income)
+    connect_param!(m, :impactwaterresources, :temp, :climateregional, :temp)
+
+    connect_param!(m, :impactsealevelrise, :population, :population, :population)
+    connect_param!(m, :impactsealevelrise, :income, :socioeconomic, :income)
+    connect_param!(m, :impactsealevelrise, :sea, :ocean, :sea)
+    connect_param!(m, :impactsealevelrise, :area, :geography, :area)
+
+    connect_param!(m, :impactaggregation, :income, :socioeconomic, :income)
+    connect_param!(m, :impactaggregation, :heating, :impactheating, :heating)
+    connect_param!(m, :impactaggregation, :cooling, :impactcooling, :cooling)
+    connect_param!(m, :impactaggregation, :agcost, :impactagriculture, :agcost)
+    connect_param!(m, :impactaggregation, :species, :impactbiodiversity, :species)
+    connect_param!(m, :impactaggregation, :water, :impactwaterresources, :water)
+    connect_param!(m, :impactaggregation, :hurrdam, :impacttropicalstorms, :hurrdam)
+    connect_param!(m, :impactaggregation, :extratropicalstormsdam, :impactextratropicalstorms, :extratropicalstormsdam)
+    connect_param!(m, :impactaggregation, :forests, :impactforests, :forests)
+    connect_param!(m, :impactaggregation, :drycost, :impactsealevelrise, :drycost)
+    connect_param!(m, :impactaggregation, :protcost, :impactsealevelrise, :protcost)
+    connect_param!(m, :impactaggregation, :entercost, :impactsealevelrise, :entercost)
+    connect_param!(m, :impactaggregation, :deadcost, :impactdeathmorbidity, :deadcost)
+    connect_param!(m, :impactaggregation, :morbcost, :impactdeathmorbidity, :morbcost)
+    connect_param!(m, :impactaggregation, :wetcost, :impactsealevelrise, :wetcost)
+    connect_param!(m, :impactaggregation, :leavecost, :impactsealevelrise, :leavecost)
+
+    # ---------------------------------------------
+    # Set leftover parameters
+    # ---------------------------------------------
+
+    set_leftover_params!(m, parameters)
 
     return m
-end
+
+end 
+
+end #module

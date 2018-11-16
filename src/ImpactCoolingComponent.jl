@@ -12,25 +12,22 @@
     pop90 = Parameter(index=[regions])
 
     income = Parameter(index=[time,regions])
-    ceel = Parameter()
+    ceel = Parameter(default = 0.8)
 
     temp = Parameter(index=[time,regions])
-    cenl = Parameter()
+    cenl = Parameter(default = 1.5)
 
     cumaeei = Parameter(index=[time,regions])
-end
 
-function run_timestep(s::impactcooling, t::Int)
-    v = s.Variables
-    p = s.Parameters
-    d = s.Dimensions
+    function run_timestep(p, v, d, t)
 
-    if t>1
-        for r in d.regions
-            ypc = p.income[t, r] / p.population[t, r] * 1000.0
-            ypc90 = p.gdp90[r] / p.pop90[r] * 1000.0
+        if !is_first(t)
+            for r in d.regions
+                ypc = p.income[t, r] / p.population[t, r] * 1000.0
+                ypc90 = p.gdp90[r] / p.pop90[r] * 1000.0
 
-            v.cooling[t, r] = p.cebm[r] * p.cumaeei[t, r] * p.gdp90[r] * (p.temp[t, r] / 1.0)^p.cenl * (ypc / ypc90)^p.ceel * p.population[t, r] / p.pop90[r]
+                v.cooling[t, r] = p.cebm[r] * p.cumaeei[t, r] * p.gdp90[r] * (p.temp[t, r] / 1.0)^p.cenl * (ypc / ypc90)^p.ceel * p.population[t, r] / p.pop90[r]
+            end
         end
     end
 end

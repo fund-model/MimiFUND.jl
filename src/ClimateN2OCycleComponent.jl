@@ -11,27 +11,24 @@
     n2odecay = Variable()
 
     #
-    lifen2o = Parameter()
+    lifen2o = Parameter(default = 114.0)
 
     # N2o pre industrial
-    n2opre = Parameter()
-end
+    n2opre = Parameter(default = 285.0)
 
-function run_timestep(s::climaten2ocycle, t::Int)
-    v = s.Variables
-    p = s.Parameters
-    d = s.Dimensions
+    function run_timestep(p, v, d, t)
 
-    if t==1
-        v.n2odecay = 1.0 / p.lifen2o
+        if is_first(t)
+            v.n2odecay = 1.0 / p.lifen2o
 
-        v.acn2o[t] = 296
-    else
-        # Calculate N2O concentrations
-        v.acn2o[t] = v.acn2o[t - 1] + 0.2079 * p.globn2o[t] - v.n2odecay * (v.acn2o[t - 1] - p.n2opre)
+            v.acn2o[t] = 296
+        else
+            # Calculate N2O concentrations
+            v.acn2o[t] = v.acn2o[t - 1] + 0.2079 * p.globn2o[t] - v.n2odecay * (v.acn2o[t - 1] - p.n2opre)
 
-        if v.acn2o[t] < 0
-            error("n2o atmospheric concentration out of range")
+            if v.acn2o[t] < 0
+                error("n2o atmospheric concentration out of range")
+            end
         end
     end
 end

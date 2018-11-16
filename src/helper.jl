@@ -3,7 +3,7 @@ using Distributions
 function loadparameters(datadir=joinpath(dirname(@__FILE__), "..", "data"))
     files = readdir(datadir)
     filter!(i->i!="desktop.ini", files)
-    parameters = Dict{Any, Any}(lowercase(splitext(file)[1]) => readdlm(joinpath(datadir,file), ',') for file in files)
+    parameters = Dict{Any, Any}(splitext(file)[1] => readdlm(joinpath(datadir,file), ',') for file in files)
 
     prepparameters!(parameters)
 

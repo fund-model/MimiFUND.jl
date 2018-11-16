@@ -5,34 +5,31 @@
     nospecies = Variable(index=[time])
 
     # additive parameter
-    bioloss = Parameter()
+    bioloss = Parameter(default = 0.003)
 
     # multiplicative parameter
-    biosens = Parameter()
+    biosens = Parameter(default = 0.001)
 
     # Temperature
     temp = Parameter(index=[time])
 
     # benchmark temperature change
-    dbsta = Parameter()
+    dbsta = Parameter(default = 0.025)
 
     # Number of species in the year 2000
-    nospecbase = Parameter()
-end
+    nospecbase = Parameter(default = 1.4e7)
 
-function run_timestep(s::biodiversity, t::Int)
-    v = s.Variables
-    p = s.Parameters
-    d = s.Dimensions
+    function run_timestep(p, v, d, t)
+        
+        if gettime(t) > 2000
+            dt = abs(p.temp[t] - p.temp[t - 1])
 
-    if t > getindexfromyear(2000)
-        dt = abs(p.temp[t] - p.temp[t - 1])
-
-        v.nospecies[t] = max(
-          p.nospecbase / 100,
-          v.nospecies[t - 1] * (1.0 - p.bioloss - p.biosens * dt * dt / p.dbsta / p.dbsta)
-          )
-    else
-        v.nospecies[t] = p.nospecbase
+            v.nospecies[t] = max(
+            p.nospecbase / 100,
+            v.nospecies[t - 1] * (1.0 - p.bioloss - p.biosens * dt * dt / p.dbsta / p.dbsta)
+            )
+        else
+            v.nospecies[t] = p.nospecbase
+        end
     end
 end

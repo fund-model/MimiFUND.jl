@@ -9,26 +9,23 @@ using Mimi
     population = Parameter(index=[time,regions])
     income = Parameter(index=[time,regions])
 
-    vslbm = Parameter()
-    vslel = Parameter()
-    vmorbbm = Parameter()
-    vmorbel = Parameter()
-    vslypc0 = Parameter()
-    vmorbypc0 = Parameter()
-end
+    vslbm       = Parameter(default = 4.99252262888626e6)
+    vslel       = Parameter(default = 1)
+    vmorbbm     = Parameter(default = 19970.090515545)
+    vmorbel     = Parameter(default = 1)
+    vslypc0     = Parameter(default = 24962.6131444313)
+    vmorbypc0   = Parameter(default = 24962.6131444313)
 
-function run_timestep(s::vslvmorb, t::Int)
-    v = s.Variables
-    p = s.Parameters
-    d = s.Dimensions
+    function run_timestep(p, v, d, t)
 
-    if t>1
-        for r in d.regions
-            ypc = p.income[t, r] / p.population[t, r] * 1000.0
+        if !is_first(t)
+            for r in d.regions
+                ypc = p.income[t, r] / p.population[t, r] * 1000.0
 
-            v.vsl[t, r] = p.vslbm * (ypc / p.vslypc0)^p.vslel
+                v.vsl[t, r] = p.vslbm * (ypc / p.vslypc0)^p.vslel
 
-            v.vmorb[t, r] = p.vmorbbm * (ypc / p.vmorbypc0)^p.vmorbel
+                v.vmorb[t, r] = p.vmorbbm * (ypc / p.vmorbypc0)^p.vmorbel
+            end
         end
     end
 end

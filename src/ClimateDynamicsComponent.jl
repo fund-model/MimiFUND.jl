@@ -7,36 +7,33 @@
     # Average global temperature
     temp = Variable(index=[time])
 
-    # LifeTempConst
-    LifeTempConst = Parameter()
+    # lifetempconst
+    lifetempconst = Parameter()
 
-    # LifeTempLin
-    LifeTempLin = Parameter()
+    # lifetemplin
+    lifetemplin = Parameter()
 
-    # LifeTempQd
-    LifeTempQd = Parameter()
+    # lifetempqd
+    lifetempqd = Parameter()
 
     # Climate sensitivity
-    ClimateSensitivity = Parameter()
-end
+    climatesensitivity = Parameter(default = 2.999999803762826)
 
-function run_timestep(s::climatedynamics, t::Int)
-    v = s.Variables
-    p = s.Parameters
-    d = s.Dimensions
+    function run_timestep(p, v, d, t)
+        
+        if is_first(t)
+            v.temp[t] = 0.20
+        else
+            LifeTemp = max(p.lifetempconst + p.lifetemplin * p.climatesensitivity + p.lifetempqd * p.climatesensitivity^2.0, 1.0)
 
-    if t==1
-        v.temp[t] = 0.20
-    else
-        LifeTemp = max(p.LifeTempConst + p.LifeTempLin * p.ClimateSensitivity + p.LifeTempQd * p.ClimateSensitivity^2.0, 1.0)
+            delaytemp = 1.0 / LifeTemp
 
-        delaytemp = 1.0 / LifeTemp
+            temps = p.climatesensitivity / 5.35 / log(2.0)
 
-        temps = p.ClimateSensitivity / 5.35 / log(2.0)
+            # Calculate temperature
+            dtemp = delaytemp * temps * p.radforc[t] - delaytemp * v.temp[t - 1]
 
-        # Calculate temperature
-        dtemp = delaytemp * temps * p.radforc[t] - delaytemp * v.temp[t - 1]
-
-        v.temp[t] = v.temp[t - 1] + dtemp
+            v.temp[t] = v.temp[t - 1] + dtemp
+        end
     end
 end

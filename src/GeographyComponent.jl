@@ -7,20 +7,17 @@
 
     landloss = Parameter(index=[time,regions])
     area0 = Parameter(index=[regions])
-end
 
-function run_timestep(s::geography, t::Int)
-    v = s.Variables
-    p = s.Parameters
-    d = s.Dimensions
+    function run_timestep(p, v, d, t);
 
-    if t==1
-        for r in d.regions
-            v.area[t, r] = p.area0[r]
-        end
-    else
-        for r in d.regions
-            v.area[t, r] = v.area[t - 1, r] - p.landloss[t - 1, r]
+        if is_first(t)
+            for r in d.regions
+                v.area[t, r] = p.area0[r]
+            end
+        else
+            for r in d.regions
+                v.area[t, r] = v.area[t - 1, r] - p.landloss[t - 1, r]
+            end
         end
     end
 end
