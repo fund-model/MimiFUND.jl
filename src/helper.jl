@@ -3,7 +3,7 @@ using Distributions
 function loadparameters(datadir=joinpath(dirname(@__FILE__), "..", "data"))
     files = readdir(datadir)
     filter!(i->i!="desktop.ini", files)
-    parameters = Dict{Any, Any}(splitext(file)[1] => readdlm(joinpath(datadir,file), ',') for file in files)
+    parameters = Dict{Any, Any}(splitext(file)[1] => readdlm(joinpath(datadir,file), ',', comments = true) for file in files)
 
     prepparameters!(parameters)
 
@@ -16,18 +16,18 @@ function mode(d::Truncated{Gamma{Float64},Continuous})
 end
 
 function getindexfromyear(year)
-    const baseyear = 1950
+    baseyear = 1950
     return year - baseyear + 1
 end
 
 function convertparametervalue(pv)
     if isa(pv,AbstractString)
         if startswith(pv,"~") & endswith(pv,")")
-            args_start_index = search(pv,'(')
+            args_start_index = something(findfirst(isequal('('), pv), 0) 
             dist_name = pv[2:args_start_index-1]
             args = split(pv[args_start_index+1:end-1], ';')
-            fixedargs = filter(i->!contains(i,"="),args)
-            optargs = Dict(split(i,'=')[1]=>split(i,'=')[2] for i in filter(i->contains(i,"="),args))
+            fixedargs = filter(i->!occursin("=", i),args)
+            optargs = Dict(split(i,'=')[1]=>split(i,'=')[2] for i in filter(i->occursin("=", i),args))
 
             if dist_name == "N"
                 if length(fixedargs)!=2 error() end
@@ -99,7 +99,7 @@ function prepparameters!(parameters)
         elseif column_count == 3
             length_index1 = length(unique(p[:,1]))
             length_index2 = length(unique(p[:,2]))
-            new_p = Array{Float64}(length_index1,length_index2)
+            new_p = Array{Float64}(undef, length_index1,length_index2)
             cur_1 = 1
             cur_2 = 1
             for j in 1:size(p,1)
