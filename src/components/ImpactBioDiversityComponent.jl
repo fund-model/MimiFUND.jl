@@ -15,7 +15,7 @@
     temp = Parameter(index=[time,regions])
     income = Parameter(index=[time,regions])
     population = Parameter(index=[time,regions])
-    valinc = Parameter(index=[regions], default = [30000.0, 30000.0, 30000.0, 30000.0, 30000.0, 30000.0, 30000.0, 30000.0, 30000.0, 30000.0, 30000.0, 30000.0, 30000.0, 30000.0, 30000.0, 30000.0])
+    valinc = Parameter(index=[regions])
     bioshare = Parameter(default = 0.05)
     spbm = Parameter(default = 50.)
     valbase = Parameter(default = 24401)

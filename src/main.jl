@@ -1,8 +1,9 @@
 using Mimi
 
 include("fund.jl")
-using fund
+using Fund
 
-m = run(FUND)
+m = getfund()
+run(m)
 
-explore(FUND)
+explore(m)

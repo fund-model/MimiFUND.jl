@@ -7,15 +7,15 @@
     schisto = Variable(index=[time,regions])
     malaria = Variable(index=[time,regions])
 
-    dfbs = Parameter(index=[regions], default = [0.0, 0.0, 0.0, 0.125, 0.0, 0.0, 0.0, 0.286, 0.508, 0.541, 6.896, 2.072, 0.593, 1.089, 0.351, 1.01])
-    dfch = Parameter(index=[regions], default = [0.3534, 0.3534, 0.3534, 0.3534, 0.3534, 0.3534, 0.3534, 0.3534, 0.3534, 0.3534, 0.3534, 0.3534, 0.3534, 0.3534, 0.3534, 0.3534])
-    smbs = Parameter(index=[regions], default = [0.007, 0.007, 0.02, 0.423, 0.037, 0.012, 0.003, 4.229, 1.235, 1.217, 0.898, 0.629, 1.43, 7.474, 8.275, 1.296])
-    smch = Parameter(index=[regions], default = [-0.1149, -0.1149, -0.1149, -0.1149, -0.1149, -0.1149, -0.1149, -0.1149, -0.1149, -0.1149, -0.1149, -0.1149, -0.1149, -0.1149, -0.1149, -0.1149])
-    malbs = Parameter(index=[regions], default = [0.023, 0.023, 0.24, 2.358, 0.069, 0.377, 0.133, 24.113, 2.913, 3.09, 48.413, 22.129, 8.987, 458.133, 1414.284, 116.586])
-    malch = Parameter(index=[regions], default = [0.0794, 0.0794, 0.0794, 0.0794, 0.0794, 0.0794, 0.0794, 0.0794, 0.0794, 0.0794, 0.0794, 0.0794, 0.0794, 0.0794, 0.0794, 0.0794])
+    dfbs = Parameter(index=[regions])
+    dfch = Parameter(index=[regions])
+    smbs = Parameter(index=[regions])
+    smch = Parameter(index=[regions])
+    malbs = Parameter(index=[regions])
+    malch = Parameter(index=[regions])
 
-    gdp90 = Parameter(index=[regions], default = [6343.0, 532.5, 8285.4, 5100.7, 359.5, 338.1, 915.1, 447.3, 296.0, 1078.0, 351.5, 456.2, 511.4, 137.3, 275.1, 37.2])
-    pop90 = Parameter(index=[regions], default = [254.1, 27.8, 376.6, 166.4, 20.2, 124.3, 289.6, 189.2, 106.3, 300.2, 1131.7, 444.1, 1184.1, 117.8, 494.4, 39.9])
+    gdp90 = Parameter(index=[regions])
+    pop90 = Parameter(index=[regions])
 
     income = Parameter(index=[time,regions])
     population = Parameter(index=[time,regions])

@@ -141,13 +141,3 @@ function convertparametervalue(pv)
         return pv
     end
 end
-
-"""
-Clears all directories and files in the output folder.
-"""
-function _clearoutput()
-    rm(joinpath(@__DIR__, "../output"), recursive=true)
-    mkdir(joinpath(@__DIR__, "../output"))
-end 
-
-# Base.show(io::IO, x::Union{Float64,Float32}) = Base.Grisu._show(io, x, Base.Grisu.SHORTEST, 0, true, false)

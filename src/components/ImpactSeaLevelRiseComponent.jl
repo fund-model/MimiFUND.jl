@@ -41,20 +41,20 @@
     dvbm        = Parameter(default = 0.004)
     slrwvypc0   = Parameter(default = 25000)
 
-    pc          = Parameter(index=[regions], default = [95.3, 13.0, 153.9, 75.5, 36.6, 3.1, 54.0, 18.9, 42.3, 117.6, 172.0, 169.7, 118.4, 19.0, 84.3, 16.0])
-    slrprtp     = Parameter(index=[regions], default = [0.03, 0.03, 0.03, 0.03, 0.03, 0.03, 0.03, 0.03, 0.03, 0.03, 0.03, 0.03, 0.03, 0.03, 0.03, 0.03])
-    wmbm        = Parameter(index=[regions], default = [789.0, 0.0, 903.0, 7.0, 183.0, 0.0, 0.0, 0.0, 238.0, 4748.0, 0.0, 4.0, 1779.0, 0.0, 345.0, 169.0])
-    dlbm        = Parameter(index=[regions], default = [20000.0, 970.0, 4212.0, 2687.0, 3135.0, 1889.0, 15138.0, 1621.0, 12004.0, 29407.0, 81275.0, 157286.0, 35000.0, 8354.0, 126602.0, 1505.0])
-    drylandlossparam = Parameter(index=[regions], default = [0.583433160330257, 0.260515053189669, 0.273314149409615, 0.412066944374299, 0.548496484507909, 0.193491238230705, 0.555487676094765, 0.628422279667412, 0.678302864355753, 0.756134247750368, 0.929957316565567, 0.81223935947527, 0.707719142022655, 0.336949623686827, 0.798533208857799, 0.667255915065629])
-    wlbm        = Parameter(index=[regions], default = [11400.0, 0.0, 3210.0, 573.0, 256.0, 38.0, 0.0, 0.0, 14775.0, 27234.0, 14303.0, 50885.0, 5879.0, 2649.0, 27847.0, 1528.0])
-    coastpd     = Parameter(index=[regions], default = [1.04, 1.07, 4.48, 1.04, 1.27, 3.01, 0.75, 3.42, 0.69, 1.97, 2.31, 1.8, 4.46, 17.61, 9.69, 2.51])
-    wetmax      = Parameter(index=[regions], default = [31049.0, 0.0, 37202.0, 3763.0, 2511.0, 5.0, 0.0, 140.0, 54279.0, 278791.0, 65483.0, 289431.0, 19132.0, 7928.0, 92617.0, 5606.0])
-    wetland90   = Parameter(index=[regions], default = [42828.8, 130509.75, 95000.79, 4609.85, 55385.64, 11297.61, 118955.64, 16247.05, 76001.27, 394296.21, 74226.89, 299546.88, 31321.6, 9304.2, 236097.24, 6271.74])
-    maxlandloss = Parameter(index=[regions], default = [1.373498e6, 1.170585e6, 1.004586e6, 171553.0, 1.514759e6, 220274.0, 5.527204e6, 601498.0, 509083.0, 3.131627e6, 1.241785e6, 1.908853e6, 973897.0, 445413.0, 1.395419e6, 206778.0])
+    pc          = Parameter(index=[regions])
+    slrprtp     = Parameter(index=[regions])
+    wmbm        = Parameter(index=[regions])
+    dlbm        = Parameter(index=[regions])
+    drylandlossparam = Parameter(index=[regions])
+    wlbm        = Parameter(index=[regions])
+    coastpd     = Parameter(index=[regions])
+    wetmax      = Parameter(index=[regions])
+    wetland90   = Parameter(index=[regions])
+    maxlandloss = Parameter(index=[regions])
 
     sea = Parameter(index=[time])
 
-    migrate = Parameter(index=[regions,regions])    # has default, but too big to paster
+    migrate = Parameter(index=[regions,regions])
 
     income = Parameter(index=[time,regions])
     population = Parameter(index=[time,regions])

@@ -2,13 +2,11 @@ language: julia
 os:
   - linux
 julia:
-  - 0.5
+  - 0.6
 notifications:
   email: false
 before_install:
   - julia -e 'Pkg.add("Distributions")'
   - julia -e 'Pkg.add("Mimi")'
-  - julia -e 'Pkg.checkout("Mimi", "master")'
-
 script:
   - julia test/runtests.jl

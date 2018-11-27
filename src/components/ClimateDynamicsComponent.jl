@@ -8,13 +8,13 @@
     temp = Variable(index=[time])
 
     # lifetempconst
-    lifetempconst = Parameter(default = -42.7421952811)
+    lifetempconst = Parameter()
 
     # lifetemplin
-    lifetemplin = Parameter(default = 29.0603120788)
+    lifetemplin = Parameter()
 
     # lifetempqd
-    lifetempqd = Parameter(default = 0.0014564222822)
+    lifetempqd = Parameter()
 
     # Climate sensitivity
     climatesensitivity = Parameter(default = 2.999999803762826)
