@@ -9,7 +9,7 @@
     water = Variable(index=[time,regions])
     wrbm = Parameter(index=[regions])
     wrel = Parameter(default = 0.85)
-    wrnl = Parameter(default = 1.)
+    wrnl = Parameter(default = 1)
     wrpl = Parameter(default = 0.85)
 
     gdp90 = Parameter(index=[regions])

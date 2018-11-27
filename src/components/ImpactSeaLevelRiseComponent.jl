@@ -30,9 +30,9 @@
     imigrate = Variable(index=[regions,regions])
 
     incdens     = Parameter(default = 0.000635)
-    emcst       = Parameter(default = 3.)
+    emcst       = Parameter(default = 3)
     immcst      = Parameter(default = 0.4)
-    dvydl       = Parameter(default = 1.)
+    dvydl       = Parameter(default = 1)
     wvel        = Parameter(default = 1.16)
     wvbm        = Parameter(default = 0.00588)
     slrwvpopdens0 = Parameter(default = 27.5937717888728)

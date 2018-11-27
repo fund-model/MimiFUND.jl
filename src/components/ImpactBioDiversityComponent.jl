@@ -17,7 +17,7 @@
     population = Parameter(index=[time,regions])
     valinc = Parameter(index=[regions])
     bioshare = Parameter(default = 0.05)
-    spbm = Parameter(default = 50.)
+    spbm = Parameter(default = 50)
     valbase = Parameter(default = 24401)
     dbsta = Parameter(default = 0.025)
 

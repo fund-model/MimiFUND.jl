@@ -77,9 +77,9 @@
     taxdepreciation = Parameter(default = 0.1)
     maxcostfall = Parameter(default = 10)
 
-    ch4add = Parameter(default = 0.)
-    n2oadd = Parameter(default = 0.)
-    sf6add = Parameter(default = 0.)
+    ch4add = Parameter(default = 0)
+    n2oadd = Parameter(default = 0)
+    sf6add = Parameter(default = 0)
     
     function run_timestep(p, v, d, t)
 
