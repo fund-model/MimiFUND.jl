@@ -2,7 +2,8 @@ using DataStructures
 
 """
 This function loads the FUND input parameters stored in datadir into the syntax
-needed for the @defmcs macro. This script writes to a text file which can then be copied into a @defmcs macro.
+needed for the @defmcs macro. This script writes to a text file which can then 
+be copied into a @defmcs macro.
 """
 function load_mcs_RVs(; txt_out = joinpath(@__DIR__, "mcs_RVs.txt"), datadir = joinpath(@__DIR__, "../../data"), string_labels = false)
 
@@ -22,12 +23,12 @@ function load_mcs_RVs(; txt_out = joinpath(@__DIR__, "mcs_RVs.txt"), datadir = j
 end
 
 # Helper function for concatenating strings in loadparameter
-_cat(x,y)=string(x,", ",y)
+_concat(x,y)=string(x,", ",y)
 
 """
-Takes the contents of one file and turns it into the string needed for a definition within a @defmcs macro.
+Takes the contents of one parameter file and turns it into the string needed for a definition within a @defmcs macro.
 Input 'p' may be a scalar, a 1-D array (defined as two columns in long format), or a 2-D array (defined as three columns in long format).
-If p contains no distributional values, then this returns nothing.
+If p contains no distributional values, then this returns nothing, because it will not be a random variable for mcs.
 """
 function loadparameter(p, string_labels::Bool)
     column_count = size(p,2)
@@ -41,7 +42,7 @@ function loadparameter(p, string_labels::Bool)
                 string_labels ? push!(vals, "\"$(p[i,1])\" => $dist") : push!(vals, "$(p[i,1]) => $dist")
             end
         end
-        return isempty(vals) ? nothing : "[$(reduce(_cat, vals))]"
+        return isempty(vals) ? nothing : "[$(reduce(_concat, vals))]"
     elseif column_count == 3
         vals = []
         for i in 1:size(p, 1)
@@ -50,7 +51,7 @@ function loadparameter(p, string_labels::Bool)
                 string_labels ? push!(vals, "[\"$(p[i,1])\", \"$(p[i,2])\"] => $dist") : push!(vals, "[$(p[i,1]), $(p[i,2])] => $dist")
             end
         end
-        return isempty(vals) ? nothing : "[$(reduce(_cat, vals))]"
+        return isempty(vals) ? nothing : "[$(reduce(_concat, vals))]"
     else
         error("Unable to parse data files with $column_count columns.")
     end

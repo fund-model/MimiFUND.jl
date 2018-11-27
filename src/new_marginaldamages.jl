@@ -1,5 +1,4 @@
 using Mimi
-using fund 
 
 include("helper.jl")
 include("fund.jl")

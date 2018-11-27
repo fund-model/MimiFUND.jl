@@ -1,33 +1,39 @@
 using Mimi
 
-include(joinpath(@__DIR__, "../fund.jl"))
 include(joinpath(@__DIR__, "defmcs.jl"))                  # Defines FUND's distributional parameters
 include(joinpath(@__DIR__, "../new_marginaldamages.jl"))  # Defines FUND's marginal emissions model
 
-using fund
-
-function run_fund_scc(trials = 10; year = 2020, years = nothing, rate = 0.03, rates = nothing, ntimesteps = 1051, save_trials = false)
+"""
+Runs a Monte Carlo simulation with the FUND model over it's distirbutional parameters, and calculates
+the Social Cost of Carbon for the specified `years` and discount `rates`.
+`trials`: the number of trials to run.
+`ntimesteps`: how many timesteps to run.
+`output_dir`: an output directory; if none provided, will create and use "output/SCC yyyy-mm-dd HH-MM-SS MCtrials". 
+`save_trials`: whether or not to generate and save the MC trial values up front to a file.
+"""
+function run_fund_scc_mcs(trials = 10000; years = [2020], rates = [0.03], ntimesteps = 1051, output_dir = nothing, save_trials = false)
 
     # Set up output directories
-    output = joinpath(@__DIR__, "../../output/", "SCC $(Dates.format(now(), "yyyy-mm-dd HH-MM-SS"))")
-    mkpath("$output/results")
+    output_dir = output_dir == nothing ? joinpath(@__DIR__, "../../output/", "SCC $(Dates.format(now(), "yyyy-mm-dd HH-MM-SS")) MC$trials") : output_dir
+    mkpath("$output_dir/results")
 
     # Write header in SCC output file
-    scc_file = joinpath(output, "scc.csv")
+    scc_file = joinpath(output_dir, "scc.csv")
     open(scc_file, "w") do f 
         write(f, "trial, rate, year, scc\n")
     end 
 
     # Scenario set up
     scenario_args = [
-        :rate           => rates != nothing ? rates : [rate]
-        :emissionyear   => years != nothing ? years : [year]
+        :rate           => rates
+        :emissionyear   => years
     ]
+
+    mcs = getmcs()
 
     # Generate trials
     if save_trials
-        mkpath("$output/trials")
-        generate_trials!(mcs, trials; filename = joinpath(@__DIR__, "$output/trials/fund_mc_trials_$trials.csv"))
+        generate_trials!(mcs, trials; filename = joinpath(@__DIR__, "$output_dir/trials.csv"))
     else 
         generate_trials!(mcs, trials)
     end
@@ -66,8 +72,8 @@ function run_fund_scc(trials = 10; year = 2020, years = nothing, rate = 0.03, ra
         idx = getindexfromyear(emissionyear)
         discount_factor[idx:T] = [1 / ((1 + rate) ^ t) for t in 0:T-idx]
     
-        # Sum discounted damages to scc
-        scc = sum(sum(marginaldamages, 2)[2:end] .* discount_factor[2:end])
+        # Sum discounted global damages to scc
+        scc = sum(sum(marginaldamages, 2)[2:T] .* discount_factor[2:end])
     
         # Write output
         open(scc_file, "a") do f 
@@ -80,7 +86,7 @@ function run_fund_scc(trials = 10; year = 2020, years = nothing, rate = 0.03, ra
     # Run monte carlo trials
     run_mcs(mcs, trials, 2; 
         ntimesteps = ntimesteps,
-        output_dir = "$output/results",
+        output_dir = "$output_dir/results",
         scenario_args = scenario_args, 
         scenario_func = _scenario_func,   
         post_trial_func = scc_calculation   
