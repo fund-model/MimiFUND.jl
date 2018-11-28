@@ -3,11 +3,12 @@ using Distributions
 """
 Converts a year value into an integer corresponding to fund's time index.
 """
-function getindexfromyear(year)
+function getindexfromyear(year::Int)
     const baseyear = 1950
-    return Int(year - baseyear + 1)
+    return year - baseyear + 1
 end
-
+# TODO: remove this when issue of int-to-float conversion is resolved
+getindexfromyear(year) = getindexfromyear(Int(year))
 
 """
 Reads parameter csvs from data directory into a dictionary (parameter_name => default_value).
