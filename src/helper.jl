@@ -13,9 +13,9 @@ end
 Reads parameter csvs from data directory into a dictionary (parameter_name => default_value).
 For parameters defined as distributions, this sets the value to their mode.
 """ 
-function load_default_parameters(datadir=joinpath(dirname(@__FILE__), "..", "data"))
+function load_default_parameters(datadir = joinpath(dirname(@__FILE__), "..", "data"))
     files = readdir(datadir)
-    filter!(i->i!="desktop.ini", files)
+    filter!(i -> i != "desktop.ini", files)
     parameters = Dict{Any, Any}(splitext(file)[1] => readdlm(joinpath(datadir,file), ',') for file in files)
 
     prepparameters!(parameters)
@@ -34,13 +34,7 @@ end
 """
 Returns the mode for a distributional parameter; returns the value if it's not a distribution.
 """
-function getbestguess(p)
-    if isa(p, ContinuousUnivariateDistribution)
-        return mode(p)
-    else
-        return p
-    end
-end
+getbestguess(p) = isa(p, ContinuousUnivariateDistribution) ? mode(p) : p
 
 
 """
@@ -50,13 +44,12 @@ Original dictionary: parameter_name => string of distributions or values from cs
 Final dictionary: parameter_name => default value
 """
 function prepparameters!(parameters)
-    for i in parameters
-        p = i[2]
+    for (param_name, p) in parameters
         column_count = size(p,2)
         if column_count == 1
-            parameters[i[1]] = getbestguess(convertparametervalue(p[1,1]))
+            parameters[param_name] = getbestguess(convertparametervalue(p[1,1]))
         elseif column_count == 2
-            parameters[i[1]] = Float64[getbestguess(convertparametervalue(p[j,2])) for j in 1:size(p,1)]
+            parameters[param_name] = Float64[getbestguess(convertparametervalue(p[j,2])) for j in 1:size(p,1)]
         elseif column_count == 3
             length_index1 = length(unique(p[:,1]))
             length_index2 = length(unique(p[:,2]))
@@ -71,7 +64,7 @@ function prepparameters!(parameters)
                     cur_1 += 1
                 end
             end
-            parameters[i[1]] = new_p
+            parameters[param_name] = new_p
         end
     end
 end
@@ -83,8 +76,8 @@ If the parameter value is a string containing a distribution definition, it retu
 If the parameter value is a number, it returns the number.
 """
 function convertparametervalue(pv)
-    if isa(pv,AbstractString)
-        if startswith(pv,"~") & endswith(pv,")")
+    if pv isa AbstractString
+        if startswith(pv,"~") && endswith(pv,")")
             args_start_index = search(pv,'(')
             dist_name = pv[2:args_start_index-1]
             args = split(pv[args_start_index+1:end-1], ';')

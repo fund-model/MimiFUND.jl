@@ -1,4 +1,5 @@
 using Mimi
+import Mimi.compinstance
 
 include("helper.jl")
 include("fund.jl")
@@ -51,7 +52,7 @@ function add_marginal_emissions!(m, emissionyear = nothing; gas = :C, yearstorun
         connect_param!(m, :marginalemission, :input, :emissions,:globsf6)
         connect_param!(m, :climatesf6cycle, :globsf6, :marginalemission, :output)
     else
-        error("Unknown gas.")
+        error("Unknown gas: $gas")
     end
 
 end 
@@ -61,7 +62,7 @@ Helper function to set the marginal emissions in the specified year.
 """
 function perturb_marginal_emissions!(m::Model, emissionyear; comp_name = :marginalemission)
 
-    ci = m.mi.components[comp_name]
+    ci = compinstance(m, comp_name)
     emissions = Mimi.get_param_value(ci, :add)
     emissions[:] = 0
     emissions[getindexfromyear(emissionyear):getindexfromyear(emissionyear) + 9] = 1.0

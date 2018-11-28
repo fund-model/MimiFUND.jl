@@ -11,7 +11,7 @@ the Social Cost of Carbon for the specified `years` and discount `rates`.
 `output_dir`: an output directory; if none provided, will create and use "output/SCC yyyy-mm-dd HH-MM-SS MCtrials". 
 `save_trials`: whether or not to generate and save the MC trial values up front to a file.
 """
-function run_fund_scc_mcs(trials = 10000; years = [2020], rates = [0.03], ntimesteps = 1051, output_dir = nothing, save_trials = false)
+function run_fund_scc_mcs(trials = 10000; years = [2020], rates = [0.03], ntimesteps = Fund.default_nsteps + 1, output_dir = nothing, save_trials = false)
 
     # Set up output directories
     output_dir = output_dir == nothing ? joinpath(@__DIR__, "../../output/", "SCC $(Dates.format(now(), "yyyy-mm-dd HH-MM-SS")) MC$trials") : output_dir
@@ -32,11 +32,8 @@ function run_fund_scc_mcs(trials = 10000; years = [2020], rates = [0.03], ntimes
     mcs = getmcs()
 
     # Generate trials
-    if save_trials
-        generate_trials!(mcs, trials; filename = joinpath(@__DIR__, "$output_dir/trials.csv"))
-    else 
-        generate_trials!(mcs, trials)
-    end
+    filename = save_trials ? joinpath(@__DIR__, "$output_dir/trials.csv") : ""
+    generate_trials!(mcs, trials; filename=filename)
 
     # Get FUND marginal model
     mm = create_marginal_FUND_model()

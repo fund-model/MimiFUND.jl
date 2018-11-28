@@ -11,7 +11,7 @@ Runs a Monte Carlo simulation with the FUND model over it's distirbutional param
 `output_dir`: an output directory; if none provided, will create and use "output/yyyy-mm-dd HH-MM-SS MCtrials". 
 `save_trials`: whether or not to generate and save the MC trial values up front to a file.
 """
-function run_fund_mcs(trials = 10000; ntimesteps = 1051, output_dir = nothing, save_trials = false)
+function run_fund_mcs(trials = 10000; ntimesteps = Fund.default_nsteps + 1, output_dir = nothing, save_trials = false)
 
     # Set up output directories
     output_dir = output_dir == nothing ? joinpath(@__DIR__, "../../output/", "SCC $(Dates.format(now(), "yyyy-mm-dd HH-MM-SS")) MC$trials") : output_dir
