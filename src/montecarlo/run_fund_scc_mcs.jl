@@ -24,7 +24,7 @@ function run_fund_scc_mcs(trials = 10000; years = [2020], rates = [0.03], ntimes
     end 
 
     # Scenario set up
-    scenario_args = [
+    scenario_args = Any[
         :rate           => rates
         :emissionyear   => years
     ]
