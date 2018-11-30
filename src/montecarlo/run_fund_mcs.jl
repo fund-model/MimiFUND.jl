@@ -1,8 +1,9 @@
 using Mimi
+using Dates
 
 include(joinpath(@__DIR__, "defmcs.jl"))
 include(joinpath(@__DIR__, "../fund.jl"))
-using Fund
+using .Fund
 
 """
 Runs a Monte Carlo simulation with the FUND model over it's distirbutional parameters.

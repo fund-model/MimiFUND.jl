@@ -3,7 +3,7 @@ import Mimi.compinstance
 
 include("helper.jl")
 include("fund.jl")
-using Fund 
+using .Fund 
 
 
 """
@@ -31,10 +31,10 @@ Adds a marginalemission component to m, and sets the additional emissions if a y
 function add_marginal_emissions!(m, emissionyear = nothing; gas = :C, yearstorun = 1050)
 
     # Add additional emissions to m
-    add_comp!(m, adder, :marginalemission, before = :climateco2cycle)
+    add_comp!(m, Mimi.adder, :marginalemission, before = :climateco2cycle)
     addem = zeros(yearstorun + 1)
     if emissionyear != nothing 
-        addem[getindexfromyear(emissionyear):getindexfromyear(emissionyear) + 9] = 1.0
+        addem[getindexfromyear(emissionyear):getindexfromyear(emissionyear) + 9] .= 1.0
     end
     set_param!(m, :marginalemission, :add, addem)
 

@@ -4,7 +4,7 @@ using Distributions
 Converts a year value into an integer corresponding to fund's time index.
 """
 function getindexfromyear(year::Int)
-    const baseyear = 1950
+    baseyear = 1950
     return year - baseyear + 1
 end
 

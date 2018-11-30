@@ -1,4 +1,5 @@
 using Mimi
+using Dates
 
 include(joinpath(@__DIR__, "defmcs.jl"))                  # Defines FUND's distributional parameters
 include(joinpath(@__DIR__, "../new_marginaldamages.jl"))  # Defines FUND's marginal emissions model
@@ -70,7 +71,7 @@ function run_fund_scc_mcs(trials = 10000; years = [2020], rates = [0.03], ntimes
         discount_factor[idx:T] = [1 / ((1 + rate) ^ t) for t in 0:T-idx]
     
         # Sum discounted global damages to scc
-        scc = sum(sum(marginaldamages, 2)[2:T] .* discount_factor[2:end])
+        scc = sum(sum(marginaldamages, dims = 2)[2:T] .* discount_factor[2:end])
     
         # Write output
         open(scc_file, "a") do f 
