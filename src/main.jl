@@ -1,7 +1,7 @@
 using Mimi
 
 include("fund.jl")
-using Fund
+using .Fund
 
 m = getfund()
 run(m)
