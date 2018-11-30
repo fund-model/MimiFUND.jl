@@ -1,6 +1,6 @@
-include("../helper.jl")
-include("../fund.jl")
-using Fund 
+include("helper.jl")
+include("fund.jl")
+using .Fund 
 
 """
 Returns a matrix of marginal damages per one ton of additional emissions of the specified gas in the specified year.
@@ -15,9 +15,9 @@ function getmarginaldamages(; emissionyear=2010, parameters = nothing, yearstoag
 
     # Get model to add marginal emissions to
     m2 = getfund(nsteps = yearstorun, params = parameters)
-    add_comp!(m2, adder, :marginalemission, before = :climateco2cycle)
+    add_comp!(m2, Mimi.adder, :marginalemission, before = :climateco2cycle)
     addem = zeros(yearstorun + 1)
-    addem[getindexfromyear(emissionyear):getindexfromyear(emissionyear) + 9] = 1.0
+    addem[getindexfromyear(emissionyear):getindexfromyear(emissionyear) + 9] .= 1.0
     set_param!(m2, :marginalemission, :add, addem)
 
     # Reconnect the appropriate emissions in the marginal model

@@ -79,6 +79,25 @@ end
 
 end #fund-integration testset
 
+#------------------------------------------------------------------------------
+# 3. Test marginal damages functions (test that each function does not error)
+#------------------------------------------------------------------------------
+
+@testset "test-marginaldamages" begin 
+
+include("../src/marginaldamages.jl")
+md = getmarginaldamages()
+
+include("../src/marginaldamage3.jl")
+md3 = marginaldamage3()
+
+include("../src/new_marginaldamages.jl")
+scc = get_social_cost()
+md = getmarginaldamages()
+
+
+end #marginaldamages testset
+
 end #fund testset
 
 nothing
