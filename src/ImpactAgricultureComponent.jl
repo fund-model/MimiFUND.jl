@@ -32,7 +32,7 @@
 
     function run_timestep(p, v, d, t)
         
-        const DBsT = 0.04     # base case yearly warming
+        DBsT = 0.04     # base case yearly warming
         
         if is_first(t)
             for r in d.regions
