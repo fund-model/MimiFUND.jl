@@ -1,7 +1,7 @@
 using Mimi
 using Test
 using DataFrames
-using CSV
+using CSVFiles
 
 @testset "fund" begin
 
@@ -55,12 +55,13 @@ for c in map(name, Mimi.compdefs(m)), v in Mimi.variable_names(m, c)
     filename = joinpath(@__DIR__, "../contrib/validation_data_v040/$c-$v.csv")    
     results = m[c, v]
 
+    df = load(filename) |> DataFrame
     if typeof(results) <: Number
-        validation_results = CSV.read(filename)[1,1]
+        validation_results = df[1,1]
         @test results ≈ validation_results atol = err_number #slight imprecision with these values due to rounding
         
     else
-        validation_results = convert(Array, CSV.read(filename))
+        validation_results = convert(Array, df)
 
         #remove NaNs
         results[ismissing.(results)] .= nullvalue
