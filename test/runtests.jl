@@ -63,22 +63,9 @@ for c in map(name, Mimi.compdefs(m)), v in Mimi.variable_names(m, c)
     else
         validation_results = convert(Array, df)
 
-        #some values have been purposefully changed from missing to zero:
-
-        # because of a recent update we added to Mimi, that doesn't allow other 
-        # components to access missing values. This was causing a problem within 
-        # the marginal damages functions, because the adder component's input 
-        # parameter is connected to one of the global gas variables in the emissions 
-        # component, which previously had missing values in the first timestep.
-        zeroparams = [:mco2, :globch4, :globn2o, :globsf6]
-        if c == :emissions && (v in zeroparams)
-            validation_results[1] = 0.0
-        end
-
-        #remove NaNs and Missings
+        #remove NaNs
         results[ismissing.(results)] .= nullvalue
         results[isnan.(results)] .= nullvalue
-        validation_results[ismissing.(validation_results)] .= nullvalue
         validation_results[isnan.(validation_results)] .= nullvalue
 
         #match dimensions
