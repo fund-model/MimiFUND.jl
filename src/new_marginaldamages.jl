@@ -20,7 +20,7 @@ function create_marginal_FUND_model(; gas = :C, emissionyear = 2010, parameters 
     # Add additional emissions to m2
     add_comp!(m2, Mimi.adder, :marginalemission, before = :climateco2cycle, first = 1951)
     addem = zeros(yearstorun)
-    addem[getindexfromyear(emissionyear):getindexfromyear(emissionyear) + 9] .= 1.0
+    addem[getindexfromyear(emissionyear)-1:getindexfromyear(emissionyear) + 8] .= 1.0
     set_param!(m2, :marginalemission, :add, addem)
 
     # Reconnect the appropriate emissions in m2
