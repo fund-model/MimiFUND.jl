@@ -1,7 +1,7 @@
 using Mimi
 using Test
 using DataFrames
-using CSV
+using CSVFiles
 
 @testset "fund" begin
 
@@ -50,21 +50,35 @@ err_number = 1.0e-9
 err_array = 0.0
 
 for c in map(name, Mimi.compdefs(m)), v in Mimi.variable_names(m, c)
-    
+
     #load data for comparison
     filename = joinpath(@__DIR__, "../contrib/validation_data_v040/$c-$v.csv")    
     results = m[c, v]
 
+    df = load(filename) |> DataFrame
     if typeof(results) <: Number
-        validation_results = CSV.read(filename)[1,1]
+        validation_results = df[1,1]
         @test results ≈ validation_results atol = err_number #slight imprecision with these values due to rounding
         
     else
-        validation_results = convert(Array, CSV.read(filename))
+        validation_results = convert(Array, df)
 
-        #remove NaNs
+        #some values have been purposefully changed from missing to zero:
+
+        # because of a recent update we added to Mimi, that doesn't allow other 
+        # components to access missing values. This was causing a problem within 
+        # the marginal damages functions, because the adder component's input 
+        # parameter is connected to one of the global gas variables in the emissions 
+        # component, which previously had missing values in the first timestep.
+        zeroparams = [:mco2, :globch4, :globn2o, :globsf6]
+        if c == :emissions && (v in zeroparams)
+            validation_results[1] = 0.0
+        end
+
+        #remove NaNs and Missings
         results[ismissing.(results)] .= nullvalue
         results[isnan.(results)] .= nullvalue
+        validation_results[ismissing.(validation_results)] .= nullvalue
         validation_results[isnan.(validation_results)] .= nullvalue
 
         #match dimensions
