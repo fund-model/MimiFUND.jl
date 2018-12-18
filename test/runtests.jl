@@ -45,7 +45,7 @@ using .Fund
 global m = getfund()
 run(m)
 
-nullvalue = -999.999
+missingvalue = -999.999
 err_number = 1.0e-9
 err_array = 0.0
 
@@ -63,10 +63,9 @@ for c in map(name, Mimi.compdefs(m)), v in Mimi.variable_names(m, c)
     else
         validation_results = convert(Array, df)
 
-        #remove NaNs
-        results[ismissing.(results)] .= nullvalue
-        results[isnan.(results)] .= nullvalue
-        validation_results[isnan.(validation_results)] .= nullvalue
+        #replace missings with missingvalue so they can be compared
+        results[ismissing.(results)] .= missingvalue
+        validation_results[ismissing.(validation_results)] .= missingvalue
 
         #match dimensions
         if size(validation_results,1) == 1
