@@ -67,7 +67,6 @@ function getfund(; nsteps = default_nsteps, datadir = default_datadir, params = 
 
     set_dimension!(m, :time, collect(1950:1950+nsteps))
     set_dimension!(m, :regions, ["USA", "CAN", "WEU", "JPK", "ANZ", "EEU", "FSU", "MDE", "CAM", "LAM", "SAS", "SEA", "CHI", "MAF", "SSA", "SIS"])
-    set_dimension!(m, :cpools, 1:5)
     # ---------------------------------------------
     # Create components
     # ---------------------------------------------
