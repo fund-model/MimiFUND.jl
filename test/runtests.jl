@@ -1,7 +1,7 @@
 using Mimi
 using Test
 using DataFrames
-using CSV
+using CSVFiles
 
 @testset "fund" begin
 
@@ -45,27 +45,27 @@ using .Fund
 global m = getfund()
 run(m)
 
-nullvalue = -999.999
+missingvalue = -999.999
 err_number = 1.0e-9
 err_array = 0.0
 
 for c in map(name, Mimi.compdefs(m)), v in Mimi.variable_names(m, c)
-    
+
     #load data for comparison
     filename = joinpath(@__DIR__, "../contrib/validation_data_v040/$c-$v.csv")    
     results = m[c, v]
 
+    df = load(filename) |> DataFrame
     if typeof(results) <: Number
-        validation_results = CSV.read(filename)[1,1]
+        validation_results = df[1,1]
         @test results ≈ validation_results atol = err_number #slight imprecision with these values due to rounding
         
     else
-        validation_results = convert(Array, CSV.read(filename))
+        validation_results = convert(Array, df)
 
-        #remove NaNs
-        results[ismissing.(results)] .= nullvalue
-        results[isnan.(results)] .= nullvalue
-        validation_results[isnan.(validation_results)] .= nullvalue
+        #replace missings with missingvalue so they can be compared
+        results[ismissing.(results)] .= missingvalue
+        validation_results[ismissing.(validation_results)] .= missingvalue
 
         #match dimensions
         if size(validation_results,1) == 1
@@ -80,7 +80,26 @@ end
 end #fund-integration testset
 
 #------------------------------------------------------------------------------
-# 3. Run basic test of MCS functionality
+# 3. Test marginal damages functions (test that each function does not error)
+#------------------------------------------------------------------------------
+
+@testset "test-marginaldamages" begin 
+
+include("../src/marginaldamages.jl")
+md = getmarginaldamages()
+
+include("../src/marginaldamage3.jl")
+md3 = marginaldamage3()
+
+include("../src/new_marginaldamages.jl")
+scc = get_social_cost()
+md = getmarginaldamages()
+
+
+end #marginaldamages testset
+
+#------------------------------------------------------------------------------
+# 4. Run basic test of MCS functionality
 #------------------------------------------------------------------------------
 
 @testset "test-mcs" begin 

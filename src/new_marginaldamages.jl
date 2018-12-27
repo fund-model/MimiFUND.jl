@@ -31,26 +31,26 @@ Adds a marginalemission component to m, and sets the additional emissions if a y
 function add_marginal_emissions!(m, emissionyear = nothing; gas = :C, yearstorun = 1050)
 
     # Add additional emissions to m
-    add_comp!(m, Mimi.adder, :marginalemission, before = :climateco2cycle)
-    addem = zeros(yearstorun + 1)
+    add_comp!(m, Mimi.adder, :marginalemission, before = :climateco2cycle, first = 1951)
+    addem = zeros(yearstorun)
     if emissionyear != nothing 
-        addem[getindexfromyear(emissionyear):getindexfromyear(emissionyear) + 9] .= 1.0
+        addem[getindexfromyear(emissionyear)-1:getindexfromyear(emissionyear) + 8] .= 1.0
     end
     set_param!(m, :marginalemission, :add, addem)
 
     # Reconnect the appropriate emissions in m
     if gas == :C
         connect_param!(m, :marginalemission, :input, :emissions, :mco2)
-        connect_param!(m, :climateco2cycle, :mco2, :marginalemission, :output)
+        connect_param!(m, :climateco2cycle, :mco2, :marginalemission, :output, repeat([missing], yearstorun + 1))
     elseif gas == :CH4
         connect_param!(m, :marginalemission, :input, :emissions, :globch4)
-        connect_param!(m, :climatech4cycle, :globch4, :marginalemission, :output)
+        connect_param!(m, :climatech4cycle, :globch4, :marginalemission, :output, repeat([missing], yearstorun + 1))
     elseif gas == :N2O
         connect_param!(m, :marginalemission, :input, :emissions, :globn2o)
-        connect_param!(m, :climaten2ocycle, :globn2o, :marginalemission, :output)
+        connect_param!(m, :climaten2ocycle, :globn2o, :marginalemission, :output, repeat([missing], yearstorun + 1))
     elseif gas == :SF6
         connect_param!(m, :marginalemission, :input, :emissions,:globsf6)
-        connect_param!(m, :climatesf6cycle, :globsf6, :marginalemission, :output)
+        connect_param!(m, :climatesf6cycle, :globsf6, :marginalemission, :output, repeat([missing], yearstorun + 1))
     else
         error("Unknown gas: $gas")
     end
