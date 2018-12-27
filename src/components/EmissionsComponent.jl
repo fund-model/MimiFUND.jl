@@ -101,11 +101,6 @@
                 v.ch4red[t, r] = 0
                 v.n2ored[t, r] = 0
                 v.mitigationcost[t, r] = 0
-
-                v.mco2[t] = 0
-                v.globch4[t] = 0 
-                v.globn2o[t] = 0
-                v.globsf6[t] = 0
             end
 
             v.globknow[t] = 1
