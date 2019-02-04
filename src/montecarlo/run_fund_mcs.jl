@@ -6,7 +6,7 @@ include(joinpath(@__DIR__, "../fund.jl"))
 using .Fund
 
 """
-Runs a Monte Carlo simulation with the FUND model over it's distirbutional parameters.
+Runs a Monte Carlo simulation with the FUND model over it's distributional parameters.
 `trials`: the number of trials to run.
 `ntimesteps`: how many timesteps to run.
 `output_dir`: an output directory; if none provided, will create and use "output/yyyy-mm-dd HH-MM-SS MCtrials". 
