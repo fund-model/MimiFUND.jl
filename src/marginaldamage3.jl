@@ -1,3 +1,4 @@
+using Mimi
 include("helper.jl")
 include("fund.jl")
 using .Fund 
