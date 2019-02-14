@@ -2,7 +2,7 @@ using Mimi
 
 include("helper.jl")
 include("fund.jl")
-using Fund 
+using .Fund 
 
 
 """
@@ -18,24 +18,24 @@ function create_marginal_FUND_model(; gas = :C, emissionyear = 2010, parameters 
     m1, m2 = mm.base, mm.marginal
 
     # Add additional emissions to m2
-    add_comp!(m2, adder, :marginalemission, before = :climateco2cycle)
-    addem = zeros(yearstorun + 1)
-    addem[getindexfromyear(emissionyear):getindexfromyear(emissionyear) + 9] = 1.0
+    add_comp!(m2, Mimi.adder, :marginalemission, before = :climateco2cycle, first = 1951)
+    addem = zeros(yearstorun)
+    addem[getindexfromyear(emissionyear)-1:getindexfromyear(emissionyear) + 8] .= 1.0
     set_param!(m2, :marginalemission, :add, addem)
 
     # Reconnect the appropriate emissions in m2
     if gas == :C
         connect_param!(m2, :marginalemission, :input, :emissions, :mco2)
-        connect_param!(m2, :climateco2cycle, :mco2, :marginalemission, :output)
+        connect_param!(m2, :climateco2cycle, :mco2, :marginalemission, :output, repeat([missing], yearstorun + 1))
     elseif gas == :CH4
         connect_param!(m2, :marginalemission, :input, :emissions, :globch4)
-        connect_param!(m2, :climatech4cycle, :globch4, :marginalemission, :output)
+        connect_param!(m2, :climatech4cycle, :globch4, :marginalemission, :output, repeat([missing], yearstorun + 1))
     elseif gas == :N2O
         connect_param!(m2, :marginalemission, :input, :emissions, :globn2o)
-        connect_param!(m2, :climaten2ocycle, :globn2o, :marginalemission, :output)
+        connect_param!(m2, :climaten2ocycle, :globn2o, :marginalemission, :output, repeat([missing], yearstorun + 1))
     elseif gas == :SF6
         connect_param!(m2, :marginalemission, :input, :emissions,:globsf6)
-        connect_param!(m2, :climatesf6cycle, :globsf6, :marginalemission, :output)
+        connect_param!(m2, :climatesf6cycle, :globsf6, :marginalemission, :output, repeat([missing], yearstorun + 1))
     else
         error("Unknown gas.")
     end

@@ -11,7 +11,7 @@
     globc = Variable(index=[time])
 
     # Carbon boxes
-    cbox = Variable(index=[time,cpools])
+    cbox = Variable(index=[time,5])
 
     # Initial carbon box 1
     cbox10 = Parameter()
