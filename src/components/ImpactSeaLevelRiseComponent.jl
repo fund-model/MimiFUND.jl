@@ -3,62 +3,62 @@
 @defcomp impactsealevelrise begin
     regions = Index()
 
-    wetval = Variable(index=[time,regions])
-    wetlandloss = Variable(index=[time,regions])
-    cumwetlandloss = Variable(index=[time,regions])
+    wetval = Variable(index=[time,regions]) # Valuation of wetlands
+    wetlandloss = Variable(index=[time,regions]) # Amount of wetland lost
+    cumwetlandloss = Variable(index=[time,regions]) # Cumulative wetland loss over time
     wetlandgrowth = Variable(index=[time,regions])
-    wetcost = Variable(index=[time,regions])
+    wetcost = Variable(index=[time,regions]) # The cost of wetland actually lost in this year
 
 
-    dryval = Variable(index=[time,regions])
-    landloss = Variable(index=[time,regions])
-    cumlandloss = Variable(index=[time,regions])
-    drycost = Variable(index=[time,regions])
+    dryval = Variable(index=[time,regions]) # Valuation of dryland
+    landloss = Variable(index=[time,regions]) # Dryland lost in this year
+    cumlandloss = Variable(index=[time,regions]) # Cumulative dryland loss over time
+    drycost = Variable(index=[time,regions]) # The cost of dryland actually lost in this year
 
     npprotcost = Variable(index=[time,regions])
     npwetcost = Variable(index=[time,regions])
     npdrycost = Variable(index=[time,regions])
 
-    protlev = Variable(index=[time,regions])
-    protcost = Variable(index=[time,regions])
+    protlev = Variable(index=[time,regions]) # Share of coastline protected in this time period
+    protcost = Variable(index=[time,regions]) # The cost of protection in this time period
 
-    enter = Variable(index=[time,regions])
-    leave = Variable(index=[time,regions])
-    entercost = Variable(index=[time,regions])
-    leavecost = Variable(index=[time,regions])
+    enter = Variable(index=[time,regions]) # Migration in (in people)
+    leave = Variable(index=[time,regions]) # Migration out (in people)
+    entercost = Variable(index=[time,regions]) # Cost to the economy of immigration
+    leavecost = Variable(index=[time,regions]) # Cost to the economy of emigration
 
-    imigrate = Variable(index=[regions,regions])
+    imigrate = Variable(index=[regions,regions]) # Migration matrix
 
-    incdens     = Parameter(default = 0.000635)
-    emcst       = Parameter(default = 3)
-    immcst      = Parameter(default = 0.4)
-    dvydl       = Parameter(default = 1)
-    wvel        = Parameter(default = 1.16)
-    wvbm        = Parameter(default = 0.00588)
-    slrwvpopdens0 = Parameter(default = 27.5937717888728)
+    incdens     = Parameter(default = 0.000635) # Normalization income density
+    emcst       = Parameter(default = 3) # emigration loss benchmark value
+    immcst      = Parameter(default = 0.4) # immigration loss benchmark
+    dvydl       = Parameter(default = 1) # income density elasticity of dryland value
+    wvel        = Parameter(default = 1.16) # wetland value income elasticity
+    wvbm        = Parameter(default = 0.00588) # wetland value benchmark value
+    slrwvpopdens0 = Parameter(default = 27.5937717888728) # wetland value income normalization value
     wvpdl       = Parameter(default = 0.47)
     wvsl        = Parameter(default = -0.11)
-    dvbm        = Parameter(default = 0.004)
+    dvbm        = Parameter(default = 0.004) # dryland value benchmark value
     slrwvypc0   = Parameter(default = 25000)
 
     pc          = Parameter(index=[regions])
     slrprtp     = Parameter(index=[regions])
     wmbm        = Parameter(index=[regions])
-    dlbm        = Parameter(index=[regions])
+    dlbm        = Parameter(index=[regions]) # dryland loss benchmark value
     drylandlossparam = Parameter(index=[regions])
-    wlbm        = Parameter(index=[regions])
-    coastpd     = Parameter(index=[regions])
+    wlbm        = Parameter(index=[regions]) # wetland loss benchmark per slr change
+    coastpd     = Parameter(index=[regions]) # coastal population density
     wetmax      = Parameter(index=[regions])
     wetland90   = Parameter(index=[regions])
     maxlandloss = Parameter(index=[regions])
 
-    sea = Parameter(index=[time])
+    sea = Parameter(index=[time]) # sea-level rise in m since pre-industrial
 
     migrate = Parameter(index=[regions,regions])
 
     income = Parameter(index=[time,regions])
     population = Parameter(index=[time,regions])
-    area = Parameter(index=[time,regions])
+    area = Parameter(index=[time,regions]) # Land area km^2
 
     function run_timestep(p, v, d, t)
 
@@ -83,7 +83,7 @@
             ds = p.sea[t] - p.sea[t - 1]
 
             for r in d.regions
-                ypc = p.income[t, r] / p.population[t, r] * 1000.0
+                ypc = p.income[t, r] / p.population[t, r] * 1000.0 # income per capita
                 ypcprev = p.income[t - 1, r] / p.population[t - 1, r] * 1000.0
                 ypcgrowth = ypc / ypcprev - 1.0
 
