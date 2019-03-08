@@ -27,7 +27,7 @@ function run_fund_mcs(trials = 10000; ntimesteps = Fund.default_nsteps + 1, outp
     end
 
     # Run monte carlo trials
-    set_model!(mcs, getfund())
+    set_models!(mcs, getfund())
     run_mcs(mcs, trials; ntimesteps = ntimesteps, output_dir = "$output_dir/results")
 
     return nothing
