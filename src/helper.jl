@@ -1,8 +1,21 @@
 using Distributions
 
-function loadparameters(datadir=joinpath(dirname(@__FILE__), "..", "data"))
+"""
+Converts a year value into an integer corresponding to fund's time index.
+"""
+function getindexfromyear(year::Int)
+    baseyear = 1950
+    return year - baseyear + 1
+end
+
+
+"""
+Reads parameter csvs from data directory into a dictionary (parameter_name => default_value).
+For parameters defined as distributions, this sets the value to their mode.
+""" 
+function load_default_parameters(datadir = joinpath(dirname(@__FILE__), "..", "data"))
     files = readdir(datadir)
-    filter!(i->i!="desktop.ini", files)
+    filter!(i -> i != "desktop.ini", files)
     parameters = Dict{Any, Any}(splitext(file)[1] => readdlm(joinpath(datadir,file), ',', comments = true) for file in files)
 
     prepparameters!(parameters)
@@ -10,19 +23,61 @@ function loadparameters(datadir=joinpath(dirname(@__FILE__), "..", "data"))
     return parameters
 end
 
+
+# For Truncated Gamma distributions, fund uses the mode of the untrucated distribution as it's default value.
 import StatsBase.mode
 function mode(d::Truncated{Gamma{Float64},Continuous})
     return mode(d.untruncated)
 end
 
-function getindexfromyear(year)
-    baseyear = 1950
-    return year - baseyear + 1
+
+"""
+Returns the mode for a distributional parameter; returns the value if it's not a distribution.
+"""
+getbestguess(p) = isa(p, ContinuousUnivariateDistribution) ? mode(p) : p
+
+
+"""
+Converts the original parameter dictionary loaded from the data files into a dictionary of default parameter values.
+
+Original dictionary: parameter_name => string of distributions or values from csv file
+Final dictionary: parameter_name => default value
+"""
+function prepparameters!(parameters)
+    for (param_name, p) in parameters
+        column_count = size(p,2)
+        if column_count == 1
+            parameters[param_name] = getbestguess(convertparametervalue(p[1,1]))
+        elseif column_count == 2
+            parameters[param_name] = Float64[getbestguess(convertparametervalue(p[j,2])) for j in 1:size(p,1)]
+        elseif column_count == 3
+            length_index1 = length(unique(p[:,1]))
+            length_index2 = length(unique(p[:,2]))
+            new_p = Array{Float64}(undef, length_index1, length_index2)
+            cur_1 = 1
+            cur_2 = 1
+            for j in 1:size(p,1)
+                new_p[cur_1,cur_2] = getbestguess(convertparametervalue(p[j,3]))
+                cur_2 += 1
+                if cur_2 > length_index2
+                    cur_2 = 1
+                    cur_1 += 1
+                end
+            end
+            parameters[param_name] = new_p
+        end
+    end
 end
 
+
+"""
+Takes as input a single parameter value. 
+If the parameter value is a string containing a distribution definition, it returns the distribtion.
+If the parameter value is a number, it returns the number.
+"""
 function convertparametervalue(pv)
     if isa(pv,AbstractString)
-        if startswith(pv,"~") & endswith(pv,")")
+        if startswith(pv,"~") && endswith(pv,")")
             args_start_index = something(findfirst(isequal('('), pv), 0) 
             dist_name = pv[2:args_start_index-1]
             args = split(pv[args_start_index+1:end-1], ';')
@@ -77,40 +132,5 @@ function convertparametervalue(pv)
         return pv
     else
         return pv
-    end
-end
-
-function getbestguess(p)
-    if isa(p, ContinuousUnivariateDistribution)
-        return mode(p)
-    else
-        return p
-    end
-end
-
-function prepparameters!(parameters)
-    for i in parameters
-        p = i[2]
-        column_count = size(p,2)
-        if column_count == 1
-            parameters[i[1]] = getbestguess(convertparametervalue(p[1,1]))
-        elseif column_count == 2
-            parameters[i[1]] = Float64[getbestguess(convertparametervalue(p[j,2])) for j in 1:size(p,1)]
-        elseif column_count == 3
-            length_index1 = length(unique(p[:,1]))
-            length_index2 = length(unique(p[:,2]))
-            new_p = Array{Float64}(undef, length_index1,length_index2)
-            cur_1 = 1
-            cur_2 = 1
-            for j in 1:size(p,1)
-                new_p[cur_1,cur_2] = getbestguess(convertparametervalue(p[j,3]))
-                cur_2 += 1
-                if cur_2 > length_index2
-                    cur_2 = 1
-                    cur_1 += 1
-                end
-            end
-            parameters[i[1]] = new_p
-        end
     end
 end

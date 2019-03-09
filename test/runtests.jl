@@ -98,6 +98,20 @@ md = getmarginaldamages()
 
 end #marginaldamages testset
 
+#------------------------------------------------------------------------------
+# 4. Run basic test of MCS functionality
+#------------------------------------------------------------------------------
+
+@testset "test-mcs" begin 
+
+include("../src/montecarlo/run_fund_mcs.jl")
+include("../src/montecarlo/run_fund_scc_mcs.jl")
+
+run_fund_mcs(10)        # Run 10 trials of basic FUND MCS
+run_fund_scc_mcs(10)    # Run 10 trials of FUND MCS SCC calculations
+
+end #test-mcs testset
+
 end #fund testset
 
 nothing

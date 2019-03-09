@@ -1,4 +1,5 @@
 using Mimi
+import Mimi.compinstance
 
 include("helper.jl")
 include("fund.jl")
@@ -17,34 +18,59 @@ function create_marginal_FUND_model(; gas = :C, emissionyear = 2010, parameters 
     mm = create_marginal_model(FUND)
     m1, m2 = mm.base, mm.marginal
 
-    # Add additional emissions to m2
-    add_comp!(m2, Mimi.adder, :marginalemission, before = :climateco2cycle, first = 1951)
-    addem = zeros(yearstorun)
-    addem[getindexfromyear(emissionyear)-1:getindexfromyear(emissionyear) + 8] .= 1.0
-    set_param!(m2, :marginalemission, :add, addem)
-
-    # Reconnect the appropriate emissions in m2
-    if gas == :C
-        connect_param!(m2, :marginalemission, :input, :emissions, :mco2)
-        connect_param!(m2, :climateco2cycle, :mco2, :marginalemission, :output, repeat([missing], yearstorun + 1))
-    elseif gas == :CH4
-        connect_param!(m2, :marginalemission, :input, :emissions, :globch4)
-        connect_param!(m2, :climatech4cycle, :globch4, :marginalemission, :output, repeat([missing], yearstorun + 1))
-    elseif gas == :N2O
-        connect_param!(m2, :marginalemission, :input, :emissions, :globn2o)
-        connect_param!(m2, :climaten2ocycle, :globn2o, :marginalemission, :output, repeat([missing], yearstorun + 1))
-    elseif gas == :SF6
-        connect_param!(m2, :marginalemission, :input, :emissions,:globsf6)
-        connect_param!(m2, :climatesf6cycle, :globsf6, :marginalemission, :output, repeat([missing], yearstorun + 1))
-    else
-        error("Unknown gas.")
-    end
+    add_marginal_emissions!(m2, emissionyear; gas = gas, yearstorun = yearstorun)
 
     Mimi.build(m1)
     Mimi.build(m2)
     return mm 
 end 
 
+"""
+Adds a marginalemission component to m, and sets the additional emissions if a year is specified.
+"""
+function add_marginal_emissions!(m, emissionyear = nothing; gas = :C, yearstorun = 1050)
+
+    # Add additional emissions to m
+    add_comp!(m, Mimi.adder, :marginalemission, before = :climateco2cycle, first = 1951)
+    addem = zeros(yearstorun)
+    if emissionyear != nothing 
+        addem[getindexfromyear(emissionyear)-1:getindexfromyear(emissionyear) + 8] .= 1.0
+    end
+    set_param!(m, :marginalemission, :add, addem)
+
+    # Reconnect the appropriate emissions in m
+    if gas == :C
+        connect_param!(m, :marginalemission, :input, :emissions, :mco2)
+        connect_param!(m, :climateco2cycle, :mco2, :marginalemission, :output, repeat([missing], yearstorun + 1))
+    elseif gas == :CH4
+        connect_param!(m, :marginalemission, :input, :emissions, :globch4)
+        connect_param!(m, :climatech4cycle, :globch4, :marginalemission, :output, repeat([missing], yearstorun + 1))
+    elseif gas == :N2O
+        connect_param!(m, :marginalemission, :input, :emissions, :globn2o)
+        connect_param!(m, :climaten2ocycle, :globn2o, :marginalemission, :output, repeat([missing], yearstorun + 1))
+    elseif gas == :SF6
+        connect_param!(m, :marginalemission, :input, :emissions,:globsf6)
+        connect_param!(m, :climatesf6cycle, :globsf6, :marginalemission, :output, repeat([missing], yearstorun + 1))
+    else
+        error("Unknown gas: $gas")
+    end
+
+end 
+
+"""
+Helper function to set the marginal emissions in the specified year.
+"""
+function perturb_marginal_emissions!(m::Model, emissionyear; comp_name = :marginalemission)
+
+    ci = compinstance(m, comp_name)
+    emissions = Mimi.get_param_value(ci, :add)
+
+    nyears = length(Mimi.dimension(m, :time))
+    new_em = zeros(nyears - 1)
+    new_em[getindexfromyear(emissionyear)-1:getindexfromyear(emissionyear) + 8] .= 1.0
+    emissions[:] = new_em
+
+end
 
 """
 Returns the social cost per one ton of additional emissions of the specified gas in the specified year. 
@@ -87,7 +113,6 @@ function get_social_cost(; emissionyear = 2010, parameters = nothing, yearstoagg
     return scc
 
 end
-
 
 """
 Returns a matrix of marginal damages per one ton of additional emissions of the specified gas in the specified year.
