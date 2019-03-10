@@ -1,10 +1,4 @@
-using Mimi
 import Mimi.compinstance
-
-include("helper.jl")
-include("fund.jl")
-using .Fund 
-
 
 """
 Creates a MarginalModel of FUND with additional emissions in the specified year for the specified gas. 

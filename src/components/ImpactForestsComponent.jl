@@ -1,6 +1,4 @@
-﻿using Mimi
-
-@defcomp impactforests begin
+﻿@defcomp impactforests begin
     regions = Index()
 
     forests = Variable(index=[time,regions])

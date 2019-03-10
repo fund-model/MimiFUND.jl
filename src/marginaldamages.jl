@@ -1,8 +1,3 @@
-using Mimi 
-include("helper.jl")
-include("fund.jl")
-using .Fund 
-
 """
 Returns a matrix of marginal damages per one ton of additional emissions of the specified gas in the specified year.
 """

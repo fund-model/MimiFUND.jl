@@ -1,6 +1,4 @@
-﻿using Mimi
-
-@defcomp impactsealevelrise begin
+﻿@defcomp impactsealevelrise begin
     regions = Index()
 
     wetval = Variable(index=[time,regions]) # Valuation of wetlands

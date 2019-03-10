@@ -1,6 +1,4 @@
-﻿using Mimi
-
-@defcomp impactagriculture begin
+﻿@defcomp impactagriculture begin
     regions = Index()
 
     gdp90 = Parameter(index=[regions])

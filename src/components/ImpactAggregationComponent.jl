@@ -1,6 +1,4 @@
-﻿using Mimi
-
-@defcomp impactaggregation begin
+﻿@defcomp impactaggregation begin
     regions = Index()
 
     eloss = Variable(index=[time,regions])

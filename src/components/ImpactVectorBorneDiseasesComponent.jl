@@ -1,6 +1,4 @@
-﻿using Mimi
-
-@defcomp impactvectorbornediseases begin
+﻿@defcomp impactvectorbornediseases begin
     regions = Index()
 
     dengue = Variable(index=[time,regions])

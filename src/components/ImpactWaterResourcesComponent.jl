@@ -1,6 +1,4 @@
-﻿using Mimi
-
-@defcomp impactwaterresources begin
+﻿@defcomp impactwaterresources begin
     regions = Index()
 
     watech = Variable(index=[time])

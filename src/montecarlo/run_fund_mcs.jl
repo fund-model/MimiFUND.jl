@@ -1,9 +1,4 @@
-using Mimi
 using Dates
-
-include(joinpath(@__DIR__, "defmcs.jl"))
-include(joinpath(@__DIR__, "../fund.jl"))
-using .Fund
 
 """
 Runs a Monte Carlo simulation with the FUND model over it's distributional parameters.
@@ -12,7 +7,7 @@ Runs a Monte Carlo simulation with the FUND model over it's distributional param
 `output_dir`: an output directory; if none provided, will create and use "output/yyyy-mm-dd HH-MM-SS MCtrials". 
 `save_trials`: whether or not to generate and save the MC trial values up front to a file.
 """
-function run_fund_mcs(trials = 10000; ntimesteps = Fund.default_nsteps + 1, output_dir = nothing, save_trials = false)
+function run_fund_mcs(trials = 10000; ntimesteps = MimiFUND.default_nsteps + 1, output_dir = nothing, save_trials = false)
 
     # Set up output directories
     output_dir = output_dir == nothing ? joinpath(@__DIR__, "../../output/", "SCC $(Dates.format(now(), "yyyy-mm-dd HH-MM-SS")) MC$trials") : output_dir
@@ -28,7 +23,7 @@ function run_fund_mcs(trials = 10000; ntimesteps = Fund.default_nsteps + 1, outp
 
     # Run monte carlo trials
     set_models!(mcs, getfund())
-    run_mcs(mcs, trials; ntimesteps = ntimesteps, output_dir = "$output_dir/results")
+    run_sim(mcs, trials; ntimesteps = ntimesteps, output_dir = "$output_dir/results")
 
     return nothing
 end

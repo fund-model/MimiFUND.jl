@@ -1,6 +1,4 @@
-﻿using Mimi
-
-@defcomp climaten2ocycle begin
+﻿@defcomp climaten2ocycle begin
     # Global N2O emissions in Mt of N
     globn2o = Parameter(index=[time])
 

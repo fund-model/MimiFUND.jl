@@ -1,6 +1,4 @@
-﻿using Mimi
-
-@defcomp impactdeathmorbidity begin
+﻿@defcomp impactdeathmorbidity begin
     regions = Index()
 
     dead = Variable(index=[time,regions])

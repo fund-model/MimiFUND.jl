@@ -1,9 +1,8 @@
-using Mimi
 using Distributions
 
 function getmcs()
         
-    mcs = @defmcs begin
+    mcs = @defsim begin
 
         aceiadd = ["USA" => Normal(0.0,0.025), "CAN" => Normal(0.0,0.025), "WEU" => Normal(0.0,0.025), "JPK" => Normal(0.0,0.0375), "ANZ" => Normal(0.0,0.0375), "EEU" => Normal(0.0,0.025), "FSU" => Normal(0.0,0.025), "MDE" => Normal(0.0,0.0875), "CAM" => Normal(0.0,0.05625), "LAM" => Normal(0.0,0.05625), "SAS" => Normal(0.0,0.0875), "SEA" => Normal(0.0,0.0875), "CHI" => Normal(0.0,0.0375), "MAF" => Normal(0.0,0.11875), "SSA" => Normal(0.0,0.11875), "SIS" => Normal(0.0,0.05625)]
         aeeiadd = ["USA" => Normal(0.0,0.0625), "CAN" => Normal(0.0,0.0625), "WEU" => Normal(0.0,0.0625), "JPK" => Normal(0.0,0.0625), "ANZ" => Normal(0.0,0.0625), "EEU" => Normal(0.0,0.1), "FSU" => Normal(0.0,0.1), "MDE" => Normal(0.0,0.15), "CAM" => Normal(0.0,0.15), "LAM" => Normal(0.0,0.15), "SAS" => Normal(0.0,0.15), "SEA" => Normal(0.0,0.15), "CHI" => Normal(0.0,0.175), "MAF" => Normal(0.0,0.15), "SSA" => Normal(0.0,0.15), "SIS" => Normal(0.0,0.15)]

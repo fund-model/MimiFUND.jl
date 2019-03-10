@@ -1,6 +1,4 @@
-﻿using Mimi
-
-@defcomp population begin
+﻿@defcomp population begin
     regions             = Index()
 
     population          = Variable(index=[time,regions])

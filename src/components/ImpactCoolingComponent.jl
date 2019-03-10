@@ -1,6 +1,4 @@
-﻿using Mimi
-
-@defcomp impactcooling begin
+﻿@defcomp impactcooling begin
     regions = Index()
 
     cooling = Variable(index=[time,regions])

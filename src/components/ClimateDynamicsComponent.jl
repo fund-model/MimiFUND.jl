@@ -1,6 +1,4 @@
-﻿using Mimi
-
-@defcomp climatedynamics begin
+﻿@defcomp climatedynamics begin
     # Total radiative forcing
     radforc = Parameter(index=[time])
 

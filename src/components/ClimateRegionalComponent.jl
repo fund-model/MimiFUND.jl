@@ -1,6 +1,4 @@
-﻿using Mimi
-
-@defcomp climateregional begin
+﻿@defcomp climateregional begin
     regions = Index()
     inputtemp = Parameter(index=[time])
     bregtmp = Parameter(index=[regions])

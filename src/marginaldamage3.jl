@@ -1,8 +1,3 @@
-using Mimi
-include("helper.jl")
-include("fund.jl")
-using .Fund 
-
 """
 Returns one default FUND model and one model with additional emissions of the specified gas in the specified year.
 """

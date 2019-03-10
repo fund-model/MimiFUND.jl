@@ -1,6 +1,4 @@
-﻿using Mimi
-
-@defcomp socioeconomic begin
+﻿@defcomp socioeconomic begin
 	regions = Index()
 
 	income = Variable(index=[time,regions])

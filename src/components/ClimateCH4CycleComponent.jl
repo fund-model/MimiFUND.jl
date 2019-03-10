@@ -1,6 +1,4 @@
-﻿using Mimi
-
-@defcomp climatech4cycle begin
+﻿@defcomp climatech4cycle begin
     # Global CH4 emissions in Mt of CH4
     globch4 = Parameter(index=[time])
 

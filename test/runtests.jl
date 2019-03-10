@@ -80,16 +80,8 @@ end #fund-integration testset
 
 @testset "test-marginaldamages" begin
 
-include("../src/marginaldamages.jl")
-md = getmarginaldamages()
-
-include("../src/marginaldamage3.jl")
-md3 = marginaldamage3()
-
-include("../src/new_marginaldamages.jl")
 scc = get_social_cost()
 md = getmarginaldamages()
-
 
 end #marginaldamages testset
 
@@ -99,14 +91,9 @@ end #marginaldamages testset
 
 @testset "test-mcs" begin
 
-include("../src/montecarlo/run_fund_mcs.jl")
-include("../src/montecarlo/run_fund_scc_mcs.jl")
-
 run_fund_mcs(10)        # Run 10 trials of basic FUND MCS
 run_fund_scc_mcs(10)    # Run 10 trials of FUND MCS SCC calculations
 
 end #test-mcs testset
 
 end #fund testset
-
-nothing

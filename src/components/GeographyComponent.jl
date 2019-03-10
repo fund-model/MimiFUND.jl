@@ -1,6 +1,4 @@
-﻿using Mimi
-
-@defcomp geography begin
+﻿@defcomp geography begin
     regions = Index()
 
     area = Variable(index=[time,regions])

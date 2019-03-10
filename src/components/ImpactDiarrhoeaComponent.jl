@@ -1,6 +1,4 @@
-﻿using Mimi
-
-@defcomp impactdiarrhoea begin
+﻿@defcomp impactdiarrhoea begin
     regions = Index()
 
     diadead = Variable(index=[time,regions])

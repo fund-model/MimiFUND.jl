@@ -1,6 +1,4 @@
-﻿using Mimi
-
-@defcomp biodiversity begin
+﻿@defcomp biodiversity begin
     # Number of species
     nospecies = Variable(index=[time])
 
