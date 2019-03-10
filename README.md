@@ -54,7 +54,7 @@ Many of these requirements are regularly updated. To make sure you have the late
 ```julia
 pkg> up
 ```
-##Running the model
+## Running the model
 
 The model uses the Mimi framework and it is highly recommended to read the Mimi documentation first to understand the code structure. For starter code on running the model just once, see the code in the file `examples/main.jl`.
 
