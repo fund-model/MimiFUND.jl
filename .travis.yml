@@ -10,7 +10,8 @@ before_install:
   - julia -e 'using Pkg; Pkg.add("CSVFiles")'
   - julia -e 'using Pkg; Pkg.add("DataFrames")'
   - julia -e 'using Pkg; Pkg.add("StatsBase")'
-
   - julia -e 'using Pkg; Pkg.add("Mimi")'
+  - julia -e 'using Pkg; registry add https://github.com/mimiframework/MimiRegistry.git'
+  - julia -e 'using Pkg; Pkg.add("MimiPAGE2009")'
 script:
   - julia test/runtests.jl
