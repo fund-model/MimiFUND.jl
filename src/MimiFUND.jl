@@ -41,8 +41,7 @@ include("components/ImpactAggregationComponent.jl")
 include("components/VslVmorbComponent.jl")
 
 export
-    getfund,  get_social_cost, getmarginaldamages, getmcs, run_fund_mcs, run_fund_scc_mcs
-    # getfund is a Function that returns a version of fund allowing for different user specifications
+    getfund # a function that returns a version of fund allowing for different user specifications
 
 
 const global default_nsteps = 1050

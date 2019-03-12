@@ -56,7 +56,7 @@ for c in map(name, Mimi.compdefs(m)), v in Mimi.variable_names(m, c)
         @test results ≈ validation_results atol = err_number #slight imprecision with these values due to rounding
 
     else
-        validation_results = convert(Array, df)
+        validation_results = convert(Matrix, df)
 
         #replace missings with missingvalue so they can be compared
         results[ismissing.(results)] .= missingvalue
@@ -80,19 +80,21 @@ end #fund-integration testset
 
 @testset "test-marginaldamages" begin
 
-scc = get_social_cost()
-md = getmarginaldamages()
+# new_marginaldamages.jl
+scc = MimiFUND.get_social_cost()
+md = MimiFUND.getmarginaldamages()
 
 end #marginaldamages testset
 
 #------------------------------------------------------------------------------
-# 4. Run basic test of MCS functionality
+# 4. Run basic test of Marginal Damages and MCS functionality
 #------------------------------------------------------------------------------
 
 @testset "test-mcs" begin
 
-run_fund_mcs(10)        # Run 10 trials of basic FUND MCS
-run_fund_scc_mcs(10)    # Run 10 trials of FUND MCS SCC calculations
+# mcs
+MimiFUND.run_fund_mcs(10)        # Run 10 trials of basic FUND MCS
+MimiFUND.run_fund_scc_mcs(10)    # Run 10 trials of FUND MCS SCC calculations
 
 end #test-mcs testset
 
