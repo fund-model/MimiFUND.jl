@@ -1,6 +1,4 @@
-﻿using Mimi
-
-@defcomp scenariouncertainty begin
+﻿@defcomp scenariouncertainty begin
     regions = Index()
 
     pgrowth = Variable(index=[time,regions])

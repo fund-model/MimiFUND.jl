@@ -1,8 +1,4 @@
-using Mimi
 using Dates
-
-include(joinpath(@__DIR__, "defmcs.jl"))                  # Defines FUND's distributional parameters
-include(joinpath(@__DIR__, "../new_marginaldamages.jl"))  # Defines FUND's marginal emissions model
 
 """
 Runs a Monte Carlo simulation with the FUND model over it's distirbutional parameters, and calculates
@@ -12,7 +8,7 @@ the Social Cost of Carbon for the specified `years` and discount `rates`.
 `output_dir`: an output directory; if none provided, will create and use "output/SCC yyyy-mm-dd HH-MM-SS MCtrials". 
 `save_trials`: whether or not to generate and save the MC trial values up front to a file.
 """
-function run_fund_scc_mcs(trials = 10000; years = [2020], rates = [0.03], ntimesteps = Fund.default_nsteps + 1, output_dir = nothing, save_trials = false)
+function run_fund_scc_mcs(trials = 10000; years = [2020], rates = [0.03], ntimesteps = MimiFUND.default_nsteps + 1, output_dir = nothing, save_trials = false)
 
     # Set up output directories
     output_dir = output_dir == nothing ? joinpath(@__DIR__, "../../output/", "SCC $(Dates.format(now(), "yyyy-mm-dd HH-MM-SS")) MC$trials") : output_dir
@@ -41,7 +37,7 @@ function run_fund_scc_mcs(trials = 10000; years = [2020], rates = [0.03], ntimes
     set_models!(mcs, mm)
 
     # Define scenario function
-    function _scenario_func(mcs::MonteCarloSimulation, tup::Tuple)
+    function _scenario_func(mcs::Simulation, tup::Tuple)
         
         # Unpack scenario tuple argument
         (rate, emissionyear) = tup
@@ -55,7 +51,7 @@ function run_fund_scc_mcs(trials = 10000; years = [2020], rates = [0.03], ntimes
     end
 
     # Define post trial function
-    function scc_calculation(mcs::MonteCarloSimulation, trialnum::Int, ntimesteps::Int, tup::Tuple)
+    function scc_calculation(mcs::Simulation, trialnum::Int, ntimesteps::Int, tup::Tuple)
 
         # Unpack scenario tuple argument
         (rate, emissionyear) = tup
@@ -82,7 +78,7 @@ function run_fund_scc_mcs(trials = 10000; years = [2020], rates = [0.03], ntimes
     end
 
     # Run monte carlo trials
-    run_mcs(mcs, trials, 2; 
+    run_sim(mcs, trials, 2; 
         ntimesteps = ntimesteps,
         output_dir = "$output_dir/results",
         scenario_args = scenario_args, 

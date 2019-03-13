@@ -5,6 +5,11 @@ using DelimitedFiles #base.DelimitedFiles
 
 include("helper.jl")
 
+include("new_marginaldamages.jl")
+include("montecarlo/defmcs.jl")
+include("montecarlo/run_fund_mcs.jl")
+include("montecarlo/run_fund_scc_mcs.jl")
+
 include("components/SocioEconomicComponent.jl")
 include("components/PopulationComponent.jl")
 include("components/EmissionsComponent.jl")
@@ -36,7 +41,7 @@ include("components/ImpactAggregationComponent.jl")
 include("components/VslVmorbComponent.jl")
 
 export
-    getfund     # Function that returns a version of fund allowing for different user specifications
+    getfund # a function that returns a version of fund allowing for different user specifications
 
 
 const global default_nsteps = 1050

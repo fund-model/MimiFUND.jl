@@ -1,6 +1,4 @@
-﻿using Mimi
-
-function interact(M, N)
+﻿function interact(M, N)
     d = 1.0 + (M * N)^0.75 * 2.01E-5 + (M * N)^1.52 * M * 5.31E-15
     return 0.47 * log(d)
 end

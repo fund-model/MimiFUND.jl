@@ -1,6 +1,4 @@
-﻿using Mimi
-
-@defcomp emissions begin
+﻿@defcomp emissions begin
     regions = Index()
 
     mitigationcost = Variable(index=[time,regions])

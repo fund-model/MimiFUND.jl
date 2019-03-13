@@ -1,6 +1,4 @@
-﻿using Mimi
-
-@defcomp impactbiodiversity begin
+﻿@defcomp impactbiodiversity begin
     regions = Index()
 
     # Change in number of species in relation to the year 2000

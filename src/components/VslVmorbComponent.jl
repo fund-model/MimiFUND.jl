@@ -1,5 +1,3 @@
-using Mimi
-
 @defcomp vslvmorb begin
     regions = Index()
 

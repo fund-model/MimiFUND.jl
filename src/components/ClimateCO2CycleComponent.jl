@@ -1,6 +1,4 @@
-﻿using Mimi
-
-@defcomp climateco2cycle begin
+﻿@defcomp climateco2cycle begin
     # Anthropogenic CO2 emissions in Mt of C
     mco2 = Parameter(index=[time])
 

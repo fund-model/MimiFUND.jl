@@ -1,6 +1,4 @@
-﻿using Mimi
-
-@defcomp ocean begin
+﻿@defcomp ocean begin
     # Sea-level rise in meters
     sea = Variable(index=[time])
 

@@ -22,25 +22,41 @@ FUND was originally developed by Richard Tol. It is now co-developed by David An
 
 The minimum requirement to run FUND is [Julia](http://julialang.org/) and the [Mimi](https://github.com/davidanthoff/Mimi.jl) package. To run the example IJulia notebook file you need to install [IJulia](https://github.com/JuliaLang/IJulia.jl).
 
-### Installing Julia
+### Software Requirements
 
-You can download Julia from [http://julialang.org/downloads/](http://julialang.org/downloads/). You should use the v0.6.x version and install it.
+You need to install [Julia 1.1.0](https://julialang.org) or newer to run this model.  You can download Julia from [http://julialang.org/downloads/](http://julialang.org/downloads/).
 
-### Installing the Mimi package
+### Preparing the Software Environment
 
-Start Julia and enter the following command on the Julia prompt:
+You first need to connect your julia installation with the central Mimi registry of Mimi models. This central registry is like a catalogue of models that use Mimi that is maintained by the Mimi project. To add this registry, run the following command at the julia package REPL:
 
-````julia
-Pkg.add("Mimi")
-````
+```julia
+pkg> registry add https://github.com/mimiframework/MimiRegistry.git
+You only need to run this command once on a computer.
+```
+
+The next step is to install MimiRICE2010.jl itself. You need to run the following command at the julia package REPL:
+
+```julia
+pkg> add MimiRICE2010
+```
+
+You probably also want to install the Mimi package into your julia environment, so that you can use some of the tools in there:
+
+```
+pkg> add Mimi
+```
 
 ### Keeping requirements up-to-date (optional)
 
 Many of these requirements are regularly updated. To make sure you have the latest versions, periodically execute the following command on the Julia prompt:
 
-````julia
-Pkg.update()
-````
+```julia
+pkg> up
+```
+## Running the model
+
+The model uses the Mimi framework and it is highly recommended to read the Mimi documentation first to understand the code structure. For starter code on running the model just once, see the code in the file `examples/main.jl`.
 
 ## Versions and academic use policy
 

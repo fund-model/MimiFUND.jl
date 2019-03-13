@@ -1,6 +1,4 @@
-﻿using Mimi
-
-@defcomp impactextratropicalstorms begin
+﻿@defcomp impactextratropicalstorms begin
     regions = Index()
 
     extratropicalstormsdam = Variable(index=[time,regions])

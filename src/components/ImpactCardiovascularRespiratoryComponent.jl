@@ -1,6 +1,4 @@
-﻿using Mimi
-
-@defcomp impactcardiovascularrespiratory begin
+﻿@defcomp impactcardiovascularrespiratory begin
     regions = Index()
 
     basecardvasc = Variable(index=[time,regions])
