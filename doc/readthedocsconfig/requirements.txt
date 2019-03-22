@@ -1,0 +1,3 @@
+pandoc-eqnos
+pandoc-tablenos
+
