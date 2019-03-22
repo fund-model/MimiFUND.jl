@@ -35,10 +35,10 @@ pkg> registry add https://github.com/mimiframework/MimiRegistry.git
 You only need to run this command once on a computer.
 ```
 
-The next step is to install MimiRICE2010.jl itself. You need to run the following command at the julia package REPL:
+The next step is to install MimiFUND.jl itself. You need to run the following command at the julia package REPL:
 
 ```julia
-pkg> add MimiRICE2010
+pkg> add MimiFUND
 ```
 
 You probably also want to install the Mimi package into your julia environment, so that you can use some of the tools in there:
