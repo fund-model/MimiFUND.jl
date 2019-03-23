@@ -80,8 +80,8 @@ end #fund-model testset
 
 @testset "test-marginaldamages" begin 
 
-scc = get_social_cost()
-md = getmarginaldamages()
+scc = MimiFUND.get_social_cost()
+md = MimiFUND.getmarginaldamages()
 
 
 end #marginaldamages testset
@@ -93,8 +93,8 @@ end #marginaldamages testset
 @testset "test-mcs" begin 
 
 # mcs
-run_fund_mcs(10)        # Run 10 trials of basic FUND MCS
-run_fund_scc_mcs(10)    # Run 10 trials of FUND MCS SCC calculations
+MimiFUND.run_fund_mcs(10)        # Run 10 trials of basic FUND MCS
+MimiFUND.run_fund_scc_mcs(10)    # Run 10 trials of FUND MCS SCC calculations
 
 end #test-mcs testset
 
