@@ -41,14 +41,14 @@ include("components/ImpactSeaLevelRiseComponent.jl")
 include("components/ImpactAggregationComponent.jl")
 include("components/VslVmorbComponent.jl")
 
-export 
-    getfund     # a function that returns a version of fund allowing for different user specifications
+export
+    getfund # a function that returns a version of fund allowing for different user specifications
 
 
 const global default_nsteps = 1050
 const global default_datadir = joinpath(dirname(@__FILE__), "..", "data")
 const global default_params = nothing
-  
+
 function getfund(; nsteps = default_nsteps, datadir = default_datadir, params = default_params)
 
     # ---------------------------------------------
@@ -256,6 +256,6 @@ function getfund(; nsteps = default_nsteps, datadir = default_datadir, params = 
 
     return m
 
-end 
+end
 
 end #module

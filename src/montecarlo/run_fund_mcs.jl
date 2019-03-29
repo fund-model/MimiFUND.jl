@@ -1,7 +1,7 @@
 using Dates
 
 """
-Runs a Monte Carlo simulation with the FUND model over it's distirbutional parameters.
+Runs a Monte Carlo simulation with the FUND model over it's distributional parameters.
 `trials`: the number of trials to run.
 `ntimesteps`: how many timesteps to run.
 `output_dir`: an output directory; if none provided, will create and use "output/yyyy-mm-dd HH-MM-SS MCtrials". 
@@ -17,13 +17,12 @@ function run_fund_mcs(trials = 10000; ntimesteps = MimiFUND.default_nsteps + 1, 
     mcs = getmcs()
 
     # Generate trials
-    if save_trials
-        generate_trials!(mcs, trials; filename = joinpath(output_dir, "trials.csv"))
-    end
+    filename = save_trials ? joinpath("$output_dir/trials.csv") : ""
+    generate_trials!(mcs, trials; filename=filename)
 
     # Run monte carlo trials
     set_models!(mcs, getfund())
-    run_sim(mcs, trials; ntimesteps = ntimesteps, output_dir = "$output_dir/results")
+    run_sim(mcs; trials = trials, ntimesteps = ntimesteps, output_dir = "$output_dir/results")
 
     return nothing
 end

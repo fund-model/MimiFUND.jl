@@ -10,7 +10,6 @@ before_install:
   - julia -e 'using Pkg; Pkg.add("CSVFiles")'
   - julia -e 'using Pkg; Pkg.add("DataFrames")'
   - julia -e 'using Pkg; Pkg.add("StatsBase")'
-
   - julia -e 'using Pkg; Pkg.add("Mimi")'
 script:
   - julia test/runtests.jl

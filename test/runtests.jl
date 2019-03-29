@@ -17,7 +17,7 @@ global default_nsteps = 1050
 global m = getfund()
 run(m)
 @test Mimi.time_labels(m) == collect(1950:1:1950+default_nsteps)
-   
+
 #default model created by getfund()
 global m1 = getfund()
 run(m1)
@@ -78,11 +78,11 @@ end #fund-model testset
 # 3. Test marginal damages functions (test that each function does not error)
 #------------------------------------------------------------------------------
 
-@testset "test-marginaldamages" begin 
+@testset "test-marginaldamages" begin
 
+# new_marginaldamages.jl
 scc = MimiFUND.get_social_cost()
 md = MimiFUND.getmarginaldamages()
-
 
 end #marginaldamages testset
 
@@ -90,7 +90,7 @@ end #marginaldamages testset
 # 4. Run basic test of MCS functionality
 #------------------------------------------------------------------------------
 
-@testset "test-mcs" begin 
+@testset "test-mcs" begin
 
 # mcs
 MimiFUND.run_fund_mcs(10)        # Run 10 trials of basic FUND MCS

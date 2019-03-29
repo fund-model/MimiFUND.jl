@@ -1,6 +1,5 @@
 using Dates
 
-
 """
 Runs a Monte Carlo simulation with the FUND model over it's distirbutional parameters, and calculates
 the Social Cost of Carbon for the specified `years` and discount `rates`.
@@ -79,7 +78,8 @@ function run_fund_scc_mcs(trials = 10000; years = [2020], rates = [0.03], ntimes
     end
 
     # Run monte carlo trials
-    run_sim(mcs, trials, 2; 
+    run_sim(mcs;
+        models_to_run = 2, 
         ntimesteps = ntimesteps,
         output_dir = "$output_dir/results",
         scenario_args = scenario_args, 

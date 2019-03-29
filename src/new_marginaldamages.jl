@@ -1,7 +1,5 @@
 import Mimi.compinstance
 
-
-
 """
 Creates a MarginalModel of FUND with additional emissions in the specified year for the specified gas. 
 """

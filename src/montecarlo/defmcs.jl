@@ -102,8 +102,7 @@ function getmcs()
         wvel = Truncated(Normal(1.16,0.46), 0.0, Inf)
         wvpdl = Truncated(Normal(0.47,0.12), 0.0, 1.0)
         wvsl = Truncated(Normal(-0.11,0.05), -1.0, 0.0)
+    end 
     
-    end
-
     return mcs
 end 
