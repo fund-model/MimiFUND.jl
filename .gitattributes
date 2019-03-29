@@ -1,0 +1,14 @@
+*				text=auto
+*.cs			eol=crlf diff=csharp
+*.config		eol=crlf
+*.csproj		eol=crlf
+*.dll			-text
+*.exe			-text
+*.GenericTest	eol=crlf
+*.sln			eol=crlf
+*.targets		eol=crlf
+*.testsettings	eol=crlf
+*.vsmdi			eol=crlf
+*.xaml			eol=crlf
+*.xlsm			-text
+*.xml			eol=crlf
