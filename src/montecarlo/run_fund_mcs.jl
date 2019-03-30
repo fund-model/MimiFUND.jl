@@ -17,8 +17,12 @@ function run_fund_mcs(trials = 10000; ntimesteps = MimiFUND.default_nsteps + 1, 
     mcs = getmcs()
 
     # Generate trials
-    filename = save_trials ? joinpath("$output_dir/trials.csv") : ""
-    generate_trials!(mcs, trials; filename=filename)
+    if save_trials
+        filename = joinpath("$output_dir/trials.csv")
+        generate_trials!(mcs, trials; filename=filename)
+    else
+        generate_trials!(mcs, trials)
+    end
 
     # Run monte carlo trials
     set_models!(mcs, getfund())
