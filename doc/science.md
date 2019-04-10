@@ -323,8 +323,7 @@ where
 -   $\rho$ = 10 (5-15) is a parameter, equal for all regions, denoting
     the speed of adaptation; $\rho$ is an expert guess.
 
-The model for the impact due to the level of climate change since 1990
-is:
+The model for the impact due to the level of climate change is:
 
 $$A_{t,r}^{l} = \delta_{r}^{l}T_{t} + \delta_{r}^{q}T_{t}^{2}$$ {#eq:A_3 tag="A.3"}
 
@@ -337,8 +336,7 @@ where
 
 -   $r$ denotes region;
 
--   $T$ denotes the change (in degree Celsius) in regional mean
-    temperature relative to 1990;
+-   $T$ denotes the global mean temperature above pre-industrial (in degree Celsius) at time $t$;
 
 -   $\delta_{r}^{l}$ and $\delta_{r}^{q}$ are parameters (see Table A),
     that follow from the regional change (in per cent) in agricultural
@@ -514,8 +512,7 @@ where
 
 -   $Y$ denotes income (in 1995 US dollar) at time $t$ in region $r$;
 
--   $T$ denotes the change in the global mean temperature relative to
-    1990 (in degree Celsius) at time $t$;
+-   $T$ denotes the global mean temperature above pre-industrial (in degree Celsius) at time $t$;
 
 -   $y$ denotes per capita income (in 1995 US dollar per person
     per year) at time $t$ in region $r$;
@@ -558,8 +555,7 @@ where
 
 -   $Y$ denotes income (in 1995 US dollar) at time $t$ in region $r$;
 
--   $T$ denotes the change in the global mean temperature relative to
-    1990 (in degree Celsius) at time $t$;
+-   $T$ denotes the global mean temperature above pre-industrial (in degree Celsius) at time $t$;
 
 -   $y$ denotes per capita income (in 1995 US dollar per person
     per year) at time $t$ in region $r$;
