@@ -29,8 +29,12 @@ function run_fund_scc_mcs(trials = 10000; years = [2020], rates = [0.03], ntimes
     mcs = getmcs()
 
     # Generate trials
-    filename = save_trials ? joinpath(@__DIR__, "$output_dir/trials.csv") : ""
-    generate_trials!(mcs, trials; filename=filename)
+    if save_trials
+        filename = joinpath(@__DIR__, "$output_dir/trials.csv")
+        generate_trials!(mcs, trials; filename=filename)
+    else
+        generate_trials!(mcs, trials)
+    end
 
     # Get FUND marginal model
     mm = create_marginal_FUND_model()
