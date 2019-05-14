@@ -4,10 +4,10 @@ Returns one default FUND model and one model with additional emissions of the sp
 function getmarginalmodels(; gas = :C, emissionyear = 2010, parameters = nothing, yearstorun = 1050)
 
     # Get default FUND model
-    m1 = getfund(nsteps = yearstorun, params = parameters)
+    m1 = MimiFUND.getmodel(nsteps = yearstorun, params = parameters)
 
     # Get model to add marginal emissions to
-    m2 = getfund(nsteps = yearstorun, params = parameters)
+    m2 = MimiFUND.getmodel(nsteps = yearstorun, params = parameters)
     add_comp!(m2, Mimi.adder, :marginalemission, before = :climateco2cycle, first = 1951)
     addem = zeros(yearstorun)
     addem[getindexfromyear(emissionyear)-1:getindexfromyear(emissionyear) + 8] .= 1.0

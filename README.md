@@ -58,6 +58,14 @@ pkg> up
 
 The model uses the Mimi framework and it is highly recommended to read the Mimi documentation first to understand the code structure. For starter code on running the model just once, see the code in the file `examples/main.jl`.
 
+The basic way of accessing a copy of the default MimiFUND model is the following:
+```
+using MimiFUND
+
+m = MimiFUND.getmodel()
+run(m)
+```
+
 ## Versions and academic use policy
 
 Released versions of FUND have a git tag in this repository *and* the ``master`` branch either points to that version, or a newer version. In general we increase at least the minor part of the version (the versions follow the ``major.minor.patch`` pattern) whenever we change any of the equations or calibrations. All versions with a git tag that is at least as new as the git tag that ``master`` points to have been used in at least one publication and we welcome if other researchers use those versions for their own work and in their publications.
