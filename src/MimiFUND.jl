@@ -252,4 +252,6 @@ function getfund(; nsteps = default_nsteps, datadir = default_datadir, params = 
 
 end
 
+getmodel = getfund
+
 end #module

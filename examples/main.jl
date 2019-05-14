@@ -1,7 +1,7 @@
 using Mimi
 using MimiFUND
 
-m = getfund()
+m = MimiFUND.getmodel()
 run(m)
 
 explore(m)
