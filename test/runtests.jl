@@ -14,18 +14,18 @@ using CSVFiles
 
 #default model exported by fund module
 global default_nsteps = 1050
-global m = getfund()
+global m = MimiFUND.getmodel()
 run(m)
 @test Mimi.time_labels(m) == collect(1950:1:1950+default_nsteps)
 
-#default model created by getfund()
-global m1 = getfund()
+#default model created by MimiFUND.getmodel()
+global m1 = MimiFUND.getmodel()
 run(m1)
 @test Mimi.time_labels(m1) == collect(1950:1:1950+default_nsteps)
 
-#use optional args for getfund()
+#use optional args for MimiFUND.getmodel()
 global new_nsteps = 10
-@test_throws ErrorException m2 = getfund(nsteps = new_nsteps) #should error because parameter lenghts won't match time dim
+@test_throws ErrorException m2 = MimiFUND.getmodel(nsteps = new_nsteps) #should error because parameter lenghts won't match time dim
 
 end #fund-model testset
 
@@ -37,7 +37,7 @@ end #fund-model testset
 
 Mimi.reset_compdefs()
 
-global m = getfund()
+global m = MimiFUND.getmodel()
 run(m)
 
 missingvalue = -999.999

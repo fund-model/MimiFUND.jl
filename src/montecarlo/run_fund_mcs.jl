@@ -25,7 +25,7 @@ function run_fund_mcs(trials = 10000; ntimesteps = MimiFUND.default_nsteps + 1, 
     end
 
     # Run monte carlo trials
-    set_models!(mcs, getfund())
+    set_models!(mcs, getmodel())
     run_sim(mcs; trials = trials, ntimesteps = ntimesteps, output_dir = "$output_dir/results")
 
     return nothing

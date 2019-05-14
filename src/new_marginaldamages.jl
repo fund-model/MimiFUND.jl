@@ -6,7 +6,7 @@ Creates a MarginalModel of FUND with additional emissions in the specified year 
 function create_marginal_FUND_model(; gas = :C, emissionyear = 2010, parameters = nothing, yearstorun = 1050)
 
     # Get default FUND model
-    FUND = getfund(nsteps = yearstorun, params = parameters)
+    FUND = getmodel(nsteps = yearstorun, params = parameters)
 
     # Build marginal model
     mm = create_marginal_model(FUND)
