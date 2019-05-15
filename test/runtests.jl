@@ -13,18 +13,18 @@ using CSVFiles
 @testset "fund-model" begin
 
 #default model exported by fund module
-global default_nsteps = 1050
-global m = MimiFUND.getmodel()
+default_nsteps = 1050
+m = MimiFUND.getmodel()
 run(m)
 @test Mimi.time_labels(m) == collect(1950:1:1950+default_nsteps)
 
 #default model created by MimiFUND.getmodel()
-global m1 = MimiFUND.getmodel()
+m1 = MimiFUND.getmodel()
 run(m1)
 @test Mimi.time_labels(m1) == collect(1950:1:1950+default_nsteps)
 
 #use optional args for MimiFUND.getmodel()
-global new_nsteps = 10
+new_nsteps = 10
 @test_throws ErrorException m2 = MimiFUND.getmodel(nsteps = new_nsteps) #should error because parameter lenghts won't match time dim
 
 end #fund-model testset
@@ -37,7 +37,7 @@ end #fund-model testset
 
 Mimi.reset_compdefs()
 
-global m = MimiFUND.getmodel()
+m = MimiFUND.getmodel()
 run(m)
 
 missingvalue = -999.999
@@ -81,6 +81,23 @@ end #fund-integration testset
 @testset "test-marginaldamages" begin
 
 # new_marginaldamages.jl
+
+# Test the default SCC function 
+scc = MimiFUND.computeSCC(emissionyear = 2020) 
+@test scc isa Float64   # test that it's not missing or a NaN
+
+# Test with a modified model and more keyword arguments
+m = MimiFUND.getmodel()
+update_param!(m, :climatesensitivity, 5)    
+scc = MimiFUND.computeSCC(m, emissionyear=2020, eta=0.85, prtp=0.0001, yearstorun=350, useequityweights=true)
+@test scc isa Float64   # test that it's not missing or a NaN
+
+# Test getMarginalModel
+mm = MimiFUND.getMarginalModel(emissionyear=2020, gas=:CH4)
+scc = MimiFUND.computeSCC(mm; emissionyear=2020, gas=:CH4)
+@test scc isa Float64   # test that it's not missing or a NaN
+
+# Test old exported versions of the functions
 scc = MimiFUND.get_social_cost()
 md = MimiFUND.getmarginaldamages()
 
