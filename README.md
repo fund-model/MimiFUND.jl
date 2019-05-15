@@ -65,6 +65,33 @@ using MimiFUND
 m = MimiFUND.getmodel()
 run(m)
 ```
+## Calculating the Social Cost of Carbon
+
+Here is an example of computing the social cost of carbon with MimiFUND:
+
+```
+using MimiFUND
+
+# Get the default version of the FUND model
+m = MimiFUND.getmodel()
+
+# make any modifications to your model
+update_param!(m, ...)
+
+# Compute the SCC from your model
+scc = MimiFUND.computeSCC(m, emissionyear = 2020, prtp=0.025)
+```
+There are several keyword arguments available to `computeSCC`. Note that the user must specify an `emissionyear`, but the rest have default values.
+```
+computeSCC(m,
+    emissionyear = nothing,  # user must specify an emission year for the SCC calculation
+    gas = :C,  # which greenhouse gas to use. The default is :C from carbon dioxide. Other options are :CH4, :N2O, and :SF6.
+    yearstorun = 1050,  # the number of timesteps to run and use for the SCC calculation. Default is the full time dimension from 1950 to 3000
+    eta = 0.,  # eta parameter for ramsey discounting
+    prtp = 0.03,  # pure rate of time preference parameter for discounting
+    useequityweights = false  # whether or not to use regional equity weighting
+)
+```
 
 ## Versions and academic use policy
 
