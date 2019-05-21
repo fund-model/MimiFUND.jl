@@ -18,7 +18,7 @@ function compute_scc(m::Model=get_model(); emissionyear::Int = nothing, gas::Sym
 
     emissionyear === nothing ? error("Must specify an emissionyear. Try `compute_scc(m, emissionyear=2020)`.") : nothing
 
-    mm = getMarginalModel(m; emissionyear = emissionyear, gas = gas)
+    mm = get_marginal_model(m; emissionyear = emissionyear, gas = gas)
 
     return compute_scc(mm, emissionyear=emissionyear, gas=gas, yearstorun=yearstorun, useequityweights=useequityweights, eta=eta, prtp=prtp)
 end
@@ -67,13 +67,13 @@ function compute_scc(mm::MarginalModel; emissionyear::Int = nothing, gas::Symbol
 end
 
 """
-getMarginalModel(m::Model = get_model(); emissionyear::Int = nothing, gas::Symbol = :C)
+get_marginal_model(m::Model = get_model(); emissionyear::Int = nothing, gas::Symbol = :C)
 
 Creates a Mimi MarginalModel where the provided m is the base model, and the marginal model has additional emissions of gas `gas` in year `emissionyear`.
 If no Model m is provided, the default model from MimiFUND.get_model() is used as the base model.
 """
-function getMarginalModel(m::Model = get_model(); emissionyear::Int = nothing, gas::Symbol = :C)
-    emissionyear == nothing ? error("Must specify emissionyear. Try `getMarginalModels(m, emissionyear=2020)`.") : nothing 
+function get_marginal_model(m::Model = get_model(); emissionyear::Int = nothing, gas::Symbol = :C)
+    emissionyear == nothing ? error("Must specify emissionyear. Try `get_marginal_models(m, emissionyear=2020)`.") : nothing 
 
     mm = create_marginal_model(m)
     add_marginal_emissions!(mm.marginal, emissionyear; gas = gas)

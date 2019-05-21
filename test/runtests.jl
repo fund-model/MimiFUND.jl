@@ -92,8 +92,8 @@ update_param!(m, :climatesensitivity, 5)
 scc = MimiFUND.compute_scc(m, emissionyear=2020, eta=0.85, prtp=0.0001, yearstorun=350, useequityweights=true)
 @test scc isa Float64   # test that it's not missing or a NaN
 
-# Test getMarginalModel
-mm = MimiFUND.getMarginalModel(emissionyear=2020, gas=:CH4)
+# Test get_marginal_model
+mm = MimiFUND.get_marginal_model(emissionyear=2020, gas=:CH4)
 scc = MimiFUND.compute_scc(mm; emissionyear=2020, gas=:CH4)
 @test scc isa Float64   # test that it's not missing or a NaN
 
