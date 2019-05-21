@@ -83,18 +83,18 @@ end #fund-integration testset
 # new_marginaldamages.jl
 
 # Test the default SCC function 
-scc = MimiFUND.computeSCC(emissionyear = 2020) 
+scc = MimiFUND.compute_scc(emissionyear = 2020) 
 @test scc isa Float64   # test that it's not missing or a NaN
 
 # Test with a modified model and more keyword arguments
 m = MimiFUND.get_model()
 update_param!(m, :climatesensitivity, 5)    
-scc = MimiFUND.computeSCC(m, emissionyear=2020, eta=0.85, prtp=0.0001, yearstorun=350, useequityweights=true)
+scc = MimiFUND.compute_scc(m, emissionyear=2020, eta=0.85, prtp=0.0001, yearstorun=350, useequityweights=true)
 @test scc isa Float64   # test that it's not missing or a NaN
 
 # Test getMarginalModel
 mm = MimiFUND.getMarginalModel(emissionyear=2020, gas=:CH4)
-scc = MimiFUND.computeSCC(mm; emissionyear=2020, gas=:CH4)
+scc = MimiFUND.compute_scc(mm; emissionyear=2020, gas=:CH4)
 @test scc isa Float64   # test that it's not missing or a NaN
 
 # Test old exported versions of the functions

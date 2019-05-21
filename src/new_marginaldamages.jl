@@ -1,7 +1,7 @@
 import Mimi.compinstance
 
 """
-computeSCC(m::Model=get_model(); emissionyear::Int = nothing, gas::Symbol = :C, yearstorun::Int = 1050, useequityweights::Bool = false, eta::Float64 = 0., prtp::Float64 = 0.03)
+compute_scc(m::Model=get_model(); emissionyear::Int = nothing, gas::Symbol = :C, yearstorun::Int = 1050, useequityweights::Bool = false, eta::Float64 = 0., prtp::Float64 = 0.03)
 
 Computes the social cost of carbon (or other gas if specified) for an emissions pulse in `emissionyear`
 for the provided MimiFUND model. If no model is provided, the default model from MimiFUND.get_model() is used.
@@ -14,23 +14,23 @@ TODO:
 - `emissionyear` or `year` keyword
 - Should we keep the yearstorun keyword, or should we allow users to specify a `horizon` keyword representing the final year instead?
 """
-function computeSCC(m::Model=get_model(); emissionyear::Int = nothing, gas::Symbol = :C, yearstorun::Int = 1050, useequityweights::Bool = false, eta::Float64 = 0., prtp::Float64 = 0.03)
+function compute_scc(m::Model=get_model(); emissionyear::Int = nothing, gas::Symbol = :C, yearstorun::Int = 1050, useequityweights::Bool = false, eta::Float64 = 0., prtp::Float64 = 0.03)
 
-    emissionyear === nothing ? error("Must specify an emissionyear. Try `computeSCC(m, emissionyear=2020)`.") : nothing
+    emissionyear === nothing ? error("Must specify an emissionyear. Try `compute_scc(m, emissionyear=2020)`.") : nothing
 
     mm = getMarginalModel(m; emissionyear = emissionyear, gas = gas)
 
-    return computeSCC(mm, emissionyear=emissionyear, gas=gas, yearstorun=yearstorun, useequityweights=useequityweights, eta=eta, prtp=prtp)
+    return compute_scc(mm, emissionyear=emissionyear, gas=gas, yearstorun=yearstorun, useequityweights=useequityweights, eta=eta, prtp=prtp)
 end
 
 """
-computeSCC(mm::MarginalModel; emissionyear::Int = nothing, gas::Symbol = :C, yearstorun::Int = 1050, useequityweights::Bool = false, eta::Float64 = 0., prtp::Float64 = 0.03)
+compute_scc(mm::MarginalModel; emissionyear::Int = nothing, gas::Symbol = :C, yearstorun::Int = 1050, useequityweights::Bool = false, eta::Float64 = 0., prtp::Float64 = 0.03)
 
 Computes the social cost of carbon (or other gas if specified) for an emissions pulse in `emissionyear`
 for the provided MimiFUND MarginalModel. The discount factor is computed from the specified `eta` and pure rate of time preference `prtp`.
 Optional regional equity weighting can be used by specifying useequityweights=true. 
 """
-function computeSCC(mm::MarginalModel; emissionyear::Int = nothing, gas::Symbol = :C, yearstorun::Int = 1050, useequityweights::Bool = false, eta::Float64 = 0., prtp::Float64 = 0.03)
+function compute_scc(mm::MarginalModel; emissionyear::Int = nothing, gas::Symbol = :C, yearstorun::Int = 1050, useequityweights::Bool = false, eta::Float64 = 0., prtp::Float64 = 0.03)
 
     # Run the model
     run(mm; ntimesteps = yearstorun + 1)

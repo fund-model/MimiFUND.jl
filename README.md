@@ -79,11 +79,11 @@ m = MimiFUND.get_model()
 update_param!(m, ...)
 
 # Compute the SCC from your model
-scc = MimiFUND.computeSCC(m, emissionyear = 2020, prtp=0.025)
+scc = MimiFUND.compute_scc(m, emissionyear = 2020, prtp=0.025)
 ```
-There are several keyword arguments available to `computeSCC`. Note that the user must specify an `emissionyear`, but the rest have default values.
+There are several keyword arguments available to `compute_scc`. Note that the user must specify an `emissionyear`, but the rest have default values.
 ```
-computeSCC(m,
+compute_scc(m,
     emissionyear = nothing,  # user must specify an emission year for the SCC calculation
     gas = :C,  # which greenhouse gas to use. The default is :C from carbon dioxide. Other options are :CH4, :N2O, and :SF6.
     yearstorun = 1050,  # the number of timesteps to run and use for the SCC calculation. Default is the full time dimension from 1950 to 3000
