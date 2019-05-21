@@ -62,7 +62,7 @@ The basic way of accessing a copy of the default MimiFUND model is the following
 ```
 using MimiFUND
 
-m = MimiFUND.getmodel()
+m = MimiFUND.get_model()
 run(m)
 ```
 ## Calculating the Social Cost of Carbon
@@ -73,7 +73,7 @@ Here is an example of computing the social cost of carbon with MimiFUND:
 using MimiFUND
 
 # Get the default version of the FUND model
-m = MimiFUND.getmodel()
+m = MimiFUND.get_model()
 
 # make any modifications to your model
 update_param!(m, ...)

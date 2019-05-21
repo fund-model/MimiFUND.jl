@@ -14,18 +14,18 @@ using CSVFiles
 
 #default model exported by fund module
 default_nsteps = 1050
-m = MimiFUND.getmodel()
+m = MimiFUND.get_model()
 run(m)
 @test Mimi.time_labels(m) == collect(1950:1:1950+default_nsteps)
 
-#default model created by MimiFUND.getmodel()
-m1 = MimiFUND.getmodel()
+#default model created by MimiFUND.get_model()
+m1 = MimiFUND.get_model()
 run(m1)
 @test Mimi.time_labels(m1) == collect(1950:1:1950+default_nsteps)
 
-#use optional args for MimiFUND.getmodel()
+#use optional args for MimiFUND.get_model()
 new_nsteps = 10
-@test_throws ErrorException m2 = MimiFUND.getmodel(nsteps = new_nsteps) #should error because parameter lenghts won't match time dim
+@test_throws ErrorException m2 = MimiFUND.get_model(nsteps = new_nsteps) #should error because parameter lenghts won't match time dim
 
 end #fund-model testset
 
@@ -37,7 +37,7 @@ end #fund-model testset
 
 Mimi.reset_compdefs()
 
-m = MimiFUND.getmodel()
+m = MimiFUND.get_model()
 run(m)
 
 missingvalue = -999.999
@@ -87,7 +87,7 @@ scc = MimiFUND.computeSCC(emissionyear = 2020)
 @test scc isa Float64   # test that it's not missing or a NaN
 
 # Test with a modified model and more keyword arguments
-m = MimiFUND.getmodel()
+m = MimiFUND.get_model()
 update_param!(m, :climatesensitivity, 5)    
 scc = MimiFUND.computeSCC(m, emissionyear=2020, eta=0.85, prtp=0.0001, yearstorun=350, useequityweights=true)
 @test scc isa Float64   # test that it's not missing or a NaN

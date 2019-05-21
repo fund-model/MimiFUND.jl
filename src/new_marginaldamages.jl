@@ -1,10 +1,10 @@
 import Mimi.compinstance
 
 """
-computeSCC(m::Model=getmodel(); emissionyear::Int = nothing, gas::Symbol = :C, yearstorun::Int = 1050, useequityweights::Bool = false, eta::Float64 = 0., prtp::Float64 = 0.03)
+computeSCC(m::Model=get_model(); emissionyear::Int = nothing, gas::Symbol = :C, yearstorun::Int = 1050, useequityweights::Bool = false, eta::Float64 = 0., prtp::Float64 = 0.03)
 
 Computes the social cost of carbon (or other gas if specified) for an emissions pulse in `emissionyear`
-for the provided MimiFUND model. If no model is provided, the default model from MimiFUND.getmodel() is used.
+for the provided MimiFUND model. If no model is provided, the default model from MimiFUND.get_model() is used.
 The discount factor is computed from the specified `eta` and pure rate of time preference `prtp`.
 Optional regional equity weighting can be used by specifying `useequityweights=true`. 
 
@@ -14,7 +14,7 @@ TODO:
 - `emissionyear` or `year` keyword
 - Should we keep the yearstorun keyword, or should we allow users to specify a `horizon` keyword representing the final year instead?
 """
-function computeSCC(m::Model=getmodel(); emissionyear::Int = nothing, gas::Symbol = :C, yearstorun::Int = 1050, useequityweights::Bool = false, eta::Float64 = 0., prtp::Float64 = 0.03)
+function computeSCC(m::Model=get_model(); emissionyear::Int = nothing, gas::Symbol = :C, yearstorun::Int = 1050, useequityweights::Bool = false, eta::Float64 = 0., prtp::Float64 = 0.03)
 
     emissionyear === nothing ? error("Must specify an emissionyear. Try `computeSCC(m, emissionyear=2020)`.") : nothing
 
@@ -67,12 +67,12 @@ function computeSCC(mm::MarginalModel; emissionyear::Int = nothing, gas::Symbol 
 end
 
 """
-getMarginalModel(m::Model = getmodel(); emissionyear::Int = nothing, gas::Symbol = :C)
+getMarginalModel(m::Model = get_model(); emissionyear::Int = nothing, gas::Symbol = :C)
 
 Creates a Mimi MarginalModel where the provided m is the base model, and the marginal model has additional emissions of gas `gas` in year `emissionyear`.
-If no Model m is provided, the default model from MimiFUND.getmodel() is used as the base model.
+If no Model m is provided, the default model from MimiFUND.get_model() is used as the base model.
 """
-function getMarginalModel(m::Model = getmodel(); emissionyear::Int = nothing, gas::Symbol = :C)
+function getMarginalModel(m::Model = get_model(); emissionyear::Int = nothing, gas::Symbol = :C)
     emissionyear == nothing ? error("Must specify emissionyear. Try `getMarginalModels(m, emissionyear=2020)`.") : nothing 
 
     mm = create_marginal_model(m)
@@ -87,7 +87,7 @@ Creates a MarginalModel of FUND with additional emissions in the specified year 
 function create_marginal_FUND_model(; gas = :C, emissionyear = 2010, parameters = nothing, yearstorun = 1050)
 
     # Get default FUND model
-    FUND = getmodel(nsteps = yearstorun, params = parameters)
+    FUND = get_model(nsteps = yearstorun, params = parameters)
 
     # Build marginal model
     mm = create_marginal_model(FUND)
