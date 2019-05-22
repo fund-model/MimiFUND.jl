@@ -73,18 +73,18 @@ Here is an example of computing the social cost of carbon with MimiFUND:
 using Mimi
 using MimiFUND
 
-# Get the default version of the FUND model
-m = MimiFUND.get_model()
+# Get the social cost of carbon in year 2020 from the default MimiFUND model:
+scc = MimiFUND.compute_scc(year = 2020)
 
-# make any modifications to your model
-update_param!(m, ...)
+# Or, you can also compute the SCC from a modified version of a MimiFUND model:
+m = MimiFUND.get_model() # Get the default version of the FUND model
+update_param!(m, :climatesensitivity, 5) # make any modifications to your model
+scc = MimiFUND.compute_scc(m, year = 2020) # Compute the SCC from your model
+```
 
-# Compute the SCC from your model
-scc = MimiFUND.compute_scc(m, emissionyear = 2020, prtp=0.025)
+There are several keyword arguments available to `compute_scc`. Note that the user must specify a `year` for the SCC calculation, but the rest of the keyword arguments have default values.
 ```
-There are several keyword arguments available to `compute_scc`. Note that the user must specify an `emissionyear`, but the rest have default values.
-```
-compute_scc(m,
+compute_scc(m = get_model(),  # if no model provided, will use the default MimiFUND model
     year = nothing,  # user must specify an emission year for the SCC calculation
     gas = :C,  # which greenhouse gas to use. The default is :C from carbon dioxide. Other options are :CH4, :N2O, and :SF6.
     last_year = 3000,  # the last year to run and use for the SCC calculation. Default is the last year of the time dimension, 3000.
