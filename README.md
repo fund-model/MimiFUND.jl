@@ -70,6 +70,7 @@ run(m)
 Here is an example of computing the social cost of carbon with MimiFUND:
 
 ```
+using Mimi
 using MimiFUND
 
 # Get the default version of the FUND model
@@ -84,13 +85,27 @@ scc = MimiFUND.compute_scc(m, emissionyear = 2020, prtp=0.025)
 There are several keyword arguments available to `compute_scc`. Note that the user must specify an `emissionyear`, but the rest have default values.
 ```
 compute_scc(m,
-    emissionyear = nothing,  # user must specify an emission year for the SCC calculation
+    year = nothing,  # user must specify an emission year for the SCC calculation
     gas = :C,  # which greenhouse gas to use. The default is :C from carbon dioxide. Other options are :CH4, :N2O, and :SF6.
-    yearstorun = 1050,  # the number of timesteps to run and use for the SCC calculation. Default is the full time dimension from 1950 to 3000
-    eta = 0.,  # eta parameter for ramsey discounting
-    prtp = 0.03,  # pure rate of time preference parameter for discounting
+    last_year = 3000,  # the last year to run and use for the SCC calculation. Default is the last year of the time dimension, 3000.
+    eta = 1.45,  # eta parameter for ramsey discounting representing the elasticity of marginal utility
+    prtp = 0.015,  # pure rate of time preference parameter for discounting
     useequityweights = false  # whether or not to use regional equity weighting
 )
+```
+
+There is an additional function for computing the SCC that also returns the MarginalModel that was used to compute it. It returns these two values as a NamedTuple of the form (scc=scc, mm=mm). The same keyword arguments from the `compute_scc` function are available for the `compute_scc_mm` function. Example:
+```
+using Mimi
+using MimiFUND
+
+result = compute_scc_mm(year=2020, last_year=2300, eta=0, prtp=0.03)
+
+result.scc  # returns the computed SCC value
+
+result.mm   # returns the Mimi MarginalModel
+
+result.mm[:climatedynamics, :temp]  # You can access the marginal results from the marginal model like this
 ```
 
 ## Versions and academic use policy

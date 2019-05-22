@@ -80,22 +80,34 @@ end #fund-integration testset
 
 @testset "test-marginaldamages" begin
 
-# new_marginaldamages.jl
+# Test functions from file "new_marginaldamages.jl"
 
-# Test the default SCC function 
-scc = MimiFUND.compute_scc(emissionyear = 2020) 
-@test scc isa Float64   # test that it's not missing or a NaN
+# Test the compute_scc function with various keyword arguments
+scc1 = MimiFUND.compute_scc(year = 2020) 
+@test scc1 isa Float64   # test that it's not missing or a NaN
+scc2 = MimiFUND.compute_scc(year = 2020, last_year=2300) 
+@test scc2 < scc1  # test that shorter horizon made it smaller
+scc3 = MimiFUND.compute_scc(year = 2020, last_year=2300, useequityweights=true) 
+@test scc3 > scc2  # test that equity weights made itbigger
+scc4 = MimiFUND.compute_scc(year = 2020, last_year=2300, useequityweights=true, eta=.8, prtp=0.01) 
+@test scc4 > scc3   # test that lower eta and prtp make scc higher
+scc5 = MimiFUND.compute_scc(year = 2020, gas=:CH4) 
+@test scc5 > scc1   # test social cost of methane is higher
 
-# Test with a modified model and more keyword arguments
+# Test with a modified model
 m = MimiFUND.get_model()
 update_param!(m, :climatesensitivity, 5)    
-scc = MimiFUND.compute_scc(m, emissionyear=2020, eta=0.85, prtp=0.0001, yearstorun=350, useequityweights=true)
-@test scc isa Float64   # test that it's not missing or a NaN
+scc6 = MimiFUND.compute_scc(m, year=2020, last_year=2300)
+@test scc6 > scc2 # test that it's higher than the default because of a higher climate sensitivity 
 
 # Test get_marginal_model
-mm = MimiFUND.get_marginal_model(emissionyear=2020, gas=:CH4)
-scc = MimiFUND.compute_scc(mm; emissionyear=2020, gas=:CH4)
-@test scc isa Float64   # test that it's not missing or a NaN
+mm = MimiFUND.get_marginal_model(year=2020, gas=:CH4)
+run(mm)
+
+# Test compute_scc_mm
+result = MimiFUND.compute_scc_mm(year=2050)
+@test result.scc isa Float64
+@test result.mm isa Mimi.MarginalModel
 
 # Test old exported versions of the functions
 scc = MimiFUND.get_social_cost()
