@@ -11,6 +11,8 @@ Optional regional equity weighting can be used by specifying `equity_weights=tru
 function compute_scc(m::Model=get_model(); year::Union{Int, Nothing} = nothing, gas::Symbol = :CO2, last_year::Int = 3000, equity_weights::Bool = false, eta::Float64 = 1.45, prtp::Float64 = 0.015)
 
     year === nothing ? error("Must specify an emission year. Try `compute_scc(m, year=2020)`.") : nothing
+    !(last_year in 1950:3000) ? error("Invlaid value of $last_year for last_year. last_year must be within the model's time index 1950:3000.") : nothing
+    !(year in 1950:last_year) ? error("Cannot compute the scc for year $year, year must be within the model's time index 1950:$last_year.") : nothing
 
     mm = get_marginal_model(m; year = year, gas = gas)
 
@@ -28,6 +30,8 @@ Optional regional equity weighting can be used by specifying `equity_weights=tru
 """
 function compute_scc_mm(m::Model=get_model(); year::Union{Int, Nothing} = nothing, gas::Symbol = :CO2, last_year::Int = 3000, equity_weights::Bool = false, eta::Float64 = 1.45, prtp::Float64 = 0.015)
     year === nothing ? error("Must specify an emission year. Try `compute_scc_mm(m, year=2020)`.") : nothing
+    !(last_year in 1950:3000) ? error("Invlaid value of $last_year for last_year. last_year must be within the model's time index 1950:3000.") : nothing
+    !(year in 1950:last_year) ? error("Cannot compute the scc for year $year, year must be within the model's time index 1950:$last_year.") : nothing
 
     mm = get_marginal_model(m; year = year, gas = gas)
     scc = _compute_scc(mm; year=year, gas=gas, last_year=last_year, equity_weights=equity_weights, eta=eta, prtp=prtp)
@@ -78,7 +82,8 @@ Creates a Mimi MarginalModel where the provided m is the base model, and the mar
 If no Model m is provided, the default model from MimiFUND.get_model() is used as the base model.
 """
 function get_marginal_model(m::Model = get_model(); year::Int = nothing, gas::Symbol = :CO2)
-    year == nothing ? error("Must specify emission year. Try `get_marginal_models(m, year=2020)`.") : nothing 
+    year == nothing ? error("Must specify emission year. Try `get_marginal_model(m, year=2020)`.") : nothing 
+    !(year in 1950:3000) ? error("Cannot add marginal emissions in $year, year must be within the model's time index 1950:3000.") : nothing
 
     mm = create_marginal_model(m)
     add_marginal_emissions!(mm.marginal, year; gas = gas)
