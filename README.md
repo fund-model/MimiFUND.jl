@@ -1,6 +1,6 @@
 # FUND
 
-[![Build Status](https://travis-ci.org/fund-model/fund.svg?branch=master)](https://travis-ci.org/fund-model/fund)
+[![Build Status](https://travis-ci.org/fund-model/MimiFUND.jl.svg?branch=master)](https://travis-ci.org/fund-model/MimiFUND.jl)
 
 ## Overview
 
@@ -20,7 +20,7 @@ FUND was originally developed by Richard Tol. It is now co-developed by David An
 
 ## Getting Started
 
-The minimum requirement to run FUND is [Julia](http://julialang.org/) and the [Mimi](https://github.com/davidanthoff/Mimi.jl) package. To run the example IJulia notebook file you need to install [IJulia](https://github.com/JuliaLang/IJulia.jl).
+The minimum requirement to run FUND is [Julia](http://julialang.org/) and the [Mimi](https://github.com/mimiframework/Mimi.jl) package. To run the example IJulia notebook file you need to install [IJulia](https://github.com/JuliaLang/IJulia.jl).
 
 ### Software Requirements
 
