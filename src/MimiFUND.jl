@@ -48,7 +48,7 @@ const global default_nsteps = 1050
 const global default_datadir = joinpath(dirname(@__FILE__), "..", "data")
 const global default_params = nothing
 
-function getmodel(; nsteps = default_nsteps, datadir = default_datadir, params = default_params)
+function get_model(; nsteps = default_nsteps, datadir = default_datadir, params = default_params)
 
     # ---------------------------------------------
     # Load parameters
@@ -252,6 +252,6 @@ function getmodel(; nsteps = default_nsteps, datadir = default_datadir, params =
 
 end
 
-getfund = getmodel
+getfund = get_model
 
 end #module
