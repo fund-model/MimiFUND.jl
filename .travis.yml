@@ -11,6 +11,5 @@ branches:
   - master
   - /release-.*/
   - /v(\d+)\.(\d+)\.(\d+)/
-
 after_success:
   - julia -e 'using Pkg; cd(Pkg.dir("MimiFUND")); Pkg.add("Coverage"); using Coverage; Codecov.submit(process_folder())'
