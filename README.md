@@ -67,7 +67,7 @@ run(m)
 ```
 ## Calculating the Social Cost of Carbon
 
-Here is an example of computing the social cost of carbon with MimiFUND:
+Here is an example of computing the social cost of carbon with MimiFUND. Note that the units of the returned value are $/ton CO2.
 
 ```
 using Mimi
@@ -86,11 +86,11 @@ There are several keyword arguments available to `compute_scc`. Note that the us
 ```
 compute_scc(m = get_model(),  # if no model provided, will use the default MimiFUND model
     year = nothing,  # user must specify an emission year for the SCC calculation
-    gas = :C,  # which greenhouse gas to use. The default is :C from carbon dioxide. Other options are :CH4, :N2O, and :SF6.
+    gas = :CO2,  # which greenhouse gas to use. Other options are :CH4, :N2O, and :SF6.
     last_year = 3000,  # the last year to run and use for the SCC calculation. Default is the last year of the time dimension, 3000.
     eta = 1.45,  # eta parameter for ramsey discounting representing the elasticity of marginal utility
     prtp = 0.015,  # pure rate of time preference parameter for discounting
-    useequityweights = false  # whether or not to use regional equity weighting
+    equity_weights = false  # whether or not to use regional equity weighting
 )
 ```
 
@@ -105,7 +105,7 @@ result.scc  # returns the computed SCC value
 
 result.mm   # returns the Mimi MarginalModel
 
-result.mm[:climatedynamics, :temp]  # You can access the marginal results from the marginal model like this
+marginal_temp = result.mm[:climatedynamics, :temp]  # marginal results from the marginal model can be accessed like this
 ```
 
 ## Versions and academic use policy

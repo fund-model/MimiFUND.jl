@@ -1,48 +1,42 @@
 import Mimi.compinstance
 
 """
-compute_scc(m::Model=get_model(); year::Int = nothing, gas::Symbol = :C, yearstorun::Int = 1050, useequityweights::Bool = false, eta::Float64 = 0., prtp::Float64 = 0.03)
+compute_scc(m::Model=get_model(); year::Int = nothing, gas::Symbol = :C, yearstorun::Int = 1050, equity_weights::Bool = false, eta::Float64 = 0., prtp::Float64 = 0.03)
 
-Computes the social cost of carbon (or other gas if specified) for an emissions pulse in `year`
+Computes the social cost of CO2 (or other gas if specified) for an emissions pulse in `year`
 for the provided MimiFUND model. If no model is provided, the default model from MimiFUND.get_model() is used.
 The discount factor is computed from the specified `eta` and pure rate of time preference `prtp`.
-Optional regional equity weighting can be used by specifying `useequityweights=true`. 
-
-TODO: 
-- This returns social cost of CO2, not carbon, should we multiply by 44/12 if gas==:C ? Or if we want to leave it as social cost of CO2, then should gas==:CO2 ?
-- should the default for useequityweights be `true` or `false`, and should it be use_equity_weights?
+Optional regional equity weighting can be used by specifying `equity_weights=true`. 
 """
-function compute_scc(m::Model=get_model(); year::Union{Int, Nothing} = nothing, gas::Symbol = :C, last_year::Int = 3000, useequityweights::Bool = false, eta::Float64 = 1.45, prtp::Float64 = 0.015)
+function compute_scc(m::Model=get_model(); year::Union{Int, Nothing} = nothing, gas::Symbol = :CO2, last_year::Int = 3000, equity_weights::Bool = false, eta::Float64 = 1.45, prtp::Float64 = 0.015)
 
     year === nothing ? error("Must specify an emission year. Try `compute_scc(m, year=2020)`.") : nothing
 
     mm = get_marginal_model(m; year = year, gas = gas)
 
-    return _compute_scc(mm, year=year, gas=gas, last_year=last_year, useequityweights=useequityweights, eta=eta, prtp=prtp)
+    return _compute_scc(mm, year=year, gas=gas, last_year=last_year, equity_weights=equity_weights, eta=eta, prtp=prtp)
 end
 
 """
-compute_scc_mm(m::Model=get_model(); year::Union{Int, Nothing} = nothing, gas::Symbol = :C, last_year::Int = 3000, useequityweights::Bool = false, eta::Float64 = 1.45, prtp::Float64 = 0.015)
+compute_scc_mm(m::Model=get_model(); year::Union{Int, Nothing} = nothing, gas::Symbol = :C, last_year::Int = 3000, equity_weights::Bool = false, eta::Float64 = 1.45, prtp::Float64 = 0.015)
 
 Returns a NamedTuple (scc=scc, mm=mm) of the social cost of carbon and the MarginalModel used to compute it.
-Computes the social cost of carbon (or other gas if specified) for an emissions pulse in `year`
+Computes the social cost of CO2 (or other gas if specified) for an emissions pulse in `year`
 for the provided MimiFUND model. If no model is provided, the default model from MimiFUND.get_model() is used.
 The discount factor is computed from the specified `eta` and pure rate of time preference `prtp`.
-Optional regional equity weighting can be used by specifying `useequityweights=true`. 
-
-TODO: what are the names of the tuple? currently `scc` and `mm`
+Optional regional equity weighting can be used by specifying `equity_weights=true`. 
 """
-function compute_scc_mm(m::Model=get_model(); year::Union{Int, Nothing} = nothing, gas::Symbol = :C, last_year::Int = 3000, useequityweights::Bool = false, eta::Float64 = 1.45, prtp::Float64 = 0.015)
+function compute_scc_mm(m::Model=get_model(); year::Union{Int, Nothing} = nothing, gas::Symbol = :CO2, last_year::Int = 3000, equity_weights::Bool = false, eta::Float64 = 1.45, prtp::Float64 = 0.015)
     year === nothing ? error("Must specify an emission year. Try `compute_scc_mm(m, year=2020)`.") : nothing
 
     mm = get_marginal_model(m; year = year, gas = gas)
-    scc = _compute_scc(mm; year=year, gas=gas, last_year=last_year, useequityweights=useequityweights, eta=eta, prtp=prtp)
+    scc = _compute_scc(mm; year=year, gas=gas, last_year=last_year, equity_weights=equity_weights, eta=eta, prtp=prtp)
     
     return (scc = scc, mm = mm)
 end
 
 # helper function for computing SCC from a MarginalModel, not to be exported
-function _compute_scc(mm::MarginalModel; year::Int, gas::Symbol, last_year::Int, useequityweights::Bool, eta::Float64, prtp::Float64)
+function _compute_scc(mm::MarginalModel; year::Int, gas::Symbol, last_year::Int, equity_weights::Bool, eta::Float64, prtp::Float64)
     ntimesteps = getindexfromyear(last_year)
     run(mm; ntimesteps = ntimesteps)
     m1, m2 = mm.base, mm.marginal
@@ -58,7 +52,7 @@ function _compute_scc(mm::MarginalModel; year::Int, gas::Symbol, last_year::Int,
 
     # Compute discount factor with or without equityweights
     df = zeros(ntimesteps, 16)
-    if !useequityweights
+    if !equity_weights
         for r = 1:16
             x = 1.
             for t = getindexfromyear(year):ntimesteps
@@ -83,7 +77,7 @@ get_marginal_model(m::Model = get_model(); year::Int = nothing, gas::Symbol = :C
 Creates a Mimi MarginalModel where the provided m is the base model, and the marginal model has additional emissions of gas `gas` in year `year`.
 If no Model m is provided, the default model from MimiFUND.get_model() is used as the base model.
 """
-function get_marginal_model(m::Model = get_model(); year::Int = nothing, gas::Symbol = :C)
+function get_marginal_model(m::Model = get_model(); year::Int = nothing, gas::Symbol = :CO2)
     year == nothing ? error("Must specify emission year. Try `get_marginal_models(m, year=2020)`.") : nothing 
 
     mm = create_marginal_model(m)
@@ -95,7 +89,7 @@ end
 """
 Adds a marginalemission component to m, and sets the additional emissions if a year is specified.
 """
-function add_marginal_emissions!(m, year = nothing; gas = :C)
+function add_marginal_emissions!(m, year = nothing; gas = :CO2)
 
     # Add additional emissions to m
     add_comp!(m, Mimi.adder, :marginalemission, before = :climateco2cycle, first = 1951)
@@ -107,7 +101,7 @@ function add_marginal_emissions!(m, year = nothing; gas = :C)
     set_param!(m, :marginalemission, :add, addem)
 
     # Reconnect the appropriate emissions in m
-    if gas == :C
+    if gas == :CO2
         connect_param!(m, :marginalemission, :input, :emissions, :mco2)
         connect_param!(m, :climateco2cycle, :mco2, :marginalemission, :output, repeat([missing], nyears))
     elseif gas == :CH4
@@ -143,7 +137,7 @@ end
 """
 Creates a MarginalModel of FUND with additional emissions in the specified year for the specified gas. 
 """
-function create_marginal_FUND_model(; gas = :C, year = 2010, parameters = nothing, yearstorun = 1050)
+function create_marginal_FUND_model(; gas = :CO2, year = 2010, parameters = nothing, yearstorun = 1050)
 
     # Get default FUND model
     FUND = get_model(nsteps = yearstorun, params = parameters)
@@ -163,11 +157,11 @@ end
 Returns the social cost per one ton of additional emissions of the specified gas in the specified year. 
 Uses the specified eta and prtp for discounting, with the option to use equity weights.
 """
-function get_social_cost(; year = 2010, parameters = nothing, yearstoaggregate = 1000, gas = :C, useequityweights = false, eta = 1.0, prtp = 0.001)
+function get_social_cost(; year = 2010, parameters = nothing, yearstoaggregate = 1000, gas = :CO2, equity_weights = false, eta = 1.0, prtp = 0.001)
 
     # Get marginal model
     yearstorun = min(1050, getindexfromyear(year) + yearstoaggregate)
-    mm = create_marginal_FUND_model(year = year, parameters = parameters, yearstorun = yearstorun, gas = :C)
+    mm = create_marginal_FUND_model(year = year, parameters = parameters, yearstorun = yearstorun, gas = gas)
     run(mm)
     m1, m2 = mm.base, mm.marginal
 
@@ -182,7 +176,7 @@ function get_social_cost(; year = 2010, parameters = nothing, yearstoaggregate =
     ypc = m1[:socioeconomic, :ypc]
 
     df = zeros(yearstorun + 1, 16)
-    if !useequityweights
+    if !equity_weights
         for r = 1:16
             x = 1.
             for t = getindexfromyear(year):yearstorun
@@ -204,11 +198,11 @@ end
 """
 Returns a matrix of marginal damages per one ton of additional emissions of the specified gas in the specified year.
 """
-function getmarginaldamages(; year=2010, parameters = nothing, yearstoaggregate = 1000, gas = :C) 
+function getmarginaldamages(; year=2010, parameters = nothing, yearstoaggregate = 1000, gas = :CO2) 
 
     # Get marginal model
     yearstorun = min(1050, getindexfromyear(year) + yearstoaggregate)
-    mm = create_marginal_FUND_model(year = year, parameters = parameters, yearstorun = yearstorun, gas = :C)
+    mm = create_marginal_FUND_model(year = year, parameters = parameters, yearstorun = yearstorun, gas = gas)
     run(mm)
 
     # Get damages

@@ -87,9 +87,9 @@ scc1 = MimiFUND.compute_scc(year = 2020)
 @test scc1 isa Float64   # test that it's not missing or a NaN
 scc2 = MimiFUND.compute_scc(year = 2020, last_year=2300) 
 @test scc2 < scc1  # test that shorter horizon made it smaller
-scc3 = MimiFUND.compute_scc(year = 2020, last_year=2300, useequityweights=true) 
+scc3 = MimiFUND.compute_scc(year = 2020, last_year=2300, equity_weights=true) 
 @test scc3 > scc2  # test that equity weights made itbigger
-scc4 = MimiFUND.compute_scc(year = 2020, last_year=2300, useequityweights=true, eta=.8, prtp=0.01) 
+scc4 = MimiFUND.compute_scc(year = 2020, last_year=2300, equity_weights=true, eta=.8, prtp=0.01) 
 @test scc4 > scc3   # test that lower eta and prtp make scc higher
 scc5 = MimiFUND.compute_scc(year = 2020, gas=:CH4) 
 @test scc5 > scc1   # test social cost of methane is higher
