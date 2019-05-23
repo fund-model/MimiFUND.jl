@@ -5,3 +5,4 @@ doc/fund-tables.pdf
 .DS_Store
 output/*
 Manifest.toml
+.vscode
