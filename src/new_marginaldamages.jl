@@ -1,7 +1,7 @@
 import Mimi.compinstance
 
 """
-compute_scc(m::Model=get_model(); year::Int = nothing, gas::Symbol = :C, yearstorun::Int = 1050, equity_weights::Bool = false, eta::Float64 = 0., prtp::Float64 = 0.03)
+compute_scc(m::Model=get_model(); year::Int = nothing, gas::Symbol = :CO2, last_year::Int = 3000, equity_weights::Bool = false, eta::Float64 = 1.45, prtp::Float64 = 0.015)
 
 Computes the social cost of CO2 (or other gas if specified) for an emissions pulse in `year`
 for the provided MimiFUND model. If no model is provided, the default model from MimiFUND.get_model() is used.
@@ -18,7 +18,7 @@ function compute_scc(m::Model=get_model(); year::Union{Int, Nothing} = nothing, 
 end
 
 """
-compute_scc_mm(m::Model=get_model(); year::Union{Int, Nothing} = nothing, gas::Symbol = :C, last_year::Int = 3000, equity_weights::Bool = false, eta::Float64 = 1.45, prtp::Float64 = 0.015)
+compute_scc_mm(m::Model=get_model(); year::Union{Int, Nothing} = nothing, gas::Symbol = :CO2, last_year::Int = 3000, equity_weights::Bool = false, eta::Float64 = 1.45, prtp::Float64 = 0.015)
 
 Returns a NamedTuple (scc=scc, mm=mm) of the social cost of carbon and the MarginalModel used to compute it.
 Computes the social cost of CO2 (or other gas if specified) for an emissions pulse in `year`
@@ -72,7 +72,7 @@ function _compute_scc(mm::MarginalModel; year::Int, gas::Symbol, last_year::Int,
 end
 
 """
-get_marginal_model(m::Model = get_model(); year::Int = nothing, gas::Symbol = :C)
+get_marginal_model(m::Model = get_model(); year::Int = nothing, gas::Symbol = :CO2)
 
 Creates a Mimi MarginalModel where the provided m is the base model, and the marginal model has additional emissions of gas `gas` in year `year`.
 If no Model m is provided, the default model from MimiFUND.get_model() is used as the base model.
