@@ -1,15 +1,16 @@
 language: julia
 os:
   - linux
+  - osx
 julia:
   - 1.1
 notifications:
   email: false
-before_install:
-  - julia -e 'using Pkg; Pkg.add("Distributions")'
-  - julia -e 'using Pkg; Pkg.add("CSVFiles")'
-  - julia -e 'using Pkg; Pkg.add("DataFrames")'
-  - julia -e 'using Pkg; Pkg.add("StatsBase")'
-  - julia -e 'using Pkg; Pkg.add("Mimi")'
-script:
-  - julia test/runtests.jl
+branches:
+  only:
+  - master
+  - /release-.*/
+  - /v(\d+)\.(\d+)\.(\d+)/
+
+after_success:
+  - julia -e 'using Pkg; cd(Pkg.dir("MimiFUND")); Pkg.add("Coverage"); using Coverage; Codecov.submit(process_folder())'
