@@ -43,16 +43,10 @@ end
 function _compute_scc(mm::MarginalModel; year::Int, gas::Symbol, last_year::Int, equity_weights::Bool, eta::Float64, prtp::Float64)
     ntimesteps = getindexfromyear(last_year)
     run(mm; ntimesteps = ntimesteps)
-    m1, m2 = mm.base, mm.marginal
 
-    damage1 = m1[:impactaggregation, :loss]
-    # Take out growth effect effect of run 2 by transforming the damage from run 2 into % of GDP of run 2, and then multiplying that with GDP of run 1
-    damage2 = m2[:impactaggregation, :loss] ./ m2[:socioeconomic, :income] .* m1[:socioeconomic, :income]
+    marginaldamage = mm[:impactaggregation, :loss]
 
-    # Calculate the marginal damage between run 1 and 2 for each year/region
-    marginaldamage = (damage2 .- damage1) / 10000000.0  # The pulse was 1 MtCO2 for ten years, so divide by 10^7
-
-    ypc = m1[:socioeconomic, :ypc]
+    ypc = mm.base[:socioeconomic, :ypc]
 
     # Compute discount factor with or without equityweights
     df = zeros(ntimesteps, 16)
@@ -66,7 +60,7 @@ function _compute_scc(mm::MarginalModel; year::Int, gas::Symbol, last_year::Int,
             end
         end
     else
-        globalypc = m1[:socioeconomic, :globalypc]
+        globalypc = mm.base[:socioeconomic, :globalypc]
         df = Float64[t >= getindexfromyear(year) ? (globalypc[getindexfromyear(year)] / ypc[t, r]) ^ eta / (1.0 + prtp) ^ (t - getindexfromyear(year)) : 0.0 for t = 1:ntimesteps, r = 1:16]
     end 
 
@@ -85,7 +79,7 @@ function get_marginal_model(m::Model = get_model(); year::Int = nothing, gas::Sy
     year == nothing ? error("Must specify emission year. Try `get_marginal_model(m, year=2020)`.") : nothing 
     !(year in 1950:3000) ? error("Cannot add marginal emissions in $year, year must be within the model's time index 1950:3000.") : nothing
 
-    mm = create_marginal_model(m)
+    mm = create_marginal_model(m, 1e7)  # pulse size is 1MtC for ten years
     add_marginal_emissions!(mm.marginal, year; gas = gas)
 
     return mm
