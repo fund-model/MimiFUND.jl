@@ -44,12 +44,7 @@ function _compute_scc(mm::MarginalModel; year::Int, gas::Symbol, last_year::Int,
     ntimesteps = getindexfromyear(last_year)
     run(mm; ntimesteps = ntimesteps)
 
-    damage1 = mm.base[:impactaggregation, :loss]
-    # Take out growth effect effect of run 2 by transforming the damage from run 2 into % of GDP of run 2, and then multiplying that with GDP of run 1
-    damage2 = mm.marginal[:impactaggregation, :loss] ./ mm.marginal[:socioeconomic, :income] .* mm.base[:socioeconomic, :income]
-
-    # Calculate the marginal damage between run 1 and 2 for each year/region
-    marginaldamage = (damage2 .- damage1) / 10000000.0  # The pulse was 1 MtCO2 for ten years, so divide by 10^7
+    marginaldamage = mm[:impactaggregation, :loss]
 
     ypc = mm.base[:socioeconomic, :ypc]
 
