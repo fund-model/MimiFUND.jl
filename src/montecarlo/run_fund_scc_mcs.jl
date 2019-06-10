@@ -74,7 +74,7 @@ function run_fund_scc_mcs(trials = 10000; years = [2020], rates = [0.03], ntimes
     end
 
     # Run monte carlo trials
-    run(mcs, models, trials;
+    res = run(mcs, models, trials;
         ntimesteps = ntimesteps,
         trials_output_filename = trials_output_filename,
         results_output_dir = "$output_dir/results",
@@ -83,6 +83,6 @@ function run_fund_scc_mcs(trials = 10000; years = [2020], rates = [0.03], ntimes
         post_trial_func = scc_calculation   
         )
 
-    return nothing
+    return res
 end 
 
