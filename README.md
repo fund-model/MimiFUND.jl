@@ -84,7 +84,7 @@ scc = MimiFUND.compute_scc(m, year = 2020) # Compute the SCC from your model
 
 There are several keyword arguments available to `compute_scc`. Note that the user must specify a `year` for the SCC calculation, but the rest of the keyword arguments have default values.
 ```
-compute_scc(m = get_model(),  # if no model provided, will use the default MimiFUND model
+MimiFUND.compute_scc(m = get_model(),  # if no model provided, will use the default MimiFUND model
     year = nothing,  # user must specify an emission year for the SCC calculation
     gas = :CO2,  # which greenhouse gas to use. Other options are :CH4, :N2O, and :SF6.
     last_year = 3000,  # the last year to run and use for the SCC calculation. Default is the last year of the time dimension, 3000.
@@ -99,7 +99,7 @@ There is an additional function for computing the SCC that also returns the Marg
 using Mimi
 using MimiFUND
 
-result = compute_scc_mm(year=2020, last_year=2300, eta=0, prtp=0.03)
+result = MimiFUND.compute_scc_mm(year=2020, last_year=2300, eta=0, prtp=0.03)
 
 result.scc  # returns the computed SCC value
 
