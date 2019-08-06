@@ -350,7 +350,7 @@ Year   USA     CAN     WEU     JPK     ANZ     EEU     FSU     MDE     CAM     S
 2300   17.72   17.76   17.67   17.78   17.78   42.74   44.35   54.47   39.50   39.82   63.70   65.81   67.70   40.01   39.42   41.39
 
 
-Table: Per capita income; 2000 = 1.00. {#tbl:Y.B1 tag="Y.B1"}
+## Table Y.B1: Per capita income; 2000 = 1.00
 
 Year   USA     CAN     WEU     JPK     ANZ     EEU      FSU      MDE      CAM      SAM      SAS      SEA      CHI      NAF      SSA      SIS
 ------ ------- ------- ------- ------- ------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- --------
@@ -392,7 +392,7 @@ Year   USA     CAN     WEU     JPK     ANZ     EEU      FSU      MDE      CAM   
 2300   19.28   19.32   19.23   19.22   19.35   200.98   208.52   314.14   186.50   186.39   366.60   378.57   389.41   187.25   184.49   193.73
 
 
-Table: Per capita income; 2000 = 1.00. {#tbl:Y.B2 tag="Y.B2"}
+## Table Y.B2: Per capita income; 2000 = 1.00
 
 Year   USA     CAN     WEU     JPK     ANZ     EEU     FSU     MDE     CAM     SAM     SAS     SEA     CHI     NAF     SSA     SIS
 ------ ------- ------- ------- ------- ------- ------- ------- ------- ------- ------- ------- ------- ------- ------- ------- -------
@@ -434,7 +434,7 @@ Year   USA     CAN     WEU     JPK     ANZ     EEU     FSU     MDE     CAM     S
 2300   15.22   15.25   15.18   15.26   15.28   69.36   71.96   67.80   53.01   53.51   79.12   81.70   84.04   53.76   52.96   55.62
 
 
-Table: Energy efficiency; 2000 = 1.00. {#tbl:AEEI.FUND tag="AEEI.FUND"}
+## Table AEEI.FUND: Energy efficiency; 2000 = 1.00
 
 Year   USA    CAN    WEU    JPK    ANZ    EEU    FSU    MDE    CAM    SAM    SAS    SEA    CHI    NAF    SSA    SIS
 ------ ------ ------ ------ ------ ------ ------ ------ ------ ------ ------ ------ ------ ------ ------ ------ ------
@@ -476,7 +476,7 @@ Year   USA    CAN    WEU    JPK    ANZ    EEU    FSU    MDE    CAM    SAM    SAS
 2300   2.22   2.20   2.20   2.16   2.20   2.61   2.47   3.06   3.38   3.34   3.37   3.27   4.36   3.34   3.41   3.23
 
 
-Table: Energy efficiency; 2000 = 1.00. {#tbl:AEEI.A1B tag="AEEI.A1B"}
+## Table AEEI.A1B: Energy efficiency; 2000 = 1.00
 
 Year   USA    CAN    WEU    JPK    ANZ    EEU     FSU     MDE     CAM     SAM     SAS     SEA     CHI     NAF     SSA     SIS
 ------ ------ ------ ------ ------ ------ ------- ------- ------- ------- ------- ------- ------- ------- ------- ------- -------
@@ -517,8 +517,7 @@ Year   USA    CAN    WEU    JPK    ANZ    EEU     FSU     MDE     CAM     SAM   
 2290   7.49   7.43   7.41   7.27   7.43   17.38   16.44   11.01   14.02   13.86   12.11   11.75   13.25   13.86   14.13   13.40
 2300   7.87   7.81   7.78   7.64   7.81   18.26   17.29   11.57   14.73   14.57   12.73   12.35   13.93   14.57   14.85   14.08
 
-
-Table: Energy efficiency; 2000 = 1.00. {#tbl:AEEI.A2 tag="AEEI.A2"}
+## Table AEEI.A2: Energy efficiency; 2000 = 1.00
 
 Year   USA    CAN    WEU    JPK    ANZ    EEU     FSU     MDE    CAM    SAM    SAS     SEA    CHI     NAF    SSA    SIS
 ------ ------ ------ ------ ------ ------ ------- ------- ------ ------ ------ ------- ------ ------- ------ ------ ------
@@ -559,9 +558,7 @@ Year   USA    CAN    WEU    JPK    ANZ    EEU     FSU     MDE    CAM    SAM    S
 2290   5.44   5.39   5.38   5.28   5.39   11.61   10.99   8.84   7.96   7.87   9.72    9.43   10.64   7.87   8.02   7.61
 2300   5.71   5.67   5.65   5.55   5.67   12.21   11.55   9.29   8.37   8.27   10.22   9.92   11.19   8.27   8.43   8.00
 
-
-Table: Energy efficiency; 2000 = 1.00. {#tbl:AEEI.B1 tag="AEEI.B1"}
-
+##Table AEEI.B1: Energy efficiency; 2000 = 1.00
 
 Year   USA     CAN     WEU     JPK     ANZ     EEU     FSU     MDE     CAM     SAM     SAS     SEA     CHI      NAF     SSA     SIS
 ------ ------- ------- ------- ------- ------- ------- ------- ------- ------- ------- ------- ------- -------- ------- ------- -------
@@ -602,8 +599,7 @@ Year   USA     CAN     WEU     JPK     ANZ     EEU     FSU     MDE     CAM     S
 2290   15.28   15.17   15.12   14.84   15.17   78.81   74.58   79.71   62.90   62.20   87.65   85.05   95.95    62.20   63.40   60.13
 2300   16.07   15.94   15.89   15.60   15.94   82.84   78.40   83.78   66.12   65.38   92.13   89.40   100.85   65.38   66.65   63.21
 
-
-Table: Energy efficiency; 2000 = 1.00. {#tbl:AEEI.B2 tag="AEEI.B2"}
+## Table AEEI.B2: Energy efficiency; 2000 = 1.00
 
 Year   USA    CAN    WEU    JPK    ANZ    EEU     FSU     MDE    CAM    SAM    SAS    SEA    CHI    NAF    SSA    SIS
 ------ ------ ------ ------ ------ ------ ------- ------- ------ ------ ------ ------ ------ ------ ------ ------ ------
@@ -644,8 +640,7 @@ Year   USA    CAN    WEU    JPK    ANZ    EEU     FSU     MDE    CAM    SAM    S
 2290   4.58   4.54   4.53   4.44   4.54   10.93   10.34   6.54   7.90   7.82   7.20   6.98   7.88   7.82   7.97   7.56
 2300   4.81   4.77   4.76   4.67   4.77   11.49   10.87   6.88   8.31   8.21   7.56   7.34   8.28   8.22   8.37   7.94
 
-
-Table: Energy efficiency; 2000 = 1.00. {#tbl:ACEI.FUND tag="ACEI.FUND"}
+## Table ACEI.FUND: Energy efficiency; 2000 = 1.00
 
 Year   USA    CAN    WEU    JPK    ANZ    EEU    FSU    MDE    CAM    SAM    SAS    SEA    CHI    NAF    SSA    SIS
 ------ ------ ------ ------ ------ ------ ------ ------ ------ ------ ------ ------ ------ ------ ------ ------ ------
@@ -686,9 +681,7 @@ Year   USA    CAN    WEU    JPK    ANZ    EEU    FSU    MDE    CAM    SAM    SAS
 2290   1.71   1.73   1.67   1.91   1.95   1.70   1.61   2.83   2.15   2.13   2.65   2.57   1.95   3.84   3.91   2.09
 2300   1.74   1.77   1.70   1.94   1.99   1.73   1.64   2.89   2.20   2.17   2.70   2.62   1.99   3.91   3.99   2.13
 
-
-Table: Energy efficiency; 2000 = 1.00. {#tbl:ACEI.A1B tag="ACEI.A1B"}
-
+## Table ACEI.A1B: Energy efficiency; 2000 = 1.00
 
 Year   USA     CAN     WEU     JPK     ANZ     EEU     FSU     MDE     CAM    SAM    SAS     SEA     CHI     NAF    SSA    SIS
 ------ ------- ------- ------- ------- ------- ------- ------- ------- ------ ------ ------- ------- ------- ------ ------ ------
@@ -729,9 +722,7 @@ Year   USA     CAN     WEU     JPK     ANZ     EEU     FSU     MDE     CAM    SA
 2290   10.59   10.74   10.32   9.76    9.97    10.40   9.84    12.73   6.81   6.74   10.84   10.51   12.34   6.74   6.87   8.02
 2300   11.13   11.29   10.85   10.26   10.48   10.93   10.35   13.38   7.16   7.08   11.39   11.05   12.97   7.08   7.22   8.43
 
-
-Table: Energy efficiency; 2000 = 1.00. {#tbl:ACEI.A2 tag="ACEI.A2"}
-
+## Table ACEI.A2: Energy efficiency; 2000 = 1.00
 
 Year   USA    CAN    WEU    JPK    ANZ    EEU    FSU    MDE    CAM    SAM    SAS    SEA    CHI    NAF    SSA    SIS
 ------ ------ ------ ------ ------ ------ ------ ------ ------ ------ ------ ------ ------ ------ ------ ------ ------
@@ -772,8 +763,7 @@ Year   USA    CAN    WEU    JPK    ANZ    EEU    FSU    MDE    CAM    SAM    SAS
 2290   3.53   3.58   3.44   3.04   3.11   3.72   3.52   3.53   2.93   2.90   3.03   2.94   3.42   2.90   2.95   3.20
 2300   3.71   3.76   3.61   3.19   3.26   3.91   3.70   3.71   3.08   3.04   3.19   3.09   3.60   3.05   3.10   3.37
 
-
-Table: Energy efficiency; 2000 = 1.00. {#tbl:ACEI.B1 tag="ACEI.B1"}
+## Table ACEI.B1: Energy efficiency; 2000 = 1.00
 
 Year   USA    CAN    WEU    JPK    ANZ    EEU    FSU    MDE    CAM    SAM    SAS    SEA    CHI    NAF    SSA    SIS
 ------ ------ ------ ------ ------ ------ ------ ------ ------ ------ ------ ------ ------ ------ ------ ------ ------
@@ -814,8 +804,7 @@ Year   USA    CAN    WEU    JPK    ANZ    EEU    FSU    MDE    CAM    SAM    SAS
 2290   5.35   5.42   5.21   4.92   5.03   3.69   3.49   6.16   3.73   3.69   5.34   5.18   5.97   3.69   3.76   4.45
 2300   5.62   5.70   5.48   5.17   5.29   3.88   3.67   6.47   3.92   3.88   5.62   5.45   6.28   3.88   3.95   4.68
 
-
-Table: Energy efficiency; 2000 = 1.00. {#tbl:ACEI.B2 tag="ACEI.B2"}
+## Table ACEI.B2: Energy efficiency; 2000 = 1.00
 
 Year   USA    CAN    WEU    JPK    ANZ    EEU    FSU    MDE    CAM    SAM    SAS    SEA    CHI    NAF    SSA    SIS
 ------ ------ ------ ------ ------ ------ ------ ------ ------ ------ ------ ------ ------ ------ ------ ------ ------
@@ -856,8 +845,7 @@ Year   USA    CAN    WEU    JPK    ANZ    EEU    FSU    MDE    CAM    SAM    SAS
 2290   4.47   4.53   4.36   4.04   4.13   4.12   3.90   4.69   4.77   4.72   4.01   3.89   4.38   4.72   4.81   4.98
 2300   4.70   4.76   4.58   4.25   4.34   4.33   4.10   4.93   5.01   4.96   4.21   4.09   4.61   4.96   5.05   5.23
 
-
-Table: Carbon dioxide emissions from land use; million metric tonnes of carbon. {#tbl:CO2F.FUND tag="CO2F.FUND"}
+## Table CO2F.FUND: Carbon dioxide emissions from land use; million metric tonnes of carbon
 
 Year   USA CAN   WEU   JPK   ANZ   EEU   FSU   MDE   CAM  SAM   SAS   SEA   CHI   NAF   SSA   SIS
 ------ --- ----- ----- ----- ----- ----- ----- ----- ---- ----- ----- ----- ----- ----- ----- -----
@@ -898,8 +886,7 @@ Year   USA CAN   WEU   JPK   ANZ   EEU   FSU   MDE   CAM  SAM   SAS   SEA   CHI 
 2290   0   0     0     0     0     0     0     0     0    0     0     0     0     0     0     0
 2300   0   0     0     0     0     0     0     0     0    0     0     0     0     0     0     0
 
-
-Table: Carbon dioxide emissions from land use; million metric tonnes of carbon. {#tbl:CO2F.A1B tag="CO2F.A1B"}
+## Table CO2F.A1B: Carbon dioxide emissions from land use; million metric tonnes of carbon
 
 Year   USA  CAN   WEU   JPK   ANZ   EEU   FSU    MDE   CAM  SAM   SAS   SEA   CHI   NAF   SSA   SIS
 ------ ---- ----- ----- ----- ----- ----- ------ ----- ---- ----- ----- ----- ----- ----- ----- -----
@@ -940,8 +927,7 @@ Year   USA  CAN   WEU   JPK   ANZ   EEU   FSU    MDE   CAM  SAM   SAS   SEA   CH
 2290   0    0     0     0     0     0     0      0     0    0     0     0     0     0     0     0
 2300   0    0     0     0     0     0     0      0     0    0     0     0     0     0     0     0
 
-
-Table: Carbon dioxide emissions from land use; million metric tonnes of carbon. {#tbl:CO2F.A2 tag="CO2F.A2"}
+## Table CO2F.A2: Carbon dioxide emissions from land use; million metric tonnes of carbon
 
 Year   USA CAN   WEU   JPK   ANZ   EEU   FSU   MDE   CAM  SAM   SAS   SEA   CHI   NAF   SSA   SIS
 ------ --- ----- ----- ----- ----- ----- ----- ----- ---- ----- ----- ----- ----- ----- ----- -----
@@ -982,8 +968,7 @@ Year   USA CAN   WEU   JPK   ANZ   EEU   FSU   MDE   CAM  SAM   SAS   SEA   CHI 
 2290   0   0     0     0     0     0     0     0     0    0     0     0     0     0     0     0
 2300   0   0     0     0     0     0     0     0     0    0     0     0     0     0     0     0
 
-
-Table: Carbon dioxide emissions from land use; million metric tonnes of carbon. {#tbl:CO2F.B1 tag="CO2F.B1"}
+## Table CO2.B1: Carbon dioxide emissions from land use; million metric tonnes of carbon
 
 Year   USA   CAN   WEU   JPK   ANZ   EEU   FSU    MDE   CAM   SAM    SAS   SEA    CHI    NAF   SSA    SIS
 ------ ----- ----- ----- ----- ----- ----- ------ ----- ----- ------ ----- ------ ------ ----- ------ -----
@@ -1024,8 +1009,7 @@ Year   USA   CAN   WEU   JPK   ANZ   EEU   FSU    MDE   CAM   SAM    SAS   SEA  
 2290   0     0     0     0     0     0     0      0     0     0      0     0      0      0     0      0
 2300   0     0     0     0     0     0     0      0     0     0      0     0      0      0     0      0
 
-
-Table: Carbon dioxide emissions from land use; million metric tonnes of carbon. {#tbl:CO2F.B2 tag="CO2F.B2"}
+## Table CO2F.B2: Carbon dioxide emissions from land use; million metric tonnes of carbon
 
 Year   USA   CAN   WEU   JPK   ANZ   EEU   FSU    MDE   CAM   SAM   SAS   SEA   CHI   NAF   SSA    SIS
 ------ ----- ----- ----- ----- ----- ----- ------ ----- ----- ----- ----- ----- ----- ----- ------ -----
@@ -1066,8 +1050,7 @@ Year   USA   CAN   WEU   JPK   ANZ   EEU   FSU    MDE   CAM   SAM   SAS   SEA   
 2290   0     0     0     0     0     0     0      0     0     0     0     0     0     0     0      0
 2300   0     0     0     0     0     0     0      0     0     0     0     0     0     0     0      0
 
-
-Table: Methane emissions; 2000 = 100. {#tbl:CH4 tag="CH4"}
+## Table CH4: Methane emissions; 2000 = 100
 
 Year   USA    CAN    WEU    JPK    ANZ    EEU    FSU    MDE    CAM    SAM    SAS    SEA    CHI    NAF     SSA    SIS
 ------ ------ ------ ------ ------ ------ ------ ------ ------ ------ ------ ------ ------ ------ ------- ------ ------
@@ -1108,8 +1091,7 @@ Year   USA    CAN    WEU    JPK    ANZ    EEU    FSU    MDE    CAM    SAM    SAS
 2290   3.74   5.08   2.53   2.64   3.84   2.83   5.48   9.17   7.33   7.06   3.72   5.30   7.09   10.58   8.43   4.25
 2300   3.86   5.23   2.62   2.71   3.96   2.92   5.65   9.45   7.56   7.27   3.83   5.47   7.31   10.91   8.69   4.38
 
-
-Table: Nitrous oxide emissions; 2000 = 100. {#tbl:N2O tag="N2O"}
+## Table N2O: Nitrous oxide emissions; 2000 = 100
 
 Year   USA    CAN    WEU    JPK    ANZ    EEU    FSU    MDE    CAM    SAM    SAS    SEA    CHI    NAF    SSA    SIS
 ------ ------ ------ ------ ------ ------ ------ ------ ------ ------ ------ ------ ------ ------ ------ ------ ------
@@ -1150,7 +1132,6 @@ Year   USA    CAN    WEU    JPK    ANZ    EEU    FSU    MDE    CAM    SAM    SAS
 2290   1.85   2.00   1.28   1.67   1.88   1.16   3.09   2.92   2.14   2.22   1.80   2.09   1.31   2.70   2.54   1.00
 2300   1.85   2.00   1.28   1.67   1.88   1.16   3.09   2.92   2.14   2.23   1.82   2.09   1.31   2.70   2.54   1.00
 
-
 ## Table OC: Parameters of the methane and nitrous oxide emission reduction cost curve; the 67% confidence interval is given in brackets
 
 | Region |  Methane                     | Nitrous oxide                |
@@ -1172,7 +1153,7 @@ Year   USA    CAN    WEU    JPK    ANZ    EEU    FSU    MDE    CAM    SAM    SAS
 | SSA    | 1.43E-02 (1.06E-02 1.91E-02) | 1.05E-05 (1.00E-05 1.10E-05) |
 | SIS    | 1.43E-02 (1.06E-02 1.91E-02) | 1.05E-05 (1.00E-05 1.10E-05) |
 
-## Table SF6: Determinants of SF\_6 emissions
+## Table SF6: Determinants of SF₆ emissions
 
 | Year | C                       | GDP                     | GDP/cap                  |
 |------|-------------------------|-------------------------|--------------------------|
@@ -1180,19 +1161,19 @@ Year   USA    CAN    WEU    JPK    ANZ    EEU    FSU    MDE    CAM    SAM    SAS
 | 1995 | 1.6255E-01 (2.1143E-01) | 5.7234E-06 (2.3082E-07) | -6.0384E-05 (1.8727E-05) |
 | Used | 1.6489E-01 (1.4312E-01) | 5.4083E-06 (1.6464E-07) | -5.8961E-05 (1.3164E-05) |
 
-SF\_6 emissions_6 are in million metric tonnes of carbon dioxide equivalent. GDP is in million dollar (1995, MEX). GDP/capita is in dollar (1995, MEX)
+SF₆ emissions are in million metric tonnes of carbon dioxide equivalent. GDP is in million dollar (1995, MEX). GDP/capita is in dollar (1995, MEX)
 
 ## Table C: Parameters of equation (C.1)
 
-| Gas                          | ``\alpha^\text{a}`` | ``\beta^\text{b}`` | pre-industrial concentration |
-|------------------------------|---------------------|--------------------|------------------------------|
-| Methane (CH~4~)              | 0.3597              | 1/12               | 790 ppb                      |
-| Nitrous oxide (N~2~O)        | 0.2079              | 1/114              | 285 ppb                      |
-| Sulphur hexafluoride (SF~6~) | 0.0398              | 1/3200             | 0.04 ppt                     |
+| Gas                        | ``\alpha^\text{a}`` | ``\beta^\text{b}`` | pre-industrial concentration |
+|----------------------------|---------------------|--------------------|------------------------------|
+| Methane (CH₄)              | 0.3597              | 1/12               | 790 ppb                      |
+| Nitrous oxide (N₂O)        | 0.2079              | 1/114              | 285 ppb                      |
+| Sulphur hexafluoride (SF₆) | 0.0398              | 1/3200             | 0.04 ppt                     |
 
-^a^ The parameter ``\alpha`` translates emissions (in million metric tonnes) into concentrations (in parts per billion or trillion by volume).
+ᵃ The parameter ``\alpha`` translates emissions (in million metric tonnes) into concentrations (in parts per billion or trillion by volume).
 
-^b^ The parameter ``\beta`` determines how fast concentrations return to their pre-industrial (and assumedly equilibrium) concentrations; ``1/\beta`` is the atmospheric life-time (in years) of the gases.
+ᵇ The parameter ``\beta`` determines how fast concentrations return to their pre-industrial (and assumedly equilibrium) concentrations; ``1/\beta`` is the atmospheric life-time (in years) of the gases.
 
 ## Table RT: Regional temperature conversion factor
 
@@ -1217,7 +1198,7 @@ SF\_6 emissions_6 are in million metric tonnes of carbon dioxide equivalent. GDP
 
 ## Table A: Impacts of climate change on agriculture
 
-| Region | Rate of change (% Ag. Prod/ 0.04ºC) | ``\delta_{r}^{l}`` | ``\delta_{r}^{q}`` | CO~2~ fertilisation (% Ag. Prod) |
+| Region | Rate of change (% Ag. Prod/ 0.04ºC) | ``\delta_{r}^{l}`` | ``\delta_{r}^{q}`` | CO₂ fertilisation (% Ag. Prod) |
 |--------|-------------------------------------|------------------|------------------|----------------------------------|
 | USA    | -0.021 (0.176)                      | 0.026 (0.021)    | -0.012 (0.018)   | 8.90 (14.84)                     |
 | CAN    | -0.029 (0.073)                      | 0.092 (0.080)    | -0.016 (0.009)   | 4.02 (6.50)                      |
@@ -1384,8 +1365,7 @@ brackets).
 ^f^ Additional years of life diseased, thousands (67% confidence
 interval in brackets).
 
-
-Table: Parameters for vector-borne mortality. {#tbl:HV tag="HV"}
+## Table HV: Parameters for vector-borne mortality
 
       Malaria                     Dengue fever                        Schistosomiasis
 ----- ---------- ---------------- ----------------- ----------------- ----------------- -----------------
@@ -1410,8 +1390,7 @@ SIS   116.586    0.0794 (0.0575)  1.010             0.3534 (0.0614)   1.296     
 ^a^ Mortality (deaths per million people) in 1990.
 ^b^ The change in mortality due to a one-degree global warming.
 
-
-Table: Parameters of Equation (HC.1). {#tbl:HC1 tag="HC1"}
+## Table HC.1: Parameters of Equation (HC.1)
 
                               Constant                  Temperature
 ---------------- ------ ----- ----------- ------------- ------------ ----------
@@ -1421,9 +1400,7 @@ Cardiovascular   Cold   65-   -2.9787     (0.5914)      0.0946       (0.0464)
                         65+   -40.9953    (3.4570)      3.4570       (1.6218)
 Respiratory                   -17.9222    (6.0196)      0.8683       (0.2545)
 
-
-
-Table: Parameters of Equation (HC.2) for cold-related cardiovascular mortality (death per 100,000 people). {#tbl:HC2 tag="HC.2"}
+## Table HC.2: Parameters of Equation (HC.2) for cold-related cardiovascular mortality (death per 100,000 people)
 
       65-                                           65+
 ----- ---------- ----------- ----------- ---------- ---------- ------------ ------------- -----------
@@ -1445,8 +1422,7 @@ NAF   -1.9826    (1.9196)       0.0473   (1.5704)   -102.4339  (35.4522)    2.83
 SSA   -1.0407    (0.9609)       0.0448   (0.7861)   -49.9700   (16.5999)    2.6771        (16.5915)
 SIS   1.6035     (1.1897)      -2.3428   (0.9733)   -10.4503   (7.4943)     0.5138        (7.4905)
 
-
-Table: Parameters of Equation (HC.2) for heat-related cardiovascular mortality (deaths per 100,000 people). {#tbl:HC.3 tag="HC.3"}
+## Table HC.3: Parameters of Equation (HC.2) for heat-related cardiovascular mortality (deaths per 100,000 people)
 
       65-                                         65+
 ----- -------- ----------- ----------- ---------- ----------- -------------- ----------- -----------
@@ -1468,8 +1444,7 @@ NAF   1.0409   (0.5662)    0.0471      (0.4648)   50.4842     (23.0206)      1.7
 SSA   0.8682   (0.3408)    0.0440      (0.2798)   43.4397     (13.5145)      1.6578      (11.0949)
 SIS   1.0227   (0.4957)    0.0324      (0.4070)   16.9938     (8.0489)       0.4223      (6.6079)
 
-
-Table: Parameters of Equation (HC.2) for (heat-related) respiratory mortality (death per 100,000 people). {#tbl:HC.4 tag="HC.4"}
+## Table HC.4: Parameters of Equation (HC.2) for (heat-related) respiratory mortality (death per 100,000 people)
 
       Linear                Quadratic
 ----- --------- ----------- ---------- ----------
@@ -1490,7 +1465,7 @@ NAF   5.1980    (3.7408)    0.4341     (3.0711)
 SSA   3.6196    (1.8681)    0.411      (1.5337)
 SIS   4.1354    (2.0330)    0.2522     (1.6690)
 
-Table: Ratio of morbidity impacts (measured in years of life disabled) to mortality impacts (measured in number of cases). {#tbl:HM tag="HM"}
+## Table HM: Ratio of morbidity impacts (measured in years of life disabled) to mortality impacts (measured in number of cases)
 
       Malaria   Schistosomiasis   Dengue fever   Cardiovascular   Respiratory
 ----- --------- ----------------- -------------- ---------------- -------------
@@ -1511,8 +1486,7 @@ NAF   24.8571   51.5000           0.0000         1.3459           21.8098
 SSA   3.6940    293.7500          0.0000         1.3301           21.5857
 SIS   4.5714    69.0000           0.0000         1.2548           22.1552
 
-
-Table: Current impact of tropical cyclones on property (damage, fraction of GDP) and health (mortality, fraction of population). {#tbl:TS tag="TS"}
+## Table TS: Current impact of tropical cyclones on property (damage, fraction of GDP) and health (mortality, fraction of population)
 
       Damage            Mortality
 ----- ----------------- --------------
@@ -1533,8 +1507,7 @@ NAF   0                 0
 SSA   5.91057E-05       1.43921E-07
 SIS   0.00573135        4.91454E-06
 
-
-Table: Current impact of extra tropical cyclones {#tbl:ETS tag="ETS"}
+## Table ETS: Current impact of extra tropical cyclones
 
       $\alpha$       $\delta$   $\beta$
 ----- -------------- ---------- -------------
@@ -1555,7 +1528,7 @@ NAF   2.81278E-07    0.04       0.038346516
 SSA   0.000550631    0.04       0.204864801
 SIS   0.000426887    0.13       1.577927496
 
-Table: Parameters of the analysis ($\mu$: expected value; $\sigma$: standard deviation; M: mode; L: lower bound; U: upper bound) {#tbl:MC tag="MC"}
+## Table MC: Parameters of the analysis ($\mu$: expected value; $\sigma$: standard deviation; M: mode; L: lower bound; U: upper bound)
 
 Parameter                                                 Distribution
 --------------------------------------------------------- --------------- ----------------------- ---------------------- ------------
@@ -1632,5 +1605,3 @@ Immigration cost                                          Trunc. normal   $\mu$ 
 Adaptation time                                           Trunc. normal   $\mu$ = 3.0             $\sigma$ = 1.0         U = 0.0
 Emigration cost                                           Trunc. normal   $\mu$ = 3.0             $\sigma$ = 1.5         U = 0.0
 Adaptation time                                           Exponential                             $\sigma$ = 0.1
-
-

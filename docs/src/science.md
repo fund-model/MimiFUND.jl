@@ -12,7 +12,7 @@ We assume that all regions are in a steady state after the year 2300. For the ye
 
 ## 3. Emission, abatement and costs
 
-### 3.1. Carbon dioxide (CO~2~)
+### 3.1. Carbon dioxide (CO₂)
 
 Carbon dioxide emissions are calculated on the basis of the Kaya identity:
 
@@ -62,13 +62,13 @@ The costs of emission reduction ``C`` are given by
 \frac{C_{t,r}}{Y_{t,r}} = \frac{\beta_{t,r}\tau_{t,r}^{2}}{H_{t,r}H_{t}^{g}} \tag{CO2.7}
 ```
 
-``H`` denotes the stock of knowledge. Equation (@eq:CO2_6) gives the costs of emission reduction in a particular year for emission reduction in that year. In combination with Equations (@eq:CO2_2)-(@eq:CO2_5), emission reduction is cheaper if smeared out over a longer time period. The parameter ``\beta`` follows from
+``H`` denotes the stock of knowledge. Equation (CO2.6) gives the costs of emission reduction in a particular year for emission reduction in that year. In combination with Equations (CO2.2)-(CO2.5), emission reduction is cheaper if smeared out over a longer time period. The parameter ``\beta`` follows from
 
 ```math
 \beta_{t,r} = 0.784 - 0.084\sqrt{\frac{M_{t,r}}{Y_{t,r}} - \operatorname{}\frac{M_{t,s}}{Y_{t,s}}} \tag{CO2.8}
 ```
 
-That is, emission reduction is relatively expensive for the region that has the lowest emission intensity. The calibration is such that a 10% emission reduction cut in 2003 would cost 1.57% (1.38%) of GDP of the least (most) carbon-intensive region; this is calibrated to Hourcade *et al.* (1996, 2001). An 80% (85%) emission reduction would completely ruin the economy. Later emission reductions are cheaper by Equations (@eq:CO2_7) and (CO2.8). Emission reduction is relatively cheap for regions with high emission intensities. The thought is that emission reduction is cheap in countries that use a lot of energy and rely heavily on fossil fuels, while other countries use less energy and less fossil fuels and are therefore closer to the technological frontier of emission abatement. For relatively small emission reduction, the costs in *FUND* correspond closely to those reported by other top-down models, but for higher emission reduction, *FUND* finds higher costs, because *FUND* does not include backstop technologies, that is, a carbon-free energy supply that is available in unlimited quantities at fixed average costs.
+That is, emission reduction is relatively expensive for the region that has the lowest emission intensity. The calibration is such that a 10% emission reduction cut in 2003 would cost 1.57% (1.38%) of GDP of the least (most) carbon-intensive region; this is calibrated to Hourcade *et al.* (1996, 2001). An 80% (85%) emission reduction would completely ruin the economy. Later emission reductions are cheaper by Equations (CO2.7) and (CO2.8). Emission reduction is relatively cheap for regions with high emission intensities. The thought is that emission reduction is cheap in countries that use a lot of energy and rely heavily on fossil fuels, while other countries use less energy and less fossil fuels and are therefore closer to the technological frontier of emission abatement. For relatively small emission reduction, the costs in *FUND* correspond closely to those reported by other top-down models, but for higher emission reduction, *FUND* finds higher costs, because *FUND* does not include backstop technologies, that is, a carbon-free energy supply that is available in unlimited quantities at fixed average costs.
 
 The regional and global knowledge stocks follow from
 
@@ -86,17 +86,17 @@ Knowledge accumulates with emission abatement. More knowledge implies lower emis
 
 Emissions from land use change and deforestation are exogenous, and cannot be mitigated. Numbers are found in Tables CO2F, again for five alternative scenarios.
 
-### 3.2. Methane (CH~4~)
+### 3.2. Methane (CH₄)
 
 Methane emissions are exogenous, specified in Table CH4 (emissions for the years 2301-3000 are equal to emissions in the year 2300). There is a single scenario only, based on IS92a (Leggett *et al.*, 1992). The costs of emission reduction are quadratic. Table OC specifies the parameters, which are calibrated to USEPA (2003).
 
-### 3.3. Nitrous oxide (N~2~O)
+### 3.3. Nitrous oxide (N₂O)
 
 Nitrous oxide emissions are exogenous, specified in Table N2O (emissions for the years 2301-3000 are equal to emissions in the year 2300). There is a single scenario only, based on IS92a (Leggett *et al.*, 1992). The costs of emission reduction are quadratic. Table OC specifies the parameters, which are calibrated to USEPA (2003).
 
-### 3.4. Sulfurhexafluoride (SF~6~)
+### 3.4. Sulfurhexafluoride (SF₆)
 
-SF~6~ emissions are linear in GDP and GDP per capita. Table SF6 gives the parameters. The numbers for 1990 and 1995 are estimated from IEA data (http://data.iea.org/ieastore/product.asp?dept\_id=101&pf\_id=305). There is no option to reduce SF~6~ emissions.
+SF₆ emissions are linear in GDP and GDP per capita. Table SF6 gives the parameters. The numbers for 1990 and 1995 are estimated from IEA data (http://data.iea.org/ieastore/product.asp?dept\_id=101&pf\_id=305). There is no option to reduce SF₆ emissions.
 
 ### 3.5. Dynamic Biosphere
 
@@ -205,7 +205,7 @@ The impacts of climate change on agriculture at time ``t`` in region ``r`` are s
 A_{t,r} = A_{t,r}^{r} + A_{t,r}^{l} + A_{t,r}^{f} \tag{A.1}
 ```
 
-The first part (rate) is always negative: As farmers have imperfect foresight and are locked into production practices, climate change implies that farmers are maladapted. Faster climate change means greater damages. The third part (fertilization) is always positive. CO~2~ fertilization means that plants grow faster and use less water. The second part (level) can be positive or negative. There is an optimal climate for agriculture. If climate change moves a region closer to (away from) the optimum, impacts are positive (negative); and impacts are smaller nearer to the optimum.
+The first part (rate) is always negative: As farmers have imperfect foresight and are locked into production practices, climate change implies that farmers are maladapted. Faster climate change means greater damages. The third part (fertilization) is always positive. CO₂ fertilization means that plants grow faster and use less water. The second part (level) can be positive or negative. There is an optimal climate for agriculture. If climate change moves a region closer to (away from) the optimum, impacts are positive (negative); and impacts are smaller nearer to the optimum.
 
 For the impact of the rate of climate change (i.e., the annual change of climate) on agriculture, the assumed model is:
 
@@ -237,7 +237,7 @@ where
   * ``T`` denotes the change (in degree Celsius) in regional mean temperature relative to 1990;
   * ``\delta_{r}^{l}`` and ``\delta_{r}^{q}`` are parameters (see Table A), that follow from the regional change (in per cent) in agricultural production for a warming of 2.5°C above today or 3.2°C above pre-industrial and the the optimal temperature (in degree Celsius) for agriculture in each region.
 
-CO~2~ fertilisation has a positive, but saturating effect on agriculture, specified by
+CO₂ fertilisation has a positive, but saturating effect on agriculture, specified by
 
 ```math
 A_{t,r}^{f} = \gamma_{r}\ln\frac{\text{CO}2_{t}}{275} \tag{A.4}
@@ -252,9 +252,9 @@ where
   * 275 ppm is the pre-industrial concentration;
   * ``\gamma`` is a parameter (see Table A, column 8-9).
 
-The parameters in Table A are calibrated, following the procedure described in Tol (2002a), to the results of Kane *et al*. (1992), Reilly *et al*. (1994), Morita *et al*. (1994), Fischer *et al*. (1996), and Tsigas *et al*. (1996). These studies all use a global computable general equilibrium model, and report results with and without adaptation, and with and without CO~2~ fertilisation. The regional results from these studies are assumed to hold for each country in the respective regions. They are averaged over the studies and the climate scenarios for each country, and aggregated to the *FUND* regions. The standard deviations in Table A follow from the spread between studies and scenarios. Equation (@eq:A_4) follows from the difference in results with and without CO2 fertilization. Equation (@eq:A_3) follows from the results with full adaptation. Equation (@eq:A_2) follows from the difference in results with and without adaptation.
+The parameters in Table A are calibrated, following the procedure described in Tol (2002a), to the results of Kane *et al*. (1992), Reilly *et al*. (1994), Morita *et al*. (1994), Fischer *et al*. (1996), and Tsigas *et al*. (1996). These studies all use a global computable general equilibrium model, and report results with and without adaptation, and with and without CO₂ fertilisation. The regional results from these studies are assumed to hold for each country in the respective regions. They are averaged over the studies and the climate scenarios for each country, and aggregated to the *FUND* regions. The standard deviations in Table A follow from the spread between studies and scenarios. Equation (A.4) follows from the difference in results with and without CO2 fertilization. Equation (A.3) follows from the results with full adaptation. Equation (A.2) follows from the difference in results with and without adaptation.
 
-Equations (@eq:A_1)-(@eq:A_4) express the impact of climate change as a percentage of agricultural production. In order to express this as a percentage of income, we need to know the share of agricultural production in total income. This is assumed to fall with per capita income, that is,
+Equations (A.1)-(A.4) express the impact of climate change as a percentage of agricultural production. In order to express this as a percentage of income, we need to know the share of agricultural production in total income. This is assumed to fall with per capita income, that is,
 
 ```math
 \frac{\text{GA}P_{t,r}}{Y_{t,r}} = \frac{\text{GA}P_{1990,r}}{Y_{1990,r}}\left( \frac{y_{1990,r}}{y_{t,r}} \right)^{\epsilon} \tag{A.5}
@@ -334,7 +334,7 @@ where
   * ``P`` denotes population size at time ``t`` in region ``r``;
   * ``\alpha`` is a parameter (in dollar per degree Celsius), that specifies the benchmark impact; see Table EFW, column 6-7
   * ``\epsilon`` is a parameter; it is the income elasticity of space heating demand; ``\epsilon`` = 0.8 (0.1,&gt;0,&lt;1);
-  * ``\text{AEEI}`` is a parameter (cf. Tables AEEI and Equation @eq:CO2_3); it is the Autonomous Energy Efficiency Improvement, measuring technological progress in energy provision; the global average value is about 1% per year in 1990, converging to 0.2% in 2200; its standard deviation is set at a quarter of the mean.
+  * ``\text{AEEI}`` is a parameter (cf. Tables AEEI and Equation CO2.3); it is the Autonomous Energy Efficiency Improvement, measuring technological progress in energy provision; the global average value is about 1% per year in 1990, converging to 0.2% in 2200; its standard deviation is set at a quarter of the mean.
 
 These parameters are from calibrating *FUND* to the results of Downing *et al*. (1995, 1996). Savings on space heating are assumed to saturate. The income elasticity of heating demand is taken from Hodgson and Miller (1995, cited in Downing *et al*., 1996), and estimated for the . Space heating demand is linear in the number of people for want of scenarios of number of households and house sizes. Energy efficiency improvements in space heating are assumed to be equal to the average energy efficiency improvements in the economy.
 
@@ -356,7 +356,7 @@ where
   * ``\alpha`` is a parameter (see Table EFW, column 8-9);
   * ``\beta`` is a parameter; ``\beta`` = 1.5 (1.0-2.0);
   * ``\epsilon`` is a parameter; it is the income elasticity of space heating demand; ``\epsilon`` = 0.8 (0.6-1.0);
-  * ``\text{AEEI}`` is a parameter (cf. Tables AEEI and Equation @eq:CO2_3); it is the Autonomous Energy Efficiency Improvement, measuring technological progress in energy provision; the global average value is about 1% per year in 1990, converging to 0.2% in 2200; its standard deviation is set at a quarter of the mean.
+  * ``\text{AEEI}`` is a parameter (cf. Tables AEEI and Equation CO2.3); it is the Autonomous Energy Efficiency Improvement, measuring technological progress in energy provision; the global average value is about 1% per year in 1990, converging to 0.2% in 2200; its standard deviation is set at a quarter of the mean.
 
 These parameters are from calibrating *FUND* to the results of Downing *et al*. (1995, 1996). Space cooling is assumed to be more than linear in temperature because cooling demand accelerates as it gets warmer. The income elasticity of cooling demand is taken from Hodgson and Miller (1995, cited in Downing *et al*., 1996), and estimated for the . Space cooling demand is linear in the number of people for want of scenarios of number of households and house sizes. Energy efficiency improvements in space cooling are assumed to be equal to the average energy efficiency improvements in the economy.
 
@@ -499,7 +499,7 @@ where
   * ``\mathrm{\text{NPV}}\text{VW}`` is the net present value of the wetland lost due to coastal squeeze if the whole coast is protected (defined below);
   * ``\mathrm{\text{NPV}}\text{VD}`` is the net present value of the land lost without any coastal protection (defined below).
 
-Equation (@eq:SLR_9) is due to Fankhauser (1994). See below.
+Equation (SLR.9) is due to Fankhauser (1994). See below.
 
 Table SLR reports average costs per year over the next century. ``\mathrm{\text{NPV}}\text{VP}`` is calculated assuming annual costs to be constant. This is based on the following. Firstly, the coastal protection decision makers anticipate a linear sea level rise. Secondly, coastal protection entails large infrastructural works which last for decades. Thirdly, the considered costs are direct investments only, and technologies for coastal protection are mature. Throughout the analysis, a pure rate of time preference, ``\rho``, of 1% per year is used. The actual discount rate lies thus 1% above the growth rate of the economy, ``g``. The net present costs of protection ``PC`` equal
 
@@ -518,7 +518,7 @@ where
   * ``\rho`` is a parameter, the rate of pure time preference; ``\rho`` = 0.03;
   * ``\eta`` is a parameter, the consumption elasticity of marginal utility; ``\eta`` = 1;
 
-``\mathrm{\text{NPV}}\text{VW}`` is the net present value of the wetlands lost due to full coastal protection. Wetland values are assumed to rise in line with Equation (@eq:SLR_8). All growth rates and the rate of wetland loss are as in the current year. The net present costs of wetland loss ``\text{WL}`` follow from
+``\mathrm{\text{NPV}}\text{VW}`` is the net present value of the wetlands lost due to full coastal protection. Wetland values are assumed to rise in line with Equation (SLR.8). All growth rates and the rate of wetland loss are as in the current year. The net present costs of wetland loss ``\text{WL}`` follow from
 
 ```math
 \mathrm{\text{NPV}}VW_{t,r} = \sum_{s = t}^{\infty}{W_{t,r}VW_{s,r}\left( \frac{1}{1 + \rho + \eta g_{t,r}} \right)^{s - t}} = W_{t,r}VW_{t,r}\frac{1 + \rho + \eta g_{t,r}}{\rho + \eta g_{t,r} - \beta g_{t,r} - \gamma p_{t,r} - \delta w_{t,r}} \tag{SLR.11}
@@ -616,7 +616,7 @@ where
   * ``\epsilon`` = -1.58 (0.23)is the income elasticity of diarrhoea mortality
   * ``\eta`` = 1.14 (0.51) is a parameter, the degree of non-linearity of the response of diarrhoea mortality to regional warming.
 
-Equation (@eq:HD_1), specifically parameters ``\epsilon`` and ``\eta``, was estimated based on the WHO Global Burden of Diseases data (http://www.who.int/health\_topics/global\_burden\_of\_disease/en/). Diarrhoea morbidity has the same equation as mortality, but with ``\epsilon``=-0.42 (0.12) and ``\eta``=0.70 (0.26); base morbidity is given in Table HD, column 4. Table HD gives impact estimates, ignoring economic and population growth.
+Equation (HD.1), specifically parameters ``\epsilon`` and ``\eta``, was estimated based on the WHO Global Burden of Diseases data (http://www.who.int/health\_topics/global\_burden\_of\_disease/en/). Diarrhoea morbidity has the same equation as mortality, but with ``\epsilon``=-0.42 (0.12) and ``\eta``=0.70 (0.26); base morbidity is given in Table HD, column 4. Table HD gives impact estimates, ignoring economic and population growth.
 
 See section 5.12. for a description of the valuation of mortality and morbidity.
 
@@ -658,9 +658,9 @@ where
   * ``T_{B}`` is the current temperature of the hottest or coldest month in the country (in degree Celsius);
   * ``\alpha`` and ``\beta`` are parameters, specified in Table HC.1.
 
-Equation (@eq:HC_1) is specified for populations above and below 65 years of age for cardiovascular disorders. Cardiovascular mortality is affected by both heat and cold. In the case of heat, ``T_{B}`` denotes the average temperature of the warmest month. In the case of cold, ``T_{B}`` denotes the average temperature of the coldest month. Respiratory mortality is not age-specific.
+Equation (HC.1) is specified for populations above and below 65 years of age for cardiovascular disorders. Cardiovascular mortality is affected by both heat and cold. In the case of heat, ``T_{B}`` denotes the average temperature of the warmest month. In the case of cold, ``T_{B}`` denotes the average temperature of the coldest month. Respiratory mortality is not age-specific.
 
-Equation (@eq:HC_1) is readily extrapolated. With warming, the baseline temperature ``T_{B}`` changes. If this change is proportional to the change in the global mean temperature, the equation becomes quadratic. Summing country-specific quadratic functions results in quadratic functions for the regions:
+Equation (HC.1) is readily extrapolated. With warming, the baseline temperature ``T_{B}`` changes. If this change is proportional to the change in the global mean temperature, the equation becomes quadratic. Summing country-specific quadratic functions results in quadratic functions for the regions:
 
 ```math
 D_{t,r}^{c} = \alpha_{r}^{c}T_{t} + \beta_{r}^{c}T_{t}^{2} \tag{HC.2}
@@ -675,11 +675,11 @@ where
   * ``T_{t}`` denotes the mean temperature in year ``t``, in degrees Celcius (C);
   * ``\alpha`` and ``\beta`` are parameters, specified in Tables HC.2-4 (in probabilistic mode all probablitiy distributions are constrained so that only values with the same sign as the mean can be sampled).
 
-One problem with (@eq:HC_2) is that it is a non-linear extrapolation based on a data-set that is limited to 17 countries and, more importantly, a single climate change scenario. A global warming of 1°C leads to changes in cardiovascular and respiratory mortality in the order of magnitude of 1% of baseline mortality due to such disorders. Per cause, the total change in mortality is restricted to a maximum of 5% of baseline mortality, an expert guess. This restriction is binding. Baseline cardiovascular and respiratory mortality derives from the share of the population above 65 in the total population.
+One problem with (HC.2) is that it is a non-linear extrapolation based on a data-set that is limited to 17 countries and, more importantly, a single climate change scenario. A global warming of 1°C leads to changes in cardiovascular and respiratory mortality in the order of magnitude of 1% of baseline mortality due to such disorders. Per cause, the total change in mortality is restricted to a maximum of 5% of baseline mortality, an expert guess. This restriction is binding. Baseline cardiovascular and respiratory mortality derives from the share of the population above 65 in the total population.
 
 If the fraction of people over 65 increases by 1%, cardiovascular mortality increases by 0.0259% (0.0096%). For respiratory mortality, the change is 0.0016% (0.0005%). These parameters are estimated from the variation in population above 65 and cardiovascular and respiratory mortality over the nine regions in 1990, using data from http://www.who.int/health\_topics/global\_burden\_of\_disease/en/.
 
-Mortality as in equations (@eq:HC_1) and (@eq:HC_2) is expressed as a fraction of population size. Cardiovascular mortality, however, is separately specified for younger and older people. In 1990, the per capita income elasticity of the share of the population over 65 is 0.25 (0.08). This is estimated using data from http://earthtrends.wri.org
+Mortality as in equations (HC.1) and (HC.2) is expressed as a fraction of population size. Cardiovascular mortality, however, is separately specified for younger and older people. In 1990, the per capita income elasticity of the share of the population over 65 is 0.25 (0.08). This is estimated using data from http://earthtrends.wri.org
 
 Heat-related mortality is assumed to be limited to urban populations. Urbanisation is a function of per capita income and population density:
 
@@ -756,8 +756,8 @@ where
   * ``y`` is per capita income at time ``t`` in region ``r``;
   * ``\epsilon``=-0.514(0.027,&gt;-1,&lt;0) is the income elasticity of extratropical storm damages (Toya and Skidmore 2007);
   * ``\delta_{r}`` is the storm sensitivity to atmospheric CO2 concentrations for region ``r``;
-  * ``C_{CO2,t}`` is atmospheric CO~2~ concentrations;
-  * ``C_{CO2,pre}`` is the CO~2~ concentrations in the pre-industrial era;
+  * ``C_{CO2,t}`` is atmospheric CO₂ concentrations;
+  * ``C_{CO2,pre}`` is the CO₂ concentrations in the pre-industrial era;
   * ``\gamma``=1 is a parameter.
 
 ```math
@@ -772,8 +772,8 @@ where
   * ``y`` is per capita income at time ``t`` in region ``r``;
   * ``\varphi``=-0.501(0.051,&gt;-1,&lt;0) is the income elasticity of extratropical storm mortality (Toya and Skidmore 2007);
   * ``\delta_{r}`` is the storm sensitivity to atmospheric CO2 concentrations for region ``r``;
-  * ``C_{CO2,t}`` is atmospheric CO~2~ concentrations;
-  * ``C_{CO2,pre}`` is the CO~2~ concentrations in the pre-industrial era;
+  * ``C_{CO2,t}`` is atmospheric CO₂ concentrations;
+  * ``C_{CO2,pre}`` is the CO₂ concentrations in the pre-industrial era;
   * ``\gamma``=1 is a parameter.
 
 See section 5.12. for a description of the valuation of mortality and morbidity.
@@ -834,7 +834,7 @@ Downing, T.E., R.A.Greener, and N.Eyre (1995), *The Economic Impacts of Climate 
 
 Fankhauser, S. (1994), 'Protection vs. Retreat -- The Economic Costs of Sea Level Rise', *Environment and Planning A*, **27**, 299-319.
 
-Fischer, G., K.Frohberg, M.L.Parry, and C.Rosenzweig (1993), 'Climate Change and World Food Supply, Demand and Trade', in *Costs, Impacts, and Benefits of CO~2~ Mitigation*, Y. Kaya et al. (eds.), pp. 133-152.
+Fischer, G., K.Frohberg, M.L.Parry, and C.Rosenzweig (1993), 'Climate Change and World Food Supply, Demand and Trade', in *Costs, Impacts, and Benefits of CO₂ Mitigation*, Y. Kaya et al. (eds.), pp. 133-152.
 
 Fischer, G., K.Frohberg, M.L.Parry, and C.Rosenzweig (1996), 'Impacts of Potential Climate Change on Global and Regional Food Production and Vulnerability', in *Climate Change and World Food Security*, T.E. Downing (ed.), Springer-Verlag, Berlin, pp. 115-159.
 
@@ -842,9 +842,9 @@ Forster, P., V. Ramaswamy, P. Artaxo, T. Berntsen, R. Betts, D. W. Fahey, J. Hay
 
 Gitay, H., S.Brown, W.Easterling, B.P.Jallow, J.M.Antle, M.Apps, R.Beamish, T.Chapin, W.Cramer, J.Frangi, J.Laine, E.Lin, J.J.Magnuson, I.Noble, J.Price, T.D.Prowse, T.L.Root, E.-D.Schulze, O.Sitotenko, B.L.Sohngen, and J.-F.Soussana (2001), 'Ecosystems and their Goods and Services', in *Climate Change 2001: Impacts, Adaptation and Vulnerability -- Contribution of Working Group II to the Third Assessment Report of the Intergovernmental Panel on Climate Change*, J.J. McCarthy et al. (eds.), Cambridge University Press, Cambridge, pp. 235-342.
 
-Goulder, L.H. and S.H.Schneider (1999), 'Induced technological change and the attractiveness of CO~2~ abatement policies', *Resource and Energy Economics*, **21**, 211-253.
+Goulder, L.H. and S.H.Schneider (1999), 'Induced technological change and the attractiveness of CO₂ abatement policies', *Resource and Energy Economics*, **21**, 211-253.
 
-Goulder, L.H. and K.Mathai (2000), 'Optimal CO~2~ Abatement in the Presence of Induced Technological Change', *Journal of Environmental Economics and Management*, **39**, 1-38.
+Goulder, L.H. and K.Mathai (2000), 'Optimal CO₂ Abatement in the Presence of Induced Technological Change', *Journal of Environmental Economics and Management*, **39**, 1-38.
 
 Hammitt, J.K., R.J.Lempert, and M.E.Schlesinger (1992), 'A Sequential-Decision Strategy for Abating Climate Change', *Nature*, **357**, 315-318.
 
