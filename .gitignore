@@ -6,3 +6,4 @@ doc/fund-tables.pdf
 output/*
 Manifest.toml
 .vscode
+docs/build
