@@ -13,12 +13,15 @@
     #  CH4 pre industrial
     ch4pre = Parameter(default = 790.0)
 
+    # Initial acch4 value
+    acch4_0 = Parameter(default = 1222.0)
+
     function run_timestep(p, v, d, t)
         
         if is_first(t)
             v.ch4decay = 1.0 / p.lifech4
 
-            v.acch4[1] = 1222.0
+            v.acch4[1] = p.acch4_0
         else
             # Calculate CH4 concentrations
             v.acch4[t] = v.acch4[t - 1] + 0.3597 * p.globch4[t] - v.ch4decay * (v.acch4[t - 1] - p.ch4pre)
