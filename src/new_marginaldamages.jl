@@ -1,39 +1,41 @@
 import Mimi.compinstance
 
 """
-compute_scc(m::Model=get_model(); year::Int = nothing, gas::Symbol = :CO2, last_year::Int = 3000, equity_weights::Bool = false, eta::Float64 = 1.45, prtp::Float64 = 0.015)
+compute_scc(m::Model=get_model(); year::Int = nothing, gas::Symbol = :CO2, last_year::Int = 3000, equity_weights::Bool = false, eta::Float64 = 1.45, prtp::Float64 = 0.015, pulse_size::Float64 = 1e7)
 
 Computes the social cost of CO2 (or other gas if specified) for an emissions pulse in `year`
 for the provided MimiFUND model. If no model is provided, the default model from MimiFUND.get_model() is used.
 The discount factor is computed from the specified `eta` and pure rate of time preference `prtp`.
 Optional regional equity weighting can be used by specifying `equity_weights=true`. 
+`pulse_size` controls the size of the marginal emission pulse.
 """
-function compute_scc(m::Model=get_model(); year::Union{Int, Nothing} = nothing, gas::Symbol = :CO2, last_year::Int = 3000, equity_weights::Bool = false, eta::Float64 = 1.45, prtp::Float64 = 0.015)
+function compute_scc(m::Model=get_model(); year::Union{Int, Nothing} = nothing, gas::Symbol = :CO2, last_year::Int = 3000, equity_weights::Bool = false, eta::Float64 = 1.45, prtp::Float64 = 0.015, pulse_size::Float64 = 1e7)
 
     year === nothing ? error("Must specify an emission year. Try `compute_scc(m, year=2020)`.") : nothing
     !(last_year in 1950:3000) ? error("Invlaid value of $last_year for last_year. last_year must be within the model's time index 1950:3000.") : nothing
     !(year in 1950:last_year) ? error("Cannot compute the scc for year $year, year must be within the model's time index 1950:$last_year.") : nothing
 
-    mm = get_marginal_model(m; year = year, gas = gas)
+    mm = get_marginal_model(m; year = year, gas = gas, pulse_size = pulse_size)
 
     return _compute_scc(mm, year=year, gas=gas, last_year=last_year, equity_weights=equity_weights, eta=eta, prtp=prtp)
 end
 
 """
-compute_scc_mm(m::Model=get_model(); year::Union{Int, Nothing} = nothing, gas::Symbol = :CO2, last_year::Int = 3000, equity_weights::Bool = false, eta::Float64 = 1.45, prtp::Float64 = 0.015)
+compute_scc_mm(m::Model=get_model(); year::Union{Int, Nothing} = nothing, gas::Symbol = :CO2, last_year::Int = 3000, equity_weights::Bool = false, eta::Float64 = 1.45, prtp::Float64 = 0.015, pulse_size::Float64 = 1e7)
 
 Returns a NamedTuple (scc=scc, mm=mm) of the social cost of carbon and the MarginalModel used to compute it.
 Computes the social cost of CO2 (or other gas if specified) for an emissions pulse in `year`
 for the provided MimiFUND model. If no model is provided, the default model from MimiFUND.get_model() is used.
 The discount factor is computed from the specified `eta` and pure rate of time preference `prtp`.
 Optional regional equity weighting can be used by specifying `equity_weights=true`. 
+`pulse_size` controls the size of the marginal emission pulse.
 """
-function compute_scc_mm(m::Model=get_model(); year::Union{Int, Nothing} = nothing, gas::Symbol = :CO2, last_year::Int = 3000, equity_weights::Bool = false, eta::Float64 = 1.45, prtp::Float64 = 0.015)
+function compute_scc_mm(m::Model=get_model(); year::Union{Int, Nothing} = nothing, gas::Symbol = :CO2, last_year::Int = 3000, equity_weights::Bool = false, eta::Float64 = 1.45, prtp::Float64 = 0.015, pulse_size::Float64 = 1e7)
     year === nothing ? error("Must specify an emission year. Try `compute_scc_mm(m, year=2020)`.") : nothing
     !(last_year in 1950:3000) ? error("Invlaid value of $last_year for last_year. last_year must be within the model's time index 1950:3000.") : nothing
     !(year in 1950:last_year) ? error("Cannot compute the scc for year $year, year must be within the model's time index 1950:$last_year.") : nothing
 
-    mm = get_marginal_model(m; year = year, gas = gas)
+    mm = get_marginal_model(m; year = year, gas = gas, pulse_size = pulse_size)
     scc = _compute_scc(mm; year=year, gas=gas, last_year=last_year, equity_weights=equity_weights, eta=eta, prtp=prtp)
     
     return (scc = scc, mm = mm)
@@ -50,7 +52,7 @@ function _compute_scc(mm::MarginalModel; year::Int, gas::Symbol, last_year::Int,
     damage2 = m2[:impactaggregation, :loss] ./ m2[:socioeconomic, :income] .* m1[:socioeconomic, :income]
 
     # Calculate the marginal damage between run 1 and 2 for each year/region
-    marginaldamage = (damage2 .- damage1) / 10000000.0  # The pulse was 1 MtCO2 for ten years, so divide by 10^7
+    marginaldamage = (damage2 .- damage1) / mm.delta
 
     ypc = m1[:socioeconomic, :ypc]
 
@@ -62,7 +64,7 @@ function _compute_scc(mm::MarginalModel; year::Int, gas::Symbol, last_year::Int,
             for t = getindexfromyear(year):ntimesteps
                 df[t, r] = x
                 gr = (ypc[t, r] - ypc[t - 1, r]) / ypc[t - 1,r]
-                x = x / (1. + prtp + eta * gr)
+                x = x / (1. + prtp + eta * gr) 
             end
         end
     else
@@ -76,32 +78,34 @@ function _compute_scc(mm::MarginalModel; year::Int, gas::Symbol, last_year::Int,
 end
 
 """
-get_marginal_model(m::Model = get_model(); year::Int = nothing, gas::Symbol = :CO2)
+get_marginal_model(m::Model = get_model(); year::Int = nothing, gas::Symbol = :CO2, pulse_size::Float64 = 1e7)
 
 Creates a Mimi MarginalModel where the provided m is the base model, and the marginal model has additional emissions of gas `gas` in year `year`.
 If no Model m is provided, the default model from MimiFUND.get_model() is used as the base model.
+`pulse_size` controls the size of the marginal emission pulse.
 """
-function get_marginal_model(m::Model = get_model(); year::Int = nothing, gas::Symbol = :CO2)
-    year == nothing ? error("Must specify emission year. Try `get_marginal_model(m, year=2020)`.") : nothing 
+function get_marginal_model(m::Model = get_model(); year::Int = nothing, gas::Symbol = :CO2, pulse_size::Float64 = 1e7)
+    year === nothing ? error("Must specify emission year. Try `get_marginal_model(m, year=2020)`.") : nothing 
     !(year in 1950:3000) ? error("Cannot add marginal emissions in $year, year must be within the model's time index 1950:3000.") : nothing
 
-    mm = create_marginal_model(m)
-    add_marginal_emissions!(mm.marginal, year; gas = gas)
+    mm = create_marginal_model(m, pulse_size)
+    add_marginal_emissions!(mm.marginal, year; gas = gas, pulse_size = pulse_size)
 
     return mm
 end
 
 """
-Adds a marginalemission component to m, and sets the additional emissions if a year is specified.
+Adds a marginalemission component to `m`, and sets the additional emissions if a year is specified.
+`pulse_size` controls the size of the marginal emission pulse.
 """
-function add_marginal_emissions!(m, year = nothing; gas = :CO2)
+function add_marginal_emissions!(m, year = nothing; gas = :CO2, pulse_size::Float64 = 1e7)
 
     # Add additional emissions to m
     add_comp!(m, Mimi.adder, :marginalemission, before = :climateco2cycle, first = 1951)
     nyears = length(Mimi.time_labels(m))
     addem = zeros(nyears - 1)   # starts one year later, in 1951
     if year != nothing 
-        addem[getindexfromyear(year)-1:getindexfromyear(year) + 8] .= 1.0
+        addem[getindexfromyear(year)-1:getindexfromyear(year) + 8] .= pulse_size / 1e7   # pulse is spread over ten years, and emissions components is in MtCO2, so divide by 1e7
     end
     set_param!(m, :marginalemission, :add, addem)
 
@@ -127,14 +131,14 @@ end
 """
 Helper function to set the marginal emissions in the specified year.
 """
-function perturb_marginal_emissions!(m::Model, year; comp_name = :marginalemission)
+function perturb_marginal_emissions!(m::Model, year; comp_name = :marginalemission, pulse_size::Float64 = 1e7)
 
     ci = compinstance(m, comp_name)
     emissions = Mimi.get_param_value(ci, :add)
 
     nyears = length(Mimi.dimension(m, :time))
     new_em = zeros(nyears - 1)
-    new_em[getindexfromyear(year)-1:getindexfromyear(year) + 8] .= 1.0
+    new_em[getindexfromyear(year)-1:getindexfromyear(year) + 8] .= pulse_size / 1e7
     emissions[:] = new_em
 
 end
