@@ -46,6 +46,7 @@ function _compute_scc(mm::MarginalModel; year::Int, gas::Symbol, last_year::Int,
     ntimesteps = getindexfromyear(last_year)
     run(mm; ntimesteps = ntimesteps)
 
+    # Calculate the marginal damage between run 1 and 2 for each year/region
     marginaldamage = mm[:impactaggregation, :loss]
 
     ypc = mm.base[:socioeconomic, :ypc]
@@ -67,7 +68,7 @@ function _compute_scc(mm::MarginalModel; year::Int, gas::Symbol, last_year::Int,
     end 
 
     # Compute global SCC
-    scc = sum(marginaldamage[2:ntimesteps, :] .* df[2:ntimesteps, :]) #* (gas == :C ? 44./12. : 1) # convert to carbon from co2?
+    scc = sum(marginaldamage[2:ntimesteps, :] .* df[2:ntimesteps, :])
     return scc
 end
 
@@ -99,7 +100,8 @@ function add_marginal_emissions!(m, year = nothing; gas = :CO2, pulse_size::Floa
     nyears = length(Mimi.time_labels(m))
     addem = zeros(nyears - 1)   # starts one year later, in 1951
     if year != nothing 
-        addem[getindexfromyear(year)-1:getindexfromyear(year) + 8] .= pulse_size / 1e7   # pulse is spread over ten years, and emissions components is in MtCO2, so divide by 1e7
+        # pulse is spread over ten years, and emissions components is in Mt so divide by 1e7, and convert from CO2 to C if gas==:CO2 because emissions component is in MtC
+        addem[getindexfromyear(year)-1:getindexfromyear(year) + 8] .= pulse_size / 1e7 * (gas == :CO2 ? 12/44 : 1)
     end
     set_param!(m, :marginalemission, :add, addem)
 
@@ -114,7 +116,7 @@ function add_marginal_emissions!(m, year = nothing; gas = :CO2, pulse_size::Floa
         connect_param!(m, :marginalemission, :input, :emissions, :globn2o)
         connect_param!(m, :climaten2ocycle, :globn2o, :marginalemission, :output, repeat([missing], nyears))
     elseif gas == :SF6
-        connect_param!(m, :marginalemission, :input, :emissions,:globsf6)
+        connect_param!(m, :marginalemission, :input, :emissions, :globsf6)
         connect_param!(m, :climatesf6cycle, :globsf6, :marginalemission, :output, repeat([missing], nyears))
     else
         error("Unknown gas: $gas")
@@ -125,90 +127,29 @@ end
 """
 Helper function to set the marginal emissions in the specified year.
 """
-function perturb_marginal_emissions!(m::Model, year; comp_name = :marginalemission, pulse_size::Float64 = 1e7)
+function perturb_marginal_emissions!(m::Model, year; comp_name::Symbol = :marginalemission, pulse_size::Float64 = 1e7, gas::Symbol = :CO2)
 
     ci = compinstance(m, comp_name)
     emissions = Mimi.get_param_value(ci, :add)
 
     nyears = length(Mimi.dimension(m, :time))
     new_em = zeros(nyears - 1)
-    new_em[getindexfromyear(year)-1:getindexfromyear(year) + 8] .= pulse_size / 1e7
+    new_em[getindexfromyear(year)-1:getindexfromyear(year) + 8] .= pulse_size / 1e7 * (gas == :CO2 ? 12/44 : 1)
     emissions[:] = new_em
 
 end
 
-"""
-Creates a MarginalModel of FUND with additional emissions in the specified year for the specified gas. 
-"""
-function create_marginal_FUND_model(; gas = :CO2, year = 2010, parameters = nothing, yearstorun = 1050)
-
-    # Get default FUND model
-    FUND = get_model(nsteps = yearstorun, params = parameters)
-
-    # Build marginal model
-    mm = create_marginal_model(FUND)
-    m1, m2 = mm.base, mm.marginal
-
-    add_marginal_emissions!(m2, year; gas = gas)
-
-    Mimi.build(m1)
-    Mimi.build(m2)
-    return mm 
-end 
-
-"""
-Returns the social cost per one ton of additional emissions of the specified gas in the specified year. 
-Uses the specified eta and prtp for discounting, with the option to use equity weights.
-"""
-function get_social_cost(; year = 2010, parameters = nothing, yearstoaggregate = 1000, gas = :CO2, equity_weights = false, eta = 1.0, prtp = 0.001)
-
-    # Get marginal model
-    yearstorun = min(1050, getindexfromyear(year) + yearstoaggregate)
-    mm = create_marginal_FUND_model(year = year, parameters = parameters, yearstorun = yearstorun, gas = gas)
-    run(mm)
-    m1, m2 = mm.base, mm.marginal
-
-    damage1 = m1[:impactaggregation, :loss]
-    # Take out growth effect effect of run 2 by transforming the damage from run 2 into % of GDP of run 2, and then multiplying that with GDP of run 1
-    damage2 = m2[:impactaggregation, :loss] ./ m2[:socioeconomic, :income] .* m1[:socioeconomic, :income]
-
-    # Calculate the marginal damage between run 1 and 2 for each
-    # year/region
-    marginaldamage = (damage2 .- damage1) / 10000000.0
-
-    ypc = m1[:socioeconomic, :ypc]
-
-    df = zeros(yearstorun + 1, 16)
-    if !equity_weights
-        for r = 1:16
-            x = 1.
-            for t = getindexfromyear(year):yearstorun
-                df[t, r] = x
-                gr = (ypc[t, r] - ypc[t - 1, r]) / ypc[t - 1,r]
-                x = x / (1. + prtp + eta * gr)
-            end
-        end
-    else
-        globalypc = m1[:socioeconomic, :globalypc]
-        df = Float64[t >= getindexfromyear(year) ? (globalypc[getindexfromyear(year)] / ypc[t, r]) ^ eta / (1.0 + prtp) ^ (t - getindexfromyear(year)) : 0.0 for t = 1:yearstorun + 1, r = 1:16]
-    end 
-
-    scc = sum(marginaldamage[2:end, :] .* df[2:end, :])
-    return scc
-
-end
 
 """
 Returns a matrix of marginal damages per one ton of additional emissions of the specified gas in the specified year.
 """
-function getmarginaldamages(; year=2010, parameters = nothing, yearstoaggregate = 1000, gas = :CO2) 
+function getmarginaldamages(; year=2010, parameters = nothing, gas = :CO2, pulse_size::Float64 = 1e7) 
 
     # Get marginal model
-    yearstorun = min(1050, getindexfromyear(year) + yearstoaggregate)
-    mm = create_marginal_FUND_model(year = year, parameters = parameters, yearstorun = yearstorun, gas = gas)
+    m = get_model(params = parameters)
+    mm = get_marginal_model(m, year = year, gas = gas, pulse_size = pulse_size)
     run(mm)
 
-    # Get damages
-    marginaldamages = mm[:impactaggregation, :loss] / 10000000.0
-    return marginaldamages
+    # Return marginal damages
+    return mm[:impactaggregation, :loss]
 end
