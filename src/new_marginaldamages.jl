@@ -79,7 +79,7 @@ function compute_social_cost(m::Model=get_model(); year::Union{Int, Nothing} = n
 
     mm = get_marginal_model(m; year = year, gas = gas, pulse_size = pulse_size)
 
-    return _compute_scc(mm, year = year, gas = gas, last_year = last_year, equity_weights = equity_weights, eta = eta, prtp = prtp)
+    return _compute_sc(mm, year = year, gas = gas, last_year = last_year, equity_weights = equity_weights, eta = eta, prtp = prtp)
 end
 
 """
@@ -98,13 +98,13 @@ function compute_sc_mm(m::Model=get_model(); year::Union{Int, Nothing} = nothing
     !(year in 1950:last_year) ? error("Cannot compute the scc for year $year, year must be within the model's time index 1950:$last_year.") : nothing
 
     mm = get_marginal_model(m; year = year, gas = gas, pulse_size = pulse_size)
-    scc = _compute_scc(mm; year=year, gas=gas, last_year=last_year, equity_weights=equity_weights, eta=eta, prtp=prtp)
+    scc = _compute_sc(mm; year=year, gas=gas, last_year=last_year, equity_weights=equity_weights, eta=eta, prtp=prtp)
     
     return (scc = scc, mm = mm)
 end
 
 # helper function for computing SCC from a MarginalModel, not to be exported
-function _compute_scc(mm::MarginalModel; year::Int, gas::Symbol, last_year::Int, equity_weights::Bool, eta::Float64, prtp::Float64)
+function _compute_sc(mm::MarginalModel; year::Int, gas::Symbol, last_year::Int, equity_weights::Bool, eta::Float64, prtp::Float64)
     ntimesteps = getindexfromyear(last_year)
     run(mm; ntimesteps = ntimesteps)
 
