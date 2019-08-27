@@ -1,5 +1,10 @@
 import Mimi.compinstance
 
+"""
+compute_scc(m::Model=get_model(); year::Int = nothing, gas::Symbol = :CO2, last_year::Int = 3000, equity_weights::Bool = false, eta::Float64 = 1.45, prtp::Float64 = 0.015, pulse_size::Float64 = 1e7)
+
+Debrecated function for calculating the social cost of carbon for a MimiFUND model. Use `compute_scco2`, `compute_scch4`, `compute_scn2o`, or `compute_scsf6` instead.
+"""
 function compute_scc(m::Model=get_model(); year::Union{Int, Nothing} = nothing, gas::Symbol = :CO2, last_year::Int = 3000, equity_weights::Bool = false, eta::Float64 = 1.45, prtp::Float64 = 0.015, pulse_size::Float64 = 1e7)
     @warn("Deprecation warning: `compute_scc` is deprecated. Use `compute_scco2` or other gas-specific functions instead.")
     year === nothing ? error("Must specify an emission year. Try `compute_scc(year=2020)`.") : nothing
