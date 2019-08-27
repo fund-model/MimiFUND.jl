@@ -37,7 +37,7 @@ function run_fund_scc_mcs(trials = 10000; years = [2020], rates = [0.03], ntimes
     end
 
     # Get FUND marginal model
-    mm = create_marginal_FUND_model()
+    mm = get_marginal_model()
     set_models!(mcs, mm)
 
     # Define scenario function

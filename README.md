@@ -74,17 +74,17 @@ using Mimi
 using MimiFUND
 
 # Get the social cost of carbon in year 2020 from the default MimiFUND model:
-scc = MimiFUND.compute_scc(year = 2020)
+scc = MimiFUND.compute_scco2(year = 2020)
 
 # Or, you can also compute the SCC from a modified version of a MimiFUND model:
 m = MimiFUND.get_model() # Get the default version of the FUND model
 update_param!(m, :climatesensitivity, 5) # make any modifications to your model
-scc = MimiFUND.compute_scc(m, year = 2020) # Compute the SCC from your model
+scc = MimiFUND.compute_scco2(m, year = 2020) # Compute the SCC from your model
 ```
 
-There are several keyword arguments available to `compute_scc`. Note that the user must specify a `year` for the SCC calculation, but the rest of the keyword arguments have default values.
+There are several keyword arguments available to `compute_scco2`. Note that the user must specify a `year` for the SCC calculation, but the rest of the keyword arguments have default values.
 ```
-compute_scc(m = get_model(),  # if no model provided, will use the default MimiFUND model
+MimiFUND.compute_scco2(m = get_model(),  # if no model provided, will use the default MimiFUND model
     year = nothing,  # user must specify an emission year for the SCC calculation
     gas = :CO2,  # which greenhouse gas to use. Other options are :CH4, :N2O, and :SF6.
     last_year = 3000,  # the last year to run and use for the SCC calculation. Default is the last year of the time dimension, 3000.
@@ -94,18 +94,25 @@ compute_scc(m = get_model(),  # if no model provided, will use the default MimiF
 )
 ```
 
-There is an additional function for computing the SCC that also returns the MarginalModel that was used to compute it. It returns these two values as a NamedTuple of the form (scc=scc, mm=mm). The same keyword arguments from the `compute_scc` function are available for the `compute_scc_mm` function. Example:
+There is an additional function for computing the SCC that also returns the MarginalModel that was used to compute it. It returns these two values as a NamedTuple of the form (scc=scc, mm=mm). The same keyword arguments from the `compute_scco2` function are available for the `compute_sc_mm` function. Example:
 ```
 using Mimi
 using MimiFUND
 
-result = compute_scc_mm(year=2020, last_year=2300, eta=0, prtp=0.03)
+result = MimiFUND.compute_sc_mm(year = 2020, gas = :CO2, last_year = 2300, eta = 0, prtp = 0.03)
 
-result.scc  # returns the computed SCC value
+result.scc  # returns the computed SCCO2 value
 
 result.mm   # returns the Mimi MarginalModel
 
 marginal_temp = result.mm[:climatedynamics, :temp]  # marginal results from the marginal model can be accessed like this
+```
+
+There are separate functions available for calculating the social cost of other greenhouse gases. They are:
+```
+compute_scch4
+compute_scn2o
+compute_scsf6
 ```
 
 ## Versions and academic use policy
