@@ -7,8 +7,6 @@ include("helper.jl")
 
 include("new_marginaldamages.jl")
 include("montecarlo/defmcs.jl")
-include("montecarlo/run_fund_mcs.jl")
-include("montecarlo/run_fund_scc_mcs.jl")
 
 include("components/SocioEconomicComponent.jl")
 include("components/PopulationComponent.jl")

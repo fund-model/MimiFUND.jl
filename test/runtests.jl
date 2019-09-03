@@ -47,18 +47,6 @@ md = MimiFUND.getmarginaldamages()
 
 end #marginaldamages testset
 
-#------------------------------------------------------------------------------
-# 4. Run basic test of MCS functionality
-#------------------------------------------------------------------------------
-
-@testset "test-mcs" begin
-
-# mcs
-MimiFUND.run_fund_mcs(10)        # Run 10 trials of basic FUND MCS
-MimiFUND.run_fund_scc_mcs(10)    # Run 10 trials of FUND MCS SCC calculations
-
-end #test-mcs testset
-
 end #fund testset
 
 nothing
