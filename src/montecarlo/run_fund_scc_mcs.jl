@@ -11,8 +11,9 @@ the Social Cost of Carbon for the specified `years` and discount `rates`.
 function run_fund_scc_mcs(trials = 10000; years = [2020], rates = [0.03], ntimesteps = MimiFUND.default_nsteps + 1, output_dir = nothing, save_trials = false)
 
     # Set up output directories
-    output_dir = output_dir == nothing ? joinpath(@__DIR__, "../../output/", "SCC $(Dates.format(now(), "yyyy-mm-dd HH-MM-SS")) MC$trials") : output_dir
+    output_dir = output_dir === nothing ? joinpath(@__DIR__, "../../output/", "SCC $(Dates.format(now(), "yyyy-mm-dd HH-MM-SS")) MC$trials") : output_dir
     mkpath("$output_dir/results")
+    save_trials ? trials_output_filename = joinpath(@__DIR__, "$output_dir/trials.csv") : trials_output_filename = nothing
 
     # Write header in SCC output file
     scc_file = joinpath(output_dir, "scc.csv")
@@ -26,22 +27,13 @@ function run_fund_scc_mcs(trials = 10000; years = [2020], rates = [0.03], ntimes
         :emissionyear   => years
     ]
 
+    # get models and sim
     mcs = getmcs()
-
-    # Generate trials
-    if save_trials
-        filename = joinpath(@__DIR__, "$output_dir/trials.csv")
-        generate_trials!(mcs, trials; filename=filename)
-    else
-        generate_trials!(mcs, trials)
-    end
-
-    # Get FUND marginal model
     mm = create_marginal_FUND_model()
-    set_models!(mcs, mm)
-
+    models = [mm.base, mm.marginal] #fixing bug in Mimi so this can go back to models = mm
+    
     # Define scenario function
-    function _scenario_func(mcs::Simulation, tup::Tuple)
+    function _scenario_func(mcs::SimulationInstance, tup::Tuple)
         
         # Unpack scenario tuple argument
         (rate, emissionyear) = tup
@@ -55,7 +47,7 @@ function run_fund_scc_mcs(trials = 10000; years = [2020], rates = [0.03], ntimes
     end
 
     # Define post trial function
-    function scc_calculation(mcs::Simulation, trialnum::Int, ntimesteps::Int, tup::Tuple)
+    function scc_calculation(mcs::SimulationInstance, trialnum::Int, ntimesteps::Int, tup::Tuple)
 
         # Unpack scenario tuple argument
         (rate, emissionyear) = tup
@@ -82,15 +74,15 @@ function run_fund_scc_mcs(trials = 10000; years = [2020], rates = [0.03], ntimes
     end
 
     # Run monte carlo trials
-    run_sim(mcs;
-        models_to_run = 2, 
+    res = run(mcs, models, trials;
         ntimesteps = ntimesteps,
-        output_dir = "$output_dir/results",
+        trials_output_filename = trials_output_filename,
+        results_output_dir = "$output_dir/results",
         scenario_args = scenario_args, 
         scenario_func = _scenario_func,   
         post_trial_func = scc_calculation   
         )
 
-    return nothing
+    return res
 end 
 
