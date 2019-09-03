@@ -11,7 +11,7 @@ the Social Cost of Carbon for the specified `years` and discount `rates`.
 function run_fund_scc_mcs(trials = 10000; years = [2020], rates = [0.03], ntimesteps = MimiFUND.default_nsteps + 1, output_dir = nothing, save_trials = false)
 
     # Set up output directories
-    output_dir = output_dir == nothing ? joinpath(@__DIR__, "../../output/", "SCC $(Dates.format(now(), "yyyy-mm-dd HH-MM-SS")) MC$trials") : output_dir
+    output_dir = output_dir === nothing ? joinpath(@__DIR__, "../../output/", "SCC $(Dates.format(now(), "yyyy-mm-dd HH-MM-SS")) MC$trials") : output_dir
     mkpath("$output_dir/results")
     save_trials ? trials_output_filename = joinpath(@__DIR__, "$output_dir/trials.csv") : trials_output_filename = nothing
 
@@ -27,10 +27,10 @@ function run_fund_scc_mcs(trials = 10000; years = [2020], rates = [0.03], ntimes
         :emissionyear   => years
     ]
 
-    # get models
+    # get models and sim
     mcs = getmcs()
     mm = create_marginal_FUND_model()
-    models = [mcs, mm]
+    models = [mm.base, mm.marginal] #fixing bug in Mimi so this can go back to models = mm
     
     # Define scenario function
     function _scenario_func(mcs::SimulationInstance, tup::Tuple)

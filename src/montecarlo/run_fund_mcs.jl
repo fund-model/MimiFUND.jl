@@ -10,10 +10,10 @@ Runs a Monte Carlo simulation with the FUND model over it's distributional param
 function run_fund_mcs(trials = 10000; ntimesteps = MimiFUND.default_nsteps + 1, output_dir = nothing, save_trials = false)
 
     # Set up output directories
-    output_dir = output_dir == nothing ? joinpath(@__DIR__, "../../output/", "SCC $(Dates.format(now(), "yyyy-mm-dd HH-MM-SS")) MC$trials") : output_dir
+    output_dir = output_dir === nothing ? joinpath(@__DIR__, "../../output/", "SCC $(Dates.format(now(), "yyyy-mm-dd HH-MM-SS")) MC$trials") : output_dir
     mkpath("$output_dir/results")
 
-    save_trials ? trials_output_filename = joinpath("$output_dir/trials.csv") : nothing
+    trials_output_filename = save_trials ?  joinpath("$output_dir/trials.csv") :  nothing
 
     # Get an instance of FUND's mcs
     mcs = getmcs()
