@@ -6,7 +6,6 @@ DelimitedFiles = "8bb1440f-4735-579b-a4ab-409b98df4dab"
 Distributions = "31c24e10-a181-5473-b8eb-7969acd0382f"
 Mimi = "e4e893b0-ee5e-52ea-8111-44b3bdec128c"
 StatsBase = "2913bbd2-ae8a-5f71-8c99-4fb6c76f3a91"
-Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"
 
 [extras]
 CSVFiles = "5d742f6a-9f54-50ce-8119-2520741973ca"
