@@ -1,23 +1,23 @@
 name = "MimiFUND"
 uuid = "b3ba11de-429f-11e9-29f7-cb478ab96e7c"
-version = "3.8.4-DEV"
+version = "3.8.4"
 
 [deps]
+StatsBase = "2913bbd2-ae8a-5f71-8c99-4fb6c76f3a91"
 DelimitedFiles = "8bb1440f-4735-579b-a4ab-409b98df4dab"
 Distributions = "31c24e10-a181-5473-b8eb-7969acd0382f"
 Mimi = "e4e893b0-ee5e-52ea-8111-44b3bdec128c"
-StatsBase = "2913bbd2-ae8a-5f71-8c99-4fb6c76f3a91"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+CSVFiles = "5d742f6a-9f54-50ce-8119-2520741973ca"
+DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
 
 [compat]
 julia = "1"
+StatsBase = "0.32"
 Distributions = "0.21"
 Mimi = "0.9.3"
-StatsBase = "0.32"
-
-[extras]
-CSVFiles = "5d742f6a-9f54-50ce-8119-2520741973ca"
-DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
-Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [targets]
 test = ["Test", "DataFrames", "CSVFiles"]
