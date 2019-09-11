@@ -233,7 +233,7 @@ end
     end
 end
 
-function add_marginal_emissions_dual!(m, year; gas = :CO2, pulse_size = 1) where T 
+function add_marginal_emissions_dual!(m, year; gas = :CO2, pulse_size = 1)
     gas != :CO2 ? error("not yet implemented") : nothing
 
     add_comp!(m, DualPulse, before = :climateco2cycle)
