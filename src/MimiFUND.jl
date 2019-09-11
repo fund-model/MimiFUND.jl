@@ -2,6 +2,7 @@ module MimiFUND
 
 using Mimi
 using DelimitedFiles #base.DelimitedFiles
+using DualNumbers
 
 include("helper.jl")
 
@@ -48,19 +49,19 @@ const global default_nsteps = 1050
 const global default_datadir = joinpath(dirname(@__FILE__), "..", "data")
 const global default_params = nothing
 
-function get_model(; nsteps = default_nsteps, datadir = default_datadir, params = default_params)
+function get_model(; nsteps = default_nsteps, datadir = default_datadir, params = default_params, number_type = Float64)
 
     # ---------------------------------------------
     # Load parameters
     # ---------------------------------------------
 
-    parameters = params == nothing ? load_default_parameters(datadir) : params
+    parameters = params === nothing ? load_default_parameters(datadir) : params
 
     # ---------------------------------------------
     # Create model
     # ---------------------------------------------
 
-    m = Model()
+    m = Model(number_type)
 
     # ---------------------------------------------
     # Set dimensions

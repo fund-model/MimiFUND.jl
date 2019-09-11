@@ -208,3 +208,81 @@ function getmarginaldamages(; year=2010, parameters = nothing, yearstoaggregate 
     marginaldamages = mm[:impactaggregation, :loss] / 10000000.0
     return marginaldamages
 end
+
+#------------------------------------------------------------------------------
+# Support for DualNumber computation added below
+#------------------------------------------------------------------------------
+
+@defcomp DualPulse begin
+    input = Parameter(index = [time])
+    output = Variable(index = [time])
+    year::Int = Parameter()
+    pulse_size::Float64 = Parameter()
+    function run_timestep(p, v, d, t)
+        if gettime(t) == p.year
+            v.output[t] = p.input[t] + Dual(0., p.pulse_size)
+        else
+            try
+                v.output[t] = p.input[t]    
+            catch e 
+                if !isa(e, MissingException)    # First timestep throws a MissingException because emissions aren't calculated the first year
+                    throw(e)
+                end
+            end
+        end
+    end
+end
+
+function add_marginal_emissions_dual!(m, year; gas = :CO2, pulse_size = 1)
+    gas != :CO2 ? error("not yet implemented") : nothing
+
+    add_comp!(m, DualPulse, before = :climateco2cycle)
+    set_param!(m, :DualPulse, :year, year)
+    set_param!(m, :DualPulse, :pulse_size, pulse_size * 1e-6 * 12/44)
+
+    connect_param!(m, :DualPulse, :input, :emissions, :mco2)
+    connect_param!(m, :climateco2cycle, :mco2, :DualPulse, :output)
+end
+
+
+@defcomp Discounting begin
+    damages = Parameter(index = [time, regions])
+    start_year::Int = Parameter()
+    r::Float64 = Parameter()    # constant discount rate
+
+    discount_factor::Float64 = Variable(index = [time])
+    discounted_damages = Variable(index = [time])
+    discounted_total = Variable()
+
+    function run_timestep(p, v, d, t)
+        if gettime(t) >= p.start_year
+            if gettime(t) == p.start_year
+                v.discount_factor[t] = 1.
+                v.discounted_total = 0.
+            else
+                v.discount_factor[t] = v.discount_factor[t - 1] / (1 + p.r)
+            end
+            global_damages = sum(p.damages[t, :])
+            v.discounted_damages[t] = global_damages * v.discount_factor[t]
+            v.discounted_total = v.discounted_total + v.discounted_damages[t]
+        end
+    end
+end
+
+function compute_scco2_dual(m = MimiFUND.get_model(number_type = Dual{Float64}); year::Union{Int, Nothing} = nothing, prtp::Float64 = 0.03, eta::Float64 = 0., equity_weights::Bool = false)
+    eta != 0 ? error("Non-zero eta discounting not yet implemented") : nothing
+    equity_weights ? error("equity weighting not yet implemented") : nothing
+    year === nothing ? error("Must specify an emission year") : nothing
+
+    add_marginal_emissions_dual!(m, year)
+
+    add_comp!(m, Discounting, after = :impactaggregation)
+    connect_param!(m, :Discounting => :damages, :impactaggregation => :loss)
+    set_param!(m, :Discounting, :start_year, year)
+    set_param!(m, :Discounting, :r, prtp)
+
+    run(m)
+
+    scc = m[:Discounting, :discounted_total].epsilon
+    return scc
+end
