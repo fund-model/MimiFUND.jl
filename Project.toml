@@ -10,6 +10,7 @@ StatsBase = "2913bbd2-ae8a-5f71-8c99-4fb6c76f3a91"
 Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"
 
 [compat]
+julia = "1"
 Mimi = "0.9"
 Distributions = "0.20, 0.21"
 StatsBase = "0.30, 0.31, 0.32"
