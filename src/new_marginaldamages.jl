@@ -149,10 +149,10 @@ The size of the marginal emission pulse can be modified with the `pulse_size` ke
 tonnes of the specified gas (this does not change the units of the returned value, which is always normalized
 by the `pulse_size` used).
 
-If `return_mm == true`, then a NamedTuple (sc=sc, mm=mm) of the social cost value and the MarginalModel 
+If `return_mm` is set to `true`, then a NamedTuple (sc = sc, mm = mm) of the social cost value and the MarginalModel 
 used to compute it is returned.
 
-By default, `n === nothing`, and a single value for the "best guess" social cost is returned. If a positive 
+By default, `n = nothing`, and a single value for the "best guess" social cost is returned. If a positive 
 value for keyword `n` is specified, then a Monte Carlo simulation with sample size `n` will run, sampling from 
 all of FUND's random variables, and a vector of `n` social cost values will be returned.
 Optionally providing a CSV file path to `trials_output_filename` will save all of the sampled trial data as a CSV file.
@@ -220,7 +220,7 @@ function _compute_sc_from_mm(mm::MarginalModel; year::Int, gas::Symbol, ntimeste
             for t = getindexfromyear(year):ntimesteps
                 df[t, r] = x
                 gr = (ypc[t, r] - ypc[t - 1, r]) / ypc[t - 1,r]
-                x = x / (1. + prtp + eta * gr) 
+                x = x / (1. + prtp + eta * gr)
             end
         end
     else
@@ -242,14 +242,14 @@ function _fund_sc_post_trial(sim::SimulationInstance, trialnum::Int, ntimesteps:
 end
 
 """
-    get_marginal_model(m::Model = get_model(); year::Int = nothing, gas::Symbol = :CO2, pulse_size::Float64 = 1e7)
+    get_marginal_model(m::Model = get_model(); gas::Symbol = :CO2, year::Int = nothing, pulse_size::Float64 = 1e7)
 
 Creates a Mimi MarginalModel where the provided m is the base model, and the marginal model has additional emissions of gas `gas` in year `year`.
 If no year is provided, the marginal emissions component will be added without an additional pulse.
 If no Model m is provided, the default model from MimiFUND.get_model() is used as the base model.
 The size of the marginal emission pulse can be modified with the `pulse_size` keyword argument, in metric tonnes.
 """
-function get_marginal_model(m::Model = get_model(); year::Union{Int, Nothing} = nothing, gas::Symbol = :CO2, pulse_size::Float64 = 1e7)
+function get_marginal_model(m::Model = get_model(); gas::Symbol = :CO2, year::Union{Int, Nothing} = nothing, pulse_size::Float64 = 1e7)
     year !== nothing && !(year in 1950:3000) ? error("Cannot add marginal emissions in $year, year must be within the model's time index 1950:3000.") : nothing
 
     mm = create_marginal_model(m, pulse_size)
