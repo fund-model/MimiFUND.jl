@@ -11,10 +11,10 @@ Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
 StatsBase = "2913bbd2-ae8a-5f71-8c99-4fb6c76f3a91"
 
 [compat]
-Distributions = "0.20, 0.21"
-Mimi = "0.9"
-StatsBase = "0.30, 0.31, 0.32"
 julia = "1"
+Mimi = "0.9.3"
+Distributions = "0.20, 0.21"
+StatsBase = "0.30, 0.31, 0.32"
 
 [extras]
 CSVFiles = "5d742f6a-9f54-50ce-8119-2520741973ca"
