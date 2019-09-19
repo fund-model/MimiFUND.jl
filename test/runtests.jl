@@ -78,13 +78,15 @@ end #fund-integration testset
 # 3. Test marginal damages functions (test that each function does not error)
 #------------------------------------------------------------------------------
 
-@testset "test-marginaldamages" begin
+@testset "test-compute_sc" begin
 
 # Test functions from file "new_marginaldamages.jl"
 
 # Test the compute_scco2 function with various keyword arguments
+scc0 = MimiFUND.compute_sc(year = 2020, gas = :CO2)
 scc1 = MimiFUND.compute_scco2(year = 2020) 
 @test scc1 isa Float64   # test that it's not missing or a NaN
+@test scc0 == scc1
 scc2 = MimiFUND.compute_scco2(year = 2020, last_year=2300) 
 @test scc2 < scc1  # test that shorter horizon made it smaller
 scc3 = MimiFUND.compute_scco2(year = 2020, last_year=2300, equity_weights=true) 
@@ -95,18 +97,18 @@ scch4 = MimiFUND.compute_scch4(year = 2020)
 @test scch4 > scc1   # test social cost of methane is higher
 
 # Test with a modified model
-m = MimiFUND.get_model()
-update_param!(m, :climatesensitivity, 5)    
-scc6 = MimiFUND.compute_scco2(m, year=2020, last_year=2300)
+m_high_cs = MimiFUND.get_model()
+update_param!(m_high_cs, :climatesensitivity, 5)    
+scc6 = MimiFUND.compute_scco2(m_high_cs, year=2020, last_year=2300)
 @test scc6 > scc2 # test that it's higher than the default because of a higher climate sensitivity 
 
 # Test get_marginal_model
 mm = MimiFUND.get_marginal_model(year=2020, gas=:CH4)
 run(mm)
 
-# Test compute_sc_mm
-result = MimiFUND.compute_sc_mm(year=2050)
-@test result.scc isa Float64
+# Test return_mm = true
+result = MimiFUND.compute_sc(year=2050, return_mm = true)
+@test result.sc isa Float64
 @test result.mm isa Mimi.MarginalModel
 
 # Test other gases
@@ -114,6 +116,29 @@ scch4 = MimiFUND.compute_scch4(year = 2020)
 scn2o = MimiFUND.compute_scn2o(year = 2020)
 scsf6 = MimiFUND.compute_scsf6(year = 2020)
 @test scsf6 < scch4 < scn2o
+
+# Test that modifying the pulse_size keyword changes the values, but not by much
+scch4_2 = MimiFUND.compute_scch4(year = 2020, pulse_size = 1e3)
+scn2o_2 = MimiFUND.compute_scn2o(year = 2020, pulse_size = 1e3)
+scsf6_2 = MimiFUND.compute_scsf6(year = 2020, pulse_size = 1e3)
+@test scch4 != scch4_2
+@test scch4 ≈ scch4_2 rtol = 1e-3
+@test scn2o != scn2o_2
+@test scn2o ≈ scn2o_2 rtol = 1e-3
+@test scsf6 != scsf6_2
+@test scsf6 ≈ scsf6_2 rtol = 1e-3
+
+# Test monte carlo simulation
+scco2_values = MimiFUND.compute_sc(year = 2020, gas = :CO2, n = 10)
+@test all(!isnan, scco2_values)
+
+# Test the seed functionality
+results1 = MimiFUND.compute_sc(gas = :CH4, year = 2020, n = 10, seed = 350)
+results2 = MimiFUND.compute_sc(gas = :CH4, year = 2020, n = 10, seed = 350, trials_output_filename = "tmp_trials.csv")  # test that saving trial values does not affec the seed/sampling order
+rm("tmp_trials.csv")    # remove the save trials data
+@test results1 == results2
+results_shorter = MimiFUND.compute_sc(gas = :CH4, year = 2020, last_year = 2300, n = 10, seed = 350)
+@test results_shorter != results1
 
 # Test old exported marginal damage function
 md = MimiFUND.getmarginaldamages()

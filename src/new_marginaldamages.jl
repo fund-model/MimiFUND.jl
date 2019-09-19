@@ -1,112 +1,211 @@
 import Mimi.compinstance
 
 """
-compute_scc(m::Model=get_model(); year::Int = nothing, gas::Symbol = :CO2, last_year::Int = 3000, equity_weights::Bool = false, eta::Float64 = 1.45, prtp::Float64 = 0.015, pulse_size::Float64 = 1e7)
+    compute_scc(m::Model=get_model(); year::Int = nothing, gas::Symbol = :CO2, last_year::Int = 3000, equity_weights::Bool = false, eta::Float64 = 1.45, prtp::Float64 = 0.015)
 
-Debrecated function for calculating the social cost of carbon for a MimiFUND model. Use `compute_scco2`, `compute_scch4`, `compute_scn2o`, or `compute_scsf6` instead.
+Deprecated function for calculating the social cost of carbon for a MimiFUND model. Use `compute_sc` or gas-specific functions `compute_scco2`, `compute_scch4`, `compute_scn2o`, or `compute_scsf6` instead.
 """
-function compute_scc(m::Model=get_model(); year::Union{Int, Nothing} = nothing, gas::Symbol = :CO2, last_year::Int = 3000, equity_weights::Bool = false, eta::Float64 = 1.45, prtp::Float64 = 0.015, pulse_size::Float64 = 1e7)
-    @warn("Deprecation warning: `compute_scc` is deprecated. Use `compute_scco2` or other gas-specific functions instead.")
+function compute_scc(m::Model=get_model(); year::Union{Int, Nothing} = nothing, gas::Symbol = :CO2, last_year::Int = 3000, equity_weights::Bool = false, eta::Float64 = 1.45, prtp::Float64 = 0.015)
+    Base.depwarn("`compute_scc` is deprecated. Use `compute_sc` or other gas-specific functions instead.", :MimiFUND)
     year === nothing ? error("Must specify an emission year. Try `compute_scc(year=2020)`.") : nothing
-    return compute_social_cost(m, year = year, gas = gas, last_year = last_year, equity_weights = equity_weights, eta = eta, prtp = prtp)
+    return compute_sc(m, year = year, gas = gas, last_year = last_year, equity_weights = equity_weights, eta = eta, prtp = prtp)
 end
 
 """
-compute_scco2(m::Model=get_model(); year::Int = nothing, last_year::Int = 3000, equity_weights::Bool = false, eta::Float64 = 1.45, prtp::Float64 = 0.015, pulse_size::Float64 = 1e7)
+    compute_scco2(m::Model=get_model(); 
+        year::Union{Int, Nothing} = nothing, 
+        eta::Float64 = 1.45, 
+        prtp::Float64 = 0.015, 
+        equity_weights::Bool = false, 
+        last_year::Int = 3000, 
+        pulse_size::Float64 = 1e7, 
+        return_mm::Bool = false,
+        n::Union{Int, Nothing} = nothing,
+        trials_output_filename::Union{String, Nothing} = nothing,
+        seed::Union{Int, Nothing} = nothing)
 
-Computes the social cost of CO2 for the specified `year` for the provided MimiFUND model `m`. 
+Returns the Social Cost of CO2 for the specified `year` for the provided MimiFUND model `m`. 
 If no model is provided, the default model from MimiFUND.get_model() is used.
-The discount factor is computed from the specified `eta` and pure rate of time preference `prtp`, with defaults of 1.45 and 0.015.
-Units of the returned value are [\$ per tonne CO2] in 1995USD.
-Optional regional equity weighting can be used by specifying `equity_weights = true`. 
-The size of the marginal emission pulse can be modified with the `pulse_size` keyword argument, in metric tonnes of CO2.
+Units of the returned value are 1995\$ per metric tonne of CO2.
+
+This is a wrapper function that calls the generic social cost function `compute_sc(m, gas = :CO2, args...)`. See docstring for
+`compute_sc` for a full description of the available keyword arguments.
 """
-function compute_scco2(m::Model=get_model(); year::Union{Int, Nothing} = nothing, last_year::Int = 3000, equity_weights::Bool = false, eta::Float64 = 1.45, prtp::Float64 = 0.015, pulse_size::Float64 = 1e7)
+function compute_scco2(m::Model=get_model(); year::Union{Int, Nothing} = nothing, eta::Float64 = 1.45, prtp::Float64 = 0.015, equity_weights::Bool = false, last_year::Int = 3000, pulse_size::Float64 = 1e7, 
+    return_mm::Bool = false, n::Union{Int, Nothing} = nothing, trials_output_filename::Union{String, Nothing} = nothing, seed::Union{Int, Nothing} = nothing)
+
     year === nothing ? error("Must specify an emission year. Try `compute_scco2(year=2020)`.") : nothing
-    return compute_social_cost(m, year = year, gas = :CO2, last_year = last_year, equity_weights = equity_weights, eta = eta, prtp = prtp)
+    return compute_sc(m, gas = :CO2, year = year, eta = eta, prtp = prtp, equity_weights = equity_weights, last_year = last_year, pulse_size = pulse_size, 
+                        return_mm = return_mm, n = n, trials_output_filename = trials_output_filename, seed = seed)
 end
 
 """
-compute_scch4(m::Model=get_model(); year::Int = nothing, last_year::Int = 3000, equity_weights::Bool = false, eta::Float64 = 1.45, prtp::Float64 = 0.015, pulse_size::Float64 = 1e7)
+    compute_scch4(m::Model=get_model(); 
+        year::Union{Int, Nothing} = nothing, 
+        eta::Float64 = 1.45, 
+        prtp::Float64 = 0.015, 
+        equity_weights::Bool = false, 
+        last_year::Int = 3000, 
+        pulse_size::Float64 = 1e7, 
+        return_mm::Bool = false,
+        n::Union{Int, Nothing} = nothing,
+        trials_output_filename::Union{String, Nothing} = nothing,
+        seed::Union{Int, Nothing} = nothing)
 
-Computes the social cost of CH4 for the specified `year` for the provided MimiFUND model `m`. 
+Returns the Social Cost of CH4 for the specified `year` for the provided MimiFUND model `m`. 
 If no model is provided, the default model from MimiFUND.get_model() is used.
-The discount factor is computed from the specified `eta` and pure rate of time preference `prtp`, with defaults of 1.45 and 0.015.
-Units of the returned value are [\$ per tonne CH4] in 1995USD.
-Optional regional equity weighting can be used by specifying `equity_weights = true`. 
-The size of the marginal emission pulse can be modified with the `pulse_size` keyword argument, in metric tonnes of CH4.
+Units of the returned value are 1995\$ per metric tonne of CH4.
+
+This is a wrapper function that calls the generic social cost function `compute_sc(m, gas = :CH4, args...)`. See docstring for
+`compute_sc` for a full description of the available keyword arguments.
 """
-function compute_scch4(m::Model=get_model(); year::Union{Int, Nothing} = nothing, last_year::Int = 3000, equity_weights::Bool = false, eta::Float64 = 1.45, prtp::Float64 = 0.015, pulse_size::Float64 = 1e7)
-    year === nothing ? error("Must specify an emission year with keyword argument `year`. Try `compute_scch4(year=2020)`.") : nothing
-    return compute_social_cost(m, year = year, gas = :CH4, last_year = last_year, equity_weights = equity_weights, eta = eta, prtp = prtp)
+function compute_scch4(m::Model=get_model(); year::Union{Int, Nothing} = nothing, eta::Float64 = 1.45, prtp::Float64 = 0.015, equity_weights::Bool = false, last_year::Int = 3000, pulse_size::Float64 = 1e7, 
+    return_mm::Bool = false, n::Union{Int, Nothing} = nothing, trials_output_filename::Union{String, Nothing} = nothing, seed::Union{Int, Nothing} = nothing)
+
+    year === nothing ? error("Must specify an emission year. Try `compute_scch4(year=2020)`.") : nothing
+    return compute_sc(m, gas = :CH4, year = year, eta = eta, prtp = prtp, equity_weights = equity_weights, last_year = last_year, pulse_size = pulse_size, 
+                        return_mm = return_mm, n = n, trials_output_filename = trials_output_filename, seed = seed)
 end
 
 """
-compute_scn2o(m::Model=get_model(); year::Int = nothing, last_year::Int = 3000, equity_weights::Bool = false, eta::Float64 = 1.45, prtp::Float64 = 0.015, pulse_size::Float64 = 1e7)
+    compute_scn2o(m::Model=get_model(); 
+        year::Union{Int, Nothing} = nothing, 
+        eta::Float64 = 1.45, 
+        prtp::Float64 = 0.015, 
+        equity_weights::Bool = false, 
+        last_year::Int = 3000, 
+        pulse_size::Float64 = 1e7, 
+        return_mm::Bool = false,
+        n::Union{Int, Nothing} = nothing,
+        trials_output_filename::Union{String, Nothing} = nothing,
+        seed::Union{Int, Nothing} = nothing)
 
-Computes the social cost of N2O for the specified `year` for the provided MimiFUND model `m`. 
+Returns the Social Cost of N2O for the specified `year` for the provided MimiFUND model `m`. 
 If no model is provided, the default model from MimiFUND.get_model() is used.
-The discount factor is computed from the specified `eta` and pure rate of time preference `prtp`, with defaults of 1.45 and 0.015.
-Units of the returned value are [\$ per tonne N2O] in 1995USD.
-Optional regional equity weighting can be used by specifying `equity_weights = true`. 
-The size of the marginal emission pulse can be modified with the `pulse_size` keyword argument, in metric tonnes of N2O.
+Units of the returned value are 1995\$ per metric tonne of N2O.
+
+This is a wrapper function that calls the generic social cost function `compute_sc(m, gas = :N2O, args...)`. See docstring for
+`compute_sc` for a full description of the available keyword arguments.
 """
-function compute_scn2o(m::Model=get_model(); year::Union{Int, Nothing} = nothing, last_year::Int = 3000, equity_weights::Bool = false, eta::Float64 = 1.45, prtp::Float64 = 0.015, pulse_size::Float64 = 1e7)
-    year === nothing ? error("Must specify an emission year with keyword argument `year`. Try `compute_scn2o(year=2020)`.") : nothing
-    return compute_social_cost(m, year = year, gas = :N2O, last_year = last_year, equity_weights = equity_weights, eta = eta, prtp = prtp)
+function compute_scn2o(m::Model=get_model(); year::Union{Int, Nothing} = nothing, eta::Float64 = 1.45, prtp::Float64 = 0.015, equity_weights::Bool = false, last_year::Int = 3000, pulse_size::Float64 = 1e7, 
+    return_mm::Bool = false, n::Union{Int, Nothing} = nothing, trials_output_filename::Union{String, Nothing} = nothing, seed::Union{Int, Nothing} = nothing)
+
+    year === nothing ? error("Must specify an emission year. Try `compute_scn2o(year=2020)`.") : nothing
+    return compute_sc(m, gas = :N2O, year = year, eta = eta, prtp = prtp, equity_weights = equity_weights, last_year = last_year, pulse_size = pulse_size, 
+                        return_mm = return_mm, n = n, trials_output_filename = trials_output_filename, seed = seed)
 end
 
 """
-compute_scsf6(m::Model=get_model(); year::Int = nothing, last_year::Int = 3000, equity_weights::Bool = false, eta::Float64 = 1.45, prtp::Float64 = 0.015, pulse_size::Float64 = 1e7)
+    compute_scsf6(m::Model=get_model(); 
+        year::Union{Int, Nothing} = nothing, 
+        eta::Float64 = 1.45, 
+        prtp::Float64 = 0.015, 
+        equity_weights::Bool = false, 
+        last_year::Int = 3000, 
+        pulse_size::Float64 = 1e7, 
+        return_mm::Bool = false,
+        n::Union{Int, Nothing} = nothing,
+        trials_output_filename::Union{String, Nothing} = nothing,
+        seed::Union{Int, Nothing} = nothing)
 
-Computes the social cost of SF6 for the specified `year` for the provided MimiFUND model `m`. 
+Returns the Social Cost of SF6 for the specified `year` for the provided MimiFUND model `m`. 
 If no model is provided, the default model from MimiFUND.get_model() is used.
-The discount factor is computed from the specified `eta` and pure rate of time preference `prtp`, with defaults of 1.45 and 0.015.
-Units of the returned value are [\$ per tonne SF6] in 1995USD.
-Optional regional equity weighting can be used by specifying `equity_weights = true`. 
-The size of the marginal emission pulse can be modified with the `pulse_size` keyword argument, in metric tonnes of SF6.
+Units of the returned value are 1995\$ per metric tonne of SF6.
+
+This is a wrapper function that calls the generic social cost function `compute_sc(m, gas = :SF6, args...)`. See docstring for
+`compute_sc` for a full description of the available keyword arguments.
 """
-function compute_scsf6(m::Model=get_model(); year::Union{Int, Nothing} = nothing, last_year::Int = 3000, equity_weights::Bool = false, eta::Float64 = 1.45, prtp::Float64 = 0.015, pulse_size::Float64 = 1e7)
-    year === nothing ? error("Must specify an emission year with keyword argument `year`. Try `compute_scn2o(year=2020)`.") : nothing
-    return compute_social_cost(m, year = year, gas = :SF6, last_year = last_year, equity_weights = equity_weights, eta = eta, prtp = prtp)
+function compute_scsf6(m::Model=get_model(); year::Union{Int, Nothing} = nothing, eta::Float64 = 1.45, prtp::Float64 = 0.015, equity_weights::Bool = false, last_year::Int = 3000, pulse_size::Float64 = 1e7, 
+    return_mm::Bool = false, n::Union{Int, Nothing} = nothing, trials_output_filename::Union{String, Nothing} = nothing, seed::Union{Int, Nothing} = nothing)
+
+    year === nothing ? error("Must specify an emission year. Try `compute_scsf6(year=2020)`.") : nothing
+    return compute_sc(m, gas = :SF6, year = year, eta = eta, prtp = prtp, equity_weights = equity_weights, last_year = last_year, pulse_size = pulse_size, 
+                        return_mm = return_mm, n = n, trials_output_filename = trials_output_filename, seed = seed)
 end
 
-# helper function called by each gas-specific function for computing the social cost
-function compute_social_cost(m::Model=get_model(); year::Union{Int, Nothing} = nothing, gas::Symbol = :CO2, last_year::Int = 3000, equity_weights::Bool = false, eta::Float64 = 1.45, prtp::Float64 = 0.015, pulse_size::Float64 = 1e7)
-    year === nothing ? error("Must specify an emission year. Try `compute_social_cost(year=2020)`.") : nothing
+"""
+    compute_sc(m::Model=get_model(); 
+        gas::Symbol = :CO2, 
+        year::Union{Int, Nothing} = nothing, 
+        eta::Float64 = 1.45, 
+        prtp::Float64 = 0.015, 
+        equity_weights::Bool = false, 
+        last_year::Int = 3000, 
+        pulse_size::Float64 = 1e7, 
+        return_mm::Bool = false,
+        n::Union{Int, Nothing} = nothing,
+        trials_output_filename::Union{String, Nothing} = nothing,
+        seed::Union{Int, Nothing} = nothing)
+
+Returns the Social Cost of CO2 (or other gas if specified) for the specified `year`
+for the provided MimiFUND model `m`. If no model is provided, the default model from MimiFUND.get_model() is used.
+Units of the returned value are 1995\$ per metric tonne of the specified gas.
+
+The discount factor is computed from the specified `eta` and pure rate of time preference `prtp`.
+Optional regional equity weighting can be used by specifying `equity_weights = true`.
+By default, the social cost includes damages through the year 3000, but this time horizon can be modified 
+by setting the keyword `last_year` to some other year within the model's time index.
+The size of the marginal emission pulse can be modified with the `pulse_size` keyword argument, in metric 
+tonnes of the specified gas (this does not change the units of the returned value, which is always normalized
+by the `pulse_size` used).
+
+If `return_mm == true`, then a NamedTuple (sc=sc, mm=mm) of the social cost value and the MarginalModel 
+used to compute it is returned.
+
+By default, `n === nothing`, and a single value for the "best guess" social cost is returned. If a positive 
+value for keyword `n` is specified, then a Monte Carlo simulation with sample size `n` will run, sampling from 
+all of FUND's random variables, and a vector of `n` social cost values will be returned.
+Optionally providing a CSV file path to `trials_output_filename` will save all of the sampled trial data as a CSV file.
+Optionally providing a `seed` value will set the random seed before running the simulation, allowing the 
+results to be replicated.
+"""
+function compute_sc(m::Model=get_model(); 
+    gas::Symbol = :CO2, 
+    year::Union{Int, Nothing} = nothing, 
+    eta::Float64 = 1.45, 
+    prtp::Float64 = 0.015, 
+    equity_weights::Bool = false, 
+    last_year::Int = 3000, 
+    pulse_size::Float64 = 1e7, 
+    return_mm::Bool = false,
+    n::Union{Int, Nothing} = nothing,
+    trials_output_filename::Union{String, Nothing} = nothing,
+    seed::Union{Int, Nothing} = nothing
+    )
+
+    year === nothing ? error("Must specify an emission year. Try `compute_sc(year=2020)`.") : nothing
     !(last_year in 1950:3000) ? error("Invlaid value for `last_year`: $last_year. `last_year` must be within the model's time index 1950:3000.") : nothing
     !(year in 1950:last_year) ? error("Invalid value for `year`: $year. `year` must be within the model's time index 1950:$last_year.") : nothing
 
     mm = get_marginal_model(m; year = year, gas = gas, pulse_size = pulse_size)
 
-    return _compute_sc(mm, year = year, gas = gas, last_year = last_year, equity_weights = equity_weights, eta = eta, prtp = prtp)
-end
-
-"""
-compute_sc_mm(m::Model=get_model(); year::Union{Int, Nothing} = nothing, gas::Symbol = :CO2, last_year::Int = 3000, equity_weights::Bool = false, eta::Float64 = 1.45, prtp::Float64 = 0.015, pulse_size::Float64 = 1e7)
-
-Returns a NamedTuple (scc=scc, mm=mm) of the social cost of carbon and the MarginalModel used to compute it.
-Computes the social cost of CO2 (or other gas if specified) for an emissions pulse in `year`
-for the provided MimiFUND model. If no model is provided, the default model from MimiFUND.get_model() is used.
-The discount factor is computed from the specified `eta` and pure rate of time preference `prtp`.
-Optional regional equity weighting can be used by specifying `equity_weights=true`. 
-The size of the marginal emission pulse can be modified with the `pulse_size` keyword argument, in metric tonnes.
-"""
-function compute_sc_mm(m::Model=get_model(); year::Union{Int, Nothing} = nothing, gas::Symbol = :CO2, last_year::Int = 3000, equity_weights::Bool = false, eta::Float64 = 1.45, prtp::Float64 = 0.015, pulse_size::Float64 = 1e7)
-    year === nothing ? error("Must specify an emission year. Try `compute_scc_mm(m, year=2020)`.") : nothing
-    !(last_year in 1950:3000) ? error("Invlaid value of $last_year for last_year. last_year must be within the model's time index 1950:3000.") : nothing
-    !(year in 1950:last_year) ? error("Cannot compute the scc for year $year, year must be within the model's time index 1950:$last_year.") : nothing
-
-    mm = get_marginal_model(m; year = year, gas = gas, pulse_size = pulse_size)
-    scc = _compute_sc(mm; year=year, gas=gas, last_year=last_year, equity_weights=equity_weights, eta=eta, prtp=prtp)
-    
-    return (scc = scc, mm = mm)
-end
-
-# helper function for computing SCC from a MarginalModel, not to be exported
-function _compute_sc(mm::MarginalModel; year::Int, gas::Symbol, last_year::Int, equity_weights::Bool, eta::Float64, prtp::Float64)
     ntimesteps = getindexfromyear(last_year)
-    run(mm; ntimesteps = ntimesteps)
+
+    if n === nothing
+        # Run the "best guess" social cost calculation
+        run(mm; ntimesteps = ntimesteps)
+        sc = _compute_sc_from_mm(mm, year = year, gas = gas, ntimesteps = ntimesteps, equity_weights = equity_weights, eta = eta, prtp = prtp)
+    elseif n < 1
+        error("Invalid n = $n. Number of trials must be a positive integer.")
+    else
+        # Run a Monte Carlo simulation
+        simdef = getmcs()
+        payload = (Array{Float64, 1}(undef, n), year, gas, ntimesteps, equity_weights, eta, prtp) # first item is an array to hold SC values calculated in each trial
+        Mimi.set_payload!(simdef, payload) 
+        seed !== nothing ? Random.seed!(seed) : nothing
+        si = run(simdef, mm, n, ntimesteps = ntimesteps, post_trial_func = _fund_sc_post_trial, trials_output_filename = trials_output_filename)
+        sc = Mimi.payload(si)[1]
+    end
+
+    if return_mm
+        return (sc = sc, mm = mm)
+    else
+        return sc
+    end
+end
+
+# helper function for computing SC from a MarginalModel that's already been run, not to be exported
+function _compute_sc_from_mm(mm::MarginalModel; year::Int, gas::Symbol, ntimesteps::Int, equity_weights::Bool, eta::Float64, prtp::Float64)
 
     # Calculate the marginal damage between run 1 and 2 for each year/region
     marginaldamage = mm[:impactaggregation, :loss]
@@ -129,13 +228,21 @@ function _compute_sc(mm::MarginalModel; year::Int, gas::Symbol, last_year::Int, 
         df = Float64[t >= getindexfromyear(year) ? (globalypc[getindexfromyear(year)] / ypc[t, r]) ^ eta / (1.0 + prtp) ^ (t - getindexfromyear(year)) : 0.0 for t = 1:ntimesteps, r = 1:16]
     end 
 
-    # Compute global SCC
-    scc = sum(marginaldamage[2:ntimesteps, :] .* df[2:ntimesteps, :])
-    return scc
+    # Compute global social cost
+    sc = sum(marginaldamage[2:ntimesteps, :] .* df[2:ntimesteps, :])   # need to start from second value because first value is missing
+    return sc
+end
+
+# Post trial function used for computing monte carlo vector of social cost values
+function _fund_sc_post_trial(sim::SimulationInstance, trialnum::Int, ntimesteps::Int, tup::Union{Tuple, Nothing})
+    mm = sim.models[1]  # get the already-run MarginalModel
+    (sc_results, year, gas, ntimesteps, equity_weights, eta, prtp) = Mimi.payload(sim)  # unpack the payload information
+    sc = _compute_sc_from_mm(mm, year = year, gas = gas, ntimesteps = ntimesteps, equity_weights = equity_weights, eta = eta, prtp = prtp)
+    sc_results[trialnum] = sc
 end
 
 """
-get_marginal_model(m::Model = get_model(); year::Int = nothing, gas::Symbol = :CO2, pulse_size::Float64 = 1e7)
+    get_marginal_model(m::Model = get_model(); year::Int = nothing, gas::Symbol = :CO2, pulse_size::Float64 = 1e7)
 
 Creates a Mimi MarginalModel where the provided m is the base model, and the marginal model has additional emissions of gas `gas` in year `year`.
 If no year is provided, the marginal emissions component will be added without an additional pulse.
@@ -205,7 +312,7 @@ end
 """
 Returns a matrix of marginal damages per one metric tonne of additional emissions of the specified gas in the specified year.
 """
-function getmarginaldamages(; year=2010, parameters = nothing, gas = :CO2, pulse_size::Float64 = 1e7) 
+function getmarginaldamages(; year=2020, parameters = nothing, gas = :CO2, pulse_size::Float64 = 1e7) 
 
     # Get marginal model
     m = get_model(params = parameters)
