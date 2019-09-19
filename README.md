@@ -43,7 +43,7 @@ pkg> add MimiFUND
 
 You probably also want to install the Mimi package into your julia environment, so that you can use some of the tools in there:
 
-```
+```julia
 pkg> add Mimi
 ```
 
@@ -59,7 +59,7 @@ pkg> up
 The model uses the Mimi framework and it is highly recommended to read the Mimi documentation first to understand the code structure. For starter code on running the model just once, see the code in the file `examples/main.jl`.
 
 The basic way of accessing a copy of the default MimiFUND model is the following:
-```
+```julia
 using MimiFUND
 
 m = MimiFUND.get_model()
@@ -69,24 +69,24 @@ run(m)
 
 Here is an example of computing the Social Cost of CO2 with MimiFUND. Note that the units of the returned value are 1995$ per metric tonne of CO2.
 
-```
+```julia
 using Mimi
 using MimiFUND
 
 # Get the Social Cost of CO2 in year 2020 from the default MimiFUND model:
 scc = MimiFUND.compute_scco2(year = 2020, eta = 0., prtp = 0.03, equity_weights = false)
 
-# Or, you can also compute the SCC from a modified version of a MimiFUND model:
-m = MimiFUND.get_model() # Get the default version of the FUND model
-update_param!(m, :climatesensitivity, 5) # make any modifications to your model
-scc = MimiFUND.compute_scco2(m, year = 2020) # Compute the SCC from your model
+# Or, you can also compute the SC-CO2 from a modified version of a MimiFUND model:
+m = MimiFUND.get_model()                        # Get the default version of the FUND model
+update_param!(m, :climatesensitivity, 5)        # make any modifications to your model using Mimi
+scc = MimiFUND.compute_scco2(m, year = 2020)    # Compute the SC-CO2 from your model
 ```
 There are also functions for computing the Social Cost of CH4, N2O, and SF6: `compute_scch4`, `compute_scn2o`, and `compute_scsf6`.
 These functions are all wrappers for the generic social cost function `compute_sc`, which takes a keyword `gas` with default value `:CO2`.
 
 There are several other keyword arguments available to `compute_sc`. Note that the user must specify a `year` for the SC calculation, 
 but the rest of the keyword arguments have default values.
-```
+```julia
 MimiFUND.compute_sc(m::Model=get_model();
         gas::Symbol = :CO2,                     
         year::Union{Int, Nothing} = nothing,    
@@ -101,25 +101,25 @@ MimiFUND.compute_sc(m::Model=get_model();
         seed::Union{Int, Nothing} = nothing)
 ```
 Description of keyword arguments:
-- `m`: a MimiFUND model from which to calculate the social cost. If no model is provided, the default MimiFUND model will be used. Note that the provided model `m` can be a highly modified MimiFUND model, but certain internal structures of the model need to remain in order for the `compute_sc` function to work. They are:
-    -- The original parameter connection between the `emissions` component and the climate cycling component for the specified `gas` must still be intact (this is where the pulse of emissions is added).
-    -- There must still be a `:socioeconomic` component with fields `:ypc` and `:globalypc` (used for discounting).
-    -- There must still be an `:impactaggregation` component with field `:loss`, which is the total damages value from with the social cost is calculated.
-- `gas`: which greenhouse gas to calculate the social cost for. The default is `:CO2`. Other options are `:CH4`, `:N2O`, and `:SF6`.
-- `year`: the user must specify an emission year for the SC calculation. Valid years are 1951 to 2990.
-- `eta`: the elasticity of marginal utility to be used in ramsey discounting. Setting `eta = 0` is equivalent to constant discounting with rate `prtp`.
-- `prtp`: pure rate of time preference parameter for discounting
-- `equity_weights`: whether or not to use regional equity weighting in discounting
-- `last_year`: the last year to run and use for the SC calculation. Default is the last year of FUND's time index, 3000.
-- `pulse_size`: the size of the marginal emissions pulse, in metric tonnes of the specified `gas`. Changing this value will not change the units of the returned value, which are always "1995$ per metric tonne of `gas`". The returned value is always normalized by the size of `pulse_size` that is used.
-- `return_mm`: whether or not to also return the MarginalModel used in the social cost calculation. If set to `true`, then a NamedTuple `(sc = sc, mm = mm)` of the social cost value and the MarginalModel used to compute it is returned.
-- `n`: By default, `n = nothing`, and a single value for the "best guess" social cost is returned. If a positive value for keyword `n` is specified, then a Monte Carlo simulation with sample size `n` will run, sampling from all of FUND's random variables, and a vector of `n` social cost values will be returned. Note that if the user has provided a modified model `m`, the user modifications may be overridden by the Monte Carlo simulation. If the user has modified certain parameter values, but they are parameters that have assigned random variable distributions in FUND, then they will be overwritten. For a list of which parameters have assigned random variable definitions, see "src/montecarlo/defmcs.jl"
-- `trials_output_filename`: an optional CSV file path to save all of the sampled trial data.
-- `seed`: the user can optionally provide a seed value, which will set the random seed before the simulation is run. This allows results to be replicated. 
+- *`m`*: a MimiFUND model from which to calculate the social cost. If no model is provided, the default MimiFUND model will be used. Note that the provided model `m` can be a highly modified MimiFUND model, but certain internal structures of the model need to remain in order for the `compute_sc` function to work. They are:
+    - The original parameter connection between the `emissions` component and the climate cycling component for the specified `gas` must still be intact (this is where the pulse of emissions is added).
+    - There must still be a `:socioeconomic` component with fields `:ypc` and `:globalypc` (used for discounting).
+    - There must still be an `:impactaggregation` component with field `:loss`, which is the total damages value from with the social cost is calculated.
+- *`gas`*: which greenhouse gas to calculate the social cost for. The default is `:CO2`. Other options are `:CH4`, `:N2O`, and `:SF6`.
+- *`year`*: the user must specify an emission year for the SC calculation. Valid years are 1951 to 2990.
+- *`eta`*: the elasticity of marginal utility to be used in ramsey discounting. Setting `eta = 0` is equivalent to constant discounting with rate `prtp`.
+- *`prtp`*: pure rate of time preference parameter for discounting
+- *`equity_weights`*: whether or not to use regional equity weighting in discounting
+- *`last_year`*: the last year to run and use for the SC calculation. Default is the last year of FUND's time index, 3000.
+- *`pulse_size`*: the size of the marginal emissions pulse, in metric tonnes of the specified `gas`. Changing this value will not change the units of the returned value, which are always "1995$ per metric tonne of `gas`". The returned value is always normalized by the size of `pulse_size` that is used.
+- *`return_mm`*: whether or not to also return the MarginalModel used in the social cost calculation. If set to `true`, then a NamedTuple `(sc = sc, mm = mm)` of the social cost value and the MarginalModel used to compute it is returned.
+- *`n`*: By default, `n = nothing`, and a single value for the "best guess" social cost is returned. If a positive value for keyword `n` is specified, then a Monte Carlo simulation with sample size `n` will run, sampling from all of FUND's random variables, and a vector of `n` social cost values will be returned. Note that if the user has provided a modified model `m`, the user modifications may be overwritten by the Monte Carlo simulation. If the user has modified certain parameter values, but they are parameters that have assigned random variable distributions in FUND, then they will be overwritten by the sampled values. For a list of which parameters have assigned random variable definitions, see "src/montecarlo/defmcs.jl"
+- *`trials_output_filename`*: an optional CSV file path to save all of the sampled trial data.
+- *`seed`*: the user can optionally provide a seed value, which will set the random seed before the simulation is run. This allows results to be replicated. 
 
 
 Example Monte Carlo simulation:
-```
+```julia
 using Mimi
 using MimiFUND
 
@@ -133,7 +133,7 @@ values_hi_discounting = MimiFUND.compute_sc(year = 2020, gas = :CO2, eta = 1., p
 ```
 
 Example of working with the MarginalModel from setting `return_mm = true`:
-```
+```julia
 using Mimi
 using MimiFUND
 
