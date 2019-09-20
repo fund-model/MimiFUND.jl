@@ -1,7 +1,8 @@
 module MimiFUND
 
 using Mimi
-using DelimitedFiles #base.DelimitedFiles
+using DelimitedFiles
+using Random
 
 include("helper.jl")
 

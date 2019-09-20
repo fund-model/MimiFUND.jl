@@ -29,8 +29,7 @@ function run_fund_scc_mcs(trials = 10000; years = [2020], rates = [0.03], ntimes
 
     # get models and sim
     mcs = getmcs()
-    mm = create_marginal_FUND_model()
-    models = [mm.base, mm.marginal] #fixing bug in Mimi so this can go back to models = mm
+    mm = get_marginal_model()
     
     # Define scenario function
     function _scenario_func(mcs::SimulationInstance, tup::Tuple)
@@ -39,10 +38,10 @@ function run_fund_scc_mcs(trials = 10000; years = [2020], rates = [0.03], ntimes
         (rate, emissionyear) = tup
     
         # Get models
-        base, marginal = mcs.models
+        mm = mcs.models[1]
     
         # Perturb emissons in the marginal model
-        perturb_marginal_emissions!(marginal, emissionyear)
+        perturb_marginal_emissions!(mm.marginal, emissionyear)
     
     end
 
@@ -53,11 +52,11 @@ function run_fund_scc_mcs(trials = 10000; years = [2020], rates = [0.03], ntimes
         (rate, emissionyear) = tup
     
         # Get marginal damages
-        base, marginal = mcs.models
-        marginaldamages = (marginal[:impactaggregation, :loss] - base[:impactaggregation, :loss]) / 10000000.0
+        mm = mcs.models[1]
+        marginaldamages = mm[:impactaggregation, :loss]
     
         # Calculate discount factor
-        T = ntimesteps == typemax(Int) ? length(Mimi.dimension(base, :time)) : ntimesteps
+        T = ntimesteps == typemax(Int) ? length(Mimi.dimension(mm.base, :time)) : ntimesteps
         discount_factor = zeros(T)
         idx = getindexfromyear(emissionyear)
         discount_factor[idx:T] = [1 / ((1 + rate) ^ t) for t in 0:T-idx]
@@ -74,7 +73,7 @@ function run_fund_scc_mcs(trials = 10000; years = [2020], rates = [0.03], ntimes
     end
 
     # Run monte carlo trials
-    res = run(mcs, models, trials;
+    res = run(mcs, mm, trials;
         ntimesteps = ntimesteps,
         trials_output_filename = trials_output_filename,
         results_output_dir = "$output_dir/results",
