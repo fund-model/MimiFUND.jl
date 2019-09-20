@@ -30,7 +30,7 @@ function run_fund_scc_mcs(trials = 10000; years = [2020], rates = [0.03], ntimes
     # get models and sim
     mcs = getmcs()
     mm = create_marginal_FUND_model()
-    models = [mm.base, mm.marginal] #fixing bug in Mimi so this can go back to models = mm
+    models = mm
     
     # Define scenario function
     function _scenario_func(mcs::SimulationInstance, tup::Tuple)
