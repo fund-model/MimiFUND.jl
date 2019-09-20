@@ -12,7 +12,7 @@ StatsBase = "2913bbd2-ae8a-5f71-8c99-4fb6c76f3a91"
 
 [compat]
 julia = "1"
-Mimi = "0.9.3"
+Mimi = "0.9.4"
 Distributions = "0.20, 0.21"
 StatsBase = "0.30, 0.31, 0.32"
 
