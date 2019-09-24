@@ -92,7 +92,8 @@ MimiFUND.compute_sc(m::Model=get_model();
         year::Union{Int, Nothing} = nothing,    
         eta::Float64 = 1.45,                    
         prtp::Float64 = 0.015,                  
-        equity_weights::Bool = false,           
+        equity_weights::Bool = false,   
+        equity_weights_normalization_region::Int = 0,        
         last_year::Int = 3000,                  
         pulse_size::Float64 = 1e7,              
         return_mm::Bool = false,
@@ -110,6 +111,7 @@ Description of keyword arguments:
 - **`eta`**: the elasticity of marginal utility to be used in ramsey discounting. Setting `eta = 0` is equivalent to constant discounting with rate `prtp`.
 - **`prtp`**: pure rate of time preference parameter for discounting
 - **`equity_weights`**: whether or not to use regional equity weighting in discounting
+- **`equity_weights_normalization_region`**: normalization region for equity weighting (0=world average, any other value specifies the region index)
 - **`last_year`**: the last year to run and use for the SC calculation. Default is the last year of FUND's time index, 3000.
 - **`pulse_size`**: the size of the marginal emissions pulse, in metric tonnes of the specified `gas`. Changing this value will not change the units of the returned value, which are always "1995$ per metric tonne of `gas`". The returned value is always normalized by the size of `pulse_size` that is used.
 - **`return_mm`**: whether or not to also return the MarginalModel used in the social cost calculation. If set to `true`, then a NamedTuple `(sc = sc, mm = mm)` of the social cost value and the MarginalModel used to compute it is returned.
