@@ -35,8 +35,6 @@ end #fund-model testset
 #------------------------------------------------------------------------------
 @testset "test-integration" begin
 
-Mimi.reset_compdefs()
-
 m = MimiFUND.get_model()
 run(m)
 
