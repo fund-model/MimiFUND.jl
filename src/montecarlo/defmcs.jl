@@ -101,5 +101,5 @@ end
 
 
 function getmcs()
-    return fund_default_mcs
+    return deepcopy(fund_default_mcs)
 end 
