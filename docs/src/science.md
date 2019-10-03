@@ -195,6 +195,12 @@ where ``\rho = 500`` (with a triangular distribution bounded by 250 and 1000) is
 
 Temperature and sea level are calibrated to the best guess temperature and sea level for the IS92a scenario of Kattenberg *et al.* (1996).
 
+#### Code
+
+The code for the climate dynamics component can be found at [https://github.com/fund-model/MimiFUND.jl/blob/master/src/components/ClimateDynamicsComponent.jl](https://github.com/fund-model/MimiFUND.jl/blob/master/src/components/ClimateDynamicsComponent.jl).
+
+The calibration code for the climate dynamics component can be found at [https://github.com/fund-model/MimiFUND.jl/blob/master/calibration/climate/fund_cs_calibration.ipynb](https://github.com/fund-model/MimiFUND.jl/blob/master/calibration/climate/fund_cs_calibration.ipynb).
+
 ## 5. Impacts
 
 ### 5.1. Agriculture
@@ -268,6 +274,10 @@ where
   * ``t`` denotes time;
   * ``r`` denotes region;
   * ``\epsilon`` = 0.31 (0.15-0.45) is a parameter; it is the income elasticity of the share of agriculture in the economy; it is taken from Tol (2002b), who regressed the regional share in agriculture on per capita income, using 1995 data from the World Resources Institute (<http://earthtrends.wri.org>).
+
+#### Code
+
+The code for the agricultural impacts component can be found at [https://github.com/fund-model/MimiFUND.jl/blob/master/src/components/ImpactAgricultureComponent.jl](https://github.com/fund-model/MimiFUND.jl/blob/master/src/components/ImpactAgricultureComponent.jl).
 
 ### 5.2. Forestry
 
