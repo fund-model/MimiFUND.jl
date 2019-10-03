@@ -159,7 +159,7 @@ MimiFUND.run_fund_scc_mcs(10)    # Run 10 trials of FUND MCS SCC calculations
 end #test-mcs testset
 
 #------------------------------------------------------------------------------
-# 5. Validation tests for the exact values of social cost calculatiosn
+# 5. Validation tests for the exact values of social cost calculations
 #------------------------------------------------------------------------------
 
 @testset "sc-validation" begin
@@ -174,7 +174,7 @@ for spec in [
     (gas = :CO2, year = 2020, eta = 0., prtp = 0.03, equity_weights = true, equity_weights_normalization_region = 1, last_year = 3000, pulse_size = 1.),
     (gas = :CH4, year = 2055, eta = 1.45, prtp = 0.015, equity_weights = false, equity_weights_normalization_region = 0, last_year = 2300, pulse_size = 1e7),
     (gas = :N2O, year = 2020, eta = 1.45, prtp = 0.03, equity_weights = false, equity_weights_normalization_region = 0, last_year = 3000, pulse_size = 1e7),
-    (gas = :CO2, year = 2055, eta = 0., prtp = 0.015, equity_weights = true, equity_weights_normalization_region = 10, last_year = 2300, pulse_size = 1.)
+    (gas = :SF6, year = 2055, eta = 0., prtp = 0.015, equity_weights = true, equity_weights_normalization_region = 10, last_year = 2300, pulse_size = 1.)
 ]
     # Compute the value for this set of keyword arguments
     sc = MimiFUND.compute_sc(gas = spec.gas, year = spec.year, eta = spec.eta, prtp = spec.prtp, equity_weights = spec.equity_weights, equity_weights_normalization_region = spec.equity_weights_normalization_region, last_year = spec.last_year, pulse_size = spec.pulse_size)
