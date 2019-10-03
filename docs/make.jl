@@ -3,7 +3,7 @@ using Documenter, DocumenterLaTeX
 makedocs(
 	sitename = "MimiFUND.jl",
 	pages = [
-		"Introduction" => "intro.md",
+		"Home" => "index.md",
 		"Science" => "science.md",
 		"Tables" => "tables.md"]
 )
