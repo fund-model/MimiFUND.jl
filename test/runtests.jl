@@ -3,6 +3,7 @@ using Mimi
 using Test
 using DataFrames
 using CSVFiles
+using Query
 
 @testset "fund" begin
 
@@ -161,7 +162,37 @@ end #test-mcs testset
 # 5. Validation tests for the exact values of social cost calculatiosn
 #------------------------------------------------------------------------------
 
-include("scc_validation.jl")
+@testset "sc-validation" begin
+
+datadir = joinpath(@__DIR__, "SC validation data")
+
+# Test a subset of all validation configurations against the pre-saved values from MimiFUND v3.11.7
+
+validation_results = load(joinpath(datadir, "deterministic_sc_values.csv")) |> DataFrame
+
+for spec in [
+    (gas = :CO2, year = 2020, eta = 0., prtp = 0.03, equity_weights = true, equity_weights_normalization_region = 1, last_year = 3000, pulse_size = 1.),
+    (gas = :CH4, year = 2055, eta = 1.45, prtp = 0.015, equity_weights = false, equity_weights_normalization_region = 0, last_year = 2300, pulse_size = 1e7),
+    (gas = :N2O, year = 2020, eta = 1.45, prtp = 0.03, equity_weights = false, equity_weights_normalization_region = 0, last_year = 3000, pulse_size = 1e7),
+    (gas = :CO2, year = 2055, eta = 0., prtp = 0.015, equity_weights = true, equity_weights_normalization_region = 10, last_year = 2300, pulse_size = 1.)
+]
+    # Compute the value for this set of keyword arguments
+    sc = MimiFUND.compute_sc(gas = spec.gas, year = spec.year, eta = spec.eta, prtp = spec.prtp, equity_weights = spec.equity_weights, equity_weights_normalization_region = spec.equity_weights_normalization_region, last_year = spec.last_year, pulse_size = spec.pulse_size)
+    
+    # Get the pre-saved value for this set of keyword arguments
+    validation_value = validation_results |> 
+        @filter(_.gas == string(spec.gas) && _.year == spec.year && _.eta == spec.eta && _.prtp == spec.prtp && _.equity_weights == string(spec.equity_weights) && _.equity_weights_normalization_region == spec.equity_weights_normalization_region && _.last_year == spec.last_year && _.pulse_size == spec.pulse_size) |>
+        DataFrame
+
+    @test sc ≈ validation_value[1, :SC] atol = 1e-11
+end
+
+# Test Monte Carlo results with the same configuration and seed
+sc_mcs = MimiFUND.compute_sc(gas = :CO2, year = 2020, eta = 1.45, prtp = 0.015, n = 25, seed = 350)
+validation_mcs = load(joinpath(datadir, "mcs_sc_values.csv")) |> DataFrame
+@test all(isapprox.(sc_mcs, validation_mcs[!, :SCCO2], atol = 1e-11))
+
+end
 
 end #fund testset
 
