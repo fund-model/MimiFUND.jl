@@ -157,6 +157,12 @@ MimiFUND.run_fund_scc_mcs(10)    # Run 10 trials of FUND MCS SCC calculations
 
 end #test-mcs testset
 
+#------------------------------------------------------------------------------
+# 5. Validation tests for the exact values of social cost calculatiosn
+#------------------------------------------------------------------------------
+
+include("scc_validation.jl")
+
 end #fund testset
 
 nothing

@@ -22,4 +22,4 @@ Mimi = "0.9.4"
 Distributions = "0.20, 0.21"
 
 [targets]
-test = ["Test", "DataFrames", "CSVFiles"]
+test = ["Test", "DataFrames", "CSVFiles", "Query"]
