@@ -266,35 +266,47 @@ function get_marginal_model(m::Model = get_model(); gas::Symbol = :CO2, year::Un
     return mm
 end
 
+# A component for an emissions pulse to be used in social cost calculations. Computes the `output` vector by adding
+#   `add` to `input`. This is similar to the Mimi.adder component, except that it allows missing values to be passed through.
+@defcomp emissionspulse begin
+    add    = Parameter(index=[time])
+    input  = Parameter(index=[time])
+    output = Variable(index=[time])
+
+    function run_timestep(p, v, d, t)
+        v.output[t] = Mimi.@allow_missing(p.input[t]) + p.add[t]
+    end
+end
+
 """
-Adds a marginalemission component to `m`, and sets the additional emissions if a year is specified.
+Adds an emissionspulse component to `m`, and sets the additional emissions if a year is specified.
 The size of the marginal emission pulse can be modified with the `pulse_size` keyword argument, in metric tonnes.
 """
 function add_marginal_emissions!(m, year::Union{Int, Nothing} = nothing; gas::Symbol = :CO2, pulse_size::Float64 = 1e7)
 
     # Add additional emissions to m
-    add_comp!(m, Mimi.adder, :marginalemission, before = :climateco2cycle, first = 1951)
+    add_comp!(m, emissionspulse, before = :climateco2cycle)
     nyears = length(Mimi.time_labels(m))
-    addem = zeros(nyears - 1)   # starts one year later, in 1951
+    addem = zeros(nyears) 
     if year != nothing 
         # pulse is spread over ten years, and emissions components is in Mt so divide by 1e7, and convert from CO2 to C if gas==:CO2 because emissions component is in MtC
-        addem[getindexfromyear(year)-1:getindexfromyear(year) + 8] .= pulse_size / 1e7 * (gas == :CO2 ? 12/44 : 1)
+        addem[getindexfromyear(year):getindexfromyear(year) + 9] .= pulse_size / 1e7 * (gas == :CO2 ? 12/44 : 1)
     end
-    set_param!(m, :marginalemission, :add, addem)
+    set_param!(m, :emissionspulse, :add, addem)
 
     # Reconnect the appropriate emissions in m
     if gas == :CO2
-        connect_param!(m, :marginalemission, :input, :emissions, :mco2)
-        connect_param!(m, :climateco2cycle, :mco2, :marginalemission, :output, repeat([missing], nyears))
+        connect_param!(m, :emissionspulse, :input, :emissions, :mco2)
+        connect_param!(m, :climateco2cycle, :mco2, :emissionspulse, :output)
     elseif gas == :CH4
-        connect_param!(m, :marginalemission, :input, :emissions, :globch4)
-        connect_param!(m, :climatech4cycle, :globch4, :marginalemission, :output, repeat([missing], nyears))
+        connect_param!(m, :emissionspulse, :input, :emissions, :globch4)
+        connect_param!(m, :climatech4cycle, :globch4, :emissionspulse, :output)
     elseif gas == :N2O
-        connect_param!(m, :marginalemission, :input, :emissions, :globn2o)
-        connect_param!(m, :climaten2ocycle, :globn2o, :marginalemission, :output, repeat([missing], nyears))
+        connect_param!(m, :emissionspulse, :input, :emissions, :globn2o)
+        connect_param!(m, :climaten2ocycle, :globn2o, :emissionspulse, :output)
     elseif gas == :SF6
-        connect_param!(m, :marginalemission, :input, :emissions, :globsf6)
-        connect_param!(m, :climatesf6cycle, :globsf6, :marginalemission, :output, repeat([missing], nyears))
+        connect_param!(m, :emissionspulse, :input, :emissions, :globsf6)
+        connect_param!(m, :climatesf6cycle, :globsf6, :emissionspulse, :output)
     else
         error("Unknown gas: $gas")
     end
@@ -304,14 +316,14 @@ end
 """
 Helper function to set the marginal emissions in the specified year.
 """
-function perturb_marginal_emissions!(m::Model, year; comp_name::Symbol = :marginalemission, pulse_size::Float64 = 1e7, gas::Symbol = :CO2)
+function perturb_marginal_emissions!(m::Model, year; comp_name::Symbol = :emissionspulse, pulse_size::Float64 = 1e7, gas::Symbol = :CO2)
 
     ci = compinstance(m, comp_name)
     emissions = Mimi.get_param_value(ci, :add)
 
     nyears = length(Mimi.dimension(m, :time))
-    new_em = zeros(nyears - 1)
-    new_em[getindexfromyear(year)-1:getindexfromyear(year) + 8] .= pulse_size / 1e7 * (gas == :CO2 ? 12/44 : 1)
+    new_em = zeros(nyears)
+    new_em[getindexfromyear(year):getindexfromyear(year) + 9] .= pulse_size / 1e7 * (gas == :CO2 ? 12/44 : 1)
     emissions[:] = new_em
 
 end
