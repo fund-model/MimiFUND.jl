@@ -24,9 +24,13 @@ m1 = MimiFUND.get_model()
 run(m1)
 @test Mimi.time_labels(m1) == collect(1950:1:1950+default_nsteps)
 
-#use optional args for MimiFUND.get_model()
-new_nsteps = 10
-@test_throws ErrorException m2 = MimiFUND.get_model(nsteps = new_nsteps) #should error because parameter lenghts won't match time dim
+# use optional `nsteps` arg for MimiFUND.get_model()
+@test_throws ErrorException m2 = MimiFUND.get_model(nsteps = 2000) # should error because it's longer than the default without providing different parameters
+new_nsteps = 350
+m2 = MimiFUND.get_model(nsteps = new_nsteps)
+@test length(Mimi.dimension(m2, :time)) == new_nsteps + 1
+run(m2)
+@test length(m2[:climatedynamics, :temp]) == new_nsteps + 1
 
 end #fund-model testset
 
