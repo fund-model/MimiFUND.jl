@@ -52,12 +52,6 @@ const global default_params = nothing
 function get_model(; nsteps = default_nsteps, datadir = default_datadir, params = default_params)
 
     # ---------------------------------------------
-    # Load parameters
-    # ---------------------------------------------
-
-    parameters = params == nothing ? load_default_parameters(datadir) : params
-
-    # ---------------------------------------------
     # Create model
     # ---------------------------------------------
 
@@ -67,8 +61,28 @@ function get_model(; nsteps = default_nsteps, datadir = default_datadir, params 
     # Set dimensions
     # ---------------------------------------------
 
-    set_dimension!(m, :time, collect(1950:1950+nsteps))
+    if nsteps != default_nsteps
+        if datadir != default_datadir || params != default_params
+            set_dimension!(m, :time, collect(1950:1950 + nsteps)) # If the user provided an alternative datadir or params dictionary, then the time dimensions can be reset now
+            reset_time_dimension = false
+        else
+            nsteps > default_nsteps ? error("Invalid `nsteps`: $nsteps. Cannot build a MimiFUND model with more than $default_nsteps timesteps, unless an alternative `datadir` or `params` dictionary is provided.") : nothing
+            set_dimension!(m, :time, collect(1950:1950 + default_nsteps)) # start with the default FUND time dimension, so that `set_leftover_params!` will work with the default parameter lengths
+            reset_time_dimension = true # then reset the time dimension at the end
+        end
+    else
+        set_dimension!(m, :time, collect(1950:1950 + default_nsteps))    # default FUND time dimension
+        reset_time_dimension = false
+    end
+    
     set_dimension!(m, :regions, ["USA", "CAN", "WEU", "JPK", "ANZ", "EEU", "FSU", "MDE", "CAM", "LAM", "SAS", "SEA", "CHI", "MAF", "SSA", "SIS"])
+
+    # ---------------------------------------------
+    # Load parameters
+    # ---------------------------------------------
+
+    parameters = params === nothing ? load_default_parameters(datadir) : params
+
     # ---------------------------------------------
     # Create components
     # ---------------------------------------------
@@ -248,6 +262,9 @@ function get_model(; nsteps = default_nsteps, datadir = default_datadir, params 
     # ---------------------------------------------
 
     set_leftover_params!(m, parameters)
+
+    # Reset the time dimension if needed
+    reset_time_dimension ? set_dimension!(m, :time, collect(1950:1950 + nsteps)) : nothing
 
     return m
 
