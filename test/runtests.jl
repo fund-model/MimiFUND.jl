@@ -48,12 +48,12 @@ err_number = 1.0e-9
 err_array = 0.0
 
 # for c in map(name, Mimi.compdefs(m)), v in Mimi.variable_names(m, c)
-for c in Mimi.compdefs(m), v in Mimi.variable_names(m, name(c))
+for c in Mimi.compdefs(m), v in Mimi.variable_names(m, nameof(c))
 
     # load data for comparison
     orig_name = c.comp_id.comp_name
     filename = joinpath(@__DIR__, "../contrib/validation_data_v040/$orig_name-$v.csv")
-    results = m[name(c), v]
+    results = m[nameof(c), v]
 
     df = load(filename) |> DataFrame
     if typeof(results) <: Number
@@ -89,23 +89,23 @@ end #fund-integration testset
 
 # Test the compute_scco2 function with various keyword arguments
 scc0 = MimiFUND.compute_sc(year = 2020, gas = :CO2)
-scc1 = MimiFUND.compute_scco2(year = 2020) 
+scc1 = MimiFUND.compute_scco2(year = 2020)
 @test scc1 isa Float64   # test that it's not missing or a NaN
 @test scc0 == scc1
-scc2 = MimiFUND.compute_scco2(year = 2020, last_year=2300) 
+scc2 = MimiFUND.compute_scco2(year = 2020, last_year=2300)
 @test scc2 < scc1  # test that shorter horizon made it smaller
-scc3 = MimiFUND.compute_scco2(year = 2020, last_year=2300, equity_weights=true) 
+scc3 = MimiFUND.compute_scco2(year = 2020, last_year=2300, equity_weights=true)
 @test scc3 > scc2  # test that equity weights made itbigger
-scc4 = MimiFUND.compute_scco2(year = 2020, last_year=2300, equity_weights=true, eta=.8, prtp=0.01) 
+scc4 = MimiFUND.compute_scco2(year = 2020, last_year=2300, equity_weights=true, eta=.8, prtp=0.01)
 @test scc4 > scc3   # test that lower eta and prtp make scc higher
-scch4 = MimiFUND.compute_scch4(year = 2020) 
+scch4 = MimiFUND.compute_scch4(year = 2020)
 @test scch4 > scc1   # test social cost of methane is higher
 
 # Test with a modified model
 m_high_cs = MimiFUND.get_model()
-update_param!(m_high_cs, :climatesensitivity, 5)    
+update_param!(m_high_cs, :climatesensitivity, 5)
 scc6 = MimiFUND.compute_scco2(m_high_cs, year=2020, last_year=2300)
-@test scc6 > scc2 # test that it's higher than the default because of a higher climate sensitivity 
+@test scc6 > scc2 # test that it's higher than the default because of a higher climate sensitivity
 
 # Test get_marginal_model
 mm = MimiFUND.get_marginal_model(year=2020, gas=:CH4)
@@ -183,9 +183,9 @@ for spec in [
 ]
     # Compute the value for this set of keyword arguments
     sc = MimiFUND.compute_sc(gas = spec.gas, year = spec.year, eta = spec.eta, prtp = spec.prtp, equity_weights = spec.equity_weights, equity_weights_normalization_region = spec.equity_weights_normalization_region, last_year = spec.last_year, pulse_size = spec.pulse_size)
-    
+
     # Get the pre-saved value for this set of keyword arguments
-    validation_value = validation_results |> 
+    validation_value = validation_results |>
         @filter(_.gas == string(spec.gas) && _.year == spec.year && _.eta == spec.eta && _.prtp == spec.prtp && _.equity_weights == string(spec.equity_weights) && _.equity_weights_normalization_region == spec.equity_weights_normalization_region && _.last_year == spec.last_year && _.pulse_size == spec.pulse_size) |>
         DataFrame
 
