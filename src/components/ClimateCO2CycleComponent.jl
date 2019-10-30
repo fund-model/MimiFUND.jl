@@ -105,7 +105,7 @@
         else
 
             if gettime(t) == 2011
-                v.tempin2010 = p.temp[getindexfromyear(2010)]
+                v.tempin2010 = p.temp[TimestepValue(2010)]
             end
 
             if gettime(t) > 2010

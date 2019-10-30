@@ -48,12 +48,12 @@ err_number = 1.0e-9
 err_array = 0.0
 
 # for c in map(name, Mimi.compdefs(m)), v in Mimi.variable_names(m, c)
-for c in Mimi.compdefs(m), v in Mimi.variable_names(m, name(c))
+for c in Mimi.compdefs(m), v in Mimi.variable_names(m, nameof(c))
 
     # load data for comparison
     orig_name = c.comp_id.comp_name
     filename = joinpath(@__DIR__, "../contrib/validation_data_v040/$orig_name-$v.csv")
-    results = m[name(c), v]
+    results = m[nameof(c), v]
 
     df = load(filename) |> DataFrame
     if typeof(results) <: Number
