@@ -40,6 +40,10 @@ end #fund-model testset
 #------------------------------------------------------------------------------
 @testset "test-integration" begin
 
+# The signs of the following variables have been switched since the validation data were saved;
+#   need to multiply by -1 in their respective tests
+_updated_vars = [:agcost, :cooling, :heating, :forests, :water]
+
 m = MimiFUND.get_model()
 run(m)
 
@@ -53,7 +57,7 @@ for c in Mimi.compdefs(m), v in Mimi.variable_names(m, nameof(c))
     # load data for comparison
     orig_name = c.comp_id.comp_name
     filename = joinpath(@__DIR__, "../contrib/validation_data_v040/$orig_name-$v.csv")
-    results = m[nameof(c), v]
+    results = v in _updated_vars ? -1 * m[nameof(c), v] : m[nameof(c), v]
 
     df = load(filename) |> DataFrame
     if typeof(results) <: Number
