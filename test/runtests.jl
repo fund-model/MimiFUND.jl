@@ -13,16 +13,10 @@ using Query
 
 @testset "fund-model" begin
 
-#default model exported by fund module
-default_nsteps = 1050
-m = MimiFUND.get_model()
-run(m)
-@test Mimi.time_labels(m) == collect(1950:1:1950+default_nsteps)
-
 #default model created by MimiFUND.get_model()
 m1 = MimiFUND.get_model()
 run(m1)
-@test Mimi.time_labels(m1) == collect(1950:1:1950+default_nsteps)
+@test Mimi.time_labels(m1) == collect(1950:3000)
 
 # use optional `nsteps` arg for MimiFUND.get_model()
 @test_throws ErrorException m2 = MimiFUND.get_model(nsteps = 2000) # should error because it's longer than the default without providing different parameters
