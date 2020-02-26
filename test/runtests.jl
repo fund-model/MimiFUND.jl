@@ -13,16 +13,10 @@ using Query
 
 @testset "fund-model" begin
 
-#default model exported by fund module
-default_nsteps = 1050
-m = MimiFUND.get_model()
-run(m)
-@test Mimi.time_labels(m) == collect(1950:1:1950+default_nsteps)
-
 #default model created by MimiFUND.get_model()
 m1 = MimiFUND.get_model()
 run(m1)
-@test Mimi.time_labels(m1) == collect(1950:1:1950+default_nsteps)
+@test Mimi.time_labels(m1) == collect(1950:3000)
 
 # use optional `nsteps` arg for MimiFUND.get_model()
 @test_throws ErrorException m2 = MimiFUND.get_model(nsteps = 2000) # should error because it's longer than the default without providing different parameters
@@ -40,6 +34,10 @@ end #fund-model testset
 #------------------------------------------------------------------------------
 @testset "test-integration" begin
 
+# The signs of the following variables have been switched since the validation data were saved;
+#   need to multiply by -1 in their respective tests
+_updated_vars = [:agcost, :cooling, :heating, :forests, :water]
+
 m = MimiFUND.get_model()
 run(m)
 
@@ -53,7 +51,7 @@ for c in Mimi.compdefs(m), v in Mimi.variable_names(m, nameof(c))
     # load data for comparison
     orig_name = c.comp_id.comp_name
     filename = joinpath(@__DIR__, "../contrib/validation_data_v040/$orig_name-$v.csv")
-    results = m[nameof(c), v]
+    results = v in _updated_vars ? -1 * m[nameof(c), v] : m[nameof(c), v]
 
     df = load(filename) |> DataFrame
     if typeof(results) <: Number

@@ -1,7 +1,7 @@
 ﻿@defcomp impactforests begin
     regions = Index()
 
-    forests = Variable(index=[time,regions])
+    forests = Variable(index=[time,regions])    # Economic damages: positive value means damages, negative value means benefits
 
     forbm = Parameter(index=[regions])
     gdp90 = Parameter(index=[regions])
@@ -26,11 +26,10 @@
                 ypc90 = p.gdp90[r] / p.pop90[r] * 1000.0
 
                 # TODO -oDavid Anthoff: RT uses -lP.forel for ppp case
-                v.forests[t, r] = p.forbm[r] * p.income[t, r] * (ypc / ypc90)^p.forel * (0.5 * p.temp[t, r]^p.fornl + 0.5 * log(p.acco2[t - 1] / p.co2pre) * p.forco2)
-
-                if v.forests[t, r] > 0.1 * p.income[t, r]
-                    v.forests[t, r] = 0.1 * p.income[t, r]
-                end
+                v.forests[t, r] = max(
+                    -1 * p.forbm[r] * p.income[t, r] * (ypc / ypc90)^p.forel * (0.5 * p.temp[t, r]^p.fornl + 0.5 * log(p.acco2[t - 1] / p.co2pre) * p.forco2),
+                    -0.1 * p.income[t, r]
+                )
             end
         end
     end

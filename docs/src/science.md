@@ -216,12 +216,12 @@ The first part (rate) is always negative: As farmers have imperfect foresight an
 For the impact of the rate of climate change (i.e., the annual change of climate) on agriculture, the assumed model is:
 
 ```math
-A_{t,r}^{r} = \alpha_{r}\left( \frac{\Delta T_{t}}{0.04} \right)^{\beta} + \left( 1 - \frac{1}{\rho} \right)A_{t - 1,r}^{r} \tag{A.2}
+A_{t,r}^{r} = -\left(\alpha_{r}\left( \frac{\Delta T_{t}}{0.04} \right)^{\beta} + \left( \frac{1}{\rho} - 1 \right)A_{t - 1,r}^{r}\right) \tag{A.2}
 ```
 
 where
 
-  * ``A^{r}`` denotes damage in agricultural production as a fraction due the rate of climate change by time and region;
+  * ``A^{r}`` denotes damage in agricultural production as a fraction due the rate of climate change by time and region (a positive value means a decrease in production);
   * ``t`` denotes time;
   * ``r`` denotes region;
   * ``\Delta T`` denotes the change in the regional mean temperature (in degrees Celsius) between time ``t`` and ``t - 1``;
@@ -232,12 +232,12 @@ where
 The model for the impact due to the level of climate change since 1990 is:
 
 ```math
-A_{t,r}^{l} = \delta_{r}^{l}T_{t} + \delta_{r}^{q}T_{t}^{2} \tag{A.3}
+A_{t,r}^{l} = -\left(\delta_{r}^{l}T_{t} + \delta_{r}^{q}T_{t}^{2}\right) \tag{A.3}
 ```
 
 where
 
-  * ``A^{l}`` denotes the damage in agricultural production as a fraction due to the level of climate change by time and region;
+  * ``A^{l}`` denotes the damage in agricultural production as a fraction due to the level of climate change by time and region (a positive value means a decrease in production);
   * ``t`` denotes time;
   * ``r`` denotes region;
   * ``T`` denotes the change (in degree Celsius) in regional mean temperature relative to 1990;
@@ -246,12 +246,12 @@ where
 CO₂ fertilisation has a positive, but saturating effect on agriculture, specified by
 
 ```math
-A_{t,r}^{f} = \gamma_{r}\ln\frac{\text{CO}2_{t}}{275} \tag{A.4}
+A_{t,r}^{f} = -\left(\gamma_{r}\ln\frac{\text{CO}2_{t}}{275}\right) \tag{A.4}
 ```
 
 where
 
-  * ``A^{f}`` denotes damage in agricultural production as a fraction due to the CO2 fertilisation by time and region;
+  * ``A^{f}`` denotes damage in agricultural production as a fraction due to the CO2 fertilisation by time and region (a positive value means a decrease in production);
   * ``t`` denotes time;
   * ``r`` denotes region;
   * ``CO2`` denotes the atmospheric concentration of carbon dioxide (in parts per million by volume);
@@ -260,7 +260,7 @@ where
 
 The parameters in Table A are calibrated, following the procedure described in Tol (2002a), to the results of Kane *et al*. (1992), Reilly *et al*. (1994), Morita *et al*. (1994), Fischer *et al*. (1996), and Tsigas *et al*. (1996). These studies all use a global computable general equilibrium model, and report results with and without adaptation, and with and without CO₂ fertilisation. The regional results from these studies are assumed to hold for each country in the respective regions. They are averaged over the studies and the climate scenarios for each country, and aggregated to the *FUND* regions. The standard deviations in Table A follow from the spread between studies and scenarios. Equation (A.4) follows from the difference in results with and without CO2 fertilization. Equation (A.3) follows from the results with full adaptation. Equation (A.2) follows from the difference in results with and without adaptation.
 
-Equations (A.1)-(A.4) express the impact of climate change as a percentage of agricultural production. In order to express this as a percentage of income, we need to know the share of agricultural production in total income. This is assumed to fall with per capita income, that is,
+Equations (A.1)-(A.4) express the damages of climate change as a percentage of agricultural production. In order to express this as a percentage of income, we need to know the share of agricultural production in total income. This is assumed to fall with per capita income, that is,
 
 ```math
 \frac{\text{GA}P_{t,r}}{Y_{t,r}} = \frac{\text{GA}P_{1990,r}}{Y_{1990,r}}\left( \frac{y_{1990,r}}{y_{t,r}} \right)^{\epsilon} \tag{A.5}
@@ -284,12 +284,12 @@ The code for the agricultural impacts component can be found at [https://github.
 The model is:
 
 ```math
-F_{t,r} = \alpha_{r}\left( \frac{y_{t,r}}{y_{1990,r}} \right)^{\epsilon}\left( 0.5\left( \frac{T_{t}}{1.0} \right)^{\beta} + 0.5\gamma\ln\left( \frac{\text{CO}2_{t}}{275} \right) \right) \tag{F.1}
+F_{t,r} = -\alpha_{r}\left( \frac{y_{t,r}}{y_{1990,r}} \right)^{\epsilon}\left( 0.5\left( \frac{T_{t}}{1.0} \right)^{\beta} + 0.5\gamma\ln\left( \frac{\text{CO}2_{t}}{275} \right) \right) \tag{F.1}
 ```
 
 where
 
-  * ``F`` denotes the change in forestry consumer and producer surplus (as a share of total income);
+  * ``F`` denotes the damages in forestry consumer and producer surplus as a share of total income (a positive value means a decrease in surplus);
   * ``t`` denotes time;
   * ``r`` denotes region;
   * ``y`` denotes per capita income (in 1995 US dollar per person per year);
@@ -306,12 +306,12 @@ The parameter ``\alpha`` is estimated as the average of the estimates by Perez-G
 The impact of climate change on water resources follows:
 
 ```math
-W_{t,r} = \min\left\{ \alpha_{r}Y_{1990,r}\left( 1 - \tau \right)^{t - 2000}\left( \frac{y_{t,r}}{y_{1990,r}} \right)^{\beta}\left( \frac{P_{t,r}}{P_{1990,r}} \right)^{\eta}\left( \frac{T_{t}}{1.0} \right)^{\gamma},\frac{Y_{t,r}}{10} \right\} \tag{W.1}
+W_{t,r} = \max\left\{ -\alpha_{r}Y_{1990,r}\left( 1 - \tau \right)^{t - 2000}\left( \frac{y_{t,r}}{y_{1990,r}} \right)^{\beta}\left( \frac{P_{t,r}}{P_{1990,r}} \right)^{\eta}\left( \frac{T_{t}}{1.0} \right)^{\gamma},\frac{-Y_{t,r}}{10} \right\} \tag{W.1}
 ```
 
 where
 
-  * ``W`` denotes the change in water resources (in 1995 US dollar) at time ``t`` in region ``r``;
+  * ``W`` denotes the decrease in water resources (in 1995 US dollar) at time ``t`` in region ``r``;
   * ``t`` denotes time;
   * ``r`` denotes region;
   * ``y`` denotes per capita income (in 1995 US dollar) at time ``t`` in region ``r``;
@@ -330,12 +330,12 @@ These parameters are from calibrating *FUND* to the results of Downing *et al*. 
 For space heating, the model is:
 
 ```math
-SH_{t,r} = \frac{\alpha_{r}Y_{1990,r}\frac{\operatorname{atan}T_{t}}{\operatorname{atan}{1.0}}\left( \frac{y_{t,r}}{y_{1990,r}} \right)^{\epsilon}\left( \frac{P_{t,r}}{P_{1990,r}} \right)}{\prod_{s = 1990}^{t}{\text{AEE}I_{s,r}}} \tag{E.1}
+SH_{t,r} = -\frac{\alpha_{r}Y_{1990,r}\frac{\operatorname{atan}T_{t}}{\operatorname{atan}{1.0}}\left( \frac{y_{t,r}}{y_{1990,r}} \right)^{\epsilon}\left( \frac{P_{t,r}}{P_{1990,r}} \right)}{\prod_{s = 1990}^{t}{\text{AEE}I_{s,r}}} \tag{E.1}
 ```
 
 where
 
-  * ``\text{SH}`` denotes the decrease in expenditure on space heating (in 1995 US dollar) at time ``t`` in region ``r``;
+  * ``\text{SH}`` denotes the increase in expenditure on space heating (in 1995 US dollar) at time ``t`` in region ``r``;
   * ``\text{t\ }``denotes time;
   * ``r`` denotes region;
   * ``Y`` denotes income (in 1995 US dollar) at time ``t`` in region ``r``;
@@ -351,7 +351,7 @@ These parameters are from calibrating *FUND* to the results of Downing *et al*. 
 For space cooling, the model is:
 
 ```math
-SC_{t,r} = \frac{\alpha_{r}Y_{1990,r}\left( \frac{T_{t}}{1.0} \right)^{\beta}\left( \frac{y_{t,r}}{y_{1990,r}} \right)^{\epsilon}\left( \frac{P_{t,r}}{P_{1990,r}} \right)}{\prod_{s = 1990}^{t}{\text{AEE}I_{s,r}}} \tag{E.2}
+SC_{t,r} = -\frac{\alpha_{r}Y_{1990,r}\left( \frac{T_{t}}{1.0} \right)^{\beta}\left( \frac{y_{t,r}}{y_{1990,r}} \right)^{\epsilon}\left( \frac{P_{t,r}}{P_{1990,r}} \right)}{\prod_{s = 1990}^{t}{\text{AEE}I_{s,r}}} \tag{E.2}
 ```
 
 where

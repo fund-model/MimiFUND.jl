@@ -13,7 +13,7 @@
     agrate = Variable(index=[time,regions])
     aglevel = Variable(index=[time,regions])
     agco2 = Variable(index=[time,regions])
-    agcost = Variable(index=[time,regions])
+    agcost = Variable(index=[time,regions])  # Economic damages: positive value means damages, negative value means benefits 
 
     agrbm = Parameter(index=[regions])
     agtime = Parameter(index=[regions])
@@ -50,20 +50,20 @@
                 if isnan((dtemp / 0.04)^p.agnl)
                     v.agrate[t, r] = 0.0
                 else
-                    v.agrate[t, r] = p.agrbm[r] * (dtemp / 0.04)^p.agnl + (1.0 - 1.0 / p.agtime[r]) * v.agrate[t - 1, r]
+                    v.agrate[t, r] = -1 * (p.agrbm[r] * (dtemp / 0.04)^p.agnl + (1.0 / p.agtime[r] - 1.0) * v.agrate[t - 1, r])
                 end
             end
 
             for r in d.regions
-                v.aglevel[t, r] = p.aglparl[r] * p.temp[t, r] + p.aglparq[r] * p.temp[t, r]^2.0
+                v.aglevel[t, r] = -1 * (p.aglparl[r] * p.temp[t, r] + p.aglparq[r] * p.temp[t, r]^2.0)
             end
 
             for r in d.regions
-                v.agco2[t, r] = p.agcbm[r] / log(2.0) * log(p.acco2[t - 1] / p.co2pre)
+                v.agco2[t, r] = -1 * p.agcbm[r] / log(2.0) * log(p.acco2[t - 1] / p.co2pre)
             end
 
             for r in d.regions
-                v.agcost[t, r] = min(1.0, v.agrate[t, r] + v.aglevel[t, r] + v.agco2[t, r]) * v.agrish[t, r] * p.income[t, r]
+                v.agcost[t, r] = max(-1.0, v.agrate[t, r] + v.aglevel[t, r] + v.agco2[t, r]) * v.agrish[t, r] * p.income[t, r]
             end
         end
     end
