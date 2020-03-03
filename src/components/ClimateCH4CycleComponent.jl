@@ -21,7 +21,7 @@
         if is_first(t)
             v.ch4decay = 1.0 / p.lifech4
 
-            v.acch4[1] = p.acch4_0
+            v.acch4[t] = p.acch4_0
         else
             # Calculate CH4 concentrations
             v.acch4[t] = v.acch4[t - 1] + 0.3597 * p.globch4[t] - v.ch4decay * (v.acch4[t - 1] - p.ch4pre)
