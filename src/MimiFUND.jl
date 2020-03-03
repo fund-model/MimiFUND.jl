@@ -76,13 +76,7 @@ function get_model(; nsteps = default_nsteps, datadir = default_datadir, params 
     end
     
     set_dimension!(m, :regions, ["USA", "CAN", "WEU", "JPK", "ANZ", "EEU", "FSU", "MDE", "CAM", "LAM", "SAS", "SEA", "CHI", "MAF", "SSA", "SIS"])
-
-    # ---------------------------------------------
-    # Load parameters
-    # ---------------------------------------------
-
-    parameters = params === nothing ? load_default_parameters(datadir) : params
-
+    
     # ---------------------------------------------
     # Create components
     # ---------------------------------------------
@@ -258,10 +252,14 @@ function get_model(; nsteps = default_nsteps, datadir = default_datadir, params 
     connect_param!(m, :impactaggregation, :leavecost, :impactsealevelrise, :leavecost)
 
     # ---------------------------------------------
-    # Set leftover parameters
+    # Set all external parameter values
     # ---------------------------------------------
 
-    set_leftover_params!(m, parameters)
+    parameters = params === nothing ? load_default_parameters(datadir) : params
+    
+    for (name, value) in parameters
+        set_param!(m, name, value)
+    end
 
     # Reset the time dimension if needed
     reset_time_dimension ? set_dimension!(m, :time, collect(1950:1950 + nsteps)) : nothing
