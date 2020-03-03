@@ -15,7 +15,7 @@
 
     forel = Parameter(default = -0.31)
     fornl = Parameter(default = 1)
-    co2pre = Parameter(default = 275.0)
+    co2pre = Parameter()
     forco2 = Parameter(default = 2.2972)
 
     function run_timestep(p, v, d, t)

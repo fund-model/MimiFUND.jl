@@ -23,7 +23,7 @@
     aglparq = Parameter(index=[regions])
 
     agcbm = Parameter(index=[regions])
-    co2pre = Parameter(default = 275.0)
+    co2pre = Parameter()
 
     temp = Parameter(index=[time,regions])
     acco2 = Parameter(index=[time])

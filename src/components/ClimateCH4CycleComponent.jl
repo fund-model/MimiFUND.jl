@@ -11,7 +11,7 @@
     lifech4 = Parameter(default = 12.0)
 
     #  CH4 pre industrial
-    ch4pre = Parameter(default = 790.0)
+    ch4pre = Parameter()
 
     # Initial acch4 value
     acch4_0 = Parameter(default = 1222.0)
