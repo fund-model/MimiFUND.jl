@@ -19,7 +19,7 @@ DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
 [compat]
 julia = "1"
 StatsBase = "0.30, 0.31, 0.32"
-Mimi = "0.9.4"
+Mimi = "0.10"
 Distributions = "0.20, 0.21"
 
 [targets]
