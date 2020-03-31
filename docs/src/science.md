@@ -246,7 +246,7 @@ where
 CO₂ fertilisation has a positive, but saturating effect on agriculture, specified by
 
 ```math
-A_{t,r}^{f} = \gamma_{r}\ln\frac{\text{CO}2_{t}}{275} \tag{A.4}
+A_{t,r}^{f} = \frac{\gamma_{r}}{\ln2}\ln\frac{\text{CO}2_{t}}{275} \tag{A.4}
 ```
 
 where
@@ -256,7 +256,7 @@ where
   * ``r`` denotes region;
   * ``CO2`` denotes the atmospheric concentration of carbon dioxide (in parts per million by volume);
   * 275 ppm is the pre-industrial concentration;
-  * ``\gamma`` is a parameter (see Table A, column 8-9).
+  * ``\gamma`` is a parameter that gives the impact of a doubling of CO2 concentrations (see Table A, column 8-9).
 
 The parameters in Table A are calibrated, following the procedure described in Tol (2002a), to the results of Kane *et al*. (1992), Reilly *et al*. (1994), Morita *et al*. (1994), Fischer *et al*. (1996), and Tsigas *et al*. (1996). These studies all use a global computable general equilibrium model, and report results with and without adaptation, and with and without CO₂ fertilisation. The regional results from these studies are assumed to hold for each country in the respective regions. They are averaged over the studies and the climate scenarios for each country, and aggregated to the *FUND* regions. The standard deviations in Table A follow from the spread between studies and scenarios. Equation (A.4) follows from the difference in results with and without CO2 fertilization. Equation (A.3) follows from the results with full adaptation. Equation (A.2) follows from the difference in results with and without adaptation.
 
