@@ -11,6 +11,10 @@ include("montecarlo/defmcs.jl")
 include("montecarlo/run_fund_mcs.jl")
 include("montecarlo/run_fund_scc_mcs.jl")
 
+include("components/composites/SocioEconomicCompositeComponent.jl")
+include("components/composites/ClimateCompositeComponent.jl")
+include("components/composites/DamagesCompositeComponent.jl")
+
 include("components/SocioEconomicComponent.jl")
 include("components/PopulationComponent.jl")
 include("components/EmissionsComponent.jl")
@@ -81,11 +85,14 @@ function get_model(; nsteps = default_nsteps, datadir = default_datadir, params 
     # Create components
     # ---------------------------------------------
 
+    # Socioeconomic 
     add_comp!(m, scenariouncertainty)
     add_comp!(m, population)          # can't have external params and components with the same name
     add_comp!(m, geography)
     add_comp!(m, socioeconomic)
     add_comp!(m, emissions)
+
+    # Climate
     add_comp!(m, climateco2cycle)
     add_comp!(m, climatech4cycle)
     add_comp!(m, climaten2ocycle)
@@ -95,6 +102,8 @@ function get_model(; nsteps = default_nsteps, datadir = default_datadir, params 
     add_comp!(m, biodiversity)
     add_comp!(m, climateregional)
     add_comp!(m, ocean)
+
+    # Damages
     add_comp!(m, impactagriculture)
     add_comp!(m, impactbiodiversity)
     add_comp!(m, impactcardiovascularrespiratory)
@@ -266,6 +275,61 @@ function get_model(; nsteps = default_nsteps, datadir = default_datadir, params 
 
     return m
 
+end
+
+# ---------------------------------------------
+# Creates a model containing Composite Components
+# ---------------------------------------------
+function get_model_composite(; nsteps = default_nsteps, datadir = default_datadir, params = default_params)
+    m = Model()
+    if nsteps != default_nsteps
+        if datadir != default_datadir || params != default_params
+            set_dimension!(m, :time, collect(1950:1950 + nsteps)) # If the user provided an alternative datadir or params dictionary, then the time dimensions can be reset now
+            reset_time_dimension = false
+        else
+            nsteps > default_nsteps ? error("Invalid `nsteps`: $nsteps. Cannot build a MimiFUND model with more than $default_nsteps timesteps, unless an alternative `datadir` or `params` dictionary is provided.") : nothing
+            set_dimension!(m, :time, collect(1950:1950 + default_nsteps)) # start with the default FUND time dimension, so that `set_leftover_params!` will work with the default parameter lengths
+            reset_time_dimension = true # then reset the time dimension at the end
+        end
+    else
+        set_dimension!(m, :time, collect(1950:1950 + default_nsteps))    # default FUND time dimension
+        reset_time_dimension = false
+    end
+    
+    set_dimension!(m, :regions, ["USA", "CAN", "WEU", "JPK", "ANZ", "EEU", "FSU", "MDE", "CAM", "LAM", "SAS", "SEA", "CHI", "MAF", "SSA", "SIS"])
+    parameters = params === nothing ? load_default_parameters(datadir) : params
+
+    add_comp!(m, socioeconomiccomposite)
+    add_comp!(m, climatecomposite)
+    add_comp!(m, damagescomposite)
+
+
+
+    connect(climatecomposite.mco2, socioeconomiccomposite.mco2)
+    connect(climatecomposite.globch4, socioeconomiccomposite.globch4)
+    connect(climatecomposite.globn2o, socioeconomiccomposite.globn2o)
+    connect(climatecomposite.globsf6, socioeconomiccomposite.globsf6)
+
+    connect(damagescomposite.population, socioeconomiccomposite.population)
+    connect(damagescomposite.income, socioeconomiccomposite.income)
+    connect(damagescomposite.plus, socioeconomiccomposite.plus)
+    connect(damagescomposite.urbpop, socioeconomiccomposite.urbpop)
+    connect(damagescomposite.cumaeei, socioeconomiccomposite.cumaeei)
+    connect(damagescomposite.area, socioeconomiccomposite.area)
+
+    connect(damagescomposite.temp, climatecomposite.temp)
+    connect(damagescomposite.acco2, climatecomposite.acco2)
+    connect(damagescomposite.regtmp, climatecomposite.regtmp)
+    connect(damagescomposite.regstmp, climatecomposite.regstmp)
+    connect(damagescomposite.nospecies, climatecomposite.nospecies)
+    connect(damagescomposite.sea, climatecomposite.sea)
+
+    connect(socioeconomic.landloss, damagescomposite.landloss)
+    connect(socioeconomic.enter, damagescomposite.enter)
+    connect(socioeconomic.leave, damagescomposite.leave)
+    connect(socioeconomic.dead, damagescomposite.dead)
+    connect(socioeconomic.eloss, damagescomposite.eloss)
+    connect(socioeconomic.sloss, damagescomposite.sloss)
 end
 
 getfund = get_model
