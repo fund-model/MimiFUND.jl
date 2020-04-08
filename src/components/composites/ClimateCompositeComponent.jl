@@ -10,16 +10,6 @@
     Component(climateregional)
     Component(ocean)
 
-    mco2 = Parameter()
-    globch4 = Parameter()
-    globn2o = Parameter()
-    globsf6 = Parameter()
-
-    connect(climateco2cycle.mco2, mco2)
-    connect(climatech4cycle.globch4, globch4)
-    connect(climaten2ocycle.globn2o, globn2o)
-    connect(climatesf6cycle.globsf6, globsf6)
-
     connect(climateco2cycle.temp, climatedynamics.temp)
     connect(climateforcing.acco2, climateco2cycle.acco2)
     connect(climateforcing.acch4, climatech4cycle.acch4)

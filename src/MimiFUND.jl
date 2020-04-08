@@ -303,8 +303,6 @@ function get_model_composite(; nsteps = default_nsteps, datadir = default_datadi
     add_comp!(m, climatecomposite)
     add_comp!(m, damagescomposite)
 
-
-
     connect(climatecomposite.mco2, socioeconomiccomposite.mco2)
     connect(climatecomposite.globch4, socioeconomiccomposite.globch4)
     connect(climatecomposite.globn2o, socioeconomiccomposite.globn2o)

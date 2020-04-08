@@ -7,20 +7,6 @@
     Component(socioeconomic)
     Component(emissions)
 
-    landloss = Parameter()
-    enter = Parameter()
-    leave = Parameter()
-    dead = Parameter()
-    eloss = Parameter()
-    sloss = Parameter()
-    
-    connect(geography.landloss, landloss)
-    connect(population.enter, enter)
-    connect(population.leave, leave)
-    connect(population.dead, dead)
-    connect(socioeconomic.eloss, eloss)
-    connect(socioeconomic.sloss, sloss)
-
     connect(population.pgrowth, scenariouncertainty.pgrowth)
     connect(socioeconomic.area, geography.area)
     connect(socioeconomic.globalpopulation, population.globalpopulation)
