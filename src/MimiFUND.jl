@@ -303,31 +303,42 @@ function get_model_composite(; nsteps = default_nsteps, datadir = default_datadi
     add_comp!(m, climatecomposite)
     add_comp!(m, damagescomposite)
 
-    connect(climatecomposite.mco2, socioeconomiccomposite.mco2)
-    connect(climatecomposite.globch4, socioeconomiccomposite.globch4)
-    connect(climatecomposite.globn2o, socioeconomiccomposite.globn2o)
-    connect(climatecomposite.globsf6, socioeconomiccomposite.globsf6)
+    connect_param!(m, :climatecomposite, :mco2, :socioeconomiccomposite, :mco2)
+    connect_param!(m, :climatecomposite, :globch4, :socioeconomiccomposite, :globch4)
+    connect_param!(m, :climatecomposite, :globn2o, :socioeconomiccomposite, :globn2o)
+    connect_param!(m, :climatecomposite, :globsf6, :socioeconomiccomposite, :globsf6)
 
-    connect(damagescomposite.population, socioeconomiccomposite.population)
-    connect(damagescomposite.income, socioeconomiccomposite.income)
-    connect(damagescomposite.plus, socioeconomiccomposite.plus)
-    connect(damagescomposite.urbpop, socioeconomiccomposite.urbpop)
-    connect(damagescomposite.cumaeei, socioeconomiccomposite.cumaeei)
-    connect(damagescomposite.area, socioeconomiccomposite.area)
+    connect_param!(m, :damagescomposite, :population, :socioeconomiccomposite, :population_var)
+    connect_param!(m, :damagescomposite, :income, :socioeconomiccomposite, :income)
+    connect_param!(m, :damagescomposite, :plus, :socioeconomiccomposite, :plus)
+    connect_param!(m, :damagescomposite, :urbpop, :socioeconomiccomposite, :urbpop)
+    connect_param!(m, :damagescomposite, :cumaeei, :socioeconomiccomposite, :cumaeei)
+    connect_param!(m, :damagescomposite, :area, :socioeconomiccomposite, :area)
 
-    connect(damagescomposite.temp, climatecomposite.temp)
-    connect(damagescomposite.acco2, climatecomposite.acco2)
-    connect(damagescomposite.regtmp, climatecomposite.regtmp)
-    connect(damagescomposite.regstmp, climatecomposite.regstmp)
-    connect(damagescomposite.nospecies, climatecomposite.nospecies)
-    connect(damagescomposite.sea, climatecomposite.sea)
+    connect_param!(m, :damagescomposite, :temp, :climatecomposite, :temp)
+    connect_param!(m, :damagescomposite, :acco2, :climatecomposite, :acco2)
+    connect_param!(m, :damagescomposite, :regtmp, :climatecomposite, :regtmp)
+    connect_param!(m, :damagescomposite, :regstmp, :climatecomposite, :regstmp)
+    connect_param!(m, :damagescomposite, :nospecies, :climatecomposite, :nospecies)
+    connect_param!(m, :damagescomposite, :sea, :climatecomposite, :sea)
 
-    connect(socioeconomic.landloss, damagescomposite.landloss)
-    connect(socioeconomic.enter, damagescomposite.enter)
-    connect(socioeconomic.leave, damagescomposite.leave)
-    connect(socioeconomic.dead, damagescomposite.dead)
-    connect(socioeconomic.eloss, damagescomposite.eloss)
-    connect(socioeconomic.sloss, damagescomposite.sloss)
+    connect_param!(m, :socioeconomiccomposite, :landloss, :damagescomposite, :landloss)
+    connect_param!(m, :socioeconomiccomposite, :enter, :damagescomposite, :enter)
+    connect_param!(m, :socioeconomiccomposite, :leave, :damagescomposite, :leave)
+    connect_param!(m, :socioeconomiccomposite, :dead, :damagescomposite, :dead)
+    connect_param!(m, :socioeconomiccomposite, :eloss, :damagescomposite, :eloss)
+    connect_param!(m, :socioeconomiccomposite, :sloss, :damagescomposite, :sloss)
+    
+    # ---------------------------------------------
+    # Set leftover parameters
+    # ---------------------------------------------
+
+    set_leftover_params!(m, parameters)
+
+    # Reset the time dimension if needed
+    reset_time_dimension ? set_dimension!(m, :time, collect(1950:1950 + nsteps)) : nothing
+
+    return m
 end
 
 getfund = get_model

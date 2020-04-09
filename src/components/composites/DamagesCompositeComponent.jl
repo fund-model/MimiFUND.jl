@@ -1,6 +1,21 @@
-@begincomposite damagescomposite begin
-    regions = Index()
+include("../ImpactAgricultureComponent.jl")
+include("../ImpactBioDiversityComponent.jl")
+include("../ImpactCardiovascularRespiratoryComponent.jl")
+include("../ImpactCoolingComponent.jl")
+include("../ImpactDiarrhoeaComponent.jl")
+include("../ImpactExtratropicalStormsComponent.jl")
+include("../ImpactForestsComponent.jl")
+include("../ImpactHeatingComponent.jl")
+include("../ImpactVectorBorneDiseasesComponent.jl")
+include("../ImpactTropicalStormsComponent.jl")
+include("../VslVmorbComponent.jl")
+include("../ImpactDeathMorbidityComponent.jl")
+include("../ImpactWaterResourcesComponent.jl")
+include("../ImpactSeaLevelRiseComponent.jl")
+include("../ImpactAggregationComponent.jl")
 
+@defcomposite damagescomposite begin
+    
     Component(impactagriculture)
     Component(impactbiodiversity)
     Component(impactcardiovascularrespiratory)
@@ -17,9 +32,18 @@
     Component(impactsealevelrise)
     Component(impactaggregation)
 
+    gdp90 = Parameter(impactagriculture.gdp90, impactcooling.gdp90, impactdiarrhoea.gdp90, impactextratropicalstorms.gdp90, impactforests.gdp90, impactheating.gdp90, impactvectorbornediseases.gdp90, impacttropicalstorms.gdp90, impactwaterresources.gdp90)
+    cumaeei = Parameter(impactcooling.cumaeei, impactheating.cumaeei)
+    pop90 = Parameter(impactagriculture.pop90, impactcooling.pop90, impactdiarrhoea.pop90, impactextratropicalstorms.pop90, impactforests.pop90, impactheating.pop90, impactvectorbornediseases.pop90, impacttropicalstorms.pop90, impactwaterresources.pop90)
+    acco2 = Parameter(impactagriculture.acco2, impactextratropicalstorms.acco2, impactforests.acco2)
+    income = Parameter(impactagriculture.income, impactbiodiversity.income, impactcooling.income, impactdiarrhoea.income, impactextratropicalstorms.income, impactforests.income, impactheating.income, impactvectorbornediseases.income, impacttropicalstorms.income, vslvmorb.income, impactwaterresources.income, impactsealevelrise.income, impactaggregation.income)
+    population = Parameter(impactagriculture.population, impactbiodiversity.population, impactcardiovascularrespiratory.population, impactcooling.population, impactdiarrhoea.population, impactextratropicalstorms.population, impactforests.population, impactheating.population, impactvectorbornediseases.population, impacttropicalstorms.population, vslvmorb.population, impactdeathmorbidity.population, impactwaterresources.population, impactsealevelrise.population)
+    temp = Parameter(impactagriculture.temp, impactbiodiversity.temp, impactcardiovascularrespiratory.temp, impactcooling.temp, impactforests.temp, impactheating.temp, impactvectorbornediseases.temp, impactwaterresources.temp)
+    co2pre = Parameter(impactagriculture.co2pre, impactextratropicalstorms.co2pre, impactforests.co2pre)
+
+
     connect(impactdeathmorbidity.vsl, vslvmorb.vsl)
     connect(impactdeathmorbidity.vmorb, vslvmorb.vmorb)
-    connect(impactdeathmorbidity.population, population.population)
     connect(impactdeathmorbidity.dengue, impactvectorbornediseases.dengue)
     connect(impactdeathmorbidity.schisto, impactvectorbornediseases.schisto)
     connect(impactdeathmorbidity.malaria, impactvectorbornediseases.malaria)
@@ -29,7 +53,7 @@
     connect(impactdeathmorbidity.diadead, impactdiarrhoea.diadead)
     connect(impactdeathmorbidity.hurrdead, impacttropicalstorms.hurrdead)
     connect(impactdeathmorbidity.extratropicalstormsdead, impactextratropicalstorms.extratropicalstormsdead)
-    connect(impactdeathmorbidity.diasick, impactdiarrhoea.diasic)
+    connect(impactdeathmorbidity.diasick, impactdiarrhoea.diasick)
 
     # TODO: Refactor impactaggregation
     connect(impactaggregation.heating, impactheating.heating)

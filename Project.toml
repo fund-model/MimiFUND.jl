@@ -17,10 +17,17 @@ CSVFiles = "5d742f6a-9f54-50ce-8119-2520741973ca"
 DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
 
 [compat]
+<<<<<<< HEAD
 julia = "1.4"
 StatsBase = "0.30, 0.31, 0.32, 0.33"
 Distributions = "0.20, 0.21, 0.22, 0.23"
 Mimi = "0.10, 1.0"
+=======
+julia = "1"
+StatsBase = "0.30, 0.31, 0.32"
+Mimi = "0.10.0"
+Distributions = "0.20, 0.21"
+>>>>>>> adding imports, resolving parameter conflicts, proper syntax for connecting params
 
 [targets]
 test = ["Test", "DataFrames", "CSVFiles", "Query"]

@@ -1,11 +1,19 @@
-@defcomposite socioeconomiccomposite begin
-    regions = Index()
+include("../ScenarioUncertaintyComponent.jl")
+include("../PopulationComponent.jl")
+include("../GeographyComponent.jl")
+include("../SocioEconomicComponent.jl")
+include("../EmissionsComponent.jl")
 
+@defcomposite socioeconomiccomposite begin
+    
     Component(scenariouncertainty)
     Component(population)
     Component(geography)
     Component(socioeconomic)
     Component(emissions)
+
+    gdp90 = Parameter(emissions.gdp90, socioeconomic.gdp90)
+    pop90 = Parameter(emissions.pop90, socioeconomic.pop90)
 
     connect(population.pgrowth, scenariouncertainty.pgrowth)
     connect(socioeconomic.area, geography.area)
@@ -27,7 +35,7 @@
     globn2o = Variable(emissions.globn2o)
     globsf6 = Variable(emissions.globsf6)
 
-    population = Variable(population.population)
+    population_var = Variable(population.population)
     income = Variable(socioeconomic.income)
     plus = Variable(socioeconomic.plus)
     urbpop = Variable(socioeconomic.urbpop)

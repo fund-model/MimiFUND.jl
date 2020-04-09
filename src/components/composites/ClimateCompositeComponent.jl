@@ -1,3 +1,13 @@
+include("../ClimateCO2CycleComponent.jl")
+include("../Climatech4CycleComponent.jl")
+include("../ClimateN2OCycleComponent.jl")
+include("../ClimateSF6CycleComponent.jl")
+include("../ClimateForcingComponent.jl")
+include("../ClimateDynamicsComponent.jl")
+include("../BioDiversityComponent.jl")
+include("../ClimateRegionalComponent.jl")
+include("../OceanComponent.jl")
+
 @defcomposite climatecomposite begin
 
     Component(climateco2cycle)
@@ -9,6 +19,10 @@
     Component(biodiversity)
     Component(climateregional)
     Component(ocean)
+
+    ch4pre = Parameter(climatech4cycle.ch4pre, climateforcing.ch4pre)
+    n2opre = Parameter(climaten2ocycle.n2opre, climateforcing.n2opre)
+    sf6pre = Parameter(climatesf6cycle.sf6pre, climateforcing.sf6pre)
 
     connect(climateco2cycle.temp, climatedynamics.temp)
     connect(climateforcing.acco2, climateco2cycle.acco2)
