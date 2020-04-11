@@ -124,6 +124,7 @@ Example Monte Carlo simulation:
 ```julia
 using Mimi
 using MimiFUND
+using Statistics
 
 scco2_values = MimiFUND.compute_sc(year = 2020, gas = :CO2, eta = 1.0, prtp = 0.01, n = 1000)
 mean(scco2_values)
