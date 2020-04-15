@@ -278,6 +278,20 @@ end
     end
 end
 
+function _gas_normalization(gas::Symbol)
+    if gas == :CO2 
+        return 12/44    # convert from tons CO2 to tons C
+    elseif gas == :CH4
+        return 1
+    elseif gas == :N2O
+        return 28/44    # convert from tons N2O to tons N
+    elseif gas == :SF6 
+        return 1
+    else
+        error("Unknown gas :$gas.")
+    end
+end
+
 """
 Adds an emissionspulse component to `m`, and sets the additional emissions if a year is specified.
 The size of the marginal emission pulse can be modified with the `pulse_size` keyword argument, in metric tonnes.
@@ -290,7 +304,7 @@ function add_marginal_emissions!(m, year::Union{Int, Nothing} = nothing; gas::Sy
     addem = zeros(nyears) 
     if year != nothing 
         # pulse is spread over ten years, and emissions components is in Mt so divide by 1e7, and convert from CO2 to C if gas==:CO2 because emissions component is in MtC
-        addem[getindexfromyear(year):getindexfromyear(year) + 9] .= pulse_size / 1e7 * (gas == :CO2 ? 12/44 : 1)
+        addem[getindexfromyear(year):getindexfromyear(year) + 9] .= pulse_size / 1e7 * _gas_normalization(gas)
     end
     set_param!(m, :emissionspulse, :add, addem)
 
@@ -323,7 +337,7 @@ function perturb_marginal_emissions!(m::Model, year; comp_name::Symbol = :emissi
 
     nyears = length(Mimi.dimension(m, :time))
     new_em = zeros(nyears)
-    new_em[getindexfromyear(year):getindexfromyear(year) + 9] .= pulse_size / 1e7 * (gas == :CO2 ? 12/44 : 1)
+    new_em[getindexfromyear(year):getindexfromyear(year) + 9] .= pulse_size / 1e7 * _gas_normalization(gas)
     emissions[:] = new_em
 
 end
