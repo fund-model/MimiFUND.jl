@@ -1,23 +1,23 @@
 ﻿@defcomp impactextratropicalstorms begin
     regions = Index()
 
-    extratropicalstormsdam = Variable(index=[time,regions])
-    extratropicalstormsdead = Variable(index=[time,regions])
+    extratropicalstormsdam = Variable(index = [time,regions])
+    extratropicalstormsdead = Variable(index = [time,regions])
 
-    extratropicalstormsbasedam = Parameter(index=[regions])
+    extratropicalstormsbasedam = Parameter(index = [regions])
     extratropicalstormsdamel = Parameter(default = -0.514)
-    extratropicalstormspar = Parameter(index=[regions])
-    extratropicalstormsbasedead = Parameter(index=[regions])
+    extratropicalstormspar = Parameter(index = [regions])
+    extratropicalstormsbasedead = Parameter(index = [regions])
     extratropicalstormsdeadel = Parameter(default = -0.501)
     extratropicalstormsnl = Parameter(default = 1)
 
-    gdp90 = Parameter(index=[regions])
-    pop90 = Parameter(index=[regions])
+    gdp90 = Parameter(index = [regions])
+    pop90 = Parameter(index = [regions])
 
-    population = Parameter(index=[time,regions])
-    income = Parameter(index=[time,regions])
+    population = Parameter(index = [time,regions])
+    income = Parameter(index = [time,regions])
 
-    acco2 = Parameter(index=[time])
+    acco2 = Parameter(index = [time])
     co2pre = Parameter()
 
     function run_timestep(p, v, d, t)

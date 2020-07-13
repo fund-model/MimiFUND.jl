@@ -1,9 +1,9 @@
 ﻿@defcomp climatedynamics begin
     # Total radiative forcing
-    radforc = Parameter(index=[time])
+    radforc = Parameter(index = [time])
 
     # Average global temperature
-    temp = Variable(index=[time])
+    temp = Variable(index = [time])
 
     # lifetempconst
     lifetempconst = Parameter()
@@ -18,7 +18,7 @@
     climatesensitivity = Parameter(default = 2.999999803762826)
 
     function run_timestep(p, v, d, t)
-        
+
         if is_first(t)
             v.temp[t] = 0.20
         else

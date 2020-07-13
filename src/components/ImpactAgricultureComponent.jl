@@ -1,37 +1,37 @@
 ﻿@defcomp impactagriculture begin
     regions = Index()
 
-    gdp90 = Parameter(index=[regions])
-    income = Parameter(index=[time,regions])
-    pop90 = Parameter(index=[regions])
-    population = Parameter(index=[time,regions])
+    gdp90 = Parameter(index = [regions])
+    income = Parameter(index = [time,regions])
+    pop90 = Parameter(index = [regions])
+    population = Parameter(index = [time,regions])
 
-    agrish = Variable(index=[time,regions])
-    agrish0 = Parameter(index=[regions])
+    agrish = Variable(index = [time,regions])
+    agrish0 = Parameter(index = [regions])
     agel = Parameter(default = 0.31)
 
-    agrate = Variable(index=[time,regions])
-    aglevel = Variable(index=[time,regions])
-    agco2 = Variable(index=[time,regions])
-    agcost = Variable(index=[time,regions])
+    agrate = Variable(index = [time,regions])
+    aglevel = Variable(index = [time,regions])
+    agco2 = Variable(index = [time,regions])
+    agcost = Variable(index = [time,regions])
 
-    agrbm = Parameter(index=[regions])
-    agtime = Parameter(index=[regions])
+    agrbm = Parameter(index = [regions])
+    agtime = Parameter(index = [regions])
     agnl = Parameter(default = 2)
 
-    aglparl = Parameter(index=[regions])
-    aglparq = Parameter(index=[regions])
+    aglparl = Parameter(index = [regions])
+    aglparq = Parameter(index = [regions])
 
-    agcbm = Parameter(index=[regions])
+    agcbm = Parameter(index = [regions])
     co2pre = Parameter()
 
-    temp = Parameter(index=[time,regions])
-    acco2 = Parameter(index=[time])
+    temp = Parameter(index = [time,regions])
+    acco2 = Parameter(index = [time])
 
     function run_timestep(p, v, d, t)
-        
+
         DBsT = 0.04     # base case yearly warming
-        
+
         if is_first(t)
             for r in d.regions
                 v.agrate[t, r] = p.agrbm[r] * (0.005 / DBsT)^p.agnl * p.agtime[r]

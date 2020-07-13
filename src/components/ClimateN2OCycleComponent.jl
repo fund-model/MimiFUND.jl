@@ -1,9 +1,9 @@
 ﻿@defcomp climaten2ocycle begin
     # Global N2O emissions in Mt of N
-    globn2o = Parameter(index=[time])
+    globn2o = Parameter(index = [time])
 
     # Atmospheric N2O concentration
-    acn2o = Variable(index=[time])
+    acn2o = Variable(index = [time])
 
     # N2O decay
     n2odecay = Variable()

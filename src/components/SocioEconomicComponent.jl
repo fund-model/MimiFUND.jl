@@ -1,38 +1,38 @@
 ﻿@defcomp socioeconomic begin
 	regions = Index()
 
-	income = Variable(index=[time,regions])
-	consumption = Variable(index=[time,regions])
-	ypc = Variable(index=[time,regions])
-	ygrowth = Variable(index=[time,regions])
+	income = Variable(index = [time,regions])
+	consumption = Variable(index = [time,regions])
+	ypc = Variable(index = [time,regions])
+	ygrowth = Variable(index = [time,regions])
 
-	plus = Variable(index=[time,regions])
-	urbpop = Variable(index=[time,regions])
-	popdens = Variable(index=[time,regions])
+	plus = Variable(index = [time,regions])
+	urbpop = Variable(index = [time,regions])
+	popdens = Variable(index = [time,regions])
 
-	globalconsumption = Variable(index=[time])
-	globalypc = Variable(index=[time])
-	globalincome = Variable(index=[time])
+	globalconsumption = Variable(index = [time])
+	globalypc = Variable(index = [time])
+	globalincome = Variable(index = [time])
 
-	ypc90 = Variable(index=[regions])
+	ypc90 = Variable(index = [regions])
+    
 
+	pgrowth             = Parameter(index = [time,regions])
+	ypcgrowth           = Parameter(index = [time,regions])
+	eloss               = Parameter(index = [time,regions])
+	sloss               = Parameter(index = [time,regions])
+	mitigationcost      = Parameter(index = [time,regions])
+	area                = Parameter(index = [time,regions])
+	globalpopulation    = Parameter(index = [time])
+	population          = Parameter(index = [time,regions])
+	populationin1       = Parameter(index = [time,regions])
 
-	pgrowth             = Parameter(index=[time,regions])
-	ypcgrowth           = Parameter(index=[time,regions])
-	eloss               = Parameter(index=[time,regions])
-	sloss               = Parameter(index=[time,regions])
-	mitigationcost      = Parameter(index=[time,regions])
-	area                = Parameter(index=[time,regions])
-	globalpopulation    = Parameter(index=[time])
-	population          = Parameter(index=[time,regions])
-	populationin1       = Parameter(index=[time,regions])
-
-	plus90  = Parameter(index=[regions])
-	gdp90   = Parameter(index=[regions])
-	pop90   = Parameter(index=[regions])
-	urbcorr = Parameter(index=[regions])
-	gdp0    = Parameter(index=[regions])
-
+	plus90  = Parameter(index = [regions])
+	gdp90   = Parameter(index = [regions])
+	pop90   = Parameter(index = [regions])
+	urbcorr = Parameter(index = [regions])
+	gdp0    = Parameter(index = [regions])
+    
 
 	runwithoutdamage = Parameter{Bool}(default = false)
 	consleak    = Parameter(default = 0.25)
@@ -79,7 +79,7 @@
             end
 
             for r in d.regions
-                v.consumption[t, r] = max(v.income[t, r] * 1000000000.0 * (1.0 - p.savingsrate) - (p.runwithoutdamage ? 0.0 :   (p.eloss[t - 1, r] + p.sloss[t - 1, r]) * 1000000000.0),0.0)
+                v.consumption[t, r] = max(v.income[t, r] * 1000000000.0 * (1.0 - p.savingsrate) - (p.runwithoutdamage ? 0.0 :   (p.eloss[t - 1, r] + p.sloss[t - 1, r]) * 1000000000.0), 0.0)
             end
             v.globalconsumption[t] = sum(v.consumption[t,:])
 

@@ -41,8 +41,7 @@ include("components/ImpactSeaLevelRiseComponent.jl")
 include("components/ImpactAggregationComponent.jl")
 include("components/VslVmorbComponent.jl")
 
-export
-    getfund # a function that returns a version of fund allowing for different user specifications
+export getfund # a function that returns a version of fund allowing for different user specifications
 
 
 const global default_nsteps = 1050
@@ -74,9 +73,9 @@ function get_model(; nsteps = default_nsteps, datadir = default_datadir, params 
         set_dimension!(m, :time, collect(1950:1950 + default_nsteps))    # default FUND time dimension
         reset_time_dimension = false
     end
-    
+
     set_dimension!(m, :regions, ["USA", "CAN", "WEU", "JPK", "ANZ", "EEU", "FSU", "MDE", "CAM", "LAM", "SAS", "SEA", "CHI", "MAF", "SSA", "SIS"])
-    
+
     # ---------------------------------------------
     # Create components
     # ---------------------------------------------
@@ -256,7 +255,7 @@ function get_model(; nsteps = default_nsteps, datadir = default_datadir, params 
     # ---------------------------------------------
 
     parameters = params === nothing ? load_default_parameters(datadir) : params
-    
+
     for (name, value) in parameters
         set_param!(m, name, value)
     end
@@ -270,4 +269,4 @@ end
 
 getfund = get_model
 
-end #module
+end # module

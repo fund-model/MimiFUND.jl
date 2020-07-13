@@ -1,23 +1,23 @@
 ﻿@defcomp impactvectorbornediseases begin
     regions = Index()
 
-    dengue = Variable(index=[time,regions])
-    schisto = Variable(index=[time,regions])
-    malaria = Variable(index=[time,regions])
+    dengue = Variable(index = [time,regions])
+    schisto = Variable(index = [time,regions])
+    malaria = Variable(index = [time,regions])
 
-    dfbs = Parameter(index=[regions])
-    dfch = Parameter(index=[regions])
-    smbs = Parameter(index=[regions])
-    smch = Parameter(index=[regions])
-    malbs = Parameter(index=[regions])
-    malch = Parameter(index=[regions])
+    dfbs = Parameter(index = [regions])
+    dfch = Parameter(index = [regions])
+    smbs = Parameter(index = [regions])
+    smch = Parameter(index = [regions])
+    malbs = Parameter(index = [regions])
+    malch = Parameter(index = [regions])
 
-    gdp90 = Parameter(index=[regions])
-    pop90 = Parameter(index=[regions])
+    gdp90 = Parameter(index = [regions])
+    pop90 = Parameter(index = [regions])
 
-    income = Parameter(index=[time,regions])
-    population = Parameter(index=[time,regions])
-    temp = Parameter(index=[time,regions])
+    income = Parameter(index = [time,regions])
+    population = Parameter(index = [time,regions])
+    temp = Parameter(index = [time,regions])
 
     dfnl = Parameter(default = 1)
     vbel = Parameter(default = -2.65)

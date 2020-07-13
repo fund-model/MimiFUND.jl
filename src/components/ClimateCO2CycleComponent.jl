@@ -1,15 +1,15 @@
 ﻿@defcomp climateco2cycle begin
     # Anthropogenic CO2 emissions in Mt of C
-    mco2 = Parameter(index=[time])
+    mco2 = Parameter(index = [time])
 
     # Terrestrial biosphere CO2 emissions in Mt of C
-    terrestrialco2 = Variable(index=[time])
+    terrestrialco2 = Variable(index = [time])
 
     # Net CO2 emissions in Mt of C
-    globc = Variable(index=[time])
+    globc = Variable(index = [time])
 
     # Carbon boxes
-    cbox = Variable(index=[time,5])
+    cbox = Variable(index = [time,5])
 
     # Initial carbon box 1
     cbox10 = Parameter()
@@ -72,13 +72,13 @@
     co2frac5 = Parameter(default = 0.1)
 
     # Atmospheric CO2 concentration
-    acco2 = Variable(index=[time])
+    acco2 = Variable(index = [time])
 
     # Stock of CO2 in the terrestrial biosphere
-    terrco2stock = Variable(index=[time])
+    terrco2stock = Variable(index = [time])
 
     # Temperature
-    temp = Parameter(index=[time])
+    temp = Parameter(index = [time])
 
     terrco2sens = Parameter(default = 2600.000000000002)
     terrco2stock0 = Parameter(default = 1.9e6)

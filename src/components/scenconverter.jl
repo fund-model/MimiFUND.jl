@@ -1,21 +1,21 @@
 @defcomp scenconverter begin
     regions = Index()
 
-    population = Parameter(index=[time,regions])
-    income = Parameter(index=[time,regions])
-    energuse = Parameter(index=[time,regions])
-    emission = Parameter(index=[time,regions])
+    population = Parameter(index = [time,regions])
+    income = Parameter(index = [time,regions])
+    energuse = Parameter(index = [time,regions])
+    emission = Parameter(index = [time,regions])
 
-    pop0 = Variable(index=[regions])
-    scenpgrowth = Variable(index=[time,regions])
-    gdp0 = Variable(index=[regions])
-    scenypcgrowth = Variable(index=[time,regions])
-    scenaeei = Variable(index=[time,regions])
-    scenacei = Variable(index=[time,regions])
-    energint0 = Variable(index=[regions])
-    emissint0 = Variable(index=[regions])
-    energint = Variable(index=[time,regions])
-    emissint = Variable(index=[time,regions])
+    pop0 = Variable(index = [regions])
+    scenpgrowth = Variable(index = [time,regions])
+    gdp0 = Variable(index = [regions])
+    scenypcgrowth = Variable(index = [time,regions])
+    scenaeei = Variable(index = [time,regions])
+    scenacei = Variable(index = [time,regions])
+    energint0 = Variable(index = [regions])
+    emissint0 = Variable(index = [regions])
+    energint = Variable(index = [time,regions])
+    emissint = Variable(index = [time,regions])
 
     function run_timestep(p, v, d, t)
 
@@ -33,8 +33,8 @@
 
         for r in d.regions
             if t.t < 1050
-                v.scenpgrowth[t, r] = (p.population[t+1, r] / p.population[t, r] - 1.) * 100.
-                v.scenypcgrowth[t, r] = (p.income[t+1, r] / p.income[t, r] / (1 + 0.01 * v.scenpgrowth[t, r]) - 1.) * 100.
+                v.scenpgrowth[t, r] = (p.population[t + 1, r] / p.population[t, r] - 1.) * 100.
+                v.scenypcgrowth[t, r] = (p.income[t + 1, r] / p.income[t, r] / (1 + 0.01 * v.scenpgrowth[t, r]) - 1.) * 100.
             end
 
             v.energint[t, r] = p.energuse[t, r] / p.income[t,r]

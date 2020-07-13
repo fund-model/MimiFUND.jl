@@ -1,6 +1,6 @@
 ﻿@defcomp ocean begin
     # Sea-level rise in meters
-    sea = Variable(index=[time])
+    sea = Variable(index = [time])
 
     lifesea = Parameter(default = 500)
 
@@ -9,7 +9,7 @@
     delaysea = Variable()
 
     # Temperature incrase in C°
-    temp = Parameter(index=[time])
+    temp = Parameter(index = [time])
 
     function run_timestep(p, v, d, t)
 

@@ -1,9 +1,9 @@
 ﻿@defcomp climatech4cycle begin
     # Global CH4 emissions in Mt of CH4
-    globch4 = Parameter(index=[time])
+    globch4 = Parameter(index = [time])
 
     # Atmospheric CH4 concentration
-    acch4 = Variable(index=[time])
+    acch4 = Variable(index = [time])
 
     # CH4 decay
     ch4decay = Variable()
@@ -17,7 +17,7 @@
     acch4_0 = Parameter(default = 1222.0)
 
     function run_timestep(p, v, d, t)
-        
+
         if is_first(t)
             v.ch4decay = 1.0 / p.lifech4
 

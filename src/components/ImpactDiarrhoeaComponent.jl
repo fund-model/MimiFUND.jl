@@ -1,25 +1,25 @@
 ﻿@defcomp impactdiarrhoea begin
     regions = Index()
 
-    diadead = Variable(index=[time,regions])
-    diasick = Variable(index=[time,regions])
+    diadead = Variable(index = [time,regions])
+    diasick = Variable(index = [time,regions])
 
-    diamort = Parameter(index=[regions])
+    diamort = Parameter(index = [regions])
     diamortel = Parameter(default = -1.578625)
     diamortnl = Parameter(default = 1.141714)
 
-    diayld = Parameter(index=[regions])
+    diayld = Parameter(index = [regions])
     diayldel = Parameter(default = -0.418406)
     diayldnl = Parameter(default = 0.699241)
 
-    income = Parameter(index=[time,regions])
-    population = Parameter(index=[time,regions])
-    gdp90 = Parameter(index=[regions])
-    pop90 = Parameter(index=[regions])
+    income = Parameter(index = [time,regions])
+    population = Parameter(index = [time,regions])
+    gdp90 = Parameter(index = [regions])
+    pop90 = Parameter(index = [regions])
 
-    temp90 = Parameter(index=[regions])
-    bregtmp = Parameter(index=[regions])
-    regtmp = Parameter(index=[time,regions])
+    temp90 = Parameter(index = [regions])
+    bregtmp = Parameter(index = [regions])
+    regtmp = Parameter(index = [time,regions])
 
     function run_timestep(p, v, d, t)
 

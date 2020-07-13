@@ -1,21 +1,21 @@
 ﻿@defcomp impactheating begin
     regions = Index()
 
-    heating = Variable(index=[time,regions])
+    heating = Variable(index = [time,regions])
 
-    hebm = Parameter(index=[regions])
-    gdp90 = Parameter(index=[regions])
+    hebm = Parameter(index = [regions])
+    gdp90 = Parameter(index = [regions])
 
-    population = Parameter(index=[time,regions])
-    pop90 = Parameter(index=[regions])
+    population = Parameter(index = [time,regions])
+    pop90 = Parameter(index = [regions])
 
-    income = Parameter(index=[time,regions])
+    income = Parameter(index = [time,regions])
     heel = Parameter(default = 0.8)
 
-    temp = Parameter(index=[time,regions])
+    temp = Parameter(index = [time,regions])
     henl = Parameter(default = 0.5)
 
-    cumaeei = Parameter(index=[time,regions])
+    cumaeei = Parameter(index = [time,regions])
 
     function run_timestep(p, v, d, t)
 

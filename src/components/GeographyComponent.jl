@@ -1,10 +1,10 @@
 ﻿@defcomp geography begin
     regions = Index()
 
-    area = Variable(index=[time,regions])
+    area = Variable(index = [time,regions])
 
-    landloss = Parameter(index=[time,regions])
-    area0 = Parameter(index=[regions])
+    landloss = Parameter(index = [time,regions])
+    area0 = Parameter(index = [regions])
 
     function run_timestep(p, v, d, t);
 

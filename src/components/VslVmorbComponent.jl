@@ -1,11 +1,11 @@
 @defcomp vslvmorb begin
     regions = Index()
 
-    vsl = Variable(index=[time,regions])
-    vmorb = Variable(index=[time,regions])
+    vsl = Variable(index = [time,regions])
+    vmorb = Variable(index = [time,regions])
 
-    population = Parameter(index=[time,regions])
-    income = Parameter(index=[time,regions])
+    population = Parameter(index = [time,regions])
+    income = Parameter(index = [time,regions])
 
     vslbm       = Parameter(default = 4.99252262888626e6)
     vslel       = Parameter(default = 1)

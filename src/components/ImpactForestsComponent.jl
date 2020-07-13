@@ -1,17 +1,17 @@
 ﻿@defcomp impactforests begin
     regions = Index()
 
-    forests = Variable(index=[time,regions])
+    forests = Variable(index = [time,regions])
 
-    forbm = Parameter(index=[regions])
-    gdp90 = Parameter(index=[regions])
-    pop90 = Parameter(index=[regions])
+    forbm = Parameter(index = [regions])
+    gdp90 = Parameter(index = [regions])
+    pop90 = Parameter(index = [regions])
 
-    acco2 = Parameter(index=[time])
+    acco2 = Parameter(index = [time])
 
-    income = Parameter(index=[time,regions])
-    population = Parameter(index=[time,regions])
-    temp = Parameter(index=[time,regions])
+    income = Parameter(index = [time,regions])
+    population = Parameter(index = [time,regions])
+    temp = Parameter(index = [time,regions])
 
     forel = Parameter(default = -0.31)
     fornl = Parameter(default = 1)

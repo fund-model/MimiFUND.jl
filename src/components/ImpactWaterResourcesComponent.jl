@@ -1,22 +1,22 @@
 ﻿@defcomp impactwaterresources begin
     regions = Index()
 
-    watech = Variable(index=[time])
+    watech = Variable(index = [time])
     watechrate = Parameter(default = 0.005)
 
-    water = Variable(index=[time,regions])
-    wrbm = Parameter(index=[regions])
+    water = Variable(index = [time,regions])
+    wrbm = Parameter(index = [regions])
     wrel = Parameter(default = 0.85)
     wrnl = Parameter(default = 1)
     wrpl = Parameter(default = 0.85)
 
-    gdp90 = Parameter(index=[regions])
-    income = Parameter(index=[time,regions])
+    gdp90 = Parameter(index = [regions])
+    income = Parameter(index = [time,regions])
 
-    population = Parameter(index=[time,regions])
-    pop90 = Parameter(index=[regions])
+    population = Parameter(index = [time,regions])
+    pop90 = Parameter(index = [regions])
 
-    temp = Parameter(index=[time,regions])
+    temp = Parameter(index = [time,regions])
 
     function run_timestep(p, v, d, t)
 

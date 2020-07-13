@@ -2,18 +2,18 @@
     regions = Index()
 
     # Change in number of species in relation to the year 2000
-    biodiv = Variable(index=[time])
+    biodiv = Variable(index = [time])
 
-    species = Variable(index=[time,regions])
+    species = Variable(index = [time,regions])
 
     # Number of species in the year 2000
     nospecbase = Parameter()
 
-    nospecies = Parameter(index=[time])
-    temp = Parameter(index=[time,regions])
-    income = Parameter(index=[time,regions])
-    population = Parameter(index=[time,regions])
-    valinc = Parameter(index=[regions])
+    nospecies = Parameter(index = [time])
+    temp = Parameter(index = [time,regions])
+    income = Parameter(index = [time,regions])
+    population = Parameter(index = [time,regions])
+    valinc = Parameter(index = [regions])
     bioshare = Parameter(default = 0.05)
     spbm = Parameter(default = 50)
     valbase = Parameter(default = 24401)

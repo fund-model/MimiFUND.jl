@@ -1,13 +1,13 @@
 ﻿@defcomp climateregional begin
     regions = Index()
-    inputtemp = Parameter(index=[time])
-    bregtmp = Parameter(index=[regions])
-    bregstmp = Parameter(index=[regions])
-    scentemp = Parameter(index=[time, regions])
+    inputtemp = Parameter(index = [time])
+    bregtmp = Parameter(index = [regions])
+    bregstmp = Parameter(index = [regions])
+    scentemp = Parameter(index = [time, regions])
 
-    temp = Variable(index=[time,regions])
-    regtmp = Variable(index=[time,regions])
-    regstmp = Variable(index=[time,regions])
+    temp = Variable(index = [time,regions])
+    regtmp = Variable(index = [time,regions])
+    regstmp = Variable(index = [time,regions])
 
     function run_timestep(p, v, d, t)
 

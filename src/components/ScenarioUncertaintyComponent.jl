@@ -1,25 +1,25 @@
 ﻿@defcomp scenariouncertainty begin
     regions = Index()
 
-    pgrowth = Variable(index=[time,regions])
-    ypcgrowth = Variable(index=[time,regions])
-    aeei = Variable(index=[time,regions])
-    acei = Variable(index=[time,regions])
-    forestemm = Variable(index=[time,regions])
+    pgrowth = Variable(index = [time,regions])
+    ypcgrowth = Variable(index = [time,regions])
+    aeei = Variable(index = [time,regions])
+    acei = Variable(index = [time,regions])
+    forestemm = Variable(index = [time,regions])
 
     timeofuncertaintystart = Parameter{Int}(default = 2000)
 
-    scenpgrowth     = Parameter(index=[time,regions])
-    scenypcgrowth   = Parameter(index=[time,regions])
-    scenaeei        = Parameter(index=[time,regions])
-    scenacei        = Parameter(index=[time,regions])
-    scenforestemm   = Parameter(index=[time,regions])
+    scenpgrowth     = Parameter(index = [time,regions])
+    scenypcgrowth   = Parameter(index = [time,regions])
+    scenaeei        = Parameter(index = [time,regions])
+    scenacei        = Parameter(index = [time,regions])
+    scenforestemm   = Parameter(index = [time,regions])
 
-    ecgradd     = Parameter(index=[regions])
-    pgadd       = Parameter(index=[regions])
-    aeeiadd     = Parameter(index=[regions])
-    aceiadd     = Parameter(index=[regions])
-    foremadd    = Parameter(index=[regions])
+    ecgradd     = Parameter(index = [regions])
+    pgadd       = Parameter(index = [regions])
+    aeeiadd     = Parameter(index = [regions])
+    aceiadd     = Parameter(index = [regions])
+    foremadd    = Parameter(index = [regions])
 
     function run_timestep(p, v, d, t)
         yearsFromUncertaintyStart = gettime(t) - p.timeofuncertaintystart

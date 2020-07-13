@@ -1,6 +1,6 @@
 ﻿@defcomp biodiversity begin
     # Number of species
-    nospecies = Variable(index=[time])
+    nospecies = Variable(index = [time])
 
     # additive parameter
     bioloss = Parameter(default = 0.003)
@@ -9,7 +9,7 @@
     biosens = Parameter(default = 0.001)
 
     # Temperature
-    temp = Parameter(index=[time])
+    temp = Parameter(index = [time])
 
     # benchmark temperature change
     dbsta = Parameter()
@@ -18,7 +18,7 @@
     nospecbase = Parameter()
 
     function run_timestep(p, v, d, t)
-        
+
         if gettime(t) > 2000
             dt = abs(p.temp[t] - p.temp[t - 1])
 

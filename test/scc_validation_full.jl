@@ -1,4 +1,4 @@
-# This test file is not run during Travis builds, since it takes >10 minutes to run. 
+# This test file is not run during Travis builds, since it takes >10 minutes to run.
 # This file can be run manually to check that Social Cost calculations using all possibilities of
 # parameter values defined in the specs dictionary below produce the same results. A subset of
 # these values are tested in the "runtests.jl" file deployed by Travis. The validation of these
@@ -33,7 +33,7 @@ for gas in specs[:gas]
                     for equity_weights_normalization_region in specs[:equity_weights_normalization_region]
                         for last_year in specs[:last_year]
                             for pulse_size in specs[:pulse_size]
-                                sc = MimiFUND.compute_sc(gas=gas, year=year, eta=eta, prtp=prtp, equity_weights=equity_weights, equity_weights_normalization_region=equity_weights_normalization_region, last_year=last_year, pulse_size=pulse_size)
+                                sc = MimiFUND.compute_sc(gas = gas, year = year, eta = eta, prtp = prtp, equity_weights = equity_weights, equity_weights_normalization_region = equity_weights_normalization_region, last_year = last_year, pulse_size = pulse_size)
                                 push!(results, (gas, year, eta, prtp, equity_weights, equity_weights_normalization_region, last_year, pulse_size, sc))
                             end
                         end

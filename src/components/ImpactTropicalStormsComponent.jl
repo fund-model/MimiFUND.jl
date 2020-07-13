@@ -1,23 +1,23 @@
 ﻿@defcomp impacttropicalstorms begin
     regions = Index()
 
-    hurrdam = Variable(index=[time,regions])
-    hurrdead = Variable(index=[time,regions])
+    hurrdam = Variable(index = [time,regions])
+    hurrdead = Variable(index = [time,regions])
 
-    hurrbasedam = Parameter(index=[regions])
+    hurrbasedam = Parameter(index = [regions])
     hurrdamel = Parameter(default = -0.514)
     hurrnl = Parameter(default = 3)
     hurrpar = Parameter(default = 0.04)
-    hurrbasedead = Parameter(index=[regions])
+    hurrbasedead = Parameter(index = [regions])
     hurrdeadel = Parameter(default = -0.501)
 
-    gdp90 = Parameter(index=[regions])
-    pop90 = Parameter(index=[regions])
+    gdp90 = Parameter(index = [regions])
+    pop90 = Parameter(index = [regions])
 
-    population = Parameter(index=[time,regions])
-    income = Parameter(index=[time,regions])
+    population = Parameter(index = [time,regions])
+    income = Parameter(index = [time,regions])
 
-    regstmp = Parameter(index=[time,regions])
+    regstmp = Parameter(index = [time,regions])
 
     function run_timestep(p, v, d, t)
 

@@ -5,13 +5,13 @@ end
 
 @defcomp climateforcing begin
     # Atmospheric CO2 concentration
-    acco2 = Parameter(index=[time])
+    acco2 = Parameter(index = [time])
 
     # Pre-industrial atmospheric CO2 concentration
     co2pre = Parameter()
 
     # Atmospheric CH4 concentration
-    acch4 = Parameter(index=[time])
+    acch4 = Parameter(index = [time])
 
     # Pre-industrial atmospheric CH4 concentration
     ch4pre = Parameter()
@@ -20,37 +20,37 @@ end
     ch4ind = Parameter(default = 0.4)
 
     # Atmospheric N2O concentration
-    acn2o = Parameter(index=[time])
+    acn2o = Parameter(index = [time])
 
     # Pre-industrial atmospheric N2O concentration
     n2opre = Parameter()
 
     # Atmospheric SF6 concentrations
-    acsf6 = Parameter(index=[time])
+    acsf6 = Parameter(index = [time])
 
     # Pre-industrial atmospheric SF6 concentration
     sf6pre = Parameter()
 
     # Radiative forcing from CO2
-    rfco2 = Variable(index=[time])
+    rfco2 = Variable(index = [time])
 
     # Radiative forcing from CH4
-    rfch4 = Variable(index=[time])
+    rfch4 = Variable(index = [time])
 
     # Radiative forcing from N2O
-    rfn2o = Variable(index=[time])
+    rfn2o = Variable(index = [time])
 
     # Radiative forcing from N2O
-    rfsf6 = Variable(index=[time])
+    rfsf6 = Variable(index = [time])
 
     # Radiative forcing from SO2
-    rfso2 = Parameter(index=[time])
+    rfso2 = Parameter(index = [time])
 
     # Radiative forcing
-    radforc = Variable(index=[time])
+    radforc = Variable(index = [time])
 
     # EMF22 radiative forcing
-    rfemf22 = Variable(index=[time])
+    rfemf22 = Variable(index = [time])
 
     function run_timestep(p, v, d, t)
 

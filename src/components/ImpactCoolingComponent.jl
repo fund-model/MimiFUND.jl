@@ -1,21 +1,21 @@
 ﻿@defcomp impactcooling begin
     regions = Index()
 
-    cooling = Variable(index=[time,regions])
+    cooling = Variable(index = [time,regions])
 
-    cebm = Parameter(index=[regions])
-    gdp90 = Parameter(index=[regions])
+    cebm = Parameter(index = [regions])
+    gdp90 = Parameter(index = [regions])
 
-    population = Parameter(index=[time,regions])
-    pop90 = Parameter(index=[regions])
+    population = Parameter(index = [time,regions])
+    pop90 = Parameter(index = [regions])
 
-    income = Parameter(index=[time,regions])
+    income = Parameter(index = [time,regions])
     ceel = Parameter(default = 0.8)
 
-    temp = Parameter(index=[time,regions])
+    temp = Parameter(index = [time,regions])
     cenl = Parameter(default = 1.5)
 
-    cumaeei = Parameter(index=[time,regions])
+    cumaeei = Parameter(index = [time,regions])
 
     function run_timestep(p, v, d, t)
 
