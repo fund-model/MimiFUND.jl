@@ -41,7 +41,7 @@ function run_fund_scc_mcs(trials = 10000; years = [2020], rates = [0.03], ntimes
         mm = mcs.models[1]
     
         # Perturb emissons in the marginal model
-        perturb_marginal_emissions!(mm.marginal, emissionyear)
+        perturb_marginal_emissions!(mm.modified, emissionyear)
     
     end
 

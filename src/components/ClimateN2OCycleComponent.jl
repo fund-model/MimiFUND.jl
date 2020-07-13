@@ -12,7 +12,7 @@
     lifen2o = Parameter(default = 114.0)
 
     # N2o pre industrial
-    n2opre = Parameter(default = 285.0)
+    n2opre = Parameter()
 
     function run_timestep(p, v, d, t)
 

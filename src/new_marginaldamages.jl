@@ -261,7 +261,7 @@ function get_marginal_model(m::Model = get_model(); gas::Symbol = :CO2, year::Un
     year !== nothing && !(year in 1950:3000) ? error("Cannot add marginal emissions in $year, year must be within the model's time index 1950:3000.") : nothing
 
     mm = create_marginal_model(m, pulse_size)
-    add_marginal_emissions!(mm.marginal, year; gas = gas, pulse_size = pulse_size)
+    add_marginal_emissions!(mm.modified, year; gas = gas, pulse_size = pulse_size)
 
     return mm
 end

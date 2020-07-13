@@ -18,7 +18,7 @@
     income = Parameter(index=[time,regions])
 
     acco2 = Parameter(index=[time])
-    co2pre = Parameter(default = 275.0)
+    co2pre = Parameter()
 
     function run_timestep(p, v, d, t)
 
