@@ -50,12 +50,6 @@ const global default_params = nothing
 function getfund(; nsteps = default_nsteps, datadir = default_datadir, params = default_params)
 
     # ---------------------------------------------
-    # Load parameters
-    # ---------------------------------------------
-
-    parameters = params == nothing ? load_default_parameters(datadir) : params
-
-    # ---------------------------------------------
     # Create model
     # ---------------------------------------------
 
@@ -247,10 +241,14 @@ function getfund(; nsteps = default_nsteps, datadir = default_datadir, params = 
     connect_param!(m, :impactaggregation, :leavecost, :impactsealevelrise, :leavecost)
 
     # ---------------------------------------------
-    # Set leftover parameters
+    # Set all external parameter values
     # ---------------------------------------------
 
-    set_leftover_params!(m, parameters)
+    parameters = params === nothing ? load_default_parameters(datadir) : params
+
+    for (name, value) in parameters
+        set_param!(m, name, value)
+    end
 
     return m
 

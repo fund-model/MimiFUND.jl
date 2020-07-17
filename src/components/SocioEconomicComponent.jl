@@ -34,7 +34,7 @@
 	gdp0    = Parameter(index=[regions])
 
 
-	runwithoutdamage::Bool = Parameter(default = false)
+	runwithoutdamage = Parameter{Bool}(default = false)
 	consleak    = Parameter(default = 0.25)
 	plusel      = Parameter(default = 0.25)
     savingsrate = Parameter(default = 0.2)

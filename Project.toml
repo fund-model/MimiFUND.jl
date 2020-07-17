@@ -17,7 +17,7 @@ DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
 julia = "1"
 StatsBase = "0.32"
 Distributions = "0.21"
-Mimi = "0.9.3"
+Mimi = "1.0"
 
 [targets]
 test = ["Test", "DataFrames", "CSVFiles"]

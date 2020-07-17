@@ -16,8 +16,8 @@ For parameters defined as distributions, this sets the value to their mode.
 function load_default_parameters(datadir = joinpath(dirname(@__FILE__), "..", "data"))
     files = readdir(datadir)
     filter!(i -> i != "desktop.ini", files)
-    parameters = Dict{Any, Any}(splitext(file)[1] => readdlm(joinpath(datadir,file), ',', comments = true) for file in files)
-
+    parameters = Dict{Symbol, Any}(Symbol(splitext(file)[1]) => readdlm(joinpath(datadir,file), ',', comments = true) for file in files)
+    
     prepparameters!(parameters)
 
     return parameters
