@@ -330,10 +330,12 @@ function get_model_composite(; nsteps = default_nsteps, datadir = default_datadi
     connect_param!(m, :socioeconomiccomposite, :sloss, :damagescomposite, :sloss)
     
     # ---------------------------------------------
-    # Set leftover parameters
+    # Set all external parameter values
     # ---------------------------------------------
 
-    set_leftover_params!(m, parameters)
+    for (name, value) in parameters
+        set_param!(m, name, value)
+    end
 
     # Reset the time dimension if needed
     reset_time_dimension ? set_dimension!(m, :time, collect(1950:1950 + nsteps)) : nothing
