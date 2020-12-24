@@ -80,7 +80,7 @@ scc = MimiFUND.compute_scco2(year = 2020, eta = 0., prtp = 0.03, equity_weights 
 
 # Or, you can also compute the SC-CO2 from a modified version of a MimiFUND model:
 m = MimiFUND.get_model()                        # Get the default version of the FUND model
-update_param!(m, :climatesensitivity, 5)        # make any modifications to your model using Mimi
+set_param!(m, :climatesensitivity, 5)        # make any modifications to your model using Mimi
 scc = MimiFUND.compute_scco2(m, year = 2020)    # Compute the SC-CO2 from your model
 ```
 There are also functions for computing the Social Cost of CH4, N2O, and SF6: `compute_scch4`, `compute_scn2o`, and `compute_scsf6`.
