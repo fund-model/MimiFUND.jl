@@ -70,11 +70,10 @@
                     v.imigrate[r1, r2] = p.migrate[r2, r1] / immsumm
                 end
 
-                t0 = TimestepIndex(1)
-                v.landloss[t0, r1] = 0.0
-                v.cumlandloss[t0, r1] = 0.0
-                v.cumwetlandloss[t0, r1] = 0.0
-                v.wetlandgrowth[t0, r1] = 0.0
+                v.landloss[t, r1] = 0.0
+                v.cumlandloss[t, r1] = 0.0
+                v.cumwetlandloss[t, r1] = 0.0
+                v.wetlandgrowth[t, r1] = 0.0
             end
         else
             # slr in m/year
