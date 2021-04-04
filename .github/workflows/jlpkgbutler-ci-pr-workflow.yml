@@ -9,11 +9,13 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        julia-version: ['1.4', '1.5']
+        julia-version: ['1.4', '1.5', '1.6']
         julia-arch: [x64, x86]
         os: [ubuntu-latest, windows-latest, macOS-latest]
         exclude:
           - os: macOS-latest
+            julia-arch: x86
+          - os: ubuntu-latest
             julia-arch: x86
 
     steps:
