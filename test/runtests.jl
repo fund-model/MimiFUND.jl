@@ -61,7 +61,7 @@ for c in Mimi.compdefs(m), v in Mimi.variable_names(m, nameof(c))
         @test results ≈ validation_results atol = err_number #slight imprecision with these values due to rounding
 
     else
-        validation_results = convert(Matrix, df)
+        validation_results = Matrix(df)
 
         #replace missings with missingvalue so they can be compared
         results[ismissing.(results)] .= missingvalue
