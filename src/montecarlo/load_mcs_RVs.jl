@@ -1,11 +1,12 @@
 using DataStructures
+using DelimitedFiles
 
 """
 This function loads the FUND input parameters stored in datadir into the syntax
 needed for the @defmcs macro. This script writes to a text file which can then 
 be copied into a @defmcs macro.
 """
-function load_mcs_RVs(; txt_out = joinpath(@__DIR__, "mcs_RVs.txt"), datadir = joinpath(@__DIR__, "../../data"), string_labels = false)
+function load_mcs_RVs(; txt_out = joinpath(@__DIR__, "mcs_RVs.txt"), datadir = joinpath(@__DIR__, "../../data_for_load_mcs_RVs"), string_labels = false)
 
     files = readdir(datadir)
     filter!(i->i!="desktop.ini", files)
