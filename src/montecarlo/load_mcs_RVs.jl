@@ -66,7 +66,7 @@ If v starts with '~', but is not ~N(), ~Gamma(), or ~Triangular(), it throws an 
 function format_distribution(v)
     if isa(v,AbstractString)
         if startswith(v,"~") & endswith(v,")")
-            args_start_index = search(v,'(')
+            args_start_index = findnext('(', v, 1)
             dist_name = v[2:args_start_index-1]
             args = split(v[args_start_index+1:end-1], ';')
             fixedargs = filter(i->!contains(i,"="),args)
