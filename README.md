@@ -151,6 +151,12 @@ result.mm   # returns the Mimi MarginalModel
 marginal_temp = result.mm[:climatedynamics, :temp]  # marginal results from the marginal model can be accessed like this
 ```
 
+### Pulse Size Details
+
+By default, MimiFUND will calculate the SCC using a marginal emissions pulse of 10 GtCO2 spread over ten years, or 1 GtCO2 per year.  Regardless of this pulse size, the SCC will be returned in units of dollars per ton.  This choice of pulse size and duration is a decision made based on experiments with stability of results and moving from continuous to discretized equations, and can be found described further in the literature around FUND.
+
+For a deeper dive into the this part of the calculation of the SCC, see the forum conversation [here](https://forum.mimiframework.org/t/mimifund-emissions-pulse/153/9), and the docstrings in `new_marginaldamage.jl`.
+
 ## Versions and academic use policy
 
 Released versions of FUND have a git tag in this repository *and* the ``master`` branch either points to that version, or a newer version. In general we increase at least the minor part of the version (the versions follow the ``major.minor.patch`` pattern) whenever we change any of the equations or calibrations. All versions with a git tag that is at least as new as the git tag that ``master`` points to have been used in at least one publication and we welcome if other researchers use those versions for their own work and in their publications.
@@ -158,3 +164,4 @@ Released versions of FUND have a git tag in this repository *and* the ``master``
 The ``master`` branch in this repository always points to the latest released versions, i.e. it will always point to a version that has a git tag and is released.
 
 The ``next`` branch (and any git tags that are newer than the git tag that ``master`` points to) contains work in progress. In general you should not assume that the ``next`` branch is ready for use for anything. It often is in an intermediate state between released versions, where we have started changes that are not finished etc. While the code on the ``next`` branch is technically licensed under the MIT license, we kindly ask other researchers to not publish papers based on versions that they can see in the ``next`` branch. The versions in that branch represent ongoing work by us that we haven't gotten academic credit for because we have not yet published something with these versions, and we therefore ask other researchers to not use those versions on their own. You can of course always approach us about joint work when it comes to the version on the ``next`` branch and then we can discuss how we handle that.
+
