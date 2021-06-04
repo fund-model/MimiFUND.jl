@@ -311,7 +311,10 @@ function add_marginal_emissions!(m, year::Union{Int, Nothing} = nothing; gas::Sy
     nyears = length(Mimi.time_labels(m))
     addem = zeros(nyears) 
     if year != nothing 
-        # pulse is spread over ten years, and emissions components is in Mt so divide by 1e7, and convert from CO2 to C if gas==:CO2 because emissions component is in MtC
+        # pulse is spread over ten years, and emissions components is in Mt so 
+        # divide by 1e7, and convert from CO2 to C if gas==:CO2 because emissions 
+        # component is in MtC; also convert from GtCO2 to GtC for CO2 since the 
+        # emissions component expects GtC not GtCO2 but pulse is in CO2
         addem[getindexfromyear(year):getindexfromyear(year) + 9] .= pulse_size / 1e7 * (gas == :CO2 ? 12/44 : 1)
     end
     set_param!(m, :emissionspulse, :add, addem)
