@@ -1,7 +1,9 @@
 import Mimi.compinstance
 
 """
-    compute_scc(m::Model=get_model(); year::Int = nothing, gas::Symbol = :CO2, last_year::Int = 3000, equity_weights::Bool = false, eta::Float64 = 1.45, prtp::Float64 = 0.015, equity_weights_normalization_region::Int=0)
+    compute_scc(m::Model=get_model(); year::Union{Int, Nothing} = nothing, 
+                gas::Symbol = :CO2, last_year::Int = 3000, equity_weights::Bool = false, 
+                eta::Float64 = 1.45, prtp::Float64 = 0.015, equity_weights_normalization_region::Int=0)
 
 Deprecated function for calculating the social cost of carbon for a MimiFUND model. Use `compute_sc` or gas-specific functions `compute_scco2`, `compute_scch4`, `compute_scn2o`, or `compute_scsf6` instead.
 """
@@ -12,17 +14,18 @@ function compute_scc(m::Model=get_model(); year::Union{Int, Nothing} = nothing, 
 end
 
 """
-    compute_scco2(m::Model=get_model(); 
+    compute_scco2(
+        m::Model=get_model(); 
         year::Union{Int, Nothing} = nothing, 
         eta::Float64 = 1.45, 
         prtp::Float64 = 0.015, 
         equity_weights::Bool = false, 
-        equity_weights_normalization_region::Int = 0,
+        equity_weights_normalization_region::Int=0, 
         last_year::Int = 3000, 
-        pulse_size::Float64 = 1e7, 
-        return_mm::Bool = false,
-        n::Union{Int, Nothing} = nothing,
-        trials_output_filename::Union{String, Nothing} = nothing,
+        pulse_size::Float64 = 1e7)
+        return_mm::Bool = false, 
+        n::Union{Int, Nothing} = nothing, 
+        trials_output_filename::Union{String, Nothing} = nothing, 
         seed::Union{Int, Nothing} = nothing)
 
 Returns the Social Cost of CO2 for the specified `year` for the provided MimiFUND model `m`. 
@@ -50,13 +53,13 @@ end
         eta::Float64 = 1.45, 
         prtp::Float64 = 0.015, 
         equity_weights::Bool = false, 
-        equity_weights_normalization_region::Int=0, 
         last_year::Int = 3000, 
-        pulse_size::Float64 = 1e7, 
-        return_mm::Bool = false,
-        n::Union{Int, Nothing} = nothing,
-        trials_output_filename::Union{String, Nothing} = nothing,
-        seed::Union{Int, Nothing} = nothing)
+        pulse_size::Float64 = 1e7) ,
+        return_mm::Bool = false, 
+        n::Union{Int, Nothing} = nothing, 
+        trials_output_filename::Union{String, Nothing} = nothing, 
+        seed::Union{Int, Nothing} = nothing, 
+        equity_weights_normalization_region::Int=0)
 
 Returns the Social Cost of CH4 for the specified `year` for the provided MimiFUND model `m`. 
 If no model is provided, the default model from MimiFUND.get_model() is used.
@@ -78,18 +81,18 @@ function compute_scch4(m::Model=get_model(); year::Union{Int, Nothing} = nothing
 end
 
 """
-    compute_scn2o(m::Model=get_model(); 
+    compute_scn2o(
+        m::Model=get_model(); 
         year::Union{Int, Nothing} = nothing, 
-        eta::Float64 = 1.45, 
-        prtp::Float64 = 0.015, 
+        eta::Float64 = 1.45, prtp::Float64 = 0.015, 
         equity_weights::Bool = false, 
-        equity_weights_normalization_region::Int = 0,
         last_year::Int = 3000, 
         pulse_size::Float64 = 1e7, 
-        return_mm::Bool = false,
-        n::Union{Int, Nothing} = nothing,
-        trials_output_filename::Union{String, Nothing} = nothing,
-        seed::Union{Int, Nothing} = nothing)
+        return_mm::Bool = false, 
+        n::Union{Int, Nothing} = nothing, 
+        trials_output_filename::Union{String, Nothing} = nothing, 
+        seed::Union{Int, Nothing} = nothing, 
+        equity_weights_normalization_region::Int=0)
 
 Returns the Social Cost of N2O for the specified `year` for the provided MimiFUND model `m`. 
 If no model is provided, the default model from MimiFUND.get_model() is used.
@@ -111,18 +114,19 @@ function compute_scn2o(m::Model=get_model(); year::Union{Int, Nothing} = nothing
 end
 
 """
-    compute_scsf6(m::Model=get_model(); 
+    compute_scsf6(
+        m::Model=get_model(); 
         year::Union{Int, Nothing} = nothing, 
         eta::Float64 = 1.45, 
         prtp::Float64 = 0.015, 
         equity_weights::Bool = false, 
-        equity_weights_normalization_region::Int = 0,
         last_year::Int = 3000, 
         pulse_size::Float64 = 1e7, 
-        return_mm::Bool = false,
-        n::Union{Int, Nothing} = nothing,
-        trials_output_filename::Union{String, Nothing} = nothing,
-        seed::Union{Int, Nothing} = nothing)
+        return_mm::Bool = false, 
+        n::Union{Int, Nothing} = nothing, 
+        trials_output_filename::Union{String, Nothing} = nothing, 
+        seed::Union{Int, Nothing} = nothing, 
+        equity_weights_normalization_region::Int=0)
 
 Returns the Social Cost of SF6 for the specified `year` for the provided MimiFUND model `m`. 
 If no model is provided, the default model from MimiFUND.get_model() is used.
@@ -280,6 +284,8 @@ by the `pulse_size` used).
 function get_marginal_model(m::Model = get_model(); gas::Symbol = :CO2, year::Union{Int, Nothing} = nothing, pulse_size::Float64 = 1e7)
     year !== nothing && !(year in 1950:3000) ? error("Cannot add marginal emissions in $year, year must be within the model's time index 1950:3000.") : nothing
 
+    # note use of `pulse_size` as the `delta` in the creation of a marginal model,
+    # which allows for normalization to $ per ton
     mm = create_marginal_model(m, pulse_size)
     add_marginal_emissions!(mm.modified, year; gas = gas, pulse_size = pulse_size)
 
@@ -287,7 +293,7 @@ function get_marginal_model(m::Model = get_model(); gas::Symbol = :CO2, year::Un
 end
 
 # A component for an emissions pulse to be used in social cost calculations. Computes the `output` vector by adding
-#   `add` to `input`. This is similar to the Mimi.adder component, except that it allows missing values to be passed through.
+# add` to `input`. This is similar to the Mimi.adder component, except that it allows missing values to be passed through.
 @defcomp emissionspulse begin
     add    = Parameter(index=[time])
     input  = Parameter(index=[time])
@@ -313,7 +319,7 @@ function add_marginal_emissions!(m, year::Union{Int, Nothing} = nothing; gas::Sy
     if year != nothing 
         # pulse is spread over ten years, and emissions components is in Mt so 
         # divide by 1e7, and convert from CO2 to C if gas==:CO2 because emissions 
-        # component is in MtC; also convert from GtCO2 to GtC for CO2 since the 
+        # component is in MtC; also use 12/44 to convert from GtCO2 to GtC for CO2 since the 
         # emissions component expects GtC not GtCO2 but pulse is in CO2
         addem[getindexfromyear(year):getindexfromyear(year) + 9] .= pulse_size / 1e7 * (gas == :CO2 ? 12/44 : 1)
     end
