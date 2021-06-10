@@ -61,7 +61,7 @@ for c in Mimi.compdefs(m), v in Mimi.variable_names(m, nameof(c))
         @test results ≈ validation_results atol = err_number #slight imprecision with these values due to rounding
 
     else
-        validation_results = convert(Matrix, df)
+        validation_results = Matrix(df)
 
         #replace missings with missingvalue so they can be compared
         results[ismissing.(results)] .= missingvalue
@@ -103,7 +103,7 @@ scch4 = MimiFUND.compute_scch4(year = 2020)
 
 # Test with a modified model
 m_high_cs = MimiFUND.get_model()
-update_param!(m_high_cs, :climatesensitivity, 5)
+set_param!(m_high_cs, :climatesensitivity, 5)
 scc6 = MimiFUND.compute_scco2(m_high_cs, year=2020, last_year=2300)
 @test scc6 > scc2 # test that it's higher than the default because of a higher climate sensitivity
 

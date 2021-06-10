@@ -6,7 +6,7 @@
     acsf6 = Variable(index=[time])
 
     #SF6 pre industrial
-    sf6pre = Parameter(default = 0.04)
+    sf6pre = Parameter()
 
     #SF6 decay
     sf6decay = Variable()

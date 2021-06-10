@@ -8,13 +8,13 @@ end
     acco2 = Parameter(index=[time])
 
     # Pre-industrial atmospheric CO2 concentration
-    co2pre = Parameter(default = 275.0)
+    co2pre = Parameter()
 
     # Atmospheric CH4 concentration
     acch4 = Parameter(index=[time])
 
     # Pre-industrial atmospheric CH4 concentration
-    ch4pre = Parameter(default = 790.0)
+    ch4pre = Parameter()
 
     # Indirect radiative forcing increase for CH4
     ch4ind = Parameter(default = 0.4)
@@ -23,13 +23,13 @@ end
     acn2o = Parameter(index=[time])
 
     # Pre-industrial atmospheric N2O concentration
-    n2opre = Parameter(default = 285.0)
+    n2opre = Parameter()
 
     # Atmospheric SF6 concentrations
     acsf6 = Parameter(index=[time])
 
     # Pre-industrial atmospheric SF6 concentration
-    sf6pre = Parameter(default = 0.04)
+    sf6pre = Parameter()
 
     # Radiative forcing from CO2
     rfco2 = Variable(index=[time])

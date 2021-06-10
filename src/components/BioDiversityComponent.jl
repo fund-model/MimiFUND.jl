@@ -12,10 +12,10 @@
     temp = Parameter(index=[time])
 
     # benchmark temperature change
-    dbsta = Parameter(default = 0.025)
+    dbsta = Parameter()
 
     # Number of species in the year 2000
-    nospecbase = Parameter(default = 1.4e7)
+    nospecbase = Parameter()
 
     function run_timestep(p, v, d, t)
         

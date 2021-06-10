@@ -229,7 +229,7 @@ where
   * ``\beta`` = 2.0 (1.5-2.5) is a parameter, equal for all regions, denoting the non-linearity of the reaction to temperature; ``\beta`` is an expert guess;
   * ``\rho`` = 10 (5-15) is a parameter, equal for all regions, denoting the speed of adaptation; ``\rho`` is an expert guess.
 
-The model for the impact due to the level of climate change since 1990 is:
+The model for the impact due to the level of climate change is:
 
 ```math
 A_{t,r}^{l} = \delta_{r}^{l}T_{t} + \delta_{r}^{q}T_{t}^{2} \tag{A.3}
@@ -240,13 +240,13 @@ where
   * ``A^{l}`` denotes the damage in agricultural production as a fraction due to the level of climate change by time and region;
   * ``t`` denotes time;
   * ``r`` denotes region;
-  * ``T`` denotes the change (in degree Celsius) in regional mean temperature relative to 1990;
+  * ``T`` denotes the global mean temperature above pre-industrial (in degree Celsius) at time ``t``;
   * ``\delta_{r}^{l}`` and ``\delta_{r}^{q}`` are parameters (see Table A), that follow from the regional change (in per cent) in agricultural production for a warming of 2.5°C above today or 3.2°C above pre-industrial and the the optimal temperature (in degree Celsius) for agriculture in each region.
 
 CO₂ fertilisation has a positive, but saturating effect on agriculture, specified by
 
 ```math
-A_{t,r}^{f} = \gamma_{r}\ln\frac{\text{CO}2_{t}}{275} \tag{A.4}
+A_{t,r}^{f} = \frac{\gamma_{r}}{\ln2}\ln\frac{\text{CO}2_{t}}{275} \tag{A.4}
 ```
 
 where
@@ -256,7 +256,7 @@ where
   * ``r`` denotes region;
   * ``CO2`` denotes the atmospheric concentration of carbon dioxide (in parts per million by volume);
   * 275 ppm is the pre-industrial concentration;
-  * ``\gamma`` is a parameter (see Table A, column 8-9).
+  * ``\gamma`` is a parameter that gives the impact of a doubling of CO2 concentrations (see Table A, column 8-9).
 
 The parameters in Table A are calibrated, following the procedure described in Tol (2002a), to the results of Kane *et al*. (1992), Reilly *et al*. (1994), Morita *et al*. (1994), Fischer *et al*. (1996), and Tsigas *et al*. (1996). These studies all use a global computable general equilibrium model, and report results with and without adaptation, and with and without CO₂ fertilisation. The regional results from these studies are assumed to hold for each country in the respective regions. They are averaged over the studies and the climate scenarios for each country, and aggregated to the *FUND* regions. The standard deviations in Table A follow from the spread between studies and scenarios. Equation (A.4) follows from the difference in results with and without CO2 fertilization. Equation (A.3) follows from the results with full adaptation. Equation (A.2) follows from the difference in results with and without adaptation.
 
@@ -339,7 +339,7 @@ where
   * ``\text{t\ }``denotes time;
   * ``r`` denotes region;
   * ``Y`` denotes income (in 1995 US dollar) at time ``t`` in region ``r``;
-  * ``T`` denotes the change in the global mean temperature relative to 1990 (in degree Celsius) at time ``t``;
+  * ``T`` denotes the global mean temperature above pre-industrial (in degree Celsius) at time ``t``;
   * ``y`` denotes per capita income (in 1995 US dollar per person per year) at time ``t`` in region ``r``;
   * ``P`` denotes population size at time ``t`` in region ``r``;
   * ``\alpha`` is a parameter (in dollar per degree Celsius), that specifies the benchmark impact; see Table EFW, column 6-7
@@ -360,7 +360,7 @@ where
   * ``t`` denotes time;
   * ``r`` denotes region;
   * ``Y`` denotes income (in 1995 US dollar) at time ``t`` in region ``r``;
-  * ``T`` denotes the change in the global mean temperature relative to 1990 (in degree Celsius) at time ``t``;
+  * ``T`` denotes the global mean temperature above pre-industrial (in degree Celsius) at time ``t``;
   * ``y`` denotes per capita income (in 1995 US dollar per person per year) at time ``t`` in region ``r``;
   * ``P`` denotes population size at time ``t`` in region ``r``;
   * ``\alpha`` is a parameter (see Table EFW, column 8-9);

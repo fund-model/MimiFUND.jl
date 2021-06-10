@@ -1,6 +1,8 @@
 # FUND
 
-[![Build Status](https://travis-ci.org/fund-model/MimiFUND.jl.svg?branch=master)](https://travis-ci.org/fund-model/MimiFUND.jl)
+[![Project Status: Active - The project has reached a stable, usable state and is being actively developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/#active)
+![](https://github.com/fund-model/MimiFUND.jl/workflows/Run%20tests/badge.svg)
+[![codecov](https://codecov.io/gh/fund-model/MimiFUND.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/fund-model/MimiFUND.jl)
 
 ## Overview
 
@@ -24,7 +26,7 @@ The minimum requirement to run FUND is [Julia](http://julialang.org/) and the [M
 
 ### Software Requirements
 
-You need to install [Julia 1.1.0](https://julialang.org) or newer to run this model.  You can download Julia from [http://julialang.org/downloads/](http://julialang.org/downloads/).
+You need to install [Julia 1.4.0](https://julialang.org) or newer to run this model.  You can download Julia from [http://julialang.org/downloads/](http://julialang.org/downloads/).
 
 ### Preparing the Software Environment
 
@@ -78,7 +80,7 @@ scc = MimiFUND.compute_scco2(year = 2020, eta = 0., prtp = 0.03, equity_weights 
 
 # Or, you can also compute the SC-CO2 from a modified version of a MimiFUND model:
 m = MimiFUND.get_model()                        # Get the default version of the FUND model
-update_param!(m, :climatesensitivity, 5)        # make any modifications to your model using Mimi
+set_param!(m, :climatesensitivity, 5)        # make any modifications to your model using Mimi
 scc = MimiFUND.compute_scco2(m, year = 2020)    # Compute the SC-CO2 from your model
 ```
 There are also functions for computing the Social Cost of CH4, N2O, and SF6: `compute_scch4`, `compute_scn2o`, and `compute_scsf6`.
@@ -124,6 +126,7 @@ Example Monte Carlo simulation:
 ```julia
 using Mimi
 using MimiFUND
+using Statistics
 
 scco2_values = MimiFUND.compute_sc(year = 2020, gas = :CO2, eta = 1.0, prtp = 0.01, n = 1000)
 mean(scco2_values)
