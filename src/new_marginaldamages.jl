@@ -292,6 +292,19 @@ function _gas_normalization(gas::Symbol)
     end
 end
 
+function _weight_normalization(gas::Symbol)
+    if gas == :CO2 
+        return 1e6   # convert from tonnes to Mt since component expects Mt
+    elseif gas == :CH4
+        return 1e6   # convert from tonnes to Mt since component expects Mt
+    elseif gas == :N2O
+        return 1e6   # convert from tonnes to Mt since component expects Mt
+    elseif gas == :SF6 
+        return 1e3   # convert from tonnes to kt since component expects Mt
+    else
+        error("Unknown gas :$gas.")
+    end
+end 
 """
 Adds an emissionspulse component to `m`, and sets the additional emissions if a year is specified.
 The size of the marginal emission pulse can be modified with the `pulse_size` keyword argument, in metric tonnes.
@@ -303,8 +316,9 @@ function add_marginal_emissions!(m, year::Union{Int, Nothing} = nothing; gas::Sy
     nyears = length(Mimi.time_labels(m))
     addem = zeros(nyears) 
     if year != nothing 
-        # pulse is spread over ten years, and emissions components is in Mt so divide by 1e7, and convert from CO2 to C if gas==:CO2 because emissions component is in MtC
-        addem[getindexfromyear(year):getindexfromyear(year) + 9] .= pulse_size / 1e7 * _gas_normalization(gas)
+        # need to normalize by (1) pulse spread over 10 years (2) weight adjustemnt 
+        # from tons to expected units and (3) gas makeup normalization ie. CO2 to C
+        addem[getindexfromyear(year):getindexfromyear(year) + 9] .= pulse_size / (10 * _weight_normaliation(gas) * _gas_normalization(gas))
     end
     set_param!(m, :emissionspulse, :add, addem)
 
@@ -337,7 +351,9 @@ function perturb_marginal_emissions!(m::Model, year; comp_name::Symbol = :emissi
 
     nyears = length(Mimi.dimension(m, :time))
     new_em = zeros(nyears)
-    new_em[getindexfromyear(year):getindexfromyear(year) + 9] .= pulse_size / 1e7 * _gas_normalization(gas)
+    # need to normalize by (1) pulse spread over 10 years (2) weight adjustemnt 
+    # from tons to expected units and (3) gas makeup normalization ie. CO2 to C
+    new_em[getindexfromyear(year):getindexfromyear(year) + 9] .= pulse_size / (10 * _weight_normaliation(gas) * _gas_normalization(gas))
     emissions[:] = new_em
 
 end
