@@ -1,16 +1,14 @@
-# This test file is not run during Travis builds, since it takes >10 minutes to run. 
-# This file can be run manually to check that Social Cost calculations using all possibilities of
-# parameter values defined in the specs dictionary below produce the same results. A subset of
-# these values are tested in the "runtests.jl" file deployed by Travis. The validation of these
-# runs depends on the pre-saved values from MimiFUND v3.13.0 in the "SC validation data" folder.
+# This file can be used to create the validation file for scc files. It will create
+# a validation file containing all possibilities of parameter values defined in the 
+# specs dictionary below produce the same results. A subset of these values are 
+# tested in the "runtests.jl" file deployed by Travis, and the full set can be tested
+# manually using the scc_validation_full.jl file
 
 using MimiFUND
 using DataFrames
 using Query
 using CSVFiles
 using Test
-
-datadir = joinpath(@__DIR__, "SC validation data")
 
 specs = Dict([
     :gas => [:CO2, :CH4, :N2O, :SF6],
@@ -44,5 +42,5 @@ for gas in specs[:gas]
     end
 end
 
-validation_results = load(joinpath(datadir, "deterministic_sc_values_v3-13-0.csv")) |> DataFrame
-@test all(isapprox.(results[!, :SC], validation_results[!, :SC], atol = 1e-11))
+path = joinpath(@__DIR__, "SC validation data", "deterministic_sc_values_v3-13-0.csv")
+save(path, results)

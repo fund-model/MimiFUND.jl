@@ -171,9 +171,9 @@ end #test-mcs testset
 datadir = joinpath(@__DIR__, "SC validation data")
 atol = 1e-2
 
-# Test a subset of all validation configurations against the pre-saved values from MimiFUND v3.11.7
+# Test a subset of all validation configurations against the pre-saved values from MimiFUND v3.13.0
 
-validation_results = load(joinpath(datadir, "deterministic_sc_values.csv")) |> DataFrame
+validation_results = load(joinpath(datadir, "deterministic_sc_values_3-13-0.csv")) |> DataFrame
 
 for spec in [
     (gas = :CO2, year = 2020, eta = 0., prtp = 0.03, equity_weights = true, equity_weights_normalization_region = 1, last_year = 3000, pulse_size = 1.),
@@ -192,9 +192,10 @@ for spec in [
     @test sc ≈ validation_value[1, :SC] atol = atol
 end
 
-# Test Monte Carlo results with the same configuration and seed
+# Test Monte Carlo results with the same configuration and seed - note here we use
+# FUND 3.11.7 since 3.13.0 only updated SC-N2O and SC-SF6
 sc_mcs = MimiFUND.compute_sc(gas = :CO2, year = 2020, eta = 1.45, prtp = 0.015, n = 25, seed = 350)
-validation_mcs = load(joinpath(datadir, "mcs_sc_values.csv")) |> DataFrame
+validation_mcs = load(joinpath(datadir, "mcs_sc_values_v3-11-7.csv")) |> DataFrame
 @test all(isapprox.(sc_mcs, validation_mcs[!, :SCCO2], atol = atol))
 
 end
