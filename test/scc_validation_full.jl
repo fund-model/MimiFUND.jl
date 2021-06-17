@@ -2,7 +2,7 @@
 # This file can be run manually to check that Social Cost calculations using all possibilities of
 # parameter values defined in the specs dictionary below produce the same results. A subset of
 # these values are tested in the "runtests.jl" file deployed by Travis. The validation of these
-# runs depends on the pre-saved values from MimiFUND v3.11.7 in the "SC validation data" folder.
+# runs depends on the pre-saved values from MimiFUND v3.13.0 in the "SC validation data" folder.
 
 using MimiFUND
 using DataFrames
@@ -44,5 +44,5 @@ for gas in specs[:gas]
     end
 end
 
-validation_results = load(joinpath(datadir, "deterministic_sc_values.csv")) |> DataFrame
-@test all(isapprox.(results[!, :SC], validation_results[!, :SC], atol = 1e-11))
+validation_results = load(joinpath(datadir, "deterministic_sc_values_v3-13-0.csv")) |> DataFrame
+@test all(isapprox.(results[!, :SC], validation_results[!, :SC], atol = 1e-10)
