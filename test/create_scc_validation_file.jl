@@ -53,11 +53,15 @@ new_sc = load(joinpath(@__DIR__, "SC validation data", "deterministic_sc_values_
 filter!(:gas => x -> (x == "CO2" || x == "CH4"), old_sc)
 filter!(:gas => x -> (x == "CO2" || x == "CH4"), new_sc)
 
-# TODO Lisa Rennels
-# the precision for the pulse of 1e7 is pretty high but for pulse size of 
-# 1 is way less precise ... is that ok? why is that happening? 
-filter!(:pulse_size => x -> x == 1.0e7, old_sc)
-filter!(:pulse_size => x -> x == 1.0e7, new_sc)
+# after running scc_validation_all.jl on Mimi v3.12.1 on Lisa Rennels' machine,
+# we note that the differences between results and validation results pass only at
+# a tolerance of 1.0e-1 for pulse_size of 1 and 1e-9 for pulse_size of 1.0e7, so 
+# we mirror that here
 
-@test all(isapprox.(old_sc[!, :SC], new_sc[!, :SC], atol = 1e-9))
+old_sc_bigpulse = filter!(:pulse_size => x -> x == 1.0e7, old_sc)
+new_sc_bigpulse = filter!(:pulse_size => x -> x == 1.0e7, new_sc)
+@test all(isapprox.(old_sc_bigpulse[!, :SC], new_sc_bigpulse[!, :SC], atol = 1e-9))
 
+old_sc_smallpulse = filter!(:pulse_size => x -> x == 1.0e7, old_sc)
+new_sc_smallpulse = filter!(:pulse_size => x -> x == 1.0e7, new_sc)
+@test all(isapprox.(old_sc_smallpulse[!, :SC], new_snew_sc_smallpulsec_bigpulse[!, :SC], atol = 1e-1))

@@ -120,7 +120,7 @@ result = MimiFUND.compute_sc(year=2050, return_mm = true)
 scch4 = MimiFUND.compute_scch4(year = 2020)
 scn2o = MimiFUND.compute_scn2o(year = 2020)
 scsf6 = MimiFUND.compute_scsf6(year = 2020)
-@test scch4 < scn2o < scsf6 # TODO Lisa Rennels - ok to change order here? previously was scsf6 < scn2o < scsf6
+@test scch4 < scn2o < scsf6
 
 # Test that modifying the pulse_size keyword changes the values, but not by much
 scch4_2 = MimiFUND.compute_scch4(year = 2020, pulse_size = 1e3)
