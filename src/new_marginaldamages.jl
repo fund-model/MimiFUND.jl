@@ -344,9 +344,10 @@ function add_marginal_emissions!(m, year::Union{Int, Nothing} = nothing; gas::Sy
     nyears = length(Mimi.time_labels(m))
     addem = zeros(nyears) 
     if year != nothing 
-        # need to normalize by (1) pulse spread over 10 years (2) weight adjustemnt 
-        # from tons to expected units and (3) gas makeup normalization ie. CO2 to C
-        addem[getindexfromyear(year):getindexfromyear(year) + 9] .= pulse_size / (10 * _weight_normalization(gas) * _gas_normalization(gas))
+        # need to (1) normalize by  (2) weight adjustment from tons to expected 
+        # units and (2) divide by pulse spread over 10 years * gas makeup 
+        # normalization ie. CO2 to C
+        addem[getindexfromyear(year):getindexfromyear(year) + 9] .= pulse_size / (10 * _gas_normalization(gas)) *  _weight_normalization(gas)
     end
     set_param!(m, :emissionspulse, :add, addem)
 
@@ -379,9 +380,10 @@ function perturb_marginal_emissions!(m::Model, year; comp_name::Symbol = :emissi
 
     nyears = length(Mimi.dimension(m, :time))
     new_em = zeros(nyears)
-    # need to normalize by (1) pulse spread over 10 years (2) weight adjustemnt 
-    # from tons to expected units and (3) gas makeup normalization ie. CO2 to C
-    new_em[getindexfromyear(year):getindexfromyear(year) + 9] .= pulse_size / (10 * _weight_normaliation(gas) * _gas_normalization(gas))
+    # need to (1) normalize by  (2) weight adjustment from tons to expected 
+    # units and (2) divide by pulse spread over 10 years * gas makeup 
+    # normalization ie. CO2 to C
+    new_em[getindexfromyear(year):getindexfromyear(year) + 9] .= pulse_size / (10 * _gas_normalization(gas)) * _weight_normaliation(gas)
     emissions[:] = new_em
 
 end
