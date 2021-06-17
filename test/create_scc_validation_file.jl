@@ -44,3 +44,20 @@ end
 
 path = joinpath(@__DIR__, "SC validation data", "deterministic_sc_values_v3-13-0.csv")
 save(path, results)
+
+## Compare v3.11.7 to v3.13.0 ... :CO2 and :CH4 should not change
+
+old_sc = load(joinpath(@__DIR__, "SC validation data", "deterministic_sc_values_v3-11-7.csv")) |> DataFrame 
+new_sc = load(joinpath(@__DIR__, "SC validation data", "deterministic_sc_values_v3-13-0.csv")) |> DataFrame 
+
+filter!(:gas => x -> (x == "CO2" || x == "CH4"), old_sc)
+filter!(:gas => x -> (x == "CO2" || x == "CH4"), new_sc)
+
+# TODO Lisa Rennels
+# the precision for the pulse of 1e7 is pretty high but for pulse size of 
+# 1 is way less precise ... is that ok? why is that happening? 
+filter!(:pulse_size => x -> x == 1.0e7, old_sc)
+filter!(:pulse_size => x -> x == 1.0e7, new_sc)
+
+@test all(isapprox.(old_sc[!, :SC], new_sc[!, :SC], atol = 1e-9))
+

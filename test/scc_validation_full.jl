@@ -45,4 +45,4 @@ for gas in specs[:gas]
 end
 
 validation_results = load(joinpath(datadir, "deterministic_sc_values_v3-13-0.csv")) |> DataFrame
-@test all(isapprox.(results[!, :SC], validation_results[!, :SC], atol = 1e-11))
+@test all(isapprox.(results[!, :SC], validation_results[!, :SC], atol = 1e-10)) # TODO Lisa Rennels ok to increase tolerance?
