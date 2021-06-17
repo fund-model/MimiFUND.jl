@@ -64,4 +64,4 @@ new_sc_bigpulse = filter!(:pulse_size => x -> x == 1.0e7, new_sc)
 
 old_sc_smallpulse = filter!(:pulse_size => x -> x == 1.0e7, old_sc)
 new_sc_smallpulse = filter!(:pulse_size => x -> x == 1.0e7, new_sc)
-@test all(isapprox.(old_sc_smallpulse[!, :SC], new_snew_sc_smallpulsec_bigpulse[!, :SC], atol = 1e-1))
+@test all(isapprox.(old_sc_smallpulse[!, :SC], new_sc_smallpulse[!, :SC], atol = 1e-1))
