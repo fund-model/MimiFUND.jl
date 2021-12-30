@@ -349,7 +349,7 @@ function add_marginal_emissions!(m, year::Union{Int, Nothing} = nothing; gas::Sy
         # units ie. CO2 to expected units ie. C
         addem[getindexfromyear(year):getindexfromyear(year) + 9] .= pulse_size / (10 * _weight_normalization(gas)) *  _gas_normalization(gas)
     end
-    set_param!(m, :emissionspulse, :add, addem)
+    update_param!(m, :emissionspulse, :add, addem)
 
     # Reconnect the appropriate emissions in m
     if gas == :CO2
