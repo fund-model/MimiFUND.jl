@@ -265,7 +265,9 @@ function get_model(; nsteps = default_nsteps, datadir = default_datadir, params 
     # Set shared parameters - name is a Symbol representing the param_name, here
     # we will create a shared model parameter with the same name as the component
     # parameter and then connect our component parameters to this shared model parameter
-
+    
+    # * for convenience later, name shared model parameter same as the component 
+    # parameters, but this is not required could give a unique name *
     add_shared_param!(m, :ch4pre, parameters[:shared][:ch4pre])
     connect_param!(m, :climateforcing, :ch4pre, :ch4pre)
     connect_param!(m, :climatech4cycle, :ch4pre, :ch4pre)
