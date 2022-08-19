@@ -15,3 +15,4 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           ssh: ${{ secrets.JLPKGBUTLER_TOKEN }}
           branches: true
+          registry: mimiframework/MimiRegistry
