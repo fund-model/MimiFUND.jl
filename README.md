@@ -26,7 +26,7 @@ The minimum requirement to run FUND is [Julia](http://julialang.org/) and the [M
 
 ### Software Requirements
 
-You need to install [Julia 1.4.0](https://julialang.org) or newer to run this model.  You can download Julia from [http://julialang.org/downloads/](http://julialang.org/downloads/).
+You need to install [Julia 1.6.0](https://julialang.org) or newer to run this model.  You can download Julia from [http://julialang.org/downloads/](http://julialang.org/downloads/).
 
 ### Preparing the Software Environment
 
