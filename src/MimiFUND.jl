@@ -82,7 +82,7 @@ function get_model(; nsteps = default_nsteps, datadir = default_datadir, params 
     # ---------------------------------------------
 
     add_comp!(m, scenariouncertainty)
-    add_comp!(m, population)          # can't have external params and components with the same name
+    add_comp!(m, population)
     add_comp!(m, geography)
     add_comp!(m, socioeconomic)
     add_comp!(m, emissions)
@@ -257,9 +257,76 @@ function get_model(; nsteps = default_nsteps, datadir = default_datadir, params 
 
     parameters = params === nothing ? load_default_parameters(datadir) : params
     
-    for (name, value) in parameters
-        set_param!(m, name, value)
+    # Set unshared parameters - name is a Tuple{Symbol, Symbol} of (component_name, param_name)
+    for (name, value) in parameters[:unshared]
+        update_param!(m, name[1], name[2], value)
     end
+
+    # Set shared parameters - name is a Symbol representing the param_name, here
+    # we will create a shared model parameter with the same name as the component
+    # parameter and then connect our component parameters to this shared model parameter
+    
+    # * for convenience later, name shared model parameter same as the component 
+    # parameters, but this is not required could give a unique name *
+    add_shared_param!(m, :ch4pre, parameters[:shared][:ch4pre])
+    connect_param!(m, :climateforcing, :ch4pre, :ch4pre)
+    connect_param!(m, :climatech4cycle, :ch4pre, :ch4pre)
+
+    add_shared_param!(m, :n2opre, parameters[:shared][:n2opre])
+    connect_param!(m, :climateforcing, :n2opre, :n2opre)
+    connect_param!(m, :climaten2ocycle, :n2opre, :n2opre)
+
+    add_shared_param!(m, :sf6pre, parameters[:shared][:sf6pre])
+    connect_param!(m, :climateforcing, :sf6pre, :sf6pre)
+    connect_param!(m, :climatesf6cycle, :sf6pre, :sf6pre)
+
+    add_shared_param!(m, :co2pre, parameters[:shared][:co2pre])
+    connect_param!(m, :climateforcing, :co2pre, :co2pre)
+    connect_param!(m, :impactagriculture, :co2pre, :co2pre)
+    connect_param!(m, :impactextratropicalstorms, :co2pre, :co2pre)
+    connect_param!(m, :impactforests, :co2pre, :co2pre)
+
+    add_shared_param!(m, :nospecbase, parameters[:shared][:nospecbase])
+    connect_param!(m, :biodiversity, :nospecbase, :nospecbase)
+    connect_param!(m, :impactbiodiversity, :nospecbase, :nospecbase)
+
+    add_shared_param!(m, :dbsta, parameters[:shared][:dbsta])
+    connect_param!(m, :biodiversity, :dbsta, :dbsta)
+    connect_param!(m, :impactbiodiversity, :dbsta, :dbsta)
+
+    add_shared_param!(m, :bregtmp, parameters[:shared][:bregtmp], dims=[:regions])
+    connect_param!(m, :climateregional, :bregtmp, :bregtmp)
+    connect_param!(m, :impactdiarrhoea, :bregtmp, :bregtmp)
+
+    add_shared_param!(m, :plus90, parameters[:shared][:plus90], dims=[:regions])
+    connect_param!(m, :impactcardiovascularrespiratory, :plus90, :plus90)
+    connect_param!(m, :socioeconomic, :plus90, :plus90)
+
+    add_shared_param!(m, :gdp90, parameters[:shared][:gdp90], dims=[:regions])
+    connect_param!(m, :emissions, :gdp90, :gdp90)
+    connect_param!(m, :impactagriculture, :gdp90, :gdp90)
+    connect_param!(m, :impactcooling, :gdp90, :gdp90)
+    connect_param!(m, :impactdiarrhoea, :gdp90, :gdp90)
+    connect_param!(m, :impactextratropicalstorms, :gdp90, :gdp90)
+    connect_param!(m, :impactforests, :gdp90, :gdp90)
+    connect_param!(m, :impactheating, :gdp90, :gdp90)
+    connect_param!(m, :impacttropicalstorms, :gdp90, :gdp90)
+    connect_param!(m, :impactvectorbornediseases, :gdp90, :gdp90)
+    connect_param!(m, :impactwaterresources, :gdp90, :gdp90)
+    connect_param!(m, :socioeconomic, :gdp90, :gdp90)
+
+    add_shared_param!(m, :pop90, parameters[:shared][:pop90], dims=[:regions])
+    connect_param!(m, :emissions, :pop90, :pop90)
+    connect_param!(m, :impactagriculture, :pop90, :pop90)
+    connect_param!(m, :impactcooling, :pop90, :pop90)
+    connect_param!(m, :impactdiarrhoea, :pop90, :pop90)
+    connect_param!(m, :impactextratropicalstorms, :pop90, :pop90)
+    connect_param!(m, :impactforests, :pop90, :pop90)
+    connect_param!(m, :impactheating, :pop90, :pop90)
+    connect_param!(m, :impacttropicalstorms, :pop90, :pop90)
+    connect_param!(m, :impactvectorbornediseases, :pop90, :pop90)
+    connect_param!(m, :impactwaterresources, :pop90, :pop90)
+    connect_param!(m, :socioeconomic, :pop90, :pop90)
 
     # Reset the time dimension if needed
     reset_time_dimension ? set_dimension!(m, :time, collect(1950:1950 + nsteps)) : nothing

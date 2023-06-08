@@ -11,7 +11,7 @@ function getmarginalmodels(; gas = :C, emissionyear = 2010, parameters = nothing
     add_comp!(m2, Mimi.adder, :marginalemission, before = :climateco2cycle, first = 1951)
     addem = zeros(yearstorun)
     addem[getindexfromyear(emissionyear)-1:getindexfromyear(emissionyear) + 8] .= 1.0
-    set_param!(m2, :marginalemission, :add, addem)
+    update_param!(m2, :marginalemission, :add, addem)
 
     # Reconnect the appropriate emissions in the marginal model
     if gas == :C

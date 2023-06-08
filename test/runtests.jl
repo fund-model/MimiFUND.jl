@@ -103,7 +103,7 @@ scch4 = MimiFUND.compute_scch4(year = 2020)
 
 # Test with a modified model
 m_high_cs = MimiFUND.get_model()
-set_param!(m_high_cs, :climatesensitivity, 5)
+update_param!(m_high_cs, :climatedynamics, :climatesensitivity, 5)
 scc6 = MimiFUND.compute_scco2(m_high_cs, year=2020, last_year=2300)
 @test scc6 > scc2 # test that it's higher than the default because of a higher climate sensitivity
 

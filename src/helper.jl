@@ -10,17 +10,31 @@ end
 
 
 """
-Reads parameter csvs from data directory into a dictionary (parameter_name => default_value).
+Reads parameter csvs from data directory into a dictionary with two keys:
+* :shared => (parameter_name => default_value) for parameters shared in the model
+* :unshared => ((component_name, parameter_name) => default_value) for component specific parameters that are not shared
+
 For parameters defined as distributions, this sets the value to their mode.
 """ 
 function load_default_parameters(datadir = joinpath(dirname(@__FILE__), "..", "data"))
-    files = readdir(datadir)
-    filter!(i -> i != "desktop.ini", files)
-    parameters = Dict{Symbol, Any}(Symbol(splitext(file)[1]) => readdlm(joinpath(datadir,file), ',', comments = true) for file in files)
 
-    prepparameters!(parameters)
+    # Load the unshared parameters
+    files = readdir(joinpath(datadir, "unshared_parameters"))
+    filter!(i -> (i != "desktop.ini" && i != ".DS_Store"), files)
+    unshared_parameters = Dict{Tuple{Symbol,Symbol}, Any}()
+    for file in files
+        param_info = Symbol.(split(splitext(file)[1], "-"))
+        unshared_parameters[(param_info[1], param_info[2])] = readdlm(joinpath(datadir,"unshared_parameters",file), ',', comments = true)
+    end
+    prepparameters!(unshared_parameters)
 
-    return parameters
+    # Handle the shared parameters
+    files = readdir(joinpath(datadir, "shared_parameters"))
+    filter!(i -> (i != "desktop.ini" && i != ".DS_Store"), files)
+    shared_parameters = Dict{Symbol, Any}(Symbol(splitext(file)[1]) => readdlm(joinpath(datadir,"shared_parameters",file), ',', comments = true) for file in files)
+    prepparameters!(shared_parameters)
+
+    return Dict(:shared => shared_parameters, :unshared => unshared_parameters)
 end
 
 
