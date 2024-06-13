@@ -40,6 +40,7 @@ include("components/ImpactWaterResourcesComponent.jl")
 include("components/ImpactSeaLevelRiseComponent.jl")
 include("components/ImpactAggregationComponent.jl")
 include("components/VslVmorbComponent.jl")
+include("components/WelfareComponent.jl")
 
 export
     getfund # a function that returns a version of fund allowing for different user specifications
@@ -110,6 +111,7 @@ function get_model(; nsteps = default_nsteps, datadir = default_datadir, params 
     add_comp!(m, impactwaterresources)
     add_comp!(m, impactsealevelrise)
     add_comp!(m, impactaggregation)
+    add_comp!(m, welfare)
 
     # ---------------------------------------------
     # Connect parameters to variables
@@ -250,6 +252,9 @@ function get_model(; nsteps = default_nsteps, datadir = default_datadir, params 
     connect_param!(m, :impactaggregation, :morbcost, :impactdeathmorbidity, :morbcost)
     connect_param!(m, :impactaggregation, :wetcost, :impactsealevelrise, :wetcost)
     connect_param!(m, :impactaggregation, :leavecost, :impactsealevelrise, :leavecost)
+
+    connect_param!(m, :welfare, :populationin1, :population, :populationin1)
+    connect_param!(m, :welfare, :consumption, :socioeconomic, :consumption)
 
     # ---------------------------------------------
     # Set all external parameter values
